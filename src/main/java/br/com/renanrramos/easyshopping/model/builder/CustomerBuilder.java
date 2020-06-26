@@ -46,7 +46,6 @@ public class CustomerBuilder {
 	}
 	
 	public Customer build() {
-		Customer customer = this.customer;
-		return customer; 
+		return this.customer;
 	}
 }
