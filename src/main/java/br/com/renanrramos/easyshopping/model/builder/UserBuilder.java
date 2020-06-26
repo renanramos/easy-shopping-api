@@ -1,3 +1,9 @@
+/**------------------------------------------------------------
+ * Project: easy-shopping
+ * 
+ * Creator: renan.ramos - 24/06/2020
+ * ------------------------------------------------------------
+ */
 package br.com.renanrramos.easyshopping.model.builder;
 
 import br.com.renanrramos.easyshopping.enums.Profile;
@@ -18,7 +24,7 @@ public class UserBuilder {
 		return this;
 	}
 	
-	public User build() {
-		return new User(this.name, this.profile);
-	}
+//	public User build() {
+//		return new User(this.name, this.profile);
+//	}
 }

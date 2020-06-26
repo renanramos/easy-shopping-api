@@ -1,19 +1,29 @@
+/**------------------------------------------------------------
+ * Project: easy-shopping
+ * 
+ * Creator: renan.ramos - 24/06/2020
+ * ------------------------------------------------------------
+ */
 package br.com.renanrramos.easyshopping.model;
+
+import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
 import br.com.renanrramos.easyshopping.enums.Profile;
 
 @Entity
-public class User {
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class User implements Serializable{
+ 
+	private static final long serialVersionUID = -234475925678811197L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	private String name;
@@ -21,6 +31,8 @@ public class User {
 	@Enumerated(EnumType.STRING)
 	private Profile profile;
 			
+	public User() {
+	}
 	
 	public User(String name, Profile profile) {
 		this.name = name;
@@ -31,8 +43,16 @@ public class User {
 		return id;
 	}
 	
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public String getName() {
 		return name;
+	}
+
+	public void setProfile(Profile profile) {
+		this.profile = profile;
 	}
 	
 	public Profile getProfile() {
