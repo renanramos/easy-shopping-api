@@ -9,7 +9,6 @@ package br.com.renanrramos.easyshopping.controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.renanrramos.easyshopping.enums.Profile;
 import br.com.renanrramos.easyshopping.model.Customer;
 import br.com.renanrramos.easyshopping.model.builder.CustomerBuilder;
 
@@ -26,7 +25,6 @@ public class CustomerController {
 				.withName("Renan Ramos")
 				.withCpf("023101321")
 				.withEmail("renanramos@mail.com")
-				.withProfile(Profile.ADMINISTRATOR)
 				.build();
 	}
 

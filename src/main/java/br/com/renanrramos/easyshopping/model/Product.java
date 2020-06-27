@@ -6,12 +6,15 @@
  */
 package br.com.renanrramos.easyshopping.model;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 /**
  * @author renan.ramos
@@ -24,11 +27,16 @@ public class Product {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@Column(nullable = false, length = 50)
 	private String name;
 	
+	@Column(nullable = false, length = 250)
 	private String description;
 	
 	private double price;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	private ProductCategory productCategory;
 	
 	@ManyToOne
 	@JoinColumn(name = "store_id_db")
@@ -74,10 +82,20 @@ public class Product {
 		this.store = store;
 	}
 
+	public ProductCategory getProductCategory() {
+		return productCategory;
+	}
+
+	public void setProductCategory(ProductCategory productCategory) {
+		this.productCategory = productCategory;
+	}
+
+	
+
 	@Override
 	public String toString() {
-		return "Product [id=" + id + ", name=" + name + ", description=" + description + ", price=" + price + ", store="
-				+ store + "]";
+		return "Product [id=" + id + ", name=" + name + ", description=" + description + ", price=" + price
+				+ ", productCategory=" + productCategory + ", store=" + store + "]";
 	}
 
 	@Override

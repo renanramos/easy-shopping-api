@@ -40,12 +40,8 @@ public class CustomerBuilder {
 		return this;
 	}
 	
-	public CustomerBuilder withProfile(Profile profile) {
-		this.customer.setProfile(profile);
-		return this;
-	}
-	
 	public Customer build() {
+		this.customer.setProfile(Profile.CUSTOMER);
 		return this.customer;
 	}
 }

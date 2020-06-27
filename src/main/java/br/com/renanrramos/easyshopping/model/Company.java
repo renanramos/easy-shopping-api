@@ -19,15 +19,17 @@ public class Company extends User {
 
 	private static final long serialVersionUID = 1302828903094520601L;
 
-	private String cnpj;
-	private String email;
-	private String phone;
+	private String registeredNumber;
 	
+	private String email;
+	
+	private String phone;
+		
 	public Company() {		
 	}
 
-	public String getCnpj() {
-		return cnpj;
+	public String getRegisteredNumber() {
+		return registeredNumber;
 	}
 
 	public String getEmail() {
@@ -38,8 +40,8 @@ public class Company extends User {
 		return phone;
 	}
 
-	public void setCnpj(String cnpj) {
-		this.cnpj = cnpj;
+	public void setRegisteredNumber(String registeredNumber) {
+		this.registeredNumber = registeredNumber;
 	}
 
 	public void setEmail(String email) {
@@ -52,14 +54,14 @@ public class Company extends User {
 
 	@Override
 	public String toString() {
-		return "Company [cnpj=" + cnpj + ", email=" + email + ", telefone=" + phone + "]";
+		return "Company [registeredNumber=" + registeredNumber + ", email=" + email + ", phone=" + phone + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((cnpj == null) ? 0 : cnpj.hashCode());
+		result = prime * result + ((registeredNumber == null) ? 0 : registeredNumber.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((phone == null) ? 0 : phone.hashCode());
 		return result;
@@ -74,10 +76,10 @@ public class Company extends User {
 		if (getClass() != obj.getClass())
 			return false;
 		Company other = (Company) obj;
-		if (cnpj == null) {
-			if (other.cnpj != null)
+		if (registeredNumber == null) {
+			if (other.registeredNumber != null)
 				return false;
-		} else if (!cnpj.equals(other.cnpj))
+		} else if (!registeredNumber.equals(other.registeredNumber))
 			return false;
 		if (email == null) {
 			if (other.email != null)

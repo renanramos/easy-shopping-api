@@ -26,64 +26,64 @@ public class Store {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	private String nome;
+	private String name;
 	
-	private String cnpj;
+	private String registeredNumber;
 	
-	private String razaoSocial;
+	private String corporateName;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "store")
-	private List<Product> product;
+	private List<Product> products;
 	
 	public Long getId() {
 		return id;
 	}
 	
-	public String getNome() {
-		return nome;
+	public String getName() {
+		return name;
 	}
 	
-	public String getCnpj() {
-		return cnpj;
+	public String getRegisteredNumber() {
+		return registeredNumber;
 	}
 	
-	public String getRazaoSocial() {
-		return razaoSocial;
+	public String getCorporateName() {
+		return corporateName;
 	}
 	
-	public List<Product> getProduct() {
-		return product;
+	public List<Product> getProducts() {
+		return products;
 	}
 	
 	public void setId(Long id) {
 		this.id = id;
 	}
 	
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setName(String name) {
+		this.name = name;
 	}
 	
-	public void setCnpj(String cnpj) {
-		this.cnpj = cnpj;
+	public void setRegisteredNumber(String registeredNumber) {
+		this.registeredNumber = registeredNumber;
 	}
 	
-	public void setRazaoSocial(String razaoSocial) {
-		this.razaoSocial = razaoSocial;
+	public void setCorporateName(String corporateName) {
+		this.corporateName = corporateName;
 	}
 	
-	public void setProduct(List<Product> product) {
-		this.product = product;
+	public void setProducts(List<Product> products) {
+		this.products = products;
 	}
 	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((cnpj == null) ? 0 : cnpj.hashCode());
+		result = prime * result + ((registeredNumber == null) ? 0 : registeredNumber.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
-		result = prime * result + ((product == null) ? 0 : product.hashCode());
-		result = prime * result + ((razaoSocial == null) ? 0 : razaoSocial.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((products == null) ? 0 : products.hashCode());
+		result = prime * result + ((corporateName == null) ? 0 : corporateName.hashCode());
 		return result;
 	}
 	
@@ -96,38 +96,38 @@ public class Store {
 		if (getClass() != obj.getClass())
 			return false;
 		Store other = (Store) obj;
-		if (cnpj == null) {
-			if (other.cnpj != null)
+		if (registeredNumber == null) {
+			if (other.registeredNumber != null)
 				return false;
-		} else if (!cnpj.equals(other.cnpj))
+		} else if (!registeredNumber.equals(other.registeredNumber))
 			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		if (nome == null) {
-			if (other.nome != null)
+		if (name == null) {
+			if (other.name != null)
 				return false;
-		} else if (!nome.equals(other.nome))
+		} else if (!name.equals(other.name))
 			return false;
-		if (product == null) {
-			if (other.product != null)
+		if (products == null) {
+			if (other.products != null)
 				return false;
-		} else if (!product.equals(other.product))
+		} else if (!products.equals(other.products))
 			return false;
-		if (razaoSocial == null) {
-			if (other.razaoSocial != null)
+		if (corporateName == null) {
+			if (other.corporateName != null)
 				return false;
-		} else if (!razaoSocial.equals(other.razaoSocial))
+		} else if (!corporateName.equals(other.corporateName))
 			return false;
 		return true;
 	}
 	
 	@Override
 	public String toString() {
-		return "Store [id=" + id + ", nome=" + nome + ", cnpj=" + cnpj + ", razaoSocial=" + razaoSocial + ", product="
-				+ product + "]";
+		return "Store [id=" + id + ", name=" + name + ", registeredNumber=" + registeredNumber + ", corporateName=" + corporateName + ", products="
+				+ products + "]";
 	}
 		
 }

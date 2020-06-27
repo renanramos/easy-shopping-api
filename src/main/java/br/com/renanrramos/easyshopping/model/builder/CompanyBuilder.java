@@ -6,6 +6,7 @@
  */
 package br.com.renanrramos.easyshopping.model.builder;
 
+import br.com.renanrramos.easyshopping.enums.Profile;
 import br.com.renanrramos.easyshopping.model.Company;
 
 /**
@@ -24,8 +25,8 @@ public class CompanyBuilder {
 		return new CompanyBuilder();
 	}
 	
-	public CompanyBuilder withCnpj(String cnpj) {
-		this.company.setCnpj(cnpj);
+	public CompanyBuilder withRegisteredNumber(String registeredNumber) {
+		this.company.setRegisteredNumber(registeredNumber);
 		return this;
 	}
 	
@@ -40,6 +41,7 @@ public class CompanyBuilder {
 	}
 	
 	public Company build() {
+		this.company.setProfile(Profile.COMPANY);
 		return this.company;
 	}
 }
