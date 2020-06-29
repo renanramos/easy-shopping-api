@@ -41,7 +41,6 @@ public class CompanyBuilder {
 	}
 	
 	public Company build() {
-		this.company.setProfile(Profile.COMPANY);
 		return this.company;
 	}
 }

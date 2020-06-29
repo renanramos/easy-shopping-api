@@ -14,7 +14,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @EnableSpringDataWebSupport
-@EnableSwagger2
 public class EasyShopping {
 	public static void main(String[] args) {
 		SpringApplication.run(EasyShopping.class, args);

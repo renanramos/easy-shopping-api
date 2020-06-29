@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotBlank;
 
 /**
  * @author renan.ramos
@@ -27,17 +28,22 @@ public class Product {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@NotBlank
 	@Column(nullable = false, length = 50)
 	private String name;
 	
+	@NotBlank
 	@Column(nullable = false, length = 250)
 	private String description;
 	
+	@NotBlank
 	private double price;
 	
+	@NotBlank
 	@OneToOne(cascade = CascadeType.ALL)
 	private ProductCategory productCategory;
 	
+	@NotBlank
 	@ManyToOne
 	@JoinColumn(name = "store_id_db")
 	private Store store;
@@ -89,8 +95,6 @@ public class Product {
 	public void setProductCategory(ProductCategory productCategory) {
 		this.productCategory = productCategory;
 	}
-
-	
 
 	@Override
 	public String toString() {

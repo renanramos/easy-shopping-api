@@ -7,7 +7,16 @@
 package br.com.renanrramos.easyshopping.model;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.PrimaryKeyJoinColumn;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
+import org.hibernate.validator.constraints.br.CPF;
+
+import br.com.renanrramos.easyshopping.enums.Profile;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * @author renan.ramos
@@ -27,8 +36,18 @@ public class Customer extends User{
 		this.email = email;
 	}
 
+	@CPF
+	@NotBlank
 	private String cpf;
+	
+	@Email
+	@NotBlank
 	private String email;
+
+
+	@ApiModelProperty(hidden = true)
+	@Enumerated(EnumType.STRING)
+	private Profile profile;
 	
 	public static long getSerialversionuid() {
 		return serialVersionUID;
@@ -49,6 +68,14 @@ public class Customer extends User{
 	public String getEmail() {
 		return email;
 	}
+	
+	public Profile getProfile() {
+		return profile;
+	}
+
+	public void setProfile(Profile profile) {
+		this.profile = profile;
+	}
 
 	@Override
 	public int hashCode() {
@@ -56,6 +83,7 @@ public class Customer extends User{
 		int result = super.hashCode();
 		result = prime * result + ((cpf == null) ? 0 : cpf.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + ((profile == null) ? 0 : profile.hashCode());
 		return result;
 	}
 
@@ -78,12 +106,13 @@ public class Customer extends User{
 				return false;
 		} else if (!email.equals(other.email))
 			return false;
+		if (profile != other.profile)
+			return false;
 		return true;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "Customer [cpf=" + cpf + ", email=" + email + "]";
+		return "Customer [cpf=" + cpf + ", email=" + email + ", profile=" + profile + "]";
 	}
-		
 }

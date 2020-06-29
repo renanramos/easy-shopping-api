@@ -9,11 +9,13 @@ package br.com.renanrramos.easyshopping.model;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
 
 /**
  * @author renan.ramos
@@ -26,10 +28,16 @@ public class Store {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@NotBlank
+	@Column(nullable = false, length = 50)
 	private String name;
 	
+	@NotBlank
+	@Column(nullable = false, length = 50)
 	private String registeredNumber;
 	
+	@NotBlank
+	@Column(nullable = false, length = 250)
 	private String corporateName;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "store")

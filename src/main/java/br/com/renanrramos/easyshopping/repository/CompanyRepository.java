@@ -6,7 +6,7 @@
  */
 package br.com.renanrramos.easyshopping.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import br.com.renanrramos.easyshopping.model.Company;
 
@@ -14,6 +14,6 @@ import br.com.renanrramos.easyshopping.model.Company;
  * @author renan.ramos
  *
  */
-public interface CompanyRepository extends CrudRepository<Company, Long>{
+public interface CompanyRepository extends JpaRepository<Company, Long>{
 
 }

@@ -7,7 +7,15 @@
 package br.com.renanrramos.easyshopping.model;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.PrimaryKeyJoinColumn;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
+
+import br.com.renanrramos.easyshopping.enums.Profile;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * @author renan.ramos
@@ -19,12 +27,21 @@ public class Company extends User {
 
 	private static final long serialVersionUID = 1302828903094520601L;
 
+	@NotBlank
 	private String registeredNumber;
 	
+	@Email
+	@NotBlank
 	private String email;
 	
+	@Positive
+	@NotBlank
 	private String phone;
-		
+
+	@ApiModelProperty(hidden = true)
+	@Enumerated(EnumType.STRING)
+	private Profile profile;
+			
 	public Company() {		
 	}
 
@@ -52,18 +69,22 @@ public class Company extends User {
 		this.phone = phone;
 	}
 
-	@Override
-	public String toString() {
-		return "Company [registeredNumber=" + registeredNumber + ", email=" + email + ", phone=" + phone + "]";
+	public Profile getProfile() {
+		return profile;
+	}
+
+	public void setProfile(Profile profile) {
+		this.profile = profile;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((registeredNumber == null) ? 0 : registeredNumber.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((phone == null) ? 0 : phone.hashCode());
+		result = prime * result + ((profile == null) ? 0 : profile.hashCode());
+		result = prime * result + ((registeredNumber == null) ? 0 : registeredNumber.hashCode());
 		return result;
 	}
 
@@ -76,11 +97,6 @@ public class Company extends User {
 		if (getClass() != obj.getClass())
 			return false;
 		Company other = (Company) obj;
-		if (registeredNumber == null) {
-			if (other.registeredNumber != null)
-				return false;
-		} else if (!registeredNumber.equals(other.registeredNumber))
-			return false;
 		if (email == null) {
 			if (other.email != null)
 				return false;
@@ -91,7 +107,20 @@ public class Company extends User {
 				return false;
 		} else if (!phone.equals(other.phone))
 			return false;
+		if (profile != other.profile)
+			return false;
+		if (registeredNumber == null) {
+			if (other.registeredNumber != null)
+				return false;
+		} else if (!registeredNumber.equals(other.registeredNumber))
+			return false;
 		return true;
 	}
-		
+
+	@Override
+	public String toString() {
+		return "Company [registeredNumber=" + registeredNumber + ", email=" + email + ", phone=" + phone + ", profile="
+				+ profile + "]";
+	}
+	
 }

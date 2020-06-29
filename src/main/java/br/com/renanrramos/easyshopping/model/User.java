@@ -8,14 +8,14 @@ package br.com.renanrramos.easyshopping.model;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-
-import br.com.renanrramos.easyshopping.enums.Profile;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -24,19 +24,23 @@ public abstract class User implements Serializable{
 	private static final long serialVersionUID = -234475925678811197L;
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.TABLE)
 	private Long id;
 	
+	@NotBlank
+	@Column(nullable = false, length = 50)
 	private String name;
 	
-	@Enumerated(EnumType.STRING)
-	private Profile profile;
 			
 	public User() {
 	}
 	
-	public User(String name, Profile profile) {
+	public User(String name) {
 		this.name = name;
-		this.profile = profile;
+	}
+	
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 	public Long getId() {
@@ -51,21 +55,12 @@ public abstract class User implements Serializable{
 		return name;
 	}
 
-	public void setProfile(Profile profile) {
-		this.profile = profile;
-	}
-	
-	public Profile getProfile() {
-		return profile;
-	}
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((profile == null) ? 0 : profile.hashCode());
 		return result;
 	}
 
@@ -88,14 +83,12 @@ public abstract class User implements Serializable{
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
-		if (profile != other.profile)
-			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", name=" + name + ", profile=" + profile + "]";
+		return "User [id=" + id + ", name=" + name + "]";
 	}
 	
 }
