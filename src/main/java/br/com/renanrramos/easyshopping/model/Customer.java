@@ -36,7 +36,6 @@ public class Customer extends User{
 		this.email = email;
 	}
 
-	@CPF
 	@NotBlank
 	private String cpf;
 	

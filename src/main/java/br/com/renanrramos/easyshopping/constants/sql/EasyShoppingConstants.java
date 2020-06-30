@@ -4,7 +4,7 @@
  * Creator: renan.ramos - 28/06/2020
  * ------------------------------------------------------------
  */
-package br.com.renanrramos.easyshopping.constants;
+package br.com.renanrramos.easyshopping.constants.sql;
 
 /**
  * @author renan.ramos
