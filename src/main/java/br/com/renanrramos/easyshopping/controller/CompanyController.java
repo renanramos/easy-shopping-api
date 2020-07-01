@@ -6,11 +6,16 @@
  */
 package br.com.renanrramos.easyshopping.controller;
 
+import java.util.List;
+import java.util.Optional;
+
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -36,14 +41,32 @@ public class CompanyController {
 	@PostMapping
 	@Transactional
 	public ResponseEntity<CompanyDTO> saveCompany(@Valid CompanyForm companyForm) {
-		System.out.println(companyForm.toString());
 		Company company = CompanyForm.converterToCompany(companyForm);
-		System.out.println(company.toString());
 		Company companyCreated = companyRepository.save(company);
 		if (companyCreated.getId() != null) {
 			return ResponseEntity.ok().build();
 		}
 		return ResponseEntity.badRequest().build();
+	}
+	
+	@ResponseBody
+	@GetMapping
+	public ResponseEntity<List<CompanyDTO>> getCompanies() {
+		List<CompanyDTO> listOfCompanyDTOs = CompanyDTO.converterCompanyListToCompanyDTOList(companyRepository.findAll());
+		if (listOfCompanyDTOs.isEmpty()) {
+			return ResponseEntity.noContent().build();
+		}
+		return ResponseEntity.ok(listOfCompanyDTOs);
+	}
+	
+	@ResponseBody
+	@GetMapping(path = "/{id}")
+	public ResponseEntity<CompanyDTO> getCompanyEntity(@PathVariable("id") Long companyId) {
+		Optional<Company> company = companyRepository.findById(companyId);
+		if (company.isPresent()) {
+			return ResponseEntity.ok(CompanyDTO.converterToCompanyDTO(company.get()));			
+		}
+		return ResponseEntity.notFound().build();
 	}
 	
 }

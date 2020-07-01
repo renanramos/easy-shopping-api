@@ -11,13 +11,13 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -49,8 +49,10 @@ public class Store {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "store")
 	private List<Product> products;
 	
-	@JoinColumn(name = "id", foreignKey = @ForeignKey(foreignKeyDefinition = "company_store_id_fk"))
-	private Long companyId;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "copmany_id")
+	@NotBlank
+	private Company company;
 	
 	public Long getId() {
 		return id;
@@ -92,19 +94,19 @@ public class Store {
 		this.products = products;
 	}
 	
-	public Long getCompanyId() {
-		return companyId;
+	public Company getCompanyId() {
+		return company;
 	}
 
-	public void setCompanyId(Long companyId) {
-		this.companyId = companyId;
+	public void setCompanyId(Company company) {
+		this.company = company;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((companyId == null) ? 0 : companyId.hashCode());
+		result = prime * result + ((company == null) ? 0 : company.hashCode());
 		result = prime * result + ((corporateName == null) ? 0 : corporateName.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
@@ -122,10 +124,10 @@ public class Store {
 		if (getClass() != obj.getClass())
 			return false;
 		Store other = (Store) obj;
-		if (companyId == null) {
-			if (other.companyId != null)
+		if (company == null) {
+			if (other.company != null)
 				return false;
-		} else if (!companyId.equals(other.companyId))
+		} else if (!company.equals(other.company))
 			return false;
 		if (corporateName == null) {
 			if (other.corporateName != null)
@@ -158,6 +160,6 @@ public class Store {
 	@Override
 	public String toString() {
 		return "Store [id=" + id + ", name=" + name + ", registeredNumber=" + registeredNumber + ", corporateName="
-				+ corporateName + ", products=" + products + ", company=" + companyId + "]";
-	}		
+				+ corporateName + ", products=" + products + ", company=" + company + "]";
+	}
 }

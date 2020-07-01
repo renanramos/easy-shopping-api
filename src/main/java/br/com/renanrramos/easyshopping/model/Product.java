@@ -9,6 +9,7 @@ package br.com.renanrramos.easyshopping.model;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -47,9 +48,9 @@ public class Product {
 	@OneToOne(cascade = CascadeType.ALL)
 	private ProductCategory productCategory;
 	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "store_id")
 	@NotBlank
-	@ManyToOne
-	@JoinColumn(name = "store_id_db", foreignKey = @ForeignKey(foreignKeyDefinition = "product_store_id_fk"))
 	private Store store;
 
 	public Long getId() {
