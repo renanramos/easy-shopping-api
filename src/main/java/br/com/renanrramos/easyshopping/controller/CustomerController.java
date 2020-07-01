@@ -33,20 +33,20 @@ import br.com.renanrramos.easyshopping.repository.CustomerRespository;
  *
  */
 @RestController
-@RequestMapping(path = "customers", produces = "application/json")
+@RequestMapping(path = "customers")
 public class CustomerController {
 	
 	@Autowired
 	private CustomerRespository customerRepository;
 	
 	@ResponseBody
-	@PostMapping
 	@Transactional
+	@PostMapping
 	public ResponseEntity<CustomerDTO> saveCustomer(@Valid CustomerForm customerForm) {
 		Customer customer = customerForm.converterCustomerFormToCustomer(customerForm);
 		Customer customerCreated = customerRepository.save(customer);
 		if (customerCreated.getId() != null) {
-			return ResponseEntity.ok(CustomerDTO.converterCustomerToCustomerDTO(customer));
+			return ResponseEntity.ok(CustomerDTO.converterToCustomerDTO(customer));
 		}
 		return ResponseEntity.noContent().build();
 	}
@@ -66,7 +66,8 @@ public class CustomerController {
 	public ResponseEntity<CustomerDTO> getCustomerByID(@PathVariable("id") Long customerId) {
 		Optional<Customer> customer = customerRepository.findById(customerId);
 		if (customer.isPresent()) {
-			return ResponseEntity.ok(CustomerDTO.converterCustomerToCustomerDTO(customer.get()));
+			System.out.println(CustomerDTO.converterToCustomerDTO(customer.get()).toString());
+			return ResponseEntity.ok(CustomerDTO.converterToCustomerDTO(customer.get()));
 		}
 		return ResponseEntity.notFound().build();
 	}
@@ -79,7 +80,7 @@ public class CustomerController {
 		if(customerToUpdate.isPresent()) {			
 			Customer customer = customerForm.converterCustomerFormToCustomer(customerForm);
 			customer.setId(customerId);
-			CustomerDTO customerUpdatedDTO = CustomerDTO.converterCustomerToCustomerDTO(customerRepository.save(customer));
+			CustomerDTO customerUpdatedDTO = CustomerDTO.converterToCustomerDTO(customerRepository.save(customer));
 			return ResponseEntity.ok().body(customerUpdatedDTO);
 		}
 		return ResponseEntity.notFound().build();

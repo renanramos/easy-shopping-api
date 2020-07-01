@@ -6,7 +6,6 @@
  */
 package br.com.renanrramos.easyshopping.model.dto;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +25,7 @@ public class CustomerDTO {
 	private String email;
 
 	private Profile profile;
-	
+
 	public CustomerDTO() {
 	}
 	
@@ -69,7 +68,7 @@ public class CustomerDTO {
 		return customer.stream().map(CustomerDTO::new).collect(Collectors.toList()); 
 	}
 	
-	public static CustomerDTO converterCustomerToCustomerDTO(Customer customer) {
+	public static CustomerDTO converterToCustomerDTO(Customer customer) {
 		return new CustomerDTO(customer);
 	}
 

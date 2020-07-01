@@ -9,10 +9,11 @@ package br.com.renanrramos.easyshopping.model;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Positive;
 
 import br.com.renanrramos.easyshopping.enums.Profile;
 import io.swagger.annotations.ApiModelProperty;
@@ -22,11 +23,16 @@ import io.swagger.annotations.ApiModelProperty;
  *
  */
 @Entity
-@PrimaryKeyJoinColumn(name="id")
-public class Company extends User {
+public class Company {
 
-	private static final long serialVersionUID = 1302828903094520601L;
-
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@ApiModelProperty(hidden = true)
+	private Long id;
+	
+	@NotBlank
+	private String name;
+	
 	@NotBlank
 	private String registeredNumber;
 	
@@ -34,15 +40,30 @@ public class Company extends User {
 	@NotBlank
 	private String email;
 	
-	@Positive
 	@NotBlank
 	private String phone;
 
 	@ApiModelProperty(hidden = true)
 	@Enumerated(EnumType.STRING)
 	private Profile profile;
-			
+	
 	public Company() {		
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getRegisteredNumber() {
@@ -80,8 +101,10 @@ public class Company extends User {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = super.hashCode();
+		int result = 1;
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((phone == null) ? 0 : phone.hashCode());
 		result = prime * result + ((profile == null) ? 0 : profile.hashCode());
 		result = prime * result + ((registeredNumber == null) ? 0 : registeredNumber.hashCode());
@@ -92,7 +115,7 @@ public class Company extends User {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (!super.equals(obj))
+		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
@@ -101,6 +124,16 @@ public class Company extends User {
 			if (other.email != null)
 				return false;
 		} else if (!email.equals(other.email))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
 			return false;
 		if (phone == null) {
 			if (other.phone != null)
@@ -119,8 +152,7 @@ public class Company extends User {
 
 	@Override
 	public String toString() {
-		return "Company [registeredNumber=" + registeredNumber + ", email=" + email + ", phone=" + phone + ", profile="
-				+ profile + "]";
+		return "Company [id=" + id + ", name=" + name + ", registeredNumber=" + registeredNumber + ", email=" + email
+				+ ", phone=" + phone + ", profile=" + profile + "]";
 	}
-	
 }

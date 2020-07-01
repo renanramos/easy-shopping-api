@@ -13,6 +13,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * @author renan.ramos
  *
@@ -22,6 +24,7 @@ public class ProductCategory {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@ApiModelProperty(hidden = true)
 	private Long id;
 	
 	@NotBlank

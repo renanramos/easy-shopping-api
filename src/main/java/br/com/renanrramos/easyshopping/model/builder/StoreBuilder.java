@@ -45,6 +45,10 @@ public class StoreBuilder {
 	public StoreBuilder withProducts(List<Product> products) {
 		this.store.setProducts(products);
 		return this;
-		
 	}
+	
+	public Store build() {
+		return this.store;
+	}
+	
 }

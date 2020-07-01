@@ -9,6 +9,7 @@ package br.com.renanrramos.easyshopping.model;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,6 +17,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
+
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * @author renan.ramos
@@ -26,6 +29,7 @@ public class Product {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@ApiModelProperty(hidden = true)
 	private Long id;
 	
 	@NotBlank
@@ -45,7 +49,7 @@ public class Product {
 	
 	@NotBlank
 	@ManyToOne
-	@JoinColumn(name = "store_id_db")
+	@JoinColumn(name = "store_id_db", foreignKey = @ForeignKey(foreignKeyDefinition = "product_store_id_fk"))
 	private Store store;
 
 	public Long getId() {

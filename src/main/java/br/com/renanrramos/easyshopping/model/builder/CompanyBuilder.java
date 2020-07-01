@@ -8,6 +8,7 @@ package br.com.renanrramos.easyshopping.model.builder;
 
 import br.com.renanrramos.easyshopping.enums.Profile;
 import br.com.renanrramos.easyshopping.model.Company;
+import br.com.renanrramos.easyshopping.model.Store;
 
 /**
  * @author renan.ramos
@@ -25,6 +26,11 @@ public class CompanyBuilder {
 		return new CompanyBuilder();
 	}
 	
+	public CompanyBuilder withName(String name) {
+		this.company.setName(name);
+		return this;
+	}
+	
 	public CompanyBuilder withRegisteredNumber(String registeredNumber) {
 		this.company.setRegisteredNumber(registeredNumber);
 		return this;
@@ -39,8 +45,9 @@ public class CompanyBuilder {
 		this.company.setEmail(email);
 		return this;
 	}
-	
+		
 	public Company build() {
+		this.company.setProfile(Profile.COMPANY);
 		return this.company;
 	}
 }

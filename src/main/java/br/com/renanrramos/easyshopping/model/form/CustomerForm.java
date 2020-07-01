@@ -10,6 +10,7 @@ import javax.validation.constraints.Email;
 
 import br.com.renanrramos.easyshopping.enums.Profile;
 import br.com.renanrramos.easyshopping.model.Customer;
+import br.com.renanrramos.easyshopping.model.builder.CustomerBuilder;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
@@ -72,12 +73,11 @@ public class CustomerForm {
 	}
 
 	public Customer converterCustomerFormToCustomer(CustomerForm customerForm) {
-		Customer customer = new Customer();
-		customer.setName(customerForm.getName());
-		customer.setEmail(customerForm.getEmail());
-		customer.setCpf(customerForm.getCpf());
-		customer.setProfile(Profile.CUSTOMER);
-		return customer;
+		return CustomerBuilder.builder()
+				.withCpf(customerForm.getCpf())
+				.withEmail(customerForm.getEmail())
+				.withName(customerForm.getName())
+				.build();
 	}
 
 	@Override
