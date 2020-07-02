@@ -64,7 +64,7 @@ public class CompanyController {
 	
 	@ResponseBody
 	@GetMapping(path = "/{id}")
-	public ResponseEntity<CompanyDTO> getCompanyEntity(@PathVariable("id") Long companyId) {
+	public ResponseEntity<CompanyDTO> getCompanyById(@PathVariable("id") Long companyId) {
 		Optional<Company> company = companyRepository.findById(companyId);
 		if (company.isPresent()) {
 			return ResponseEntity.ok(CompanyDTO.converterToCompanyDTO(company.get()));			

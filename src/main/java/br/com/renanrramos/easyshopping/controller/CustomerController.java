@@ -64,10 +64,9 @@ public class CustomerController {
 	
 	@ResponseBody
 	@GetMapping(path = "/{id}")
-	public ResponseEntity<CustomerDTO> getCustomerByID(@PathVariable("id") Long customerId) {
+	public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable("id") Long customerId) {
 		Optional<Customer> customer = customerRepository.findById(customerId);
 		if (customer.isPresent()) {
-			System.out.println(CustomerDTO.converterToCustomerDTO(customer.get()).toString());
 			return ResponseEntity.ok(CustomerDTO.converterToCustomerDTO(customer.get()));
 		}
 		return ResponseEntity.notFound().build();

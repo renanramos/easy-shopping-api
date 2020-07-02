@@ -64,7 +64,7 @@ public class AdministratorController {
 	
 	@ResponseBody
 	@GetMapping(path = "/{id}")
-	public ResponseEntity<AdministratorDTO> getAdministratorByID(@PathVariable("id") Long administratorId) {
+	public ResponseEntity<AdministratorDTO> getAdministratorById(@PathVariable("id") Long administratorId) {
 		Optional<Administrator> administratorOptional = administratorRepository.findById(administratorId);
 		if (administratorOptional.isPresent()) {
 			return ResponseEntity.ok(AdministratorDTO.converterAdministratorToAdministratorDTO(administratorOptional.get()));
