@@ -14,9 +14,12 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,11 +43,11 @@ public class CompanyController {
 	@ResponseBody
 	@PostMapping
 	@Transactional
-	public ResponseEntity<CompanyDTO> saveCompany(@Valid CompanyForm companyForm) {
+	public ResponseEntity<CompanyDTO> saveCompany(@Valid @RequestBody CompanyForm companyForm) {
 		Company company = CompanyForm.converterToCompany(companyForm);
 		Company companyCreated = companyRepository.save(company);
 		if (companyCreated.getId() != null) {
-			return ResponseEntity.ok().build();
+			return ResponseEntity.ok(CompanyDTO.converterToCompanyDTO(companyCreated));
 		}
 		return ResponseEntity.badRequest().build();
 	}
@@ -69,4 +72,29 @@ public class CompanyController {
 		return ResponseEntity.notFound().build();
 	}
 	
+	@ResponseBody
+	@PutMapping(path = "/{id}")
+	@Transactional
+	public ResponseEntity<CompanyDTO> updateCompany(@PathVariable("id") Long companyId, @Valid @RequestBody CompanyForm companyForm) {
+		Optional<Company> companyOptional = companyRepository.findById(companyId);
+		if(companyOptional.isPresent()) {
+			Company company = CompanyForm.converterToCompany(companyForm);
+			company.setId(companyId);
+			CompanyDTO updatedCompanyDTO = CompanyDTO.converterToCompanyDTO((companyRepository.save(company)));
+			return ResponseEntity.ok(updatedCompanyDTO);
+		}
+		return ResponseEntity.notFound().build();
+	}
+
+	@ResponseBody
+	@DeleteMapping(path = "/{id}")
+	@Transactional
+	public ResponseEntity<CompanyDTO> removeCompany(@PathVariable("id") Long companyId) {
+		Optional<Company> companyOptional = companyRepository.findById(companyId);
+		if (companyOptional.isPresent()) {
+			companyRepository.deleteById(companyId);
+			return ResponseEntity.ok().build();
+		}
+		return ResponseEntity.notFound().build();
+	}
 }
