@@ -72,7 +72,7 @@ public class CustomerForm {
 		this.profile = profile;
 	}
 
-	public Customer converterCustomerFormToCustomer(CustomerForm customerForm) {
+	public static Customer converterCustomerFormToCustomer(CustomerForm customerForm) {
 		return CustomerBuilder.builder()
 				.withCpf(customerForm.getCpf())
 				.withEmail(customerForm.getEmail())

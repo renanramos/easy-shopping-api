@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.renanrramos.easyshopping.model.Company;
 import br.com.renanrramos.easyshopping.model.dto.CompanyDTO;
 import br.com.renanrramos.easyshopping.model.form.CompanyForm;
-import br.com.renanrramos.easyshopping.repository.CompanyRepository;
+import br.com.renanrramos.easyshopping.service.impl.CompanyService;
 
 /**
  * @author renan.ramos
@@ -38,14 +38,14 @@ import br.com.renanrramos.easyshopping.repository.CompanyRepository;
 public class CompanyController {
 
 	@Autowired
-	private CompanyRepository companyRepository;
+	private CompanyService companyService;
 	
 	@ResponseBody
 	@PostMapping
 	@Transactional
 	public ResponseEntity<CompanyDTO> saveCompany(@Valid @RequestBody CompanyForm companyForm) {
 		Company company = CompanyForm.converterToCompany(companyForm);
-		Company companyCreated = companyRepository.save(company);
+		Company companyCreated = companyService.save(company);
 		if (companyCreated.getId() != null) {
 			return ResponseEntity.ok(CompanyDTO.converterToCompanyDTO(companyCreated));
 		}
@@ -55,7 +55,7 @@ public class CompanyController {
 	@ResponseBody
 	@GetMapping
 	public ResponseEntity<List<CompanyDTO>> getCompanies() {
-		List<CompanyDTO> listOfCompanyDTOs = CompanyDTO.converterCompanyListToCompanyDTOList(companyRepository.findAll());
+		List<CompanyDTO> listOfCompanyDTOs = CompanyDTO.converterCompanyListToCompanyDTOList(companyService.findAll());
 		if (listOfCompanyDTOs.isEmpty()) {
 			return ResponseEntity.noContent().build();
 		}
@@ -65,7 +65,7 @@ public class CompanyController {
 	@ResponseBody
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<CompanyDTO> getCompanyById(@PathVariable("id") Long companyId) {
-		Optional<Company> company = companyRepository.findById(companyId);
+		Optional<Company> company = companyService.findById(companyId);
 		if (company.isPresent()) {
 			return ResponseEntity.ok(CompanyDTO.converterToCompanyDTO(company.get()));			
 		}
@@ -76,11 +76,11 @@ public class CompanyController {
 	@PutMapping(path = "/{id}")
 	@Transactional
 	public ResponseEntity<CompanyDTO> updateCompany(@PathVariable("id") Long companyId, @Valid @RequestBody CompanyForm companyForm) {
-		Optional<Company> companyOptional = companyRepository.findById(companyId);
+		Optional<Company> companyOptional = companyService.findById(companyId);
 		if(companyOptional.isPresent()) {
 			Company company = CompanyForm.converterToCompany(companyForm);
 			company.setId(companyId);
-			CompanyDTO updatedCompanyDTO = CompanyDTO.converterToCompanyDTO((companyRepository.save(company)));
+			CompanyDTO updatedCompanyDTO = CompanyDTO.converterToCompanyDTO((companyService.save(company)));
 			return ResponseEntity.ok(updatedCompanyDTO);
 		}
 		return ResponseEntity.notFound().build();
@@ -90,9 +90,9 @@ public class CompanyController {
 	@DeleteMapping(path = "/{id}")
 	@Transactional
 	public ResponseEntity<CompanyDTO> removeCompany(@PathVariable("id") Long companyId) {
-		Optional<Company> companyOptional = companyRepository.findById(companyId);
+		Optional<Company> companyOptional = companyService.findById(companyId);
 		if (companyOptional.isPresent()) {
-			companyRepository.deleteById(companyId);
+			companyService.remove(companyId);
 			return ResponseEntity.ok().build();
 		}
 		return ResponseEntity.notFound().build();

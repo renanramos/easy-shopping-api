@@ -15,7 +15,7 @@ import org.springframework.data.repository.query.Param;
 import br.com.renanrramos.easyshopping.constants.sql.EasyShoppingConstants;
 import br.com.renanrramos.easyshopping.model.Customer;
 
-public interface CustomerRespository extends JpaRepository<Customer, Long>{
+public interface CustomerRepository extends JpaRepository<Customer, Long>{
 
 	@Query(EasyShoppingConstants.GET_CUSTOMER_BY_ID)
 	List<Customer> getCustomerById(@Param("customerId") Long customerId);

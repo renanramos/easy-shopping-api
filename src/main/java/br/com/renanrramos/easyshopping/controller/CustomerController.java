@@ -27,25 +27,25 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.renanrramos.easyshopping.model.Customer;
 import br.com.renanrramos.easyshopping.model.dto.CustomerDTO;
 import br.com.renanrramos.easyshopping.model.form.CustomerForm;
-import br.com.renanrramos.easyshopping.repository.CustomerRespository;
+import br.com.renanrramos.easyshopping.service.impl.CustomerService;
 
 /**
  * @author renan.ramos
  *
  */
 @RestController
-@RequestMapping(path = "customers")
+@RequestMapping(path = "customers", produces = "application/json")
 public class CustomerController {
 	
 	@Autowired
-	private CustomerRespository customerRepository;
+	private CustomerService customerService;
 	
 	@ResponseBody
 	@Transactional
 	@PostMapping
 	public ResponseEntity<CustomerDTO> saveCustomer(@Valid @RequestBody CustomerForm customerForm) {
-		Customer customer = customerForm.converterCustomerFormToCustomer(customerForm);
-		Customer customerCreated = customerRepository.save(customer);
+		Customer customer = CustomerForm.converterCustomerFormToCustomer(customerForm);
+		Customer customerCreated = customerService.save(customer);
 		if (customerCreated.getId() != null) {
 			return ResponseEntity.ok(CustomerDTO.converterToCustomerDTO(customer));
 		}
@@ -55,7 +55,7 @@ public class CustomerController {
 	@ResponseBody
 	@GetMapping
 	public ResponseEntity<List<CustomerDTO>> getCustomers() {		
-		List<Customer> customers = customerRepository.findAll();
+		List<Customer> customers = customerService.findAll();
 		if (customers.isEmpty()) {
 			return ResponseEntity.noContent().build();
 		}		
@@ -65,7 +65,7 @@ public class CustomerController {
 	@ResponseBody
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable("id") Long customerId) {
-		Optional<Customer> customer = customerRepository.findById(customerId);
+		Optional<Customer> customer = customerService.findById(customerId);
 		if (customer.isPresent()) {
 			return ResponseEntity.ok(CustomerDTO.converterToCustomerDTO(customer.get()));
 		}
@@ -76,11 +76,11 @@ public class CustomerController {
 	@PutMapping(path = "/{id}")
 	@Transactional
 	public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable("id") Long customerId, @RequestBody CustomerForm customerForm) {
-		Optional<Customer> customerToUpdate = customerRepository.findById(customerId);
+		Optional<Customer> customerToUpdate = customerService.findById(customerId);
 		if(customerToUpdate.isPresent()) {			
-			Customer customer = customerForm.converterCustomerFormToCustomer(customerForm);
+			Customer customer = CustomerForm.converterCustomerFormToCustomer(customerForm);
 			customer.setId(customerId);
-			CustomerDTO customerUpdatedDTO = CustomerDTO.converterToCustomerDTO(customerRepository.save(customer));
+			CustomerDTO customerUpdatedDTO = CustomerDTO.converterToCustomerDTO(customerService.save(customer));
 			return ResponseEntity.ok().body(customerUpdatedDTO);
 		}
 		return ResponseEntity.notFound().build();
@@ -91,9 +91,9 @@ public class CustomerController {
 	@DeleteMapping("/{id}")
 	@Transactional
 	public ResponseEntity<?> removeCustomer(@PathVariable("id") Long customerId) {
-		Optional<Customer> customerToRemove = customerRepository.findById(customerId);
+		Optional<Customer> customerToRemove = customerService.findById(customerId);
 		if (customerToRemove.isPresent()) {
-			customerRepository.deleteById(customerId);
+			customerService.remove(customerId);
 			return ResponseEntity.ok().build();
 		}
 		return ResponseEntity.notFound().build();

@@ -94,11 +94,11 @@ public class Store {
 		this.products = products;
 	}
 	
-	public Company getCompanyId() {
+	public Company getCompany() {
 		return company;
 	}
 
-	public void setCompanyId(Company company) {
+	public void setCompany(Company company) {
 		this.company = company;
 	}
 

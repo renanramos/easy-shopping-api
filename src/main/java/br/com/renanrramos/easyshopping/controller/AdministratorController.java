@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.renanrramos.easyshopping.model.Administrator;
 import br.com.renanrramos.easyshopping.model.dto.AdministratorDTO;
 import br.com.renanrramos.easyshopping.model.form.AdministratorForm;
-import br.com.renanrramos.easyshopping.repository.AdministratorRepository;
+import br.com.renanrramos.easyshopping.service.impl.AdministratorService;
 
 /**
  * @author renan.ramos
@@ -38,14 +38,14 @@ import br.com.renanrramos.easyshopping.repository.AdministratorRepository;
 public class AdministratorController {
 
 	@Autowired
-	private AdministratorRepository administratorRepository;
+	private AdministratorService administratorService;
 	
 	@ResponseBody
 	@PostMapping
 	@Transactional
 	public ResponseEntity<AdministratorDTO> saveAdministrator(@Valid @RequestBody AdministratorForm administratorForm) {
 		Administrator administrator = AdministratorForm.converterAdministratorFormToAdministrator(administratorForm);
-		Administrator administratorCreated = administratorRepository.save(administrator);
+		Administrator administratorCreated = administratorService.save(administrator);
 		if (administratorCreated.getId() != null) {
 			return ResponseEntity.ok(AdministratorDTO.converterAdministratorToAdministratorDTO(administratorCreated));
 		}
@@ -55,7 +55,7 @@ public class AdministratorController {
 	@ResponseBody
 	@GetMapping
 	public ResponseEntity<List<AdministratorDTO>> getAdministrators() {
-		List<AdministratorDTO> administrators = AdministratorDTO.converterAdministratorListToAdministratorDTO(administratorRepository.findAll());
+		List<AdministratorDTO> administrators = AdministratorDTO.converterAdministratorListToAdministratorDTO(administratorService.findAll());
 		if (administrators.isEmpty()) {
 			return ResponseEntity.noContent().build();			
 		}
@@ -65,7 +65,7 @@ public class AdministratorController {
 	@ResponseBody
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<AdministratorDTO> getAdministratorById(@PathVariable("id") Long administratorId) {
-		Optional<Administrator> administratorOptional = administratorRepository.findById(administratorId);
+		Optional<Administrator> administratorOptional = administratorService.findById(administratorId);
 		if (administratorOptional.isPresent()) {
 			return ResponseEntity.ok(AdministratorDTO.converterAdministratorToAdministratorDTO(administratorOptional.get()));
 		}
@@ -76,11 +76,11 @@ public class AdministratorController {
 	@PutMapping(path = "/{id}")
 	@Transactional
 	public ResponseEntity<AdministratorDTO> updateAdministrator(@PathVariable("id") Long administratorId, @RequestBody AdministratorForm administratorForm) {
-		Optional<Administrator> administratorOptional = administratorRepository.findById(administratorId);
+		Optional<Administrator> administratorOptional = administratorService.findById(administratorId);
 		if (administratorOptional.isPresent()) {
 			Administrator administrator = AdministratorForm.converterAdministratorFormToAdministrator(administratorForm);
 			administrator.setId(administratorId);
-			AdministratorDTO administratorUpdated = AdministratorDTO.converterAdministratorToAdministratorDTO(administratorRepository.save(administrator));
+			AdministratorDTO administratorUpdated = AdministratorDTO.converterAdministratorToAdministratorDTO(administratorService.save(administrator));
 			return ResponseEntity.ok(administratorUpdated);
 		}
 		return ResponseEntity.notFound().build();
@@ -90,9 +90,9 @@ public class AdministratorController {
 	@DeleteMapping(path = "/{id}")
 	@Transactional
 	public ResponseEntity<?> removeAdministrator(@PathVariable("id") Long administratorId) {
-		Optional<Administrator> administratorOptional = administratorRepository.findById(administratorId);
+		Optional<Administrator> administratorOptional = administratorService.findById(administratorId);
 		if (administratorOptional.isPresent()) {
-			administratorRepository.deleteById(administratorId);
+			administratorService.remove(administratorId);
 			return ResponseEntity.ok().build();
 		}
 		return ResponseEntity.notFound().build();
