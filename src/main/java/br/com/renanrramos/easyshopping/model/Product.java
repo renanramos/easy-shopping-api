@@ -10,7 +10,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import io.swagger.annotations.ApiModelProperty;
 
@@ -41,16 +41,15 @@ public class Product {
 	@Column(nullable = false, length = 250)
 	private String description;
 	
-	@NotBlank
+	@NotNull
 	private double price;
 	
-	@NotBlank
+	@NotNull
 	@OneToOne(cascade = CascadeType.ALL)
 	private ProductCategory productCategory;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "store_id")
-	@NotBlank
 	private Store store;
 
 	public Long getId() {

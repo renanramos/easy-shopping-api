@@ -57,7 +57,7 @@ private String name;
 		return products;
 	}
 
-	public Long getCompany() {
+	public Long getCompanyId() {
 		return companyId;
 	}
 
@@ -93,8 +93,6 @@ private String name;
 	@Override
 	public String toString() {
 		return "StoreForm [name=" + name + ", registeredNumber=" + registeredNumber + ", corporateName=" + corporateName
-				+ ", products=" + products + ", companyId=" + companyId + ", getName()=" + getName()
-				+ ", getRegisteredNumber()=" + getRegisteredNumber() + ", getCorporateName()=" + getCorporateName()
-				+ ", getProducts()=" + getProducts().toString() + ", getCompany()=" + getCompany() + "]";
+				+ ", products=" + products.size() + ", companyId=" + companyId + "]";
 	}
 }

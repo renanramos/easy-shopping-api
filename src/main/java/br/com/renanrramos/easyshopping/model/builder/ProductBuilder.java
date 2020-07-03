@@ -32,7 +32,7 @@ public class ProductBuilder {
 	}
 	
 	public ProductBuilder withDescription(String description) {
-		this.product.setName(description);
+		this.product.setDescription(description);
 		return this;
 	}
 	

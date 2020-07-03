@@ -19,6 +19,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import io.swagger.annotations.ApiModelProperty;
 
@@ -51,7 +52,7 @@ public class Store {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "copmany_id")
-	@NotBlank
+	@NotNull
 	private Company company;
 	
 	public Long getId() {
