@@ -7,9 +7,9 @@
 package br.com.renanrramos.easyshopping.model.form;
 
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
-import br.com.renanrramos.easyshopping.model.Company;
-import br.com.renanrramos.easyshopping.model.Product;
 import br.com.renanrramos.easyshopping.model.Store;
 import br.com.renanrramos.easyshopping.model.builder.StoreBuilder;
 
@@ -25,20 +25,20 @@ private String name;
 	
 	private String corporateName;
 	
-	private List<Product> products;
+	private List<ProductForm> products;
 	
-	private Company company;
+	private Long companyId;
 
 	public StoreForm() {
 	}
 	
-	public StoreForm(String name, String registeredNumber, String corporateName, List<Product> products,
-			Company company) {
+	public StoreForm(String name, String registeredNumber, String corporateName, List<ProductForm> products,
+			Long companyId) {
 		this.name = name;
 		this.registeredNumber = registeredNumber;
 		this.corporateName = corporateName;
 		this.products = products;
-		this.company = company;
+		this.companyId = companyId;
 	}
 
 	public String getName() {
@@ -53,12 +53,12 @@ private String name;
 		return corporateName;
 	}
 
-	public List<Product> getProducts() {
+	public List<ProductForm> getProducts() {
 		return products;
 	}
 
-	public Company getCompany() {
-		return company;
+	public Long getCompany() {
+		return companyId;
 	}
 
 	public void setName(String name) {
@@ -73,19 +73,19 @@ private String name;
 		this.corporateName = corporateName;
 	}
 
-	public void setProducts(List<Product> products) {
+	public void setProducts(List<ProductForm> products) {
 		this.products = products;
 	}
 
-	public void setCompany(Company company) {
-		this.company = company;
+	public void setCompanyId(Long companyId) {
+		this.companyId = companyId;
 	}
 	
 	public static Store converterStoreFormToStore(StoreForm storeForm) {
 		return StoreBuilder.builder()
 				.withName(storeForm.getName())
 				.withCorporateName(storeForm.getCorporateName())
-				.withProducts(storeForm.getProducts())
+				.withProducts(storeForm.getProducts().stream().map(ProductForm::converterProductFormToProduct).collect(Collectors.toList()))
 				.withRegisteredNumber(storeForm.getRegisteredNumber())
 				.build();
 	}
@@ -93,9 +93,8 @@ private String name;
 	@Override
 	public String toString() {
 		return "StoreForm [name=" + name + ", registeredNumber=" + registeredNumber + ", corporateName=" + corporateName
-				+ ", products=" + products + ", company=" + company + ", getName()=" + getName()
+				+ ", products=" + products + ", companyId=" + companyId + ", getName()=" + getName()
 				+ ", getRegisteredNumber()=" + getRegisteredNumber() + ", getCorporateName()=" + getCorporateName()
-				+ ", getProducts()=" + getProducts().toString() + ", getCompany()=" + getCompany() + ", getClass()=" + getClass()
-				+ ", hashCode()=" + hashCode() + ", toString()=" + super.toString() + "]";
+				+ ", getProducts()=" + getProducts().toString() + ", getCompany()=" + getCompany() + "]";
 	}
 }
