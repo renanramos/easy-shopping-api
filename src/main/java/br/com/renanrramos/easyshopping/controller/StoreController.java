@@ -7,18 +7,22 @@
 package br.com.renanrramos.easyshopping.controller;
 
 import java.net.URI;
+import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.renanrramos.easyshopping.model.Company;
 import br.com.renanrramos.easyshopping.model.Store;
 import br.com.renanrramos.easyshopping.model.dto.StoreDTO;
 import br.com.renanrramos.easyshopping.model.form.StoreForm;
@@ -47,15 +51,23 @@ public class StoreController {
 	@Transactional
 	@PostMapping
 	public ResponseEntity<StoreDTO> saveStore(@Valid @RequestBody StoreForm storeForm) {
-		Long companyId = storeForm.getCompany().getId();
-		if (companyService.isValidCompanyId(companyId)) {
+		Optional<Company> company = companyService.findById(storeForm.getCompanyId());
+		if (company.isPresent()) {
 			Store store = StoreForm.converterStoreFormToStore(storeForm);
+			store.setCompany(company.get());
 			store = storeService.save(store);
 			if (store.getId() != null) {
 				ResponseEntity.ok(StoreDTO.converterStoreToStoreDTO(store));
-			}		
-		}		
+			}
+		}	
 		return ResponseEntity.badRequest().build();
+	}
+	
+	@ResponseBody
+	@GetMapping
+	public ResponseEntity<List<StoreDTO>> getStores() {
+		List<Store> stores = storeService.findAll();
+		return ResponseEntity.ok(StoreDTO.converterStoreListToStoreDTOList(stores));
 	}
 	
 }
