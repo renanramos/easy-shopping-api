@@ -16,6 +16,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -68,6 +69,17 @@ public class StoreController {
 	public ResponseEntity<List<StoreDTO>> getStores() {
 		List<Store> stores = storeService.findAll();
 		return ResponseEntity.ok(StoreDTO.converterStoreListToStoreDTOList(stores));
+	}
+	
+	@ResponseBody
+	@GetMapping("/{id}")
+	public ResponseEntity<StoreDTO> getStoreById(@PathVariable("id") Long storeId) {
+		Optional<Store> storeOptional = storeService.findById(storeId);
+		if (storeOptional.isPresent()) {
+			StoreDTO storeDto = StoreDTO.converterStoreToStoreDTO(storeOptional.get());
+			return ResponseEntity.ok(storeDto);
+		}
+		return ResponseEntity.notFound().build();
 	}
 	
 }
