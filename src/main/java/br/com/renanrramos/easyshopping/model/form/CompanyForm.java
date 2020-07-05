@@ -8,11 +8,8 @@ package br.com.renanrramos.easyshopping.model.form;
 
 import javax.validation.constraints.Email;
 
-import br.com.renanrramos.easyshopping.enums.Profile;
 import br.com.renanrramos.easyshopping.model.Company;
-import br.com.renanrramos.easyshopping.model.Store;
 import br.com.renanrramos.easyshopping.model.builder.CompanyBuilder;
-import io.swagger.annotations.ApiModelProperty;
 
 /**
  * @author renan.ramos

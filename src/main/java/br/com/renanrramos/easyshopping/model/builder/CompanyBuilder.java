@@ -8,7 +8,6 @@ package br.com.renanrramos.easyshopping.model.builder;
 
 import br.com.renanrramos.easyshopping.enums.Profile;
 import br.com.renanrramos.easyshopping.model.Company;
-import br.com.renanrramos.easyshopping.model.Store;
 
 /**
  * @author renan.ramos
