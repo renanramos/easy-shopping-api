@@ -6,6 +6,7 @@
  */
 package br.com.renanrramos.easyshopping.controller;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.renanrramos.easyshopping.model.Customer;
 import br.com.renanrramos.easyshopping.model.dto.CustomerDTO;
@@ -40,14 +42,17 @@ public class CustomerController {
 	@Autowired
 	private CustomerService customerService;
 	
+	private URI uri;
+	
 	@ResponseBody
 	@Transactional
 	@PostMapping
-	public ResponseEntity<CustomerDTO> saveCustomer(@Valid @RequestBody CustomerForm customerForm) {
+	public ResponseEntity<CustomerDTO> saveCustomer(@Valid @RequestBody CustomerForm customerForm, UriComponentsBuilder uriBuilder) {
 		Customer customer = CustomerForm.converterCustomerFormToCustomer(customerForm);
 		Customer customerCreated = customerService.save(customer);
 		if (customerCreated.getId() != null) {
-			return ResponseEntity.ok(CustomerDTO.converterToCustomerDTO(customer));
+			uri = uriBuilder.path("/customers/{id}").buildAndExpand(customerCreated.getId()).encode().toUri();
+			return ResponseEntity.created(uri).body(CustomerDTO.converterToCustomerDTO(customer));
 		}
 		return ResponseEntity.noContent().build();
 	}
@@ -75,13 +80,14 @@ public class CustomerController {
 	@ResponseBody
 	@PutMapping(path = "/{id}")
 	@Transactional
-	public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable("id") Long customerId, @RequestBody CustomerForm customerForm) {
+	public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable("id") Long customerId, @RequestBody CustomerForm customerForm, UriComponentsBuilder uriBuilder) {
 		Optional<Customer> customerToUpdate = customerService.findById(customerId);
 		if(customerToUpdate.isPresent()) {			
 			Customer customer = CustomerForm.converterCustomerFormToCustomer(customerForm);
 			customer.setId(customerId);
 			CustomerDTO customerUpdatedDTO = CustomerDTO.converterToCustomerDTO(customerService.save(customer));
-			return ResponseEntity.ok().body(customerUpdatedDTO);
+			uri = uriBuilder.path("/customers/{id}").buildAndExpand(customerId).encode().toUri();
+			return ResponseEntity.accepted().location(uri).body(customerUpdatedDTO);
 		}
 		return ResponseEntity.notFound().build();
 	}

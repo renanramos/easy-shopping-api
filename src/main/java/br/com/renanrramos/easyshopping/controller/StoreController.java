@@ -15,13 +15,16 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.renanrramos.easyshopping.model.Company;
 import br.com.renanrramos.easyshopping.model.Store;
@@ -38,27 +41,26 @@ import br.com.renanrramos.easyshopping.service.impl.StoreService;
 @RequestMapping(path = "stores", produces = "application/json")
 public class StoreController {
 
-	private URI uri;
-	
-	private static final String URI_STORE = "/store/{id}";
-
 	@Autowired
 	private StoreService storeService;
 	
 	@Autowired
 	private CompanyService companyService;
 
+	private URI uri;
+	
 	@ResponseBody
 	@Transactional
 	@PostMapping
-	public ResponseEntity<StoreDTO> saveStore(@Valid @RequestBody StoreForm storeForm) {
+	public ResponseEntity<StoreDTO> saveStore(@Valid @RequestBody StoreForm storeForm, UriComponentsBuilder uriBuilder) {
 		Optional<Company> company = companyService.findById(storeForm.getCompanyId());
 		if (company.isPresent()) {
 			Store store = StoreForm.converterStoreFormToStore(storeForm);
 			store.setCompany(company.get());
 			store = storeService.save(store);
 			if (store.getId() != null) {
-				ResponseEntity.ok(StoreDTO.converterStoreToStoreDTO(store));
+				uri = uriBuilder.path("/stores/{id}").buildAndExpand(store.getId()).encode().toUri();
+				return ResponseEntity.created(uri).body(StoreDTO.converterStoreToStoreDTO(store));
 			}
 		}	
 		return ResponseEntity.badRequest().build();
@@ -82,4 +84,30 @@ public class StoreController {
 		return ResponseEntity.notFound().build();
 	}
 	
+	@ResponseBody
+	@PutMapping("/{id}")
+	@Transactional
+	public ResponseEntity<StoreDTO> updateStore(@PathVariable("id") Long storeId, @RequestBody StoreForm storeForm, UriComponentsBuilder uriBuilder) {
+		Optional<Store> storeOptional = storeService.findById(storeId);
+		if (storeOptional.isPresent()) {
+			Store store = StoreForm.converterStoreFormToStore(storeForm);
+			store.setId(storeId);
+			StoreDTO storeUpdatedDTO = StoreDTO.converterStoreToStoreDTO(storeService.save(store));
+			uri = uriBuilder.path("/stores/{id}").buildAndExpand(storeId).encode().toUri();
+			return ResponseEntity.accepted().location(uri).body(storeUpdatedDTO);
+		}
+		return ResponseEntity.notFound().build();
+	}
+	
+	@ResponseBody
+	@DeleteMapping("/{id}")
+	@Transactional
+	public ResponseEntity<?> deleteStore(@PathVariable("id") Long storeId) {
+		Optional<Store> storeOptional = storeService.findById(storeId);
+		if (storeOptional.isPresent()) {
+			storeService.remove(storeId);
+			return ResponseEntity.noContent().build();			
+		}
+		return ResponseEntity.notFound().build();
+	}
 }

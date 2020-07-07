@@ -6,6 +6,7 @@
  */
 package br.com.renanrramos.easyshopping.controller;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.renanrramos.easyshopping.model.Company;
 import br.com.renanrramos.easyshopping.model.dto.CompanyDTO;
@@ -40,14 +42,17 @@ public class CompanyController {
 	@Autowired
 	private CompanyService companyService;
 	
+	private URI uri;
+	
 	@ResponseBody
 	@PostMapping
 	@Transactional
-	public ResponseEntity<CompanyDTO> saveCompany(@Valid @RequestBody CompanyForm companyForm) {
+	public ResponseEntity<CompanyDTO> saveCompany(@Valid @RequestBody CompanyForm companyForm, UriComponentsBuilder uriBuilder) {
 		Company company = CompanyForm.converterToCompany(companyForm);
 		Company companyCreated = companyService.save(company);
 		if (companyCreated.getId() != null) {
-			return ResponseEntity.ok(CompanyDTO.converterToCompanyDTO(companyCreated));
+			uri = uriBuilder.path("/companies/{id}").buildAndExpand(companyCreated.getId()).encode().toUri();			
+			return ResponseEntity.created(uri).body(CompanyDTO.converterToCompanyDTO(companyCreated));
 		}
 		return ResponseEntity.badRequest().build();
 	}
@@ -75,13 +80,14 @@ public class CompanyController {
 	@ResponseBody
 	@PutMapping(path = "/{id}")
 	@Transactional
-	public ResponseEntity<CompanyDTO> updateCompany(@PathVariable("id") Long companyId, @Valid @RequestBody CompanyForm companyForm) {
+	public ResponseEntity<CompanyDTO> updateCompany(@PathVariable("id") Long companyId, @Valid @RequestBody CompanyForm companyForm, UriComponentsBuilder uriBuilder) {
 		Optional<Company> companyOptional = companyService.findById(companyId);
 		if(companyOptional.isPresent()) {
 			Company company = CompanyForm.converterToCompany(companyForm);
 			company.setId(companyId);
 			CompanyDTO updatedCompanyDTO = CompanyDTO.converterToCompanyDTO((companyService.save(company)));
-			return ResponseEntity.ok(updatedCompanyDTO);
+			uri = uriBuilder.path("/companies/{id}").buildAndExpand(company.getId()).encode().toUri();
+			return ResponseEntity.accepted().location(uri).body(updatedCompanyDTO);
 		}
 		return ResponseEntity.notFound().build();
 	}

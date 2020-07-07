@@ -6,6 +6,7 @@
  */
 package br.com.renanrramos.easyshopping.controller;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.renanrramos.easyshopping.model.Administrator;
 import br.com.renanrramos.easyshopping.model.dto.AdministratorDTO;
@@ -40,14 +42,17 @@ public class AdministratorController {
 	@Autowired
 	private AdministratorService administratorService;
 	
+	private URI uri;
+	
 	@ResponseBody
 	@PostMapping
 	@Transactional
-	public ResponseEntity<AdministratorDTO> saveAdministrator(@Valid @RequestBody AdministratorForm administratorForm) {
+	public ResponseEntity<AdministratorDTO> saveAdministrator(@Valid @RequestBody AdministratorForm administratorForm, UriComponentsBuilder uriBuilder) {
 		Administrator administrator = AdministratorForm.converterAdministratorFormToAdministrator(administratorForm);
 		Administrator administratorCreated = administratorService.save(administrator);
 		if (administratorCreated.getId() != null) {
-			return ResponseEntity.ok(AdministratorDTO.converterAdministratorToAdministratorDTO(administratorCreated));
+			uri = uriBuilder.path("/admin/{id}").buildAndExpand(administratorCreated.getId()).encode().toUri();
+			return ResponseEntity.created(uri).body(AdministratorDTO.converterAdministratorToAdministratorDTO(administratorCreated));
 		}
 		return ResponseEntity.noContent().build();
 	}
@@ -75,13 +80,14 @@ public class AdministratorController {
 	@ResponseBody
 	@PutMapping(path = "/{id}")
 	@Transactional
-	public ResponseEntity<AdministratorDTO> updateAdministrator(@PathVariable("id") Long administratorId, @RequestBody AdministratorForm administratorForm) {
+	public ResponseEntity<AdministratorDTO> updateAdministrator(@PathVariable("id") Long administratorId, @RequestBody AdministratorForm administratorForm, UriComponentsBuilder uriBuilder) {
 		Optional<Administrator> administratorOptional = administratorService.findById(administratorId);
 		if (administratorOptional.isPresent()) {
 			Administrator administrator = AdministratorForm.converterAdministratorFormToAdministrator(administratorForm);
 			administrator.setId(administratorId);
 			AdministratorDTO administratorUpdated = AdministratorDTO.converterAdministratorToAdministratorDTO(administratorService.save(administrator));
-			return ResponseEntity.ok(administratorUpdated);
+			uri = uriBuilder.path("/admin/{id}").buildAndExpand(administrator.getId()).encode().toUri();
+			return ResponseEntity.accepted().location(uri).body(administratorUpdated);
 		}
 		return ResponseEntity.notFound().build();
 	}
