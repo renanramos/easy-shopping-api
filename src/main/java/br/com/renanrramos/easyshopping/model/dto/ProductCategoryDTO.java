@@ -34,11 +34,11 @@ public class ProductCategoryDTO {
 		this.name = name;
 	}
 	
-	private static List<ProductCategoryDTO> converterProductCategoryListToProductCategoryDTOList(List<ProductCategory> productCategory) {
+	public static List<ProductCategoryDTO> converterProductCategoryListToProductCategoryDTOList(List<ProductCategory> productCategory) {
 		return productCategory.stream().map(ProductCategoryDTO::new).collect(Collectors.toList());
 	}
 
-	private static ProductCategoryDTO converterProductCategoryToProductCategoryDTO(ProductCategory productCategory) {
+	public static ProductCategoryDTO converterProductCategoryToProductCategoryDTO(ProductCategory productCategory) {
 		return new ProductCategoryDTO(productCategory);
 	}
 
