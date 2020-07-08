@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import br.com.renanrramos.easyshopping.model.ProductCategory;
 import br.com.renanrramos.easyshopping.repository.ProductCategoryRepository;
@@ -19,6 +20,7 @@ import br.com.renanrramos.easyshopping.service.CommonService;
  * @author renan.ramos
  *
  */
+@Service
 public class ProductCategoryService implements CommonService<ProductCategory>{
 	
 	@Autowired
