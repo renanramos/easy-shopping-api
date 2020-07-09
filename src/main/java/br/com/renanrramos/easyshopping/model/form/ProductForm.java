@@ -22,18 +22,18 @@ public class ProductForm {
 	
 	private double price;
 	
-	private ProductCategory productCategory;
+	private Long productCategoryId;
 	
 	private Long storeId;
 
 	public ProductForm() {
 	}
 
-	public ProductForm(String name, String description, double price, ProductCategory productCategory, Long storeId) {
+	public ProductForm(String name, String description, double price, Long productCategoryId, Long storeId) {
 		this.name = name;
 		this.description = description;
 		this.price = price;
-		this.productCategory = productCategory;
+		this.productCategoryId = productCategoryId;
 		this.storeId = storeId;
 	}
 	
@@ -49,8 +49,8 @@ public class ProductForm {
 		return price;
 	}
 
-	public ProductCategory getProductCategory() {
-		return productCategory;
+	public Long getProductCategoryId() {
+		return productCategoryId;
 	}
 
 	public Long getStoreId() {
@@ -69,8 +69,8 @@ public class ProductForm {
 		this.price = price;
 	}
 
-	public void setProductCategory(ProductCategory productCategory) {
-		this.productCategory = productCategory;
+	public void setProductCategoryId(Long productCategoryId) {
+		this.productCategoryId = productCategoryId;
 	}
 
 	public void setStoreId(Long storeId) {
@@ -82,15 +82,14 @@ public class ProductForm {
 				.withName(productForm.getName())
 				.withDescription(productForm.getDescription())
 				.withPrice(productForm.getPrice())
-				.withProductCategory(productForm.getProductCategory())
 				.build();
 	}
 
 	@Override
 	public String toString() {
-		return "ProductForm [name=" + name + ", description=" + description + ", price=" + price + ", productCategory="
-				+ productCategory + ", storeId=" + storeId + ", getName()=" + getName() + ", getDescription()="
-				+ getDescription() + ", getPrice()=" + getPrice() + ", getProductCategory()=" + getProductCategory()
+		return "ProductForm [name=" + name + ", description=" + description + ", price=" + price + ", productCategoryId="
+				+ productCategoryId + ", storeId=" + storeId + ", getName()=" + getName() + ", getDescription()="
+				+ getDescription() + ", getPrice()=" + getPrice() + ", getProductCategory()=" + getProductCategoryId()
 				+ ", getStoreId()=" + getStoreId() + "]";
 	}
 	
