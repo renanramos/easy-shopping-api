@@ -18,7 +18,7 @@ import br.com.renanrramos.easyshopping.model.builder.StoreBuilder;
  */
 public class StoreForm {
 
-private String name;
+	private String name;
 	
 	private String registeredNumber;
 	
