@@ -25,7 +25,7 @@ public class StoreDTO {
 	
 	private String corporateName;
 	
-	private List<Product> products;
+	private List<ProductDTO> products;
 	
 	private Company company;
 	
@@ -37,7 +37,7 @@ public class StoreDTO {
 		this.name = store.getName();
 		this.registeredNumber = store.getRegisteredNumber();
 		this.corporateName = store.getCorporateName();
-		this.products = store.getProducts();
+		this.products = store.getProducts().stream().map(ProductDTO::new).collect(Collectors.toList());
 		this.company = store.getCompany();
 	}
 
@@ -53,7 +53,7 @@ public class StoreDTO {
 		return corporateName;
 	}
 
-	public List<Product> getProducts() {
+	public List<ProductDTO> getProducts() {
 		return products;
 	}
 
@@ -73,7 +73,7 @@ public class StoreDTO {
 		this.corporateName = corporateName;
 	}
 
-	public void setProducts(List<Product> products) {
+	public void setProducts(List<ProductDTO> products) {
 		this.products = products;
 	}
 
