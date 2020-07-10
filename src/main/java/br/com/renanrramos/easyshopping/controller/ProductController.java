@@ -123,10 +123,37 @@ public class ProductController {
 		Optional<Product> productOptional = productService.findById(productId);
 		
 		if (productOptional.isPresent()) {
+		
+			Long productCategoryId = productForm.getProductCategoryId();
+			
+			ProductCategory productCategory = new ProductCategory();
+			Optional<ProductCategory> productCategoryOptional = productCategoryService.findById(productCategoryId);
+			
+			if (productCategoryOptional.isPresent()) {
+				productCategory = productCategoryOptional.get();
+			} else {
+				// TODO throws an exception here
+			}
+		
+			Long storeId = productForm.getStoreId();
+			
+			Store store = new Store();
+			Optional<Store> storeOptional = storeService.findById(storeId);
+			
+			if (storeOptional.isPresent()) {
+				store = storeOptional.get();
+			} else {
+				// TODO throws an exeception here
+			}
+
 			Product product = ProductForm.converterProductFormToProduct(productForm);
+			product.setProductCategory(productCategory);
+			product.setStore(store);
 			product.setId(productId);
 			product = productService.save(product);
+			
 			uri = uriBuilder.path("/products/{id}").buildAndExpand(productId).encode().toUri();
+			
 			return ResponseEntity.accepted().location(uri).body(ProductDTO.convertProductToProductDTO(product));
 		}
 		return ResponseEntity.notFound().build();
