@@ -37,7 +37,7 @@ public class ProductDTO {
 		this.description = product.getDescription();
 		this.price = product.getPrice();
 		this.productCategoryName = product.getProductCategory().getName();
-		this.storeName = product.getStore().getName();
+		this.storeName = product.getStore() == null ? "No store found" : product.getStore().getCorporateName();
 	}
 
 	public String getName() {
