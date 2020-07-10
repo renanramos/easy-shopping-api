@@ -7,6 +7,8 @@
 package br.com.renanrramos.easyshopping.controller;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -14,7 +16,10 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -85,4 +90,45 @@ public class ProductController {
 		return ResponseEntity.created(uri).body(ProductDTO.convertProductToProductDTO(product));
 	}
 	
+	@ResponseBody
+	@GetMapping
+	public ResponseEntity<List<ProductDTO>> getProducts() {
+		List<Product> products = productService.findAll();
+		
+		if (products.isEmpty()) {
+			return ResponseEntity.ok(new ArrayList<ProductDTO>()).notFound().build();
+		}
+		return ResponseEntity.ok(ProductDTO.converterProductListToProductDTOList(products));		
+	}
+	
+	@ResponseBody
+	@GetMapping(path = "/{id}")
+	public ResponseEntity<ProductDTO> getProductById(@PathVariable("id") Long productId) {
+		Optional<Product> productOptional = productService.findById(productId);
+		if(productOptional.isPresent()) {
+			return ResponseEntity.ok(ProductDTO.convertProductToProductDTO(productOptional.get()));
+		}
+		return ResponseEntity.ok(new ProductDTO()).notFound().build();
+	}
+	
+	@ResponseBody
+	@PutMapping("/{id}")
+	@Transactional
+	public ResponseEntity<ProductDTO> updateProduct(@PathVariable("id") Long productId, @Valid @RequestBody ProductForm productForm,
+			UriComponentsBuilder uriBuilder) {
+		if (productId == null) {
+			return ResponseEntity.badRequest().build();
+		}
+		
+		Optional<Product> productOptional = productService.findById(productId);
+		
+		if (productOptional.isPresent()) {
+			Product product = ProductForm.converterProductFormToProduct(productForm);
+			product.setId(productId);
+			product = productService.save(product);
+			uri = uriBuilder.path("/products/{id}").buildAndExpand(productId).encode().toUri();
+			return ResponseEntity.accepted().location(uri).body(ProductDTO.convertProductToProductDTO(product));
+		}
+		return ResponseEntity.notFound().build();
+	}
 }
