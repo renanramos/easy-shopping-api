@@ -19,6 +19,8 @@ import br.com.renanrramos.easyshopping.model.Store;
  */
 public class ProductDTO {
 
+	private Long id;
+	
 	private String name;
 	
 	private String description;
@@ -33,11 +35,20 @@ public class ProductDTO {
 	}
 
 	public ProductDTO(Product product) {
+		this.id = product.getId();
 		this.name = product.getName();
 		this.description = product.getDescription();
 		this.price = product.getPrice();
 		this.productCategoryName = product.getProductCategory().getName();
 		this.storeName = product.getStore() == null ? "No store found" : product.getStore().getCorporateName();
+	}
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -90,7 +101,8 @@ public class ProductDTO {
 
 	@Override
 	public String toString() {
-		return "ProductDTO [name=" + name + ", description=" + description + ", price=" + price + ", productCategoryName="
-				+ productCategoryName + ", storeName=" + storeName + "]";
+		return "ProductDTO [id=" + id + ", name=" + name + ", description=" + description + ", price=" + price
+				+ ", productCategoryName=" + productCategoryName + ", storeName=" + storeName + "]";
 	}
+
 }
