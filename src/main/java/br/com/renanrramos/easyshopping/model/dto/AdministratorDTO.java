@@ -17,6 +17,8 @@ import br.com.renanrramos.easyshopping.model.Administrator;
  *
  */
 public class AdministratorDTO {
+	
+	private Long id;
 
 	private String name;
 	
@@ -26,10 +28,19 @@ public class AdministratorDTO {
 	}
 	
 	public AdministratorDTO(Administrator administrator) {
+		this.id = administrator.getId();
 		this.name = administrator.getName();
 		this.profile = administrator.getProfile();
 	}
 	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -53,9 +64,9 @@ public class AdministratorDTO {
 	public static List<AdministratorDTO> converterAdministratorListToAdministratorDTO(List<Administrator> administrators) {
 		return administrators.stream().map(AdministratorDTO::new).collect(Collectors.toList());
 	}
-	
+
 	@Override
 	public String toString() {
-		return "AdministratorDTO [name=" + name + ", profile=" + profile + "]";
+		return "AdministratorDTO [id=" + id + ", name=" + name + ", profile=" + profile + "]";
 	}
 }
