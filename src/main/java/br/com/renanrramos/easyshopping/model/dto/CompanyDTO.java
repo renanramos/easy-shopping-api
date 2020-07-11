@@ -18,6 +18,8 @@ import br.com.renanrramos.easyshopping.model.Company;
  */
 public class CompanyDTO {
 
+	private Long id;
+	
 	private String name;
 	
 	private String registeredNumber;
@@ -32,6 +34,7 @@ public class CompanyDTO {
 	}
 	
 	public CompanyDTO(Company company) {
+		this.id = company.getId();
 		this.name = company.getName();
 		this.registeredNumber = company.getRegisteredNumber();
 		this.email = company.getEmail();
@@ -39,6 +42,14 @@ public class CompanyDTO {
 		this.profile = company.getProfile();
 	}
 	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public String getName() {
 		return name;
 	}
