@@ -16,6 +16,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -155,6 +156,19 @@ public class ProductController {
 			uri = uriBuilder.path("/products/{id}").buildAndExpand(productId).encode().toUri();
 			
 			return ResponseEntity.accepted().location(uri).body(ProductDTO.convertProductToProductDTO(product));
+		}
+		return ResponseEntity.notFound().build();
+	}
+	
+	@ResponseBody
+	@DeleteMapping(path = "/{id}")
+	public ResponseEntity<?> deleteProduct(@PathVariable("id") Long productId) {
+		
+		Optional<Product> productOptional = productService.findById(productId);
+		
+		if (productOptional.isPresent()) {
+			productService.remove(productId);
+			return ResponseEntity.accepted().build();
 		}
 		return ResponseEntity.notFound().build();
 	}
