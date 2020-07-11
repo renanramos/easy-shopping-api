@@ -16,6 +16,8 @@ import br.com.renanrramos.easyshopping.model.ProductCategory;
  *
  */
 public class ProductCategoryDTO {
+	
+	private Long id;
 
 	private String name;
 	
@@ -23,7 +25,16 @@ public class ProductCategoryDTO {
 	}
 
 	public ProductCategoryDTO(ProductCategory productCategory) {
+		this.id = productCategory.getId();
 		this.name = productCategory.getName();
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -44,7 +55,7 @@ public class ProductCategoryDTO {
 
 	@Override
 	public String toString() {
-		return "ProductCategoryDTO [name=" + name + "]";
+		return "ProductCategoryDTO [id=" + id + ", name=" + name + "]";
 	}
-	
+
 }
