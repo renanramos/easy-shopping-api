@@ -19,6 +19,8 @@ import br.com.renanrramos.easyshopping.model.Store;
  */
 public class StoreDTO {
 
+	private Long id;
+	
 	private String name;
 	
 	private String registeredNumber;
@@ -34,11 +36,20 @@ public class StoreDTO {
 	}
 	
 	public StoreDTO(Store store) {
+		this.id = store.getId();
 		this.name = store.getName();
 		this.registeredNumber = store.getRegisteredNumber();
 		this.corporateName = store.getCorporateName();
 		this.products = store.getProducts().stream().map(ProductDTO::new).collect(Collectors.toList());
 		this.company = store.getCompany();
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -91,7 +102,8 @@ public class StoreDTO {
 
 	@Override
 	public String toString() {
-		return "StoreDTO [name=" + name + ", registeredNumber=" + registeredNumber + ", corporateName=" + corporateName
-				+ ", products=" + products + ", company=" + company + "]";
+		return "StoreDTO [id=" + id + ", name=" + name + ", registeredNumber=" + registeredNumber + ", corporateName="
+				+ corporateName + ", products=" + products + ", company=" + company + "]";
 	}
+
 }
