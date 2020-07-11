@@ -6,9 +6,13 @@
  */
 package br.com.renanrramos.easyshopping.model;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -26,6 +30,20 @@ public class Customer extends User{
 
 	private static final long serialVersionUID = 7345201836941654514L;
 
+	@NotBlank
+	private String cpf;
+	
+	@Email
+	@NotBlank
+	private String email;
+
+	@ApiModelProperty(hidden = true)
+	@Enumerated(EnumType.STRING)
+	private Profile profile;
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
+	private List<Address> address;
+	
 	public Customer() {
 	}
 	
@@ -34,22 +52,6 @@ public class Customer extends User{
 		this.email = email;
 	}
 
-	@NotBlank
-	private String cpf;
-	
-	@Email
-	@NotBlank
-	private String email;
-
-
-	@ApiModelProperty(hidden = true)
-	@Enumerated(EnumType.STRING)
-	private Profile profile;
-	
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-	
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
@@ -72,6 +74,14 @@ public class Customer extends User{
 
 	public void setProfile(Profile profile) {
 		this.profile = profile;
+	}
+	
+	public List<Address> getAddress() {
+		return address;
+	}
+
+	public void setAddress(List<Address> address) {
+		this.address = address;
 	}
 
 	@Override
