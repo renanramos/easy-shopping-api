@@ -17,6 +17,8 @@ import br.com.renanrramos.easyshopping.model.Customer;
  *
  */
 public class CustomerDTO {
+	
+	private Long id;
 
 	private String name;
 	
@@ -30,10 +32,19 @@ public class CustomerDTO {
 	}
 	
 	public CustomerDTO(Customer customer) {
+		this.id = customer.getId();
 		this.name = customer.getName();
 		this.cpf = customer.getCpf();
 		this.email = customer.getEmail();
 		this.profile = customer.getProfile();
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -74,6 +85,8 @@ public class CustomerDTO {
 
 	@Override
 	public String toString() {
-		return "CustomerDTO [name=" + name + ", cpf=" + cpf + ", email=" + email + ", profile=" + profile + "]";
+		return "CustomerDTO [id=" + id + ", name=" + name + ", cpf=" + cpf + ", email=" + email + ", profile=" + profile
+				+ "]";
 	}
+
 }
