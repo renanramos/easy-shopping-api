@@ -100,7 +100,10 @@ public class CompanyDTO {
 
 	@Override
 	public String toString() {
-		return "CompanyDTO [name=" + name + ", registeredNumber=" + registeredNumber + ", email=" + email + ", phone="
-				+ phone + ", profile=" + profile + "]";
+		return "CompanyDTO [id=" + id + ", name=" + name + ", registeredNumber=" + registeredNumber + ", email=" + email
+				+ ", phone=" + phone + ", profile=" + profile + ", getId()=" + getId() + ", getName()=" + getName()
+				+ ", getRegisteredNumber()=" + getRegisteredNumber() + ", getEmail()=" + getEmail() + ", getPhone()="
+				+ getPhone() + ", getProfile()=" + getProfile() + "]";
 	}
+
 }
