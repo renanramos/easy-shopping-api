@@ -7,6 +7,7 @@
 package br.com.renanrramos.easyshopping.model.builder;
 
 import br.com.renanrramos.easyshopping.model.Address;
+import br.com.renanrramos.easyshopping.model.Customer;
 
 /**
  * @author renan.ramos
@@ -46,6 +47,11 @@ public class AddressBuilder {
 	
 	public AddressBuilder withState(String state) {
 		this.address.setState(state);
+		return this;
+	}
+	
+	public AddressBuilder withCustomer(Customer customer) {
+		this.address.setCustomer(customer);
 		return this;
 	}
 	
