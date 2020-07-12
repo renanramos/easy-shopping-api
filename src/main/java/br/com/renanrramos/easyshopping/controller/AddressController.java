@@ -51,9 +51,11 @@ public class AddressController {
 		Optional<Customer> customerOptional = customerService.findById(addressForm.getCustomerId());
 		
 		if (customerOptional.isPresent()) {
-			Address address = AddressForm.convertAddressFormToAddress(addressForm);
-			address = addressService.save(address);
 			
+			Customer customer = customerOptional.get();
+			Address address = AddressForm.convertAddressFormToAddress(addressForm);
+			address.setCustomer(customer);
+			address = addressService.save(address);
 			uri = uriBuilder.path("/addresses/{id}").buildAndExpand(address.getId()).encode().toUri();
 			
 			return ResponseEntity.created(uri).body(AddressDTO.convertAddressToAddressDTO(address));
