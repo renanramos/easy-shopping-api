@@ -7,6 +7,7 @@
 package br.com.renanrramos.easyshopping.controller;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -14,6 +15,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -64,7 +67,27 @@ public class AddressController {
 			
 			// TODO: throws an exception here
 		}
-		return null;
+		return ResponseEntity.badRequest().build();
+	}
+	
+	@ResponseBody
+	@GetMapping
+	public ResponseEntity<List<AddressDTO>> getAddresses() {
+		List<Address> addresses = addressService.findAll();
+		return ResponseEntity.ok(AddressDTO.convertAddressListToAddressDTOList(addresses));	
+	}
+	
+	@ResponseBody
+	@GetMapping(path = "/{id}")
+	public ResponseEntity<AddressDTO> getAddressById(@PathVariable("id") Long addressId) {
+		Optional<Address> addressOptional = addressService.findById(addressId);
+		
+		if(addressOptional.isPresent()) {
+			Address address = addressOptional.get();
+			return ResponseEntity.ok(AddressDTO.convertAddressToAddressDTO(address));
+		}
+		
+		return ResponseEntity.notFound().build();
 	}
 	
 }

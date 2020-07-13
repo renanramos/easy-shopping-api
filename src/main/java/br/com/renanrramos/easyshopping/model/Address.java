@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import io.swagger.annotations.ApiModelProperty;
 
@@ -35,7 +36,7 @@ public class Address {
 	@NotBlank
 	private String district;
 	
-	@NotBlank
+	@NotNull
 	private Long number;
 	
 	@NotBlank

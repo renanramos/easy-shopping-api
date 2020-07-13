@@ -50,5 +50,9 @@ public class AddressService implements CommonService<Address> {
 	public void remove(Long addressId) {
 		addressRepository.deleteById(addressId);
 	}
+	
+	public List<Address> getAddressByCustomerId(Long customerId) {
+		return addressRepository.getAddressCustomerId(customerId);
+	}
 
 }
