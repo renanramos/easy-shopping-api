@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -88,6 +89,37 @@ public class AddressController {
 		}
 		
 		return ResponseEntity.notFound().build();
+	}
+	
+	
+	@ResponseBody
+	@PutMapping(path = "/{id}")
+	@Transactional
+	public ResponseEntity<?> updateAddress(@PathVariable("id") Long addressId, @RequestBody AddressForm addressForm, UriComponentsBuilder uriBuilder) {
+		
+		Optional<Customer> customerOptional = customerService.findById(addressForm.getCustomerId());
+		Customer customer;
+		if (customerOptional.isPresent()) {
+			customer = customerOptional.get();
+		} else {
+			
+			// TODO: throws an exception here
+			
+			return null;
+		}
+
+		Optional<Address> addressOptional = addressService.findById(addressId);
+		
+		if (addressOptional.isPresent()) {
+			
+			Address address = AddressForm.convertAddressFormToAddress(addressForm);
+			address.setId(addressId);
+			address.setCustomer(customer);
+			address = addressService.save(address);
+			uri = uriBuilder.path("/addresses/{id}").buildAndExpand(address.getId()).encode().toUri();
+			return ResponseEntity.created(uri).body(AddressDTO.convertAddressToAddressDTO(address));
+		}
+		return ResponseEntity.badRequest().build();
 	}
 	
 }
