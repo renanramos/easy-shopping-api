@@ -10,6 +10,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -66,10 +67,8 @@ public class AddressController {
 			return ResponseEntity.created(uri).body(AddressDTO.convertAddressToAddressDTO(address));
 			
 		} else {
-			
-			// TODO: throws an exception here
+			throw new EntityNotFoundException("Código do cliente inválido");
 		}
-		return ResponseEntity.badRequest().build();
 	}
 	
 	@ResponseBody
@@ -103,10 +102,7 @@ public class AddressController {
 		if (customerOptional.isPresent()) {
 			customer = customerOptional.get();
 		} else {
-			
-			// TODO: throws an exception here
-			
-			return null;
+			throw new EntityNotFoundException("Código do cliente inválido");
 		}
 
 		Optional<Address> addressOptional = addressService.findById(addressId);
@@ -119,8 +115,9 @@ public class AddressController {
 			address = addressService.save(address);
 			uri = uriBuilder.path("/addresses/{id}").buildAndExpand(address.getId()).encode().toUri();
 			return ResponseEntity.created(uri).body(AddressDTO.convertAddressToAddressDTO(address));
+		} else {
+			throw new EntityNotFoundException("Endereço não localizado!");
 		}
-		return ResponseEntity.badRequest().build();
 	}
 	
 	@ResponseBody
@@ -132,7 +129,7 @@ public class AddressController {
 		if (addressOptional.isPresent()) {
 			addressService.remove(addressId);
 		} else {
-			// TODO throws an exception here
+			throw new EntityNotFoundException("Endereço não localizado!");
 		}
 		return ResponseEntity.badRequest().build();
 	}
