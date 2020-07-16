@@ -15,6 +15,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -122,4 +123,18 @@ public class AddressController {
 		return ResponseEntity.badRequest().build();
 	}
 	
+	@ResponseBody
+	@DeleteMapping(path = "/{id")
+	@Transactional
+	public ResponseEntity<?> removeAddress(@PathVariable("id") Long addressId) {
+		Optional<Address> addressOptional = addressService.findById(addressId);
+		
+		if (addressOptional.isPresent()) {
+			addressService.remove(addressId);
+		} else {
+			// TODO throws an exception here
+		}
+		return ResponseEntity.badRequest().build();
+	}
+
 }
