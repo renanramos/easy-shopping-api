@@ -124,7 +124,7 @@ public class AddressController {
 	}
 	
 	@ResponseBody
-	@DeleteMapping(path = "/{id")
+	@DeleteMapping(path = "/{id}")
 	@Transactional
 	public ResponseEntity<?> removeAddress(@PathVariable("id") Long addressId) {
 		Optional<Address> addressOptional = addressService.findById(addressId);
