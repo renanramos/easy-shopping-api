@@ -20,6 +20,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import br.com.renanrramos.easyshopping.model.error.ApiError;
+import br.com.renanrramos.easyshopping.model.error.builder.ApiErrorBuilder;
 
 /**
  * @author renan.ramos
@@ -33,13 +34,19 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler{
 	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
 		String error = "Malformed JSON request";
-		return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, error, ex));
+		return buildResponseEntity(new ApiErrorBuilder()
+				.withStatus(HttpStatus.BAD_REQUEST)
+				.withErrorTitle(error)
+				.withMessage(ex.getMessage())
+				.build());
 	}
 
 	@ExceptionHandler(EntityNotFoundException.class)
 	protected ResponseEntity<Object> handleEntityNotFoun(EntityNotFoundException ex) {
-		ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, ex);
-		return buildResponseEntity(apiError);
+		return buildResponseEntity(new ApiErrorBuilder()
+				.withStatus(HttpStatus.BAD_REQUEST)
+				.withMessage(ex.getMessage())
+				.build());
 	}
 	
 	private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
