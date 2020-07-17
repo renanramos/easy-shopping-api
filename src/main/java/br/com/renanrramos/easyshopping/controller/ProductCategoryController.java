@@ -10,6 +10,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.model.ProductCategory;
 import br.com.renanrramos.easyshopping.model.dto.ProductCategoryDTO;
 import br.com.renanrramos.easyshopping.model.form.ProductCategoryForm;
@@ -93,8 +95,9 @@ public class ProductCategoryController {
 			ProductCategoryDTO productCategoryDTO = ProductCategoryDTO.converterProductCategoryToProductCategoryDTO(productCategoryService.save(productCategory));
 			uri = uriBuilder.path("/productCategories/{id}").buildAndExpand(productCategoryDTO).encode().toUri();
 			return ResponseEntity.accepted().location(uri).body(productCategoryDTO);
+		} else {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_NOT_FOUND);
 		}
-		return ResponseEntity.notFound().build();
 	}
 	
 	@ResponseBody
@@ -105,7 +108,8 @@ public class ProductCategoryController {
 		if (productCategoryOptional.isPresent()) {
 			productCategoryService.remove(productCategoryId);
 			return ResponseEntity.ok().build();
+		} else {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_NOT_FOUND);
 		}
-		return ResponseEntity.notFound().build();
 	}
 }

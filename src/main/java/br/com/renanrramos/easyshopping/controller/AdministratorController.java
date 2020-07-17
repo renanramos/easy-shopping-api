@@ -10,6 +10,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.model.Administrator;
 import br.com.renanrramos.easyshopping.model.dto.AdministratorDTO;
 import br.com.renanrramos.easyshopping.model.form.AdministratorForm;
@@ -88,8 +90,9 @@ public class AdministratorController {
 			AdministratorDTO administratorUpdated = AdministratorDTO.converterAdministratorToAdministratorDTO(administratorService.save(administrator));
 			uri = uriBuilder.path("/admin/{id}").buildAndExpand(administrator.getId()).encode().toUri();
 			return ResponseEntity.accepted().location(uri).body(administratorUpdated);
+		} else {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.ACCOUNT_NOT_FOUND);
 		}
-		return ResponseEntity.notFound().build();
 	}
 	
 	@ResponseBody
@@ -100,8 +103,9 @@ public class AdministratorController {
 		if (administratorOptional.isPresent()) {
 			administratorService.remove(administratorId);
 			return ResponseEntity.ok().build();
+		} else {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.ACCOUNT_NOT_FOUND);
 		}
-		return ResponseEntity.notFound().build();
 	}
 }
 

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.model.Product;
 import br.com.renanrramos.easyshopping.model.ProductCategory;
 import br.com.renanrramos.easyshopping.model.Store;
@@ -68,7 +70,7 @@ public class ProductController {
 		if (storeOptional.isPresent()) {
 			store = storeOptional.get();
 		} else {
-			// TODO: throws an exception here
+			throw new EntityNotFoundException(ExceptionMessagesConstants.STORE_NOT_FOUND);
 		}
 		
 		ProductCategory productCategory = new ProductCategory();
@@ -77,7 +79,7 @@ public class ProductController {
 		if (productCategoryOptional.isPresent()) {
 			productCategory = productCategoryOptional.get();
 		} else {
-			// TODO: throws an exception here
+			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_NOT_FOUND);
 		}
 		
 		Product product = ProductForm.converterProductFormToProduct(productForm);
@@ -95,9 +97,8 @@ public class ProductController {
 	@GetMapping
 	public ResponseEntity<List<ProductDTO>> getProducts() {
 		List<Product> products = productService.findAll();
-		
 		if (products.isEmpty()) {
-			return ResponseEntity.ok(new ArrayList<ProductDTO>()).notFound().build();
+			return ResponseEntity.ok(ProductDTO.converterProductListToProductDTOList(products));
 		}
 		return ResponseEntity.ok(ProductDTO.converterProductListToProductDTOList(products));		
 	}
@@ -109,7 +110,7 @@ public class ProductController {
 		if(productOptional.isPresent()) {
 			return ResponseEntity.ok(ProductDTO.convertProductToProductDTO(productOptional.get()));
 		}
-		return ResponseEntity.ok(new ProductDTO()).notFound().build();
+		return ResponseEntity.notFound().build();
 	}
 	
 	@ResponseBody
@@ -133,7 +134,7 @@ public class ProductController {
 			if (productCategoryOptional.isPresent()) {
 				productCategory = productCategoryOptional.get();
 			} else {
-				// TODO throws an exception here
+				throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_NOT_FOUND);
 			}
 		
 			Long storeId = productForm.getStoreId();
@@ -144,7 +145,7 @@ public class ProductController {
 			if (storeOptional.isPresent()) {
 				store = storeOptional.get();
 			} else {
-				// TODO throws an exeception here
+				throw new EntityNotFoundException(ExceptionMessagesConstants.STORE_NOT_FOUND);
 			}
 
 			Product product = ProductForm.converterProductFormToProduct(productForm);
@@ -156,8 +157,9 @@ public class ProductController {
 			uri = uriBuilder.path("/products/{id}").buildAndExpand(productId).encode().toUri();
 			
 			return ResponseEntity.accepted().location(uri).body(ProductDTO.convertProductToProductDTO(product));
+		} else {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_NOT_FOUND);
 		}
-		return ResponseEntity.notFound().build();
 	}
 	
 	@ResponseBody
@@ -169,7 +171,8 @@ public class ProductController {
 		if (productOptional.isPresent()) {
 			productService.remove(productId);
 			return ResponseEntity.accepted().build();
+		} else {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_NOT_FOUND);
 		}
-		return ResponseEntity.notFound().build();
 	}
 }

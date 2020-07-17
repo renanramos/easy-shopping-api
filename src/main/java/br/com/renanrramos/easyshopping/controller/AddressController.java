@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.renanrramos.easyshopping.constants.messages.ErrorMessagesConstants;
+import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.model.Address;
 import br.com.renanrramos.easyshopping.model.Customer;
 import br.com.renanrramos.easyshopping.model.dto.AddressDTO;
@@ -68,7 +68,7 @@ public class AddressController {
 			return ResponseEntity.created(uri).body(AddressDTO.convertAddressToAddressDTO(address));
 			
 		} else {
-			throw new EntityNotFoundException(ErrorMessagesConstants.CUSTOMER_NOT_FOUND);
+			throw new EntityNotFoundException(ExceptionMessagesConstants.CUSTOMER_NOT_FOUND);
 		}
 	}
 	
@@ -103,7 +103,7 @@ public class AddressController {
 		if (customerOptional.isPresent()) {
 			customer = customerOptional.get();
 		} else {
-			throw new EntityNotFoundException(ErrorMessagesConstants.CUSTOMER_NOT_FOUND);
+			throw new EntityNotFoundException(ExceptionMessagesConstants.CUSTOMER_NOT_FOUND);
 		}
 
 		Optional<Address> addressOptional = addressService.findById(addressId);
@@ -117,7 +117,7 @@ public class AddressController {
 			uri = uriBuilder.path("/addresses/{id}").buildAndExpand(address.getId()).encode().toUri();
 			return ResponseEntity.created(uri).body(AddressDTO.convertAddressToAddressDTO(address));
 		} else {
-			throw new EntityNotFoundException(ErrorMessagesConstants.ADDRESS_NOT_FOUND);
+			throw new EntityNotFoundException(ExceptionMessagesConstants.ADDRESS_NOT_FOUND);
 		}
 	}
 	
@@ -130,7 +130,7 @@ public class AddressController {
 		if (addressOptional.isPresent()) {
 			addressService.remove(addressId);
 		} else {
-			throw new EntityNotFoundException(ErrorMessagesConstants.ADDRESS_NOT_FOUND);
+			throw new EntityNotFoundException(ExceptionMessagesConstants.ADDRESS_NOT_FOUND);
 		}
 		return ResponseEntity.badRequest().build();
 	}

@@ -10,6 +10,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.model.Company;
 import br.com.renanrramos.easyshopping.model.dto.CompanyDTO;
 import br.com.renanrramos.easyshopping.model.form.CompanyForm;
@@ -88,8 +90,9 @@ public class CompanyController {
 			CompanyDTO updatedCompanyDTO = CompanyDTO.converterToCompanyDTO((companyService.save(company)));
 			uri = uriBuilder.path("/companies/{id}").buildAndExpand(company.getId()).encode().toUri();
 			return ResponseEntity.accepted().location(uri).body(updatedCompanyDTO);
+		} else {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.ACCOUNT_NOT_FOUND);
 		}
-		return ResponseEntity.notFound().build();
 	}
 
 	@ResponseBody
@@ -100,7 +103,8 @@ public class CompanyController {
 		if (companyOptional.isPresent()) {
 			companyService.remove(companyId);
 			return ResponseEntity.ok().build();
+		} else {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.ACCOUNT_NOT_FOUND);
 		}
-		return ResponseEntity.notFound().build();
 	}
 }

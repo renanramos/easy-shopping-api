@@ -10,6 +10,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.model.Company;
 import br.com.renanrramos.easyshopping.model.Store;
 import br.com.renanrramos.easyshopping.model.dto.StoreDTO;
@@ -95,8 +97,9 @@ public class StoreController {
 			StoreDTO storeUpdatedDTO = StoreDTO.converterStoreToStoreDTO(storeService.save(store));
 			uri = uriBuilder.path("/stores/{id}").buildAndExpand(storeId).encode().toUri();
 			return ResponseEntity.accepted().location(uri).body(storeUpdatedDTO);
+		} else {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.STORE_NOT_FOUND);
 		}
-		return ResponseEntity.notFound().build();
 	}
 	
 	@ResponseBody
@@ -107,7 +110,8 @@ public class StoreController {
 		if (storeOptional.isPresent()) {
 			storeService.remove(storeId);
 			return ResponseEntity.noContent().build();			
+		} else {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.STORE_NOT_FOUND);
 		}
-		return ResponseEntity.notFound().build();
 	}
 }
