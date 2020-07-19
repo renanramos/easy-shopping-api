@@ -26,6 +26,10 @@ public class AdministratorService implements CommonService<Administrator>{
 	@Autowired
 	private AdministratorRepository administratorRepository;
 	
+	public AdministratorService(AdministratorRepository administratorRepository) {
+		this.administratorRepository = administratorRepository;
+	}
+
 	@Override
 	public Administrator save(Administrator administrator) {
 		return administratorRepository.save(administrator);
