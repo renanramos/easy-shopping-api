@@ -4,7 +4,7 @@
  * Creator: renan.ramos - 17/07/2020
  * ------------------------------------------------------------
  */
-package br.com.renanrramos.easyshopping.service.impl;
+package br.com.renanrramos.easyshopping.controller;
 
 import static org.junit.Assert.assertEquals;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -26,6 +26,7 @@ import br.com.renanrramos.easyshopping.controller.AdministratorController;
 import br.com.renanrramos.easyshopping.model.Administrator;
 import br.com.renanrramos.easyshopping.model.builder.AdministratorBuilder;
 import br.com.renanrramos.easyshopping.model.dto.AdministratorDTO;
+import br.com.renanrramos.easyshopping.service.impl.AdministratorService;
 
 /**
  * @author renan.ramos
@@ -33,7 +34,7 @@ import br.com.renanrramos.easyshopping.model.dto.AdministratorDTO;
  */
 @RunWith(MockitoJUnitRunner.class)
 @SpringBootTest
-class AdministratorServiceTest {
+class AdministratorControllerTest {
 	
 	@InjectMocks
 	AdministratorController administratorController;
@@ -65,7 +66,6 @@ class AdministratorServiceTest {
 	@Test
 	public void shouldReturnAnEmptyListOfAdministrators() {
 		List<Administrator> administrators = new ArrayList<Administrator>();
-		administrators.add(new Administrator());
 		when(myService.findAll()).thenReturn(administrators);
 		
 		ResponseEntity<List<AdministratorDTO>> administratorsExpected = administratorController.getAdministrators();
