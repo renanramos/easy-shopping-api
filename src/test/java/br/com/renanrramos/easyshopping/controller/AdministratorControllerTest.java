@@ -7,7 +7,9 @@
 package br.com.renanrramos.easyshopping.controller;
 
 import static org.junit.Assert.assertEquals;
-import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -18,14 +20,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.renanrramos.easyshopping.controller.AdministratorController;
 import br.com.renanrramos.easyshopping.model.Administrator;
 import br.com.renanrramos.easyshopping.model.builder.AdministratorBuilder;
 import br.com.renanrramos.easyshopping.model.dto.AdministratorDTO;
+import br.com.renanrramos.easyshopping.model.form.AdministratorForm;
 import br.com.renanrramos.easyshopping.service.impl.AdministratorService;
 
 /**
@@ -41,6 +45,12 @@ class AdministratorControllerTest {
 	
 	@Mock
 	private AdministratorService myService;
+
+	@Mock
+	private Administrator administrator;
+	
+	@Mock
+	private UriComponentsBuilder uriBuilder;
 	
 	@Before
 	public void before() {
@@ -64,12 +74,14 @@ class AdministratorControllerTest {
 	}
 	
 	@Test
-	public void shouldReturnAnEmptyListOfAdministrators() {
+	public void shouldReturnANullListOfAdministrators() {
 		List<Administrator> administrators = new ArrayList<Administrator>();
+
 		when(myService.findAll()).thenReturn(administrators);
-		
+
 		ResponseEntity<List<AdministratorDTO>> administratorsExpected = administratorController.getAdministrators();
 
-		assertEquals(administratorsExpected.getBody(), nullValue());
+		assertNull(administratorsExpected.getBody());
 	}
+	
 }
