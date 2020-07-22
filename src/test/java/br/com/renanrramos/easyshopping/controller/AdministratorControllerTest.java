@@ -6,29 +6,18 @@
  */
 package br.com.renanrramos.easyshopping.controller;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Before;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.renanrramos.easyshopping.model.Administrator;
-import br.com.renanrramos.easyshopping.model.builder.AdministratorBuilder;
-import br.com.renanrramos.easyshopping.model.dto.AdministratorDTO;
 import br.com.renanrramos.easyshopping.model.form.AdministratorForm;
 import br.com.renanrramos.easyshopping.service.impl.AdministratorService;
 
@@ -36,52 +25,37 @@ import br.com.renanrramos.easyshopping.service.impl.AdministratorService;
  * @author renan.ramos
  *
  */
-@RunWith(MockitoJUnitRunner.class)
-@SpringBootTest
-class AdministratorControllerTest {
-	
-	@InjectMocks
-	AdministratorController administratorController;
+@RunWith(SpringJUnit4ClassRunner.class)
+public class AdministratorControllerTest {
 	
 	@Mock
-	private AdministratorService myService;
-
+	private AdministratorService administratorService;
+	
 	@Mock
-	private Administrator administrator;
+	private AdministratorController administratorController;
 	
 	@Mock
 	private UriComponentsBuilder uriBuilder;
 	
+	@Mock
+	private Administrator administrator;
+	
 	@Before
 	public void before() {
+
 	}
-	
+
 	@Test
-	public void shouldReturnAListOfAdministrators() {
-		
-		List<Administrator> administrators = new ArrayList<Administrator>();
-		administrators.add(AdministratorBuilder.builder().withName("Teste1").build());
-		
-		
-		when(myService.findAll()).thenReturn(administrators);
-		
-		ResponseEntity<List<AdministratorDTO>> administratorsExpected = administratorController.getAdministrators();
-		
-		List<AdministratorDTO> administratorDTOList = AdministratorDTO.converterAdministratorListToAdministratorDTO(administrators);
-		
-		
-		assertEquals(administratorsExpected.getBody().size(), administratorDTOList.size());
+	public void shouldCreateAdministrator(){
+
+		AdministratorForm admin = new AdministratorForm();
+		admin.setName("New Administrator");
+
+		when(administratorService.save(any(Administrator.class))).thenReturn(administrator);
+
+		administratorController.saveAdministrator(admin, uriBuilder);
+
+		assertThat(administrator.getId()).isNotNull();
 	}
-	
-	@Test
-	public void shouldReturnANullListOfAdministrators() {
-		List<Administrator> administrators = new ArrayList<Administrator>();
 
-		when(myService.findAll()).thenReturn(administrators);
-
-		ResponseEntity<List<AdministratorDTO>> administratorsExpected = administratorController.getAdministrators();
-
-		assertNull(administratorsExpected.getBody());
-	}
-	
 }
