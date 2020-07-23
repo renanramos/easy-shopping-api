@@ -17,6 +17,7 @@ import org.mockito.Mock;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.renanrramos.easyshopping.controller.rest.AdministratorController;
 import br.com.renanrramos.easyshopping.model.Administrator;
 import br.com.renanrramos.easyshopping.model.form.AdministratorForm;
 import br.com.renanrramos.easyshopping.service.impl.AdministratorService;
