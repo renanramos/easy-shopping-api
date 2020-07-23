@@ -34,6 +34,7 @@ import br.com.renanrramos.easyshopping.model.dto.AdministratorDTO;
 import br.com.renanrramos.easyshopping.model.form.AdministratorForm;
 import br.com.renanrramos.easyshopping.service.impl.AdministratorService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * @author renan.ramos
@@ -53,6 +54,7 @@ public class AdministratorController {
 	@ResponseBody
 	@PostMapping
 	@Transactional
+	@ApiOperation(value = "Inclui novo administrador")
 	public ResponseEntity<AdministratorDTO> saveAdministrator(@Valid @RequestBody AdministratorForm administratorForm, UriComponentsBuilder uriBuilder) {
 		Administrator administrator = AdministratorForm.converterAdministratorFormToAdministrator(administratorForm);
 		Administrator administratorCreated = administratorService.save(administrator);
@@ -65,6 +67,7 @@ public class AdministratorController {
 
 	@ResponseBody
 	@GetMapping
+	@ApiOperation(value = "Lista todos os administradores")
 	public ResponseEntity<List<AdministratorDTO>> getAdministrators() {
 		List<AdministratorDTO> administrators = AdministratorDTO.converterAdministratorListToAdministratorDTO(administratorService.findAll());
 		if (administrators.isEmpty()) {
@@ -75,6 +78,7 @@ public class AdministratorController {
 	
 	@ResponseBody
 	@GetMapping(path = "/{id}")
+	@ApiOperation(value = "Pesquisa administrador por Id")
 	public ResponseEntity<AdministratorDTO> getAdministratorById(@PathVariable("id") Long administratorId) {
 		Optional<Administrator> administratorOptional = administratorService.findById(administratorId);
 		if (administratorOptional.isPresent()) {
@@ -86,6 +90,7 @@ public class AdministratorController {
 	@ResponseBody
 	@PutMapping(path = "/{id}")
 	@Transactional
+	@ApiOperation(value = "Atualiza administador")
 	public ResponseEntity<AdministratorDTO> updateAdministrator(@PathVariable("id") Long administratorId, @RequestBody AdministratorForm administratorForm, UriComponentsBuilder uriBuilder) {
 		Optional<Administrator> administratorOptional = administratorService.findById(administratorId);
 		if (administratorOptional.isPresent()) {
@@ -102,6 +107,7 @@ public class AdministratorController {
 	@ResponseBody
 	@DeleteMapping(path = "/{id}")
 	@Transactional
+	@ApiOperation(value = "Remove administrador")
 	public ResponseEntity<?> removeAdministrator(@PathVariable("id") Long administratorId) {
 		Optional<Administrator> administratorOptional = administratorService.findById(administratorId);
 		if (administratorOptional.isPresent()) {
