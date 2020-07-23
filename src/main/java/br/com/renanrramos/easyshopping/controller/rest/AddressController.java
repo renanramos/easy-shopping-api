@@ -36,6 +36,7 @@ import br.com.renanrramos.easyshopping.model.form.AddressForm;
 import br.com.renanrramos.easyshopping.service.impl.AddressService;
 import br.com.renanrramos.easyshopping.service.impl.CustomerService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * @author renan.ramos
@@ -58,6 +59,7 @@ public class AddressController {
 	@ResponseBody
 	@PostMapping
 	@Transactional
+	@ApiOperation(value = "Inclui novo endereço")
 	public ResponseEntity<AddressDTO> saveAddress(@Valid @RequestBody AddressForm addressForm, UriComponentsBuilder uriBuilder) {
 		Optional<Customer> customerOptional = customerService.findById(addressForm.getCustomerId());
 		
