@@ -54,7 +54,7 @@ public class CompanyController {
 	@ResponseBody
 	@PostMapping
 	@Transactional
-	@ApiOperation(value = "Inclui novo empresa")
+	@ApiOperation(value = "Save a new company")
 	public ResponseEntity<CompanyDTO> saveCompany(@Valid @RequestBody CompanyForm companyForm, UriComponentsBuilder uriBuilder) {
 		Company company = CompanyForm.converterToCompany(companyForm);
 		Company companyCreated = companyService.save(company);
@@ -67,7 +67,7 @@ public class CompanyController {
 	
 	@ResponseBody
 	@GetMapping
-	@ApiOperation(value = "Lista todos as empresas")
+	@ApiOperation(value = "Get all companies")
 	public ResponseEntity<List<CompanyDTO>> getCompanies() {
 		List<CompanyDTO> listOfCompanyDTOs = CompanyDTO.converterCompanyListToCompanyDTOList(companyService.findAll());
 		if (listOfCompanyDTOs.isEmpty()) {
@@ -78,7 +78,7 @@ public class CompanyController {
 	
 	@ResponseBody
 	@GetMapping(path = "/{id}")
-	@ApiOperation(value = "Pesquisa empresa por Id")
+	@ApiOperation(value = "Get a company by id")
 	public ResponseEntity<CompanyDTO> getCompanyById(@PathVariable("id") Long companyId) {
 		Optional<Company> company = companyService.findById(companyId);
 		if (company.isPresent()) {
@@ -90,7 +90,7 @@ public class CompanyController {
 	@ResponseBody
 	@PutMapping(path = "/{id}")
 	@Transactional
-	@ApiOperation(value = "Atualiza empresa")
+	@ApiOperation(value = "Update a company")
 	public ResponseEntity<CompanyDTO> updateCompany(@PathVariable("id") Long companyId, @Valid @RequestBody CompanyForm companyForm, UriComponentsBuilder uriBuilder) {
 		Optional<Company> companyOptional = companyService.findById(companyId);
 		if(companyOptional.isPresent()) {
@@ -107,7 +107,7 @@ public class CompanyController {
 	@ResponseBody
 	@DeleteMapping(path = "/{id}")
 	@Transactional
-	@ApiOperation(value = "Remove empresa")
+	@ApiOperation(value = "Remove a company")
 	public ResponseEntity<CompanyDTO> removeCompany(@PathVariable("id") Long companyId) {
 		Optional<Company> companyOptional = companyService.findById(companyId);
 		if (companyOptional.isPresent()) {
