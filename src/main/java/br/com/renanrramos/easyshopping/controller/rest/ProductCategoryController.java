@@ -34,6 +34,7 @@ import br.com.renanrramos.easyshopping.model.dto.ProductCategoryDTO;
 import br.com.renanrramos.easyshopping.model.form.ProductCategoryForm;
 import br.com.renanrramos.easyshopping.service.impl.ProductCategoryService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * @author renan.ramos
@@ -53,6 +54,7 @@ public class ProductCategoryController {
 	@ResponseBody
 	@Transactional
 	@PostMapping
+	@ApiOperation(value = "Save a new product category")
 	public ResponseEntity<ProductCategoryDTO> saveProductCategory(@Valid @RequestBody ProductCategoryForm productCategoryForm, 
 			UriComponentsBuilder uriBuilder) {
 		ProductCategory productCategory = ProductCategoryForm.converterProductCategoryFormToProductCategory(productCategoryForm);
@@ -68,6 +70,7 @@ public class ProductCategoryController {
 	
 	@ResponseBody
 	@GetMapping
+	@ApiOperation(value = "Get all product categories")
 	public ResponseEntity<List<ProductCategoryDTO>> getProductCategories() {
 		List<ProductCategory> productCategories = productCategoryService.findAll();
 		if (productCategories.isEmpty()) {
@@ -78,6 +81,7 @@ public class ProductCategoryController {
 	
 	@ResponseBody
 	@GetMapping(path = "/{id}")
+	@ApiOperation(value = "Get a product category by id")
 	public ResponseEntity<ProductCategoryDTO> getProductCategoryById(@PathVariable("id") Long productCategoryId) {
 		Optional<ProductCategory> productCategoryOptional = productCategoryService.findById(productCategoryId);
 		if (productCategoryOptional.isPresent()) {
@@ -90,6 +94,7 @@ public class ProductCategoryController {
 	@ResponseBody
 	@PutMapping(path = "/{id}")
 	@Transactional
+	@ApiOperation(value = "Update a product category")
 	public ResponseEntity<ProductCategoryDTO> updateProductCategory(@PathVariable("id") Long productCategoryId, 
 			@RequestBody ProductCategoryForm productCategoryForm, UriComponentsBuilder uriBuilder) {
 		Optional<ProductCategory> productCategoryOptional = productCategoryService.findById(productCategoryId);
@@ -107,6 +112,7 @@ public class ProductCategoryController {
 	@ResponseBody
 	@DeleteMapping(path = "/{id}")
 	@Transactional
+	@ApiOperation(value = "Remove a product category")
 	public ResponseEntity<?> removeProductCategory(@PathVariable("id") Long productCategoryId) {
 		Optional<ProductCategory> productCategoryOptional = productCategoryService.findById(productCategoryId);
 		if (productCategoryOptional.isPresent()) {
