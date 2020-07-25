@@ -34,6 +34,7 @@ import br.com.renanrramos.easyshopping.model.dto.CustomerDTO;
 import br.com.renanrramos.easyshopping.model.form.CustomerForm;
 import br.com.renanrramos.easyshopping.service.impl.CustomerService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * @author renan.ramos
@@ -53,6 +54,7 @@ public class CustomerController {
 	@ResponseBody
 	@Transactional
 	@PostMapping
+	@ApiOperation(value = "Save a new customer")
 	public ResponseEntity<CustomerDTO> saveCustomer(@Valid @RequestBody CustomerForm customerForm, UriComponentsBuilder uriBuilder) {
 		Customer customer = CustomerForm.converterCustomerFormToCustomer(customerForm);
 		Customer customerCreated = customerService.save(customer);
@@ -65,6 +67,7 @@ public class CustomerController {
 	
 	@ResponseBody
 	@GetMapping
+	@ApiOperation(value = "Get all customers")
 	public ResponseEntity<List<CustomerDTO>> getCustomers() {		
 		List<Customer> customers = customerService.findAll();
 		if (customers.isEmpty()) {
@@ -75,6 +78,7 @@ public class CustomerController {
 	
 	@ResponseBody
 	@GetMapping(path = "/{id}")
+	@ApiOperation(value = "Get a customer by id")
 	public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable("id") Long customerId) {
 		Optional<Customer> customer = customerService.findById(customerId);
 		if (customer.isPresent()) {
@@ -86,6 +90,7 @@ public class CustomerController {
 	@ResponseBody
 	@PutMapping(path = "/{id}")
 	@Transactional
+	@ApiOperation(value = "Update a customer")
 	public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable("id") Long customerId, @RequestBody CustomerForm customerForm, UriComponentsBuilder uriBuilder) {
 		Optional<Customer> customerToUpdate = customerService.findById(customerId);
 		if(customerToUpdate.isPresent()) {			
@@ -103,6 +108,7 @@ public class CustomerController {
 	@ResponseBody
 	@DeleteMapping("/{id}")
 	@Transactional
+	@ApiOperation(value = "Remove a customer")
 	public ResponseEntity<?> removeCustomer(@PathVariable("id") Long customerId) {
 		Optional<Customer> customerToRemove = customerService.findById(customerId);
 		if (customerToRemove.isPresent()) {
