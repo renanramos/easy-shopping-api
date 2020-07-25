@@ -34,6 +34,7 @@ import br.com.renanrramos.easyshopping.model.dto.CompanyDTO;
 import br.com.renanrramos.easyshopping.model.form.CompanyForm;
 import br.com.renanrramos.easyshopping.service.impl.CompanyService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * @author renan.ramos
@@ -53,6 +54,7 @@ public class CompanyController {
 	@ResponseBody
 	@PostMapping
 	@Transactional
+	@ApiOperation(value = "Inclui novo empresa")
 	public ResponseEntity<CompanyDTO> saveCompany(@Valid @RequestBody CompanyForm companyForm, UriComponentsBuilder uriBuilder) {
 		Company company = CompanyForm.converterToCompany(companyForm);
 		Company companyCreated = companyService.save(company);
@@ -65,6 +67,7 @@ public class CompanyController {
 	
 	@ResponseBody
 	@GetMapping
+	@ApiOperation(value = "Lista todos as empresas")
 	public ResponseEntity<List<CompanyDTO>> getCompanies() {
 		List<CompanyDTO> listOfCompanyDTOs = CompanyDTO.converterCompanyListToCompanyDTOList(companyService.findAll());
 		if (listOfCompanyDTOs.isEmpty()) {
@@ -75,6 +78,7 @@ public class CompanyController {
 	
 	@ResponseBody
 	@GetMapping(path = "/{id}")
+	@ApiOperation(value = "Pesquisa empresa por Id")
 	public ResponseEntity<CompanyDTO> getCompanyById(@PathVariable("id") Long companyId) {
 		Optional<Company> company = companyService.findById(companyId);
 		if (company.isPresent()) {
@@ -86,6 +90,7 @@ public class CompanyController {
 	@ResponseBody
 	@PutMapping(path = "/{id}")
 	@Transactional
+	@ApiOperation(value = "Atualiza empresa")
 	public ResponseEntity<CompanyDTO> updateCompany(@PathVariable("id") Long companyId, @Valid @RequestBody CompanyForm companyForm, UriComponentsBuilder uriBuilder) {
 		Optional<Company> companyOptional = companyService.findById(companyId);
 		if(companyOptional.isPresent()) {
@@ -102,6 +107,7 @@ public class CompanyController {
 	@ResponseBody
 	@DeleteMapping(path = "/{id}")
 	@Transactional
+	@ApiOperation(value = "Remove empresa")
 	public ResponseEntity<CompanyDTO> removeCompany(@PathVariable("id") Long companyId) {
 		Optional<Company> companyOptional = companyService.findById(companyId);
 		if (companyOptional.isPresent()) {
