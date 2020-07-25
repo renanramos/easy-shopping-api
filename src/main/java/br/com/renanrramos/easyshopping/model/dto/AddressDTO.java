@@ -29,7 +29,7 @@ public class AddressDTO {
 
 	private String state;
 	
-	private String customerName;
+	private Long customerId;
 	
 	public AddressDTO() {
 	}
@@ -41,7 +41,7 @@ public class AddressDTO {
 		this.number = address.getNumber();
 		this.cep = address.getCep();
 		this.state = address.getState();
-		this.customerName = address.getCustomer().getName();
+		this.customerId = address.getCustomer().getId();
 				
 	}
 
@@ -69,8 +69,8 @@ public class AddressDTO {
 		return state;
 	}
 
-	public String getCustomerName() {
-		return customerName;
+	public Long getCustomerId() {
+		return customerId;
 	}
 
 	public void setId(Long id) {
@@ -97,8 +97,8 @@ public class AddressDTO {
 		this.state = state;
 	}
 
-	public void setCustomerName(String customerName) {
-		this.customerName = customerName;
+	public void setCustomerId(Long customerId) {
+		this.customerId = customerId;
 	}
 	
 	public static List<AddressDTO> convertAddressListToAddressDTOList(List<Address> addresses) {
@@ -112,7 +112,7 @@ public class AddressDTO {
 	@Override
 	public String toString() {
 		return "AddressDTO [id=" + id + ", streetName=" + streetName + ", district=" + district + ", number=" + number
-				+ ", cep=" + cep + ", state=" + state + ", customerName=" + customerName + "]";
+				+ ", cep=" + cep + ", state=" + state + ", customerId=" + customerId + "]";
 	}
 
 }

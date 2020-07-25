@@ -7,10 +7,13 @@
 package br.com.renanrramos.easyshopping.model.dto;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import br.com.renanrramos.easyshopping.enums.Profile;
+import br.com.renanrramos.easyshopping.model.Address;
 import br.com.renanrramos.easyshopping.model.Customer;
+import br.com.renanrramos.easyshopping.model.builder.AddressBuilder;
 
 /**
  * @author renan.ramos
@@ -27,6 +30,8 @@ public class CustomerDTO {
 	private String email;
 
 	private Profile profile;
+	
+	private Set<Address> address;
 
 	public CustomerDTO() {
 	}
@@ -37,6 +42,7 @@ public class CustomerDTO {
 		this.cpf = customer.getCpf();
 		this.email = customer.getEmail();
 		this.profile = customer.getProfile();
+		this.address = customer.getAddress().stream().map(address -> getAddressInfo(address)).collect(Collectors.toSet());
 	}
 
 	public Long getId() {
@@ -75,6 +81,14 @@ public class CustomerDTO {
 		return profile;
 	}
 	
+	public Set<Address> getAddress() {
+		return address;
+	}
+
+	public void setAddress(Set<Address> address) {
+		this.address = address;
+	}
+
 	public static List<CustomerDTO> converterCustomerListToCustomerDTOList(List<Customer> customer) {
 		return customer.stream().map(CustomerDTO::new).collect(Collectors.toList()); 
 	}
@@ -89,4 +103,13 @@ public class CustomerDTO {
 				+ "]";
 	}
 
+	private static Address getAddressInfo(Address address) {
+		return AddressBuilder.builder()
+				.withCep(address.getCep())
+				.withDistrict(address.getDistrict())
+				.withNumber(address.getNumber())
+				.withState(address.getState())
+				.withStreetName(address.getStreetName())
+				.build();
+	}
 }

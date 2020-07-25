@@ -10,9 +10,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import br.com.renanrramos.easyshopping.model.Product;
-import br.com.renanrramos.easyshopping.model.ProductCategory;
 import br.com.renanrramos.easyshopping.model.Store;
-
+import br.com.renanrramos.easyshopping.model.builder.StoreBuilder;
 /**
  * @author renan.ramos
  *
@@ -29,7 +28,7 @@ public class ProductDTO {
 	
 	private String productCategoryName;
 	
-	private String storeName;
+	private Store store;
 	
 	public ProductDTO() {
 	}
@@ -40,7 +39,7 @@ public class ProductDTO {
 		this.description = product.getDescription();
 		this.price = product.getPrice();
 		this.productCategoryName = product.getProductCategory().getName();
-		this.storeName = product.getStore() == null ? "No store found" : product.getStore().getCorporateName();
+		this.store = getStoreInfo(product.getStore());
 	}
 	
 	public Long getId() {
@@ -67,8 +66,8 @@ public class ProductDTO {
 		return productCategoryName;
 	}
 
-	public String getStoreName() {
-		return storeName;
+	public Store getStore() {
+		return store;
 	}
 
 	public void setName(String name) {
@@ -87,8 +86,8 @@ public class ProductDTO {
 		this.productCategoryName = productCategoryName;
 	}
 
-	public void setStore(String storeName) {
-		this.storeName = storeName;
+	public void setStore(Store store) {
+		this.store = store;
 	}
 	
 	public static List<ProductDTO> converterProductListToProductDTOList(List<Product> products) {
@@ -102,7 +101,15 @@ public class ProductDTO {
 	@Override
 	public String toString() {
 		return "ProductDTO [id=" + id + ", name=" + name + ", description=" + description + ", price=" + price
-				+ ", productCategoryName=" + productCategoryName + ", storeName=" + storeName + "]";
+				+ ", productCategoryName=" + productCategoryName + ", store=" + store + "]";
 	}
 
+	private static Store getStoreInfo(Store store) {
+		return StoreBuilder.builder()
+				.withCorporateName(store.getCorporateName())
+				.withName(store.getName())
+				.withRegisteredNumber(store.getRegisteredNumber())
+				.build();
+	}
+	
 }

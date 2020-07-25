@@ -7,11 +7,14 @@
 package br.com.renanrramos.easyshopping.model.dto;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import br.com.renanrramos.easyshopping.model.Company;
 import br.com.renanrramos.easyshopping.model.Product;
 import br.com.renanrramos.easyshopping.model.Store;
+import br.com.renanrramos.easyshopping.model.builder.CompanyBuilder;
+import br.com.renanrramos.easyshopping.model.builder.ProductBuilder;
 
 /**
  * @author renan.ramos
@@ -27,7 +30,7 @@ public class StoreDTO {
 	
 	private String corporateName;
 	
-	private List<ProductDTO> products;
+	private Set<Product> products;
 	
 	private Company company;
 	
@@ -40,8 +43,8 @@ public class StoreDTO {
 		this.name = store.getName();
 		this.registeredNumber = store.getRegisteredNumber();
 		this.corporateName = store.getCorporateName();
-		this.products = store.getProducts().stream().map(ProductDTO::new).collect(Collectors.toList());
-		this.company = store.getCompany();
+		this.products = store.getProducts().stream().map(product -> getProductInfo(product)).collect(Collectors.toSet());
+		this.company = getCompanyInfo(store.getCompany());
 	}
 
 	public Long getId() {
@@ -64,7 +67,7 @@ public class StoreDTO {
 		return corporateName;
 	}
 
-	public List<ProductDTO> getProducts() {
+	public Set<Product> getProducts() {
 		return products;
 	}
 
@@ -84,7 +87,7 @@ public class StoreDTO {
 		this.corporateName = corporateName;
 	}
 
-	public void setProducts(List<ProductDTO> products) {
+	public void setProducts(Set<Product> products) {
 		this.products = products;
 	}
 
@@ -106,4 +109,21 @@ public class StoreDTO {
 				+ corporateName + ", products=" + products + ", company=" + company + "]";
 	}
 
+	private static Product getProductInfo(Product product) {
+		return ProductBuilder.builder()
+				.withDescription(product.getDescription())
+				.withName(product.getName())
+				.withPrice(product.getPrice())
+				.withProductCategory(product.getProductCategory())
+				.build();
+	}
+
+	private static Company getCompanyInfo(Company company) {
+		return CompanyBuilder.builder()
+				.withName(company.getName())
+				.withPhone(company.getPhone())
+				.withEmail(company.getEmail())
+				.build();
+	}
+	
 }
