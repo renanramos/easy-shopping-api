@@ -6,6 +6,8 @@
  */
 package br.com.renanrramos.easyshopping.model;
 
+import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,6 +21,9 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import io.swagger.annotations.ApiModelProperty;
 
 /**
@@ -26,7 +31,9 @@ import io.swagger.annotations.ApiModelProperty;
  *
  */
 @Entity
-public class Product {
+public class Product implements Serializable{
+
+	private static final long serialVersionUID = -8837444544799506973L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,6 +57,7 @@ public class Product {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "store_id")
+	@Fetch(FetchMode.JOIN)
 	private Store store;
 
 	public Long getId() {
@@ -99,13 +107,7 @@ public class Product {
 	public void setProductCategory(ProductCategory productCategory) {
 		this.productCategory = productCategory;
 	}
-
-	@Override
-	public String toString() {
-		return "Product [id=" + id + ", name=" + name + ", description=" + description + ", price=" + price
-				+ ", productCategory=" + productCategory.getName() + ", store=" + store.getName() + "]";
-	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -116,6 +118,7 @@ public class Product {
 		long temp;
 		temp = Double.doubleToLongBits(price);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((productCategory == null) ? 0 : productCategory.hashCode());
 		result = prime * result + ((store == null) ? 0 : store.hashCode());
 		return result;
 	}
@@ -146,6 +149,11 @@ public class Product {
 			return false;
 		if (Double.doubleToLongBits(price) != Double.doubleToLongBits(other.price))
 			return false;
+		if (productCategory == null) {
+			if (other.productCategory != null)
+				return false;
+		} else if (!productCategory.equals(other.productCategory))
+			return false;
 		if (store == null) {
 			if (other.store != null)
 				return false;
@@ -153,5 +161,10 @@ public class Product {
 			return false;
 		return true;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Product [id=" + id + ", name=" + name + ", description=" + description + ", price=" + price
+				+ ", productCategory=" + productCategory.getName() + ", store=" + store.getName() + "]";
+	}	
 }

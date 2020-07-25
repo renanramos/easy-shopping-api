@@ -6,16 +6,20 @@
  */
 package br.com.renanrramos.easyshopping.model;
 
-import java.util.List;
+import java.io.Serializable;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.sql.rowset.serial.SerialArray;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
@@ -27,15 +31,10 @@ import io.swagger.annotations.ApiModelProperty;
  *
  */
 @Entity
-public class Company {
+@PrimaryKeyJoinColumn(name="id")
+public class Company extends User implements Serializable{
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@ApiModelProperty(hidden = true)
-	private Long id;
-	
-	@NotBlank
-	private String name;
+	private static final long serialVersionUID = -5594496999476155657L;
 	
 	@NotBlank
 	private String registeredNumber;
@@ -51,26 +50,10 @@ public class Company {
 	@Enumerated(EnumType.STRING)
 	private Profile profile;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
-	private List<Store> stores;
+	@OneToMany(targetEntity = Store.class, cascade = CascadeType.ALL, mappedBy = "company", fetch = FetchType.EAGER)
+	private Set<Store> stores;
 
 	public Company() {		
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public String getRegisteredNumber() {
@@ -105,13 +88,19 @@ public class Company {
 		this.profile = profile;
 	}
 
+	public Set<Store> getStores() {
+		return stores;
+	}
+
+	public void setStores(Set<Store> stores) {
+		this.stores = stores;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((phone == null) ? 0 : phone.hashCode());
 		result = prime * result + ((profile == null) ? 0 : profile.hashCode());
 		result = prime * result + ((registeredNumber == null) ? 0 : registeredNumber.hashCode());
@@ -132,16 +121,6 @@ public class Company {
 				return false;
 		} else if (!email.equals(other.email))
 			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
 		if (phone == null) {
 			if (other.phone != null)
 				return false;
@@ -159,7 +138,8 @@ public class Company {
 
 	@Override
 	public String toString() {
-		return "Company [id=" + id + ", name=" + name + ", registeredNumber=" + registeredNumber + ", email=" + email
-				+ ", phone=" + phone + ", profile=" + profile + "]";
+		return "Company [registeredNumber=" + registeredNumber + ", email=" + email
+				+ ", phone=" + phone + ", profile=" + profile + ", stores=" + stores + "]";
 	}
+
 }

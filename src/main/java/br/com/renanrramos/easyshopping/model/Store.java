@@ -6,7 +6,8 @@
  */
 package br.com.renanrramos.easyshopping.model;
 
-import java.util.List;
+import java.io.Serializable;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,7 +20,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import io.swagger.annotations.ApiModelProperty;
 
@@ -28,7 +31,9 @@ import io.swagger.annotations.ApiModelProperty;
  *
  */
 @Entity
-public class Store {
+public class Store implements Serializable{
+
+	private static final long serialVersionUID = 979835710158008524L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,12 +52,12 @@ public class Store {
 	@Column(nullable = false, length = 250)
 	private String corporateName;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "store")
-	private List<Product> products;
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "store", fetch = FetchType.EAGER)
+	private Set<Product> products;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "copmany_id")
-	@NotNull
+//	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "company_id")
+//	@Fetch(FetchMode.JOIN)
 	private Company company;
 	
 	public Long getId() {
@@ -71,7 +76,7 @@ public class Store {
 		return corporateName;
 	}
 	
-	public List<Product> getProducts() {
+	public Set<Product> getProducts() {
 		return products;
 	}
 	
@@ -91,7 +96,7 @@ public class Store {
 		this.corporateName = corporateName;
 	}
 	
-	public void setProducts(List<Product> products) {
+	public void setProducts(Set<Product> products) {
 		this.products = products;
 	}
 	
@@ -102,7 +107,7 @@ public class Store {
 	public void setCompany(Company company) {
 		this.company = company;
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

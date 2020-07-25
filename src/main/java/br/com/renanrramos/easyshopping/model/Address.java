@@ -16,6 +16,9 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import io.swagger.annotations.ApiModelProperty;
 
 /**
@@ -47,6 +50,7 @@ public class Address {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "customer_id")
+	@Fetch(FetchMode.JOIN)
 	private Customer customer;
 	
 	public Address() {

@@ -6,12 +6,13 @@
  */
 package br.com.renanrramos.easyshopping.model;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.validation.constraints.Email;
@@ -41,8 +42,8 @@ public class Customer extends User{
 	@Enumerated(EnumType.STRING)
 	private Profile profile;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
-	private List<Address> address;
+	@OneToMany(targetEntity = Address.class, cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.EAGER)
+	private Set<Address> address;
 	
 	public Customer() {
 	}
@@ -76,11 +77,11 @@ public class Customer extends User{
 		this.profile = profile;
 	}
 	
-	public List<Address> getAddress() {
+	public Set<Address> getAddress() {
 		return address;
 	}
 
-	public void setAddress(List<Address> address) {
+	public void setAddress(Set<Address> address) {
 		this.address = address;
 	}
 
