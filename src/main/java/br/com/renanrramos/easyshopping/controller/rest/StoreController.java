@@ -61,7 +61,7 @@ public class StoreController {
 	@PostMapping
 	@ApiOperation(value = "Save a new store")
 	public ResponseEntity<StoreDTO> saveStore(@Valid @RequestBody StoreForm storeForm, UriComponentsBuilder uriBuilder) {
-		Optional<Company> company = companyService.findById(storeForm.getCompanyId());
+		Optional<Company> company = companyService.findById(storeForm.getCompany());
 		if (company.isPresent()) {
 			Store store = StoreForm.converterStoreFormToStore(storeForm);
 			store.setCompany(company.get());

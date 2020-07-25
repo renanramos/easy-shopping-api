@@ -70,9 +70,6 @@ public class CustomerController {
 	@ApiOperation(value = "Get all customers")
 	public ResponseEntity<List<CustomerDTO>> getCustomers() {		
 		List<Customer> customers = customerService.findAll();
-		if (customers.isEmpty()) {
-			return ResponseEntity.noContent().build();
-		}		
 		return ResponseEntity.ok(CustomerDTO.converterCustomerListToCustomerDTOList(customers));
 	}
 	
