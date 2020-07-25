@@ -6,7 +6,7 @@
  */
 package br.com.renanrramos.easyshopping.model.builder;
 
-import java.util.List;
+import java.util.Set;
 
 import br.com.renanrramos.easyshopping.model.Product;
 import br.com.renanrramos.easyshopping.model.Store;
@@ -42,7 +42,7 @@ public class StoreBuilder {
 		return this;
 	}
 	
-	public StoreBuilder withProducts(List<Product> products) {
+	public StoreBuilder withProducts(Set<Product> products) {
 		this.store.setProducts(products);
 		return this;
 	}
