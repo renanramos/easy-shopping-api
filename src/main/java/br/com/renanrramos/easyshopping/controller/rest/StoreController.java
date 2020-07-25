@@ -36,6 +36,7 @@ import br.com.renanrramos.easyshopping.model.form.StoreForm;
 import br.com.renanrramos.easyshopping.service.impl.CompanyService;
 import br.com.renanrramos.easyshopping.service.impl.StoreService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * @author renan.ramos
@@ -58,6 +59,7 @@ public class StoreController {
 	@ResponseBody
 	@Transactional
 	@PostMapping
+	@ApiOperation(value = "Save a new store")
 	public ResponseEntity<StoreDTO> saveStore(@Valid @RequestBody StoreForm storeForm, UriComponentsBuilder uriBuilder) {
 		Optional<Company> company = companyService.findById(storeForm.getCompanyId());
 		if (company.isPresent()) {
@@ -74,6 +76,7 @@ public class StoreController {
 	
 	@ResponseBody
 	@GetMapping
+	@ApiOperation(value = "Get all stores")
 	public ResponseEntity<List<StoreDTO>> getStores() {
 		List<Store> stores = storeService.findAll();
 		return ResponseEntity.ok(StoreDTO.converterStoreListToStoreDTOList(stores));
@@ -81,6 +84,7 @@ public class StoreController {
 	
 	@ResponseBody
 	@GetMapping("/{id}")
+	@ApiOperation(value = "Get a store by id")
 	public ResponseEntity<StoreDTO> getStoreById(@PathVariable("id") Long storeId) {
 		Optional<Store> storeOptional = storeService.findById(storeId);
 		if (storeOptional.isPresent()) {
@@ -93,6 +97,7 @@ public class StoreController {
 	@ResponseBody
 	@PutMapping("/{id}")
 	@Transactional
+	@ApiOperation(value = "Update a store")
 	public ResponseEntity<StoreDTO> updateStore(@PathVariable("id") Long storeId, @RequestBody StoreForm storeForm, UriComponentsBuilder uriBuilder) {
 		Optional<Store> storeOptional = storeService.findById(storeId);
 		if (storeOptional.isPresent()) {
@@ -109,6 +114,7 @@ public class StoreController {
 	@ResponseBody
 	@DeleteMapping("/{id}")
 	@Transactional
+	@ApiOperation(value = "Remove a store")
 	public ResponseEntity<?> deleteStore(@PathVariable("id") Long storeId) {
 		Optional<Store> storeOptional = storeService.findById(storeId);
 		if (storeOptional.isPresent()) {
