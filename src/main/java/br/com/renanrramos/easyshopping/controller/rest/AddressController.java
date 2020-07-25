@@ -59,7 +59,7 @@ public class AddressController {
 	@ResponseBody
 	@PostMapping
 	@Transactional
-	@ApiOperation(value = "Inclui novo endereço")
+	@ApiOperation(value = "Save a new address")
 	public ResponseEntity<AddressDTO> saveAddress(@Valid @RequestBody AddressForm addressForm, UriComponentsBuilder uriBuilder) {
 		Optional<Customer> customerOptional = customerService.findById(addressForm.getCustomerId());
 		
@@ -80,7 +80,7 @@ public class AddressController {
 	
 	@ResponseBody
 	@GetMapping
-	@ApiOperation(value = "Lista todos os endereços")
+	@ApiOperation(value = "Get all addresses")
 	public ResponseEntity<List<AddressDTO>> getAddresses() {
 		List<Address> addresses = addressService.findAll();
 		return ResponseEntity.ok(AddressDTO.convertAddressListToAddressDTOList(addresses));	
@@ -88,7 +88,7 @@ public class AddressController {
 	
 	@ResponseBody
 	@GetMapping(path = "/{id}")
-	@ApiOperation(value = "Pesquisa endereço por Id")
+	@ApiOperation(value = "Get an address by id")
 	public ResponseEntity<AddressDTO> getAddressById(@PathVariable("id") Long addressId) {
 		Optional<Address> addressOptional = addressService.findById(addressId);
 		
@@ -104,7 +104,7 @@ public class AddressController {
 	@ResponseBody
 	@PutMapping(path = "/{id}")
 	@Transactional
-	@ApiOperation(value = "Atualiza endereço")
+	@ApiOperation(value = "Update an address")
 	public ResponseEntity<?> updateAddress(@PathVariable("id") Long addressId, @RequestBody AddressForm addressForm, UriComponentsBuilder uriBuilder) {
 		
 		Optional<Customer> customerOptional = customerService.findById(addressForm.getCustomerId());
@@ -133,7 +133,7 @@ public class AddressController {
 	@ResponseBody
 	@DeleteMapping(path = "/{id}")
 	@Transactional
-	@ApiOperation(value = "Remove endereço")
+	@ApiOperation(value = "Remove an address")
 	public ResponseEntity<?> removeAddress(@PathVariable("id") Long addressId) {
 		Optional<Address> addressOptional = addressService.findById(addressId);
 		
