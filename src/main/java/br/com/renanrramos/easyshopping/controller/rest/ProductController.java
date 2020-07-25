@@ -38,6 +38,7 @@ import br.com.renanrramos.easyshopping.service.impl.ProductCategoryService;
 import br.com.renanrramos.easyshopping.service.impl.ProductService;
 import br.com.renanrramos.easyshopping.service.impl.StoreService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * @author renan.ramos
@@ -63,6 +64,7 @@ public class ProductController {
 	@ResponseBody
 	@PostMapping
 	@Transactional
+	@ApiOperation(value = "Save a new product")
 	public ResponseEntity<ProductDTO> saveProduct(@Valid @RequestBody ProductForm productForm, UriComponentsBuilder uriComponentsBuilder) {
 		
 		Long productCategoryId = productForm.getProductCategoryId();
@@ -98,6 +100,7 @@ public class ProductController {
 	
 	@ResponseBody
 	@GetMapping
+	@ApiOperation(value = "Get all products")
 	public ResponseEntity<List<ProductDTO>> getProducts() {
 		List<Product> products = productService.findAll();
 		if (products.isEmpty()) {
@@ -108,6 +111,7 @@ public class ProductController {
 	
 	@ResponseBody
 	@GetMapping(path = "/{id}")
+	@ApiOperation(value = "Get a product by id")
 	public ResponseEntity<ProductDTO> getProductById(@PathVariable("id") Long productId) {
 		Optional<Product> productOptional = productService.findById(productId);
 		if(productOptional.isPresent()) {
@@ -119,6 +123,7 @@ public class ProductController {
 	@ResponseBody
 	@PutMapping("/{id}")
 	@Transactional
+	@ApiOperation(value = "Update a product")
 	public ResponseEntity<ProductDTO> updateProduct(@PathVariable("id") Long productId, @Valid @RequestBody ProductForm productForm,
 			UriComponentsBuilder uriBuilder) {
 		if (productId == null) {
@@ -142,7 +147,7 @@ public class ProductController {
 		
 			Long storeId = productForm.getStoreId();
 			
-			Store store = new Store();
+			Store store;
 			Optional<Store> storeOptional = storeService.findById(storeId);
 			
 			if (storeOptional.isPresent()) {
@@ -167,6 +172,7 @@ public class ProductController {
 	
 	@ResponseBody
 	@DeleteMapping(path = "/{id}")
+	@ApiOperation(value = "Remove a product")
 	public ResponseEntity<?> deleteProduct(@PathVariable("id") Long productId) {
 		
 		Optional<Product> productOptional = productService.findById(productId);
