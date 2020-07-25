@@ -9,6 +9,7 @@ package br.com.renanrramos.easyshopping.model.form;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import br.com.renanrramos.easyshopping.model.Company;
 import br.com.renanrramos.easyshopping.model.Store;
 import br.com.renanrramos.easyshopping.model.builder.StoreBuilder;
 
@@ -26,18 +27,18 @@ public class StoreForm {
 	
 	private List<ProductForm> products;
 	
-	private Long companyId;
+	private Company company;
 
 	public StoreForm() {
 	}
 	
 	public StoreForm(String name, String registeredNumber, String corporateName, List<ProductForm> products,
-			Long companyId) {
+			Company company) {
 		this.name = name;
 		this.registeredNumber = registeredNumber;
 		this.corporateName = corporateName;
 		this.products = products;
-		this.companyId = companyId;
+		this.company = company;
 	}
 
 	public String getName() {
@@ -56,8 +57,8 @@ public class StoreForm {
 		return products;
 	}
 
-	public Long getCompanyId() {
-		return companyId;
+	public Company getCompany() {
+		return company;
 	}
 
 	public void setName(String name) {
@@ -76,8 +77,8 @@ public class StoreForm {
 		this.products = products;
 	}
 
-	public void setCompanyId(Long companyId) {
-		this.companyId = companyId;
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 	
 	public static Store converterStoreFormToStore(StoreForm storeForm) {
@@ -92,6 +93,6 @@ public class StoreForm {
 	@Override
 	public String toString() {
 		return "StoreForm [name=" + name + ", registeredNumber=" + registeredNumber + ", corporateName=" + corporateName
-				+ ", products=" + products.size() + ", companyId=" + companyId + "]";
+				+ ", products=" + products.size() + ", company=" + company + "]";
 	}
 }
