@@ -84,7 +84,7 @@ public class StoreForm {
 		return StoreBuilder.builder()
 				.withName(storeForm.getName())
 				.withCorporateName(storeForm.getCorporateName())
-				.withProducts(storeForm.getProducts().stream().map(ProductForm::converterProductFormToProduct).collect(Collectors.toList()))
+				.withProducts(storeForm.getProducts().stream().map(ProductForm::converterProductFormToProduct).collect(Collectors.toSet()))
 				.withRegisteredNumber(storeForm.getRegisteredNumber())
 				.build();
 	}
