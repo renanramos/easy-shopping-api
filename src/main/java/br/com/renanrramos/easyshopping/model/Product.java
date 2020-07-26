@@ -55,9 +55,9 @@ public class Product implements Serializable{
 	@OneToOne(cascade = CascadeType.ALL)
 	private ProductCategory productCategory;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne//(fetch = FetchType.LAZY)
 	@JoinColumn(name = "store_id")
-	@Fetch(FetchMode.JOIN)
+//	@Fetch(FetchMode.JOIN)
 	private Store store;
 
 	public Long getId() {
@@ -107,64 +107,4 @@ public class Product implements Serializable{
 	public void setProductCategory(ProductCategory productCategory) {
 		this.productCategory = productCategory;
 	}
-	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		long temp;
-		temp = Double.doubleToLongBits(price);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + ((productCategory == null) ? 0 : productCategory.hashCode());
-		result = prime * result + ((store == null) ? 0 : store.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Product other = (Product) obj;
-		if (description == null) {
-			if (other.description != null)
-				return false;
-		} else if (!description.equals(other.description))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (Double.doubleToLongBits(price) != Double.doubleToLongBits(other.price))
-			return false;
-		if (productCategory == null) {
-			if (other.productCategory != null)
-				return false;
-		} else if (!productCategory.equals(other.productCategory))
-			return false;
-		if (store == null) {
-			if (other.store != null)
-				return false;
-		} else if (!store.equals(other.store))
-			return false;
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Product [id=" + id + ", name=" + name + ", description=" + description + ", price=" + price
-				+ ", productCategory=" + productCategory.getName() + ", store=" + store.getName() + "]";
-	}	
 }

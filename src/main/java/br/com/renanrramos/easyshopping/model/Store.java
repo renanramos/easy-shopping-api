@@ -7,7 +7,8 @@
 package br.com.renanrramos.easyshopping.model;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -20,9 +21,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
-
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import io.swagger.annotations.ApiModelProperty;
 
@@ -52,12 +50,11 @@ public class Store implements Serializable{
 	@Column(nullable = false, length = 250)
 	private String corporateName;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "store", fetch = FetchType.EAGER)
-	private Set<Product> products;
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "store")
+	private List<Product> products = new ArrayList<>();
 	
-//	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(targetEntity = Company.class, fetch = FetchType.EAGER)
 	@JoinColumn(name = "company_id")
-//	@Fetch(FetchMode.JOIN)
 	private Company company;
 	
 	public Long getId() {
@@ -76,7 +73,7 @@ public class Store implements Serializable{
 		return corporateName;
 	}
 	
-	public Set<Product> getProducts() {
+	public List<Product> getProducts() {
 		return products;
 	}
 	
@@ -96,10 +93,10 @@ public class Store implements Serializable{
 		this.corporateName = corporateName;
 	}
 	
-	public void setProducts(Set<Product> products) {
+	public void setProducts(List<Product> products) {
 		this.products = products;
 	}
-	
+
 	public Company getCompany() {
 		return company;
 	}
@@ -107,65 +104,5 @@ public class Store implements Serializable{
 	public void setCompany(Company company) {
 		this.company = company;
 	}
-	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((company == null) ? 0 : company.hashCode());
-		result = prime * result + ((corporateName == null) ? 0 : corporateName.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((products == null) ? 0 : products.hashCode());
-		result = prime * result + ((registeredNumber == null) ? 0 : registeredNumber.hashCode());
-		return result;
-	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Store other = (Store) obj;
-		if (company == null) {
-			if (other.company != null)
-				return false;
-		} else if (!company.equals(other.company))
-			return false;
-		if (corporateName == null) {
-			if (other.corporateName != null)
-				return false;
-		} else if (!corporateName.equals(other.corporateName))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (products == null) {
-			if (other.products != null)
-				return false;
-		} else if (!products.equals(other.products))
-			return false;
-		if (registeredNumber == null) {
-			if (other.registeredNumber != null)
-				return false;
-		} else if (!registeredNumber.equals(other.registeredNumber))
-			return false;
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Store [id=" + id + ", name=" + name + ", registeredNumber=" + registeredNumber + ", corporateName="
-				+ corporateName + ", products=" + products + ", company=" + company + "]";
-	}
 }

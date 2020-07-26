@@ -25,6 +25,7 @@ public abstract class User implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE)
+	@Column(name = "id")
 	private Long id;
 	
 	@NotBlank
