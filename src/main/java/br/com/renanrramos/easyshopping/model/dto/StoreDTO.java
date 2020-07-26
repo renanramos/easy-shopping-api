@@ -6,6 +6,7 @@
  */
 package br.com.renanrramos.easyshopping.model.dto;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -29,9 +30,7 @@ public class StoreDTO {
 	private String registeredNumber;
 	
 	private String corporateName;
-	
-	private Set<Product> products;
-	
+
 	private Company company;
 	
 	public StoreDTO() {
@@ -43,7 +42,6 @@ public class StoreDTO {
 		this.name = store.getName();
 		this.registeredNumber = store.getRegisteredNumber();
 		this.corporateName = store.getCorporateName();
-		this.products = store.getProducts().stream().map(product -> getProductInfo(product)).collect(Collectors.toSet());
 		this.company = getCompanyInfo(store.getCompany());
 	}
 
@@ -67,14 +65,6 @@ public class StoreDTO {
 		return corporateName;
 	}
 
-	public Set<Product> getProducts() {
-		return products;
-	}
-
-	public Company getCompany() {
-		return company;
-	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -87,13 +77,14 @@ public class StoreDTO {
 		this.corporateName = corporateName;
 	}
 
-	public void setProducts(Set<Product> products) {
-		this.products = products;
+	public Company getCompany() {
+		return company;
 	}
 
 	public void setCompany(Company company) {
 		this.company = company;
 	}
+	
 
 	public static List<StoreDTO> converterStoreListToStoreDTOList(List<Store> stores) {
 		return stores.stream().map(StoreDTO::new).collect(Collectors.toList());
@@ -103,12 +94,13 @@ public class StoreDTO {
 		return new StoreDTO(store);
 	}
 
-	@Override
-	public String toString() {
-		return "StoreDTO [id=" + id + ", name=" + name + ", registeredNumber=" + registeredNumber + ", corporateName="
-				+ corporateName + ", products=" + products + ", company=" + company + "]";
+	private static List<Product> setProducts(Store store) {
+		if (store.getProducts() != null) {
+			return store.getProducts().stream().map(product -> getProductInfo(product)).collect(Collectors.toList());
+		}
+		return Collections.emptyList();
 	}
-
+	
 	private static Product getProductInfo(Product product) {
 		return ProductBuilder.builder()
 				.withDescription(product.getDescription())
@@ -125,5 +117,4 @@ public class StoreDTO {
 				.withEmail(company.getEmail())
 				.build();
 	}
-	
 }

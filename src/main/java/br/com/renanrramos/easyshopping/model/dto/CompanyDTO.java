@@ -46,9 +46,9 @@ public class CompanyDTO {
 		this.email = company.getEmail();
 		this.phone = company.getPhone();
 		this.profile = company.getProfile();
-//		this.stores = company.getStores().isEmpty() 
-//					? null 
-//					: company.getStores().stream().map(store -> getStoreInfo(store)).collect(Collectors.toSet());
+		this.stores = company.getStores().isEmpty() 
+					? null 
+					: company.getStores().stream().map(store -> getStoreInfo(store)).collect(Collectors.toSet());
 	}
 	
 	public Long getId() {
@@ -108,7 +108,6 @@ public class CompanyDTO {
 	}
 
 	public static List<CompanyDTO> converterCompanyListToCompanyDTOList(List<Company> companies) {
-		companies.forEach(company -> System.out.println(company.getStores().size()));
 		return companies.stream().map(CompanyDTO::new).collect(Collectors.toList());
 	}
 	
