@@ -6,10 +6,6 @@
  */
 package br.com.renanrramos.easyshopping.model.form;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import br.com.renanrramos.easyshopping.model.Company;
 import br.com.renanrramos.easyshopping.model.Store;
 import br.com.renanrramos.easyshopping.model.builder.StoreBuilder;
 
@@ -25,20 +21,17 @@ public class StoreForm {
 	
 	private String corporateName;
 	
-	private List<ProductForm> products;
-	
-	private Company company;
+	private Long companyId;
 
 	public StoreForm() {
 	}
 	
-	public StoreForm(String name, String registeredNumber, String corporateName, List<ProductForm> products,
-			Company company) {
+	public StoreForm(String name, String registeredNumber, String corporateName,
+			Long companyId) {
 		this.name = name;
 		this.registeredNumber = registeredNumber;
 		this.corporateName = corporateName;
-		this.products = products;
-		this.company = company;
+		this.companyId = companyId;
 	}
 
 	public String getName() {
@@ -53,12 +46,8 @@ public class StoreForm {
 		return corporateName;
 	}
 
-	public List<ProductForm> getProducts() {
-		return products;
-	}
-
-	public Company getCompany() {
-		return company;
+	public Long getCompanyId() {
+		return companyId;
 	}
 
 	public void setName(String name) {
@@ -73,19 +62,14 @@ public class StoreForm {
 		this.corporateName = corporateName;
 	}
 
-	public void setProducts(List<ProductForm> products) {
-		this.products = products;
-	}
-
-	public void setCompany(Company company) {
-		this.company = company;
+	public void setCompanyId(Long company) {
+		this.companyId = company;
 	}
 	
 	public static Store converterStoreFormToStore(StoreForm storeForm) {
 		return StoreBuilder.builder()
 				.withName(storeForm.getName())
 				.withCorporateName(storeForm.getCorporateName())
-				.withProducts(storeForm.getProducts().stream().map(ProductForm::converterProductFormToProduct).collect(Collectors.toSet()))
 				.withRegisteredNumber(storeForm.getRegisteredNumber())
 				.build();
 	}
@@ -93,6 +77,6 @@ public class StoreForm {
 	@Override
 	public String toString() {
 		return "StoreForm [name=" + name + ", registeredNumber=" + registeredNumber + ", corporateName=" + corporateName
-				+ ", products=" + products.size() + ", company=" + company + "]";
+				+ ", companyId=" + companyId + "]";
 	}
 }
