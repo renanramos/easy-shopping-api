@@ -6,6 +6,7 @@
  */
 package br.com.renanrramos.easyshopping.model.dto;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -42,7 +43,9 @@ public class CustomerDTO {
 		this.cpf = customer.getCpf();
 		this.email = customer.getEmail();
 		this.profile = customer.getProfile();
-		this.address = customer.getAddress().stream().map(address -> getAddressInfo(address)).collect(Collectors.toSet());
+		this.address = customer.getAddress() != null ?
+				customer.getAddress().stream().map(address -> getAddressInfo(address)).collect(Collectors.toSet()) :
+					new HashSet<Address>();
 	}
 
 	public Long getId() {
