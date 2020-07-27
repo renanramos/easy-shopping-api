@@ -28,7 +28,6 @@ public class CustomerForm {
 	
 	@ApiModelProperty(hidden = true)
 	private Profile profile;
-
 	
 	public CustomerForm() {
 		
