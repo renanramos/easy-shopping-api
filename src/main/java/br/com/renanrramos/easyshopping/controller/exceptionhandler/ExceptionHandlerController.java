@@ -42,9 +42,9 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler{
 	}
 
 	@ExceptionHandler(EntityNotFoundException.class)
-	protected ResponseEntity<Object> handleEntityNotFoun(EntityNotFoundException ex) {
+	protected ResponseEntity<Object> handleEntityNotFound(EntityNotFoundException ex) {
 		return buildResponseEntity(new ApiErrorBuilder()
-				.withStatus(HttpStatus.BAD_REQUEST)
+				.withStatus(HttpStatus.NOT_FOUND)
 				.withMessage(ex.getMessage())
 				.build());
 	}
