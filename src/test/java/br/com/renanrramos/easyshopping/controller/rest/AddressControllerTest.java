@@ -12,17 +12,21 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.never;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
@@ -37,6 +41,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.renanrramos.easyshopping.model.Address;
 import br.com.renanrramos.easyshopping.model.Customer;
+import br.com.renanrramos.easyshopping.model.form.AddressForm;
 import br.com.renanrramos.easyshopping.service.impl.AddressService;
 import br.com.renanrramos.easyshopping.service.impl.CustomerService;
 
@@ -98,6 +103,18 @@ public class AddressControllerTest {
 				.andExpect(jsonPath("$.cep", is("cep")));
 				
 		verify(mockService, times(1)).save(any(Address.class));
+	}
+	
+	@Test
+	public void shouldReturnNotFoundWhenHasNullCustomerId() throws JsonProcessingException, Exception {
+
+		AddressForm addressForm = new AddressForm();
+		addressForm.setCustomerId(null);
+
+		mockMvc.perform(post(BASE_URL)
+				.content(objecMapper.writeValueAsString(addressForm)));
+		
+		verify(mockService, never()).save(any(Address.class));
 	}
 	
 	private static Address getAddress() {
