@@ -61,6 +61,11 @@ public class AddressController {
 	@Transactional
 	@ApiOperation(value = "Save a new address")
 	public ResponseEntity<AddressDTO> saveAddress(@Valid @RequestBody AddressForm addressForm, UriComponentsBuilder uriBuilder) {
+		
+		if (addressForm.getCustomerId() == null) {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.CUSTOMER_NOT_FOUND);
+		}
+
 		Optional<Customer> customerOptional = customerService.findById(addressForm.getCustomerId());
 		
 		if (customerOptional.isPresent()) {
@@ -74,7 +79,7 @@ public class AddressController {
 			return ResponseEntity.created(uri).body(AddressDTO.convertAddressToAddressDTO(address));
 			
 		} else {
-			throw new EntityNotFoundException(ExceptionMessagesConstants.CUSTOMER_NOT_FOUND);
+			return ResponseEntity.notFound().build();
 		}
 	}
 	
