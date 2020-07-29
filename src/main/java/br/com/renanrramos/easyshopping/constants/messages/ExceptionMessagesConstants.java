@@ -19,5 +19,5 @@ public class ExceptionMessagesConstants {
 	public static final String PRODUCT_NOT_FOUND = "O produto informado não foi localizado";
 	public static final String STORE_NOT_FOUND = "A loja informada não foi lcocalizada";
 	
-	
+	public static final String INVALID_ID = "Id informado é inválido.";
 }
