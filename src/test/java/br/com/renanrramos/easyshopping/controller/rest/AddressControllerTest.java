@@ -18,6 +18,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -188,6 +189,38 @@ public class AddressControllerTest {
 
 		mockMvc.perform(get(BASE_URL + "/1"))
 			.andExpect(status().isNotFound());
+	}
+
+	@Test
+	public void shouldUpateAddressSuccessfully() throws JsonProcessingException, Exception {
+		Address address = getAddress();
+
+		Customer customer = getCustomer();
+
+		AddressForm addressForm = new AddressForm();
+		addressForm.setCustomerId(1L);
+		addressForm.setCep(address.getCep());
+		addressForm.setDistrict(address.getDistrict());
+		addressForm.setNumber(address.getNumber());
+		addressForm.setState(address.getState());
+		addressForm.setStreetName(address.getStreetName());
+
+	    when(customerService.findById(1L)).thenReturn(Optional.of(customer));
+	    when(mockService.findById(1L)).thenReturn(Optional.of(address));
+	    when(mockService.save(any(Address.class))).thenReturn(address);
+
+	    mockMvc.perform(put(BASE_URL + "/1")
+	    		.content(objecMapper.writeValueAsString(addressForm))
+	    		.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
+	    	.andExpect(status().isAccepted())
+	    	.andExpect(jsonPath("$.id", is(1)));
+
+	    verify(mockService, times(1)).save(any(Address.class));
+	}
+
+	@Test
+	public void shouldReturnNotFoundWhenCustomerIsInvalid() {
+		
 	}
 	
 	private static Address getAddress() {
