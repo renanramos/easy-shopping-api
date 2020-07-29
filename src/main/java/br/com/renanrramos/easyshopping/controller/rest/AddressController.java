@@ -115,7 +115,7 @@ public class AddressController {
 		if (addressForm.getCustomerId() == null) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.INVALID_ID);
 		}
-		
+
 		Optional<Customer> customerOptional = customerService.findById(addressForm.getCustomerId());
 		Customer customer;
 		if (customerOptional.isPresent()) {
@@ -148,10 +148,10 @@ public class AddressController {
 		
 		if (addressOptional.isPresent()) {
 			addressService.remove(addressId);
+			return ResponseEntity.ok().build();
 		} else {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.ADDRESS_NOT_FOUND);
 		}
-		return ResponseEntity.badRequest().build();
 	}
 
 }
