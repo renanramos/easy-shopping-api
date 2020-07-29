@@ -88,7 +88,7 @@ public class AddressControllerTest {
 	}
 
 	@Test
-	public void shouldCreateNewAddress() throws JsonProcessingException, Exception {
+	public void shouldCreateNewAddressSuccessfully() throws JsonProcessingException, Exception {
 
 		Address address = getAddress();
 
@@ -114,6 +114,19 @@ public class AddressControllerTest {
 		mockMvc.perform(post(BASE_URL)
 				.content(objecMapper.writeValueAsString(addressForm)));
 		
+		verify(mockService, never()).save(any(Address.class));
+	}
+	
+	@Test
+	public void shouldReturnNotFoundWhenCustomerDoesntExist() throws JsonProcessingException, Exception {
+		AddressForm addressForm = new AddressForm();
+		addressForm.setCustomerId(1L);
+
+		mockMvc.perform(post(BASE_URL)
+				.content(objecMapper.writeValueAsString(addressForm))
+				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
+				.andExpect(status().isNotFound());
+
 		verify(mockService, never()).save(any(Address.class));
 	}
 	
