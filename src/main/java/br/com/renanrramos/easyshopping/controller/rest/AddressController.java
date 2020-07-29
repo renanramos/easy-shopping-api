@@ -112,6 +112,10 @@ public class AddressController {
 	@ApiOperation(value = "Update an address")
 	public ResponseEntity<?> updateAddress(@PathVariable("id") Long addressId, @RequestBody AddressForm addressForm, UriComponentsBuilder uriBuilder) {
 		
+		if (addressForm.getCustomerId() == null) {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.INVALID_ID);
+		}
+		
 		Optional<Customer> customerOptional = customerService.findById(addressForm.getCustomerId());
 		Customer customer;
 		if (customerOptional.isPresent()) {
