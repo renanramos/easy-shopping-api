@@ -92,7 +92,7 @@ public class AddressForm {
 	public static Address convertAddressFormToAddress(AddressForm addressForm) {
 		return AddressBuilder
 				.builder()
-				.withCep(addressForm.cep)
+				.withCep(addressForm.getCep())
 				.withDistrict(addressForm.getDistrict())
 				.withNumber(addressForm.getNumber())
 				.withState(addressForm.getState())
