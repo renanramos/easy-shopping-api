@@ -129,7 +129,7 @@ public class AddressController {
 			address.setCustomer(customer);
 			address = addressService.save(address);
 			uri = uriBuilder.path("/addresses/{id}").buildAndExpand(address.getId()).encode().toUri();
-			return ResponseEntity.created(uri).body(AddressDTO.convertAddressToAddressDTO(address));
+			return ResponseEntity.accepted().location(uri).body(AddressDTO.convertAddressToAddressDTO(address));
 		} else {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.ADDRESS_NOT_FOUND);
 		}
