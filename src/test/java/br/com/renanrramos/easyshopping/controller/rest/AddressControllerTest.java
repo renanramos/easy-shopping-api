@@ -7,26 +7,28 @@
 package br.com.renanrramos.easyshopping.controller.rest;
 
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.never;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
-
-import javax.persistence.EntityNotFoundException;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
@@ -129,6 +131,23 @@ public class AddressControllerTest {
 
 		verify(mockService, never()).save(any(Address.class));
 	}
+
+	@Test
+	public void shouldReturnAListOfAddresses() throws Exception {
+		List<Address> addresses = new ArrayList<Address>();
+		addresses.add(getAddress());
+		addresses.add(getAddress());
+		addresses.add(getAddress());
+
+		when(mockService.findAll()).thenReturn(addresses);
+
+		mockMvc.perform(get(BASE_URL))
+			.andExpect(status().isOk());
+
+		verify(mockService, times(1)).findAll();
+		assertThat(mockService.findAll().size(), equalTo(3));
+	}
+	
 	
 	private static Address getAddress() {
 		Address address = new Address();
