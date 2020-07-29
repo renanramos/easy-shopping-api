@@ -19,6 +19,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -26,11 +27,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
@@ -219,8 +223,26 @@ public class AddressControllerTest {
 	}
 
 	@Test
-	public void shouldReturnNotFoundWhenCustomerIsInvalid() {
+	public void shouldReturnNotFoundWhenCustomerIsInvalid() throws JsonProcessingException, Exception {
+
+		mockMvc.perform(put(BASE_URL + "/1")
+				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON));
+
+		verify(customerService, never()).findById(eq(customerId));
+		verify(mockService, never()).findById(eq(addressId));
+	}
+
+	@Test
+	public void shouldDeleteAddress() throws Exception {
+		Address address = new Address();
+		address.setId(1L);
 		
+		when(mockService.findById(1L)).thenReturn(Optional.of(address));
+
+		mockMvc.perform(delete(BASE_URL + "/1"))
+			.andExpect(status().isOk());
+
+		verify(mockService, times(1)).remove(1L);
 	}
 	
 	private static Address getAddress() {
