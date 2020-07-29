@@ -80,6 +80,11 @@ public class AdministratorController {
 	@GetMapping(path = "/{id}")
 	@ApiOperation(value = "Get an administrator by id")
 	public ResponseEntity<AdministratorDTO> getAdministratorById(@PathVariable("id") Long administratorId) {
+		
+		if (administratorId == null) {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.INVALID_ID);
+		}
+		
 		Optional<Administrator> administratorOptional = administratorService.findById(administratorId);
 		if (administratorOptional.isPresent()) {
 			return ResponseEntity.ok(AdministratorDTO.converterAdministratorToAdministratorDTO(administratorOptional.get()));
@@ -92,6 +97,11 @@ public class AdministratorController {
 	@Transactional
 	@ApiOperation(value = "Update an administrator")
 	public ResponseEntity<AdministratorDTO> updateAdministrator(@PathVariable("id") Long administratorId, @RequestBody AdministratorForm administratorForm, UriComponentsBuilder uriBuilder) {
+
+		if (administratorId == null) {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.INVALID_ID);
+		}
+
 		Optional<Administrator> administratorOptional = administratorService.findById(administratorId);
 		if (administratorOptional.isPresent()) {
 			Administrator administrator = AdministratorForm.converterAdministratorFormToAdministrator(administratorForm);
@@ -109,6 +119,11 @@ public class AdministratorController {
 	@Transactional
 	@ApiOperation(value = "Remove an administrator")
 	public ResponseEntity<?> removeAdministrator(@PathVariable("id") Long administratorId) {
+
+		if (administratorId == null) {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.INVALID_ID);
+		}
+
 		Optional<Administrator> administratorOptional = administratorService.findById(administratorId);
 		if (administratorOptional.isPresent()) {
 			administratorService.remove(administratorId);
