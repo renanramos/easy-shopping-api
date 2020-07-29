@@ -6,17 +6,18 @@
  */
 package br.com.renanrramos.easyshopping.controller.rest;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -73,13 +74,15 @@ public class AddressControllerTest {
 	@MockBean
 	private CustomerService customerService;
 
-	private Optional<Customer> customerOptional = Optional.of(new Customer());
+	private Optional<Customer> customerOptional = Optional.of(getCustomer());
 
 	private MockMvc mockMvc;
 	
 	private ObjectMapper objecMapper;
 	
 	private Long customerId;
+
+	private Long addressId;
 	
 	@Before
 	public void before() {
@@ -93,12 +96,14 @@ public class AddressControllerTest {
 	public void shouldCreateNewAddressSuccessfully() throws JsonProcessingException, Exception {
 
 		Address address = getAddress();
-
-		when(customerService.findById(eq(customerId))).thenReturn(customerOptional);
+		AddressForm addressForm = new AddressForm();
+		addressForm.setCustomerId(1L);
+		
+		when(customerService.findById(1L)).thenReturn(customerOptional);
 		when(mockService.save(any(Address.class))).thenReturn(address);
 		
 		mockMvc.perform(post(BASE_URL)
-				.content(objecMapper.writeValueAsString(address))
+				.content(objecMapper.writeValueAsString(addressForm))
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
 				.andExpect(status().isCreated())
 				.andExpect(jsonPath("$.id", is(1)))
@@ -147,7 +152,43 @@ public class AddressControllerTest {
 		verify(mockService, times(1)).findAll();
 		assertThat(mockService.findAll().size(), equalTo(3));
 	}
+
+	@Test
+	public void shouldReturnEmptyListOfAddress() throws Exception {
+		List<Address> addresses = new ArrayList<Address>();
+
+		when(mockService.findAll()).thenReturn(addresses);
+
+		mockMvc.perform(get(BASE_URL))
+			.andExpect(status().isOk());
+
+		verify(mockService, times(1)).findAll();
+		assertTrue(mockService.findAll().isEmpty());
+	}
+
+	@Test
+	public void shouldReturnAddressById() throws Exception {
+		Address address = getAddress();
+
+		when(mockService.findById(1L)).thenReturn(Optional.of(address));
+
+		mockMvc.perform(get(BASE_URL + "/1"))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.id", is(1)))
+			.andExpect(jsonPath("$.streetName", is("streetName")));
+
+		verify(mockService, times(1)).findById(1L);
+	}
 	
+	@Test
+	public void shouldReturnNotFoundWhenAddressIdIsInvalid() throws Exception {
+		Address address = getAddress();
+
+		when(mockService.findById(2L)).thenReturn(Optional.of(address));
+
+		mockMvc.perform(get(BASE_URL + "/1"))
+			.andExpect(status().isNotFound());
+	}
 	
 	private static Address getAddress() {
 		Address address = new Address();
