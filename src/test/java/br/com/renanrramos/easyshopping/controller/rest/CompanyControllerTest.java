@@ -11,14 +11,15 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -63,7 +64,9 @@ public class CompanyControllerTest {
 
 	@MockBean
 	private CompanyService mockService;	
-	
+
+	private Long companyId = 1L;
+
 	private MockMvc mockMvc;
 
 	private ObjectMapper objecMapper;
@@ -86,7 +89,7 @@ public class CompanyControllerTest {
 				.content(objecMapper.writeValueAsString(company))
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
 			.andExpect(status().isCreated())
-			.andExpect(jsonPath("$.id", is(1)))
+			.andExpect(jsonPath("$.id", is(companyId)))
 			.andExpect(jsonPath("$.name", is("Teste")))
 			.andExpect(jsonPath("$.phone", is("13213321")));
 
@@ -108,6 +111,68 @@ public class CompanyControllerTest {
 		
 	}
 
+	@Test
+	public void shouldReturnListOfCompanies() throws Exception {
+		List<Company> companies = new ArrayList<Company>();
+		companies.add(getCompanyInstance());
+		companies.add(getCompanyInstance());
+		companies.add(getCompanyInstance());
+
+		when(mockService.findAll()).thenReturn(companies);
+
+		mockMvc.perform(get(BASE_URL))
+			.andExpect(status().isOk());
+
+		verify(mockService, times(1)).findAll();
+	}
+
+	@Test
+	public void shouldReturnEmptyListOfCompanies() throws Exception {
+		List<Company> companies = new ArrayList<Company>();
+
+		when(mockService.findAll()).thenReturn(companies);
+
+		mockMvc.perform(get(BASE_URL))
+			.andExpect(status().isNoContent());
+
+		verify(mockService, times(1)).findAll();
+	}
+
+	@Test
+	public void shouldReturnCompanyById() throws Exception {
+		when(mockService.findById(companyId)).thenReturn(Optional.of(getCompanyInstance()));
+
+		mockMvc.perform(get(BASE_URL + "/" + companyId))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.id", is(companyId)))
+			.andExpect(jsonPath("$.name", is("Teste")));
+
+		verify(mockService, times(1)).findById(companyId);
+	}
+
+	@Test
+	public void shoudReturnNotFoundWithAnInvalidAdministratorId() throws Exception {
+		Company company = new Company();
+
+		when(mockService.findById(2L)).thenReturn(Optional.of(company));
+
+		mockMvc.perform(get(BASE_URL + "/" + companyId))
+			.andExpect(status().isNotFound());
+
+		verify(mockService, times(1)).findById(companyId);
+	}
+
+	@Test
+	public void shouldUpdateCompany() throws Exception {
+		Company company = getCompanyInstance();
+
+		when(mockService.findById(companyId)).thenReturn(Optional.of(company));
+		when(mockService.save(any(Company.class))).thenReturn(company);
+
+		mockMvc.perform(put(BASE_URL + "/" + companyId))
+			.andExpect(status().isAccepted());
+	}
+	
 	private static Company getCompanyInstance() {
 		Company company = new Company();
 		company.setId(1L);
