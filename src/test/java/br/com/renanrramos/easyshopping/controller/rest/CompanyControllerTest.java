@@ -11,9 +11,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.never;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -89,7 +91,7 @@ public class CompanyControllerTest {
 				.content(objecMapper.writeValueAsString(company))
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
 			.andExpect(status().isCreated())
-			.andExpect(jsonPath("$.id", is(companyId)))
+			.andExpect(jsonPath("$.id", is(1)))
 			.andExpect(jsonPath("$.name", is("Teste")))
 			.andExpect(jsonPath("$.phone", is("13213321")));
 
@@ -144,7 +146,7 @@ public class CompanyControllerTest {
 
 		mockMvc.perform(get(BASE_URL + "/" + companyId))
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.id", is(companyId)))
+			.andExpect(jsonPath("$.id", is(1)))
 			.andExpect(jsonPath("$.name", is("Teste")));
 
 		verify(mockService, times(1)).findById(companyId);
@@ -169,10 +171,26 @@ public class CompanyControllerTest {
 		when(mockService.findById(companyId)).thenReturn(Optional.of(company));
 		when(mockService.save(any(Company.class))).thenReturn(company);
 
-		mockMvc.perform(put(BASE_URL + "/" + companyId))
-			.andExpect(status().isAccepted());
+		mockMvc.perform(put(BASE_URL + "/" + companyId)
+				.content(objecMapper.writeValueAsString(company))
+				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
+			.andExpect(status().isAccepted())
+			.andExpect(jsonPath("$.id", is(1)));
 	}
-	
+
+	@Test
+	public void shouldDeleteCompany() throws Exception {
+		Company company = getCompanyInstance();
+		company.setId(companyId);
+
+		when(mockService.findById(companyId)).thenReturn(Optional.of(company));
+
+		mockMvc.perform(delete(BASE_URL + "/" + companyId))
+			.andExpect(status().isOk());
+
+		verify(mockService, times(1)).remove(companyId);
+	}
+
 	private static Company getCompanyInstance() {
 		Company company = new Company();
 		company.setId(1L);
