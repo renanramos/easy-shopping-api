@@ -8,7 +8,6 @@ package br.com.renanrramos.easyshopping.model.dto;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import br.com.renanrramos.easyshopping.model.Company;
@@ -34,7 +33,7 @@ public class StoreDTO {
 	private Company company;
 	
 	public StoreDTO() {
-	
+		// Intentionally empty
 	}
 	
 	public StoreDTO(Store store) {

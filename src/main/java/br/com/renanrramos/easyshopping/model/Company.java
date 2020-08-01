@@ -21,11 +21,17 @@ import javax.validation.constraints.NotBlank;
 
 import br.com.renanrramos.easyshopping.enums.Profile;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author renan.ramos
  *
  */
+@Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @Entity
 public class Company extends User implements Serializable{
 
@@ -49,45 +55,12 @@ public class Company extends User implements Serializable{
 	private List<Store> stores = new ArrayList<>();
 
 	public Company() {		
+		// Intentionally empty
 	}
 
-	public String getRegisteredNumber() {
-		return registeredNumber;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setRegisteredNumber(String registeredNumber) {
-		this.registeredNumber = registeredNumber;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public Profile getProfile() {
-		return profile;
-	}
-
-	public void setProfile(Profile profile) {
-		this.profile = profile;
-	}
-
-	public List<Store> getStores() {
-		return stores;
-	}
-
-	public void setStores(List<Store> stores) {
-		this.stores = stores;
+	@Override
+	public String toString() {
+		return "Company [registeredNumber=" + registeredNumber + ", email=" + email + ", phone=" + phone + ", profile="
+				+ profile + ", stores=" + stores + "]";
 	}
 }

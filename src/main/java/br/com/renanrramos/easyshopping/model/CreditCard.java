@@ -22,10 +22,17 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * @author renan.ramos
  *
  */
+@Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 public class CreditCard implements Serializable{
 
@@ -54,46 +61,7 @@ public class CreditCard implements Serializable{
 	private Customer customer;
 
 	public CreditCard() {
-	}
-
-	public String getCreditCardNumber() {
-		return creditCardNumber;
-	}
-
-	public String getOwnerName() {
-		return ownerName;
-	}
-
-	public LocalDate getValidDate() {
-		return validDate;
-	}
-
-	public Integer getCode() {
-		return code;
-	}
-
-	public Customer getCustomer() {
-		return customer != null ? customer : new Customer();
-	}
-
-	public void setCreditCardNumber(String creditCardNumber) {
-		this.creditCardNumber = creditCardNumber;
-	}
-
-	public void setOwnerName(String ownerName) {
-		this.ownerName = ownerName;
-	}
-
-	public void setValidDate(LocalDate validDate) {
-		this.validDate = validDate;
-	}
-
-	public void setCode(Integer code) {
-		this.code = code;
-	}
-
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
+		// Intentionally empty
 	}
 
 	@Override

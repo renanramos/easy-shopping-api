@@ -21,11 +21,17 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author renan.ramos
  *
  */
+@Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 public class Product implements Serializable{
 
@@ -55,51 +61,13 @@ public class Product implements Serializable{
 	@JoinColumn(name = "store_id")
 	private Store store;
 
-	public Long getId() {
-		return id;
+	public Product() {
+		// Intentionally empty
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public double getPrice() {
-		return price;
-	}
-
-	public Store getStore() {
-		return store;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public void setPrice(double price) {
-		this.price = price;
-	}
-
-	public void setStore(Store store) {
-		this.store = store;
-	}
-
-	public ProductCategory getProductCategory() {
-		return productCategory;
-	}
-
-	public void setProductCategory(ProductCategory productCategory) {
-		this.productCategory = productCategory;
+	@Override
+	public String toString() {
+		return "Product [id=" + id + ", name=" + name + ", description=" + description + ", price=" + price
+				+ ", productCategory=" + productCategory + ", store=" + store + "]";
 	}
 }

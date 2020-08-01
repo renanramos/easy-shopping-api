@@ -23,11 +23,17 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author renan.ramos
  *
  */
+@Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 public class Store implements Serializable{
 
@@ -56,53 +62,14 @@ public class Store implements Serializable{
 	@ManyToOne(targetEntity = Company.class, fetch = FetchType.EAGER)
 	@JoinColumn(name = "company_id")
 	private Company company;
-	
-	public Long getId() {
-		return id;
-	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public String getRegisteredNumber() {
-		return registeredNumber;
-	}
-	
-	public String getCorporateName() {
-		return corporateName;
-	}
-	
-	public List<Product> getProducts() {
-		return products;
-	}
-	
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public void setRegisteredNumber(String registeredNumber) {
-		this.registeredNumber = registeredNumber;
-	}
-	
-	public void setCorporateName(String corporateName) {
-		this.corporateName = corporateName;
-	}
-	
-	public void setProducts(List<Product> products) {
-		this.products = products;
+
+	public Store() {
+		// Intentionally empty
 	}
 
-	public Company getCompany() {
-		return company;
+	@Override
+	public String toString() {
+		return "Store [id=" + id + ", name=" + name + ", registeredNumber=" + registeredNumber + ", corporateName="
+				+ corporateName + ", products=" + products + ", company=" + company + "]";
 	}
-
-	public void setCompany(Company company) {
-		this.company = company;
-	}
-
 }

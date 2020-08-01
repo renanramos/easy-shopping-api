@@ -12,11 +12,17 @@ import javax.persistence.Enumerated;
 
 import br.com.renanrramos.easyshopping.enums.Profile;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author renan.ramos
  *
  */
+@Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @Entity
 public class Administrator extends User{
 
@@ -26,6 +32,10 @@ public class Administrator extends User{
 	@Enumerated(EnumType.STRING)
 	private Profile profile;
 
+	public Administrator() {
+		// Intentionally empty
+	}
+	
 	public Profile getProfile() {
 		return profile;
 	}
@@ -33,5 +43,9 @@ public class Administrator extends User{
 	public void setProfile(Profile profile) {
 		this.profile = profile;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Administrator [profile=" + profile + "]";
+	}
 }
