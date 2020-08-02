@@ -7,7 +7,6 @@
 package br.com.renanrramos.easyshopping.model.form;
 
 import br.com.renanrramos.easyshopping.model.Address;
-import br.com.renanrramos.easyshopping.model.Customer;
 import br.com.renanrramos.easyshopping.model.builder.AddressBuilder;
 
 /**
