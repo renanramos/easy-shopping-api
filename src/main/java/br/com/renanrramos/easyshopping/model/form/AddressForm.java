@@ -46,7 +46,7 @@ public class AddressForm {
 		this.customerId = customerId;
 	}
 
-	public static Address convertAddressFormToAddress(AddressForm addressForm) {
+	public static Address converterAddressFormToAddress(AddressForm addressForm) {
 		return AddressBuilder
 				.builder()
 				.withCep(addressForm.getCep())
@@ -55,5 +55,11 @@ public class AddressForm {
 				.withState(addressForm.getState())
 				.withStreetName(addressForm.getStreetName())
 				.build();
-	}	
+	}
+
+	@Override
+	public String toString() {
+		return "AddressForm [streetName=" + streetName + ", district=" + district + ", number=" + number + ", cep="
+				+ cep + ", state=" + state + ", customerId=" + customerId + "]";
+	}
 }

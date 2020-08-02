@@ -54,9 +54,7 @@ public class ProductForm {
 	@Override
 	public String toString() {
 		return "ProductForm [name=" + name + ", description=" + description + ", price=" + price + ", productCategoryId="
-				+ productCategoryId + ", storeId=" + storeId + ", getName()=" + getName() + ", getDescription()="
-				+ getDescription() + ", getPrice()=" + getPrice() + ", getProductCategory()=" + getProductCategoryId()
-				+ ", getStoreId()=" + getStoreId() + "]";
+				+ productCategoryId + ", storeId=" + storeId + "]";
 	}
 	
 }

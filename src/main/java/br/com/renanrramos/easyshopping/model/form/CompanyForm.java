@@ -43,7 +43,7 @@ public class CompanyForm {
 		this.phone = phone;
 	}
 
-	public static Company converterToCompany(CompanyForm companyForm) {
+	public static Company converterCompanyFormToCompany(CompanyForm companyForm) {
 		return CompanyBuilder.builder()
 				.withName(companyForm.getName())
 				.withEmail(companyForm.getEmail())
