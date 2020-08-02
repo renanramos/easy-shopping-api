@@ -71,7 +71,7 @@ public class AddressController {
 		if (customerOptional.isPresent()) {
 			
 			Customer customer = customerOptional.get();
-			Address address = AddressForm.convertAddressFormToAddress(addressForm);
+			Address address = AddressForm.converterAddressFormToAddress(addressForm);
 			address.setCustomer(customer);
 			address = addressService.save(address);
 			uri = uriBuilder.path("/addresses/{id}").buildAndExpand(address.getId()).encode().toUri();
@@ -128,7 +128,7 @@ public class AddressController {
 		
 		if (addressOptional.isPresent()) {
 			
-			Address address = AddressForm.convertAddressFormToAddress(addressForm);
+			Address address = AddressForm.converterAddressFormToAddress(addressForm);
 			address.setId(addressId);
 			address.setCustomer(customer);
 			address = addressService.save(address);

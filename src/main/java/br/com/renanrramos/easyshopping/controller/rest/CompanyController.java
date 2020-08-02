@@ -56,7 +56,7 @@ public class CompanyController {
 	@Transactional
 	@ApiOperation(value = "Save a new company")
 	public ResponseEntity<CompanyDTO> saveCompany(@Valid @RequestBody CompanyForm companyForm, UriComponentsBuilder uriBuilder) {
-		Company company = CompanyForm.converterToCompany(companyForm);
+		Company company = CompanyForm.converterCompanyFormToCompany(companyForm);
 		Company companyCreated = companyService.save(company);
 		if (companyCreated.getId() != null) {
 			uri = uriBuilder.path("/companies/{id}").buildAndExpand(companyCreated.getId()).encode().toUri();			
@@ -94,7 +94,7 @@ public class CompanyController {
 	public ResponseEntity<CompanyDTO> updateCompany(@PathVariable("id") Long companyId, @Valid @RequestBody CompanyForm companyForm, UriComponentsBuilder uriBuilder) {
 		Optional<Company> companyOptional = companyService.findById(companyId);
 		if(companyOptional.isPresent()) {
-			Company company = CompanyForm.converterToCompany(companyForm);
+			Company company = CompanyForm.converterCompanyFormToCompany(companyForm);
 			company.setId(companyId);
 			CompanyDTO updatedCompanyDTO = CompanyDTO.converterToCompanyDTO((companyService.save(company)));
 			uri = uriBuilder.path("/companies/{id}").buildAndExpand(company.getId()).encode().toUri();
