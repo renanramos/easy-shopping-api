@@ -8,7 +8,6 @@ package br.com.renanrramos.easyshopping.model.dto;
 
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import br.com.renanrramos.easyshopping.enums.Profile;
