@@ -14,11 +14,17 @@ import br.com.renanrramos.easyshopping.enums.Profile;
 import br.com.renanrramos.easyshopping.model.Company;
 import br.com.renanrramos.easyshopping.model.Store;
 import br.com.renanrramos.easyshopping.model.builder.StoreBuilder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author renan.ramos
  *
  */
+@Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class CompanyDTO {
 
 	private Long id;
@@ -36,6 +42,7 @@ public class CompanyDTO {
 	private Set<Store> stores;
 	
 	public CompanyDTO() {
+		// Intentionally empty
 	}
 	
 	public CompanyDTO(Company company) {
@@ -47,63 +54,7 @@ public class CompanyDTO {
 		this.profile = company.getProfile();
 		this.stores = company.getStores().isEmpty() 
 					? null 
-					: company.getStores().stream().map(store -> getStoreInfo(store)).collect(Collectors.toSet());
-	}
-	
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public String getRegisteredNumber() {
-		return registeredNumber;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public Profile getProfile() {
-		return profile;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setRegisteredNumber(String registeredNumber) {
-		this.registeredNumber = registeredNumber;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public void setProfile(Profile profile) {
-		this.profile = profile;
-	}
-
-	public Set<Store> getStores() {
-		return stores;
-	}
-
-	public void setStores(Set<Store> stores) {
-		this.stores = stores;
+					: company.getStores().stream().map(CompanyDTO::getStoreInfo).collect(Collectors.toSet());
 	}
 
 	public static List<CompanyDTO> converterCompanyListToCompanyDTOList(List<Company> companies) {

@@ -15,11 +15,17 @@ import br.com.renanrramos.easyshopping.model.Product;
 import br.com.renanrramos.easyshopping.model.Store;
 import br.com.renanrramos.easyshopping.model.builder.CompanyBuilder;
 import br.com.renanrramos.easyshopping.model.builder.ProductBuilder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author renan.ramos
  *
  */
+@Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class StoreDTO {
 
 	private Long id;
@@ -44,47 +50,6 @@ public class StoreDTO {
 		this.company = getCompanyInfo(store.getCompany());
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public String getRegisteredNumber() {
-		return registeredNumber;
-	}
-
-	public String getCorporateName() {
-		return corporateName;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setRegisteredNumber(String registeredNumber) {
-		this.registeredNumber = registeredNumber;
-	}
-
-	public void setCorporateName(String corporateName) {
-		this.corporateName = corporateName;
-	}
-
-	public Company getCompany() {
-		return company;
-	}
-
-	public void setCompany(Company company) {
-		this.company = company;
-	}
-	
-
 	public static List<StoreDTO> converterStoreListToStoreDTOList(List<Store> stores) {
 		return stores.stream().map(StoreDTO::new).collect(Collectors.toList());
 	}
@@ -95,7 +60,7 @@ public class StoreDTO {
 
 	private static List<Product> setProducts(Store store) {
 		if (store.getProducts() != null) {
-			return store.getProducts().stream().map(product -> getProductInfo(product)).collect(Collectors.toList());
+			return store.getProducts().stream().map(StoreDTO::getProductInfo).collect(Collectors.toList());
 		}
 		return Collections.emptyList();
 	}

@@ -12,10 +12,17 @@ import java.util.stream.Collectors;
 import br.com.renanrramos.easyshopping.model.Product;
 import br.com.renanrramos.easyshopping.model.Store;
 import br.com.renanrramos.easyshopping.model.builder.StoreBuilder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * @author renan.ramos
  *
  */
+@Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class ProductDTO {
 
 	private Long id;
@@ -31,6 +38,7 @@ public class ProductDTO {
 	private Store store;
 	
 	public ProductDTO() {
+		// Intentionally empty
 	}
 
 	public ProductDTO(Product product) {
@@ -41,55 +49,7 @@ public class ProductDTO {
 		this.productCategoryName = product.getProductCategory().getName();
 		this.store = getStoreInfo(product.getStore());
 	}
-	
-	public Long getId() {
-		return id;
-	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public double getPrice() {
-		return price;
-	}
-
-	public String getProductCategoryName() {
-		return productCategoryName;
-	}
-
-	public Store getStore() {
-		return store;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public void setPrice(double price) {
-		this.price = price;
-	}
-
-	public void setProductCategory(String productCategoryName) {
-		this.productCategoryName = productCategoryName;
-	}
-
-	public void setStore(Store store) {
-		this.store = store;
-	}
-	
 	public static List<ProductDTO> converterProductListToProductDTOList(List<Product> products) {
 		return products.stream().map(ProductDTO::new).collect(Collectors.toList());
 	}

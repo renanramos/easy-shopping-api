@@ -10,11 +10,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import br.com.renanrramos.easyshopping.model.ProductCategory;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author renan.ramos
  *
  */
+@Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class ProductCategoryDTO {
 	
 	private Long id;
@@ -22,27 +28,12 @@ public class ProductCategoryDTO {
 	private String name;
 	
 	public ProductCategoryDTO() {
+		// Intentionally empty
 	}
 
 	public ProductCategoryDTO(ProductCategory productCategory) {
 		this.id = productCategory.getId();
 		this.name = productCategory.getName();
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 	
 	public static List<ProductCategoryDTO> converterProductCategoryListToProductCategoryDTOList(List<ProductCategory> productCategory) {

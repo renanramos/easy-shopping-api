@@ -15,11 +15,17 @@ import br.com.renanrramos.easyshopping.enums.Profile;
 import br.com.renanrramos.easyshopping.model.Address;
 import br.com.renanrramos.easyshopping.model.Customer;
 import br.com.renanrramos.easyshopping.model.builder.AddressBuilder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author renan.ramos
  *
  */
+@Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class CustomerDTO {
 	
 	private Long id;
@@ -35,6 +41,7 @@ public class CustomerDTO {
 	private Set<Address> address;
 
 	public CustomerDTO() {
+		// Intentionally empty
 	}
 	
 	public CustomerDTO(Customer customer) {
@@ -44,52 +51,8 @@ public class CustomerDTO {
 		this.email = customer.getEmail();
 		this.profile = customer.getProfile();
 		this.address = customer.getAddress() != null ?
-				customer.getAddress().stream().map(address -> getAddressInfo(address)).collect(Collectors.toSet()) :
-					new HashSet<Address>();
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public String getCpf() {
-		return cpf;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public Profile getProfile() {
-		return profile;
-	}
-	
-	public Set<Address> getAddress() {
-		return address;
-	}
-
-	public void setAddress(Set<Address> address) {
-		this.address = address;
+				customer.getAddress().stream().map(CustomerDTO::getAddressInfo).collect(Collectors.toSet()) :
+					new HashSet<>();
 	}
 
 	public static List<CustomerDTO> converterCustomerListToCustomerDTOList(List<Customer> customer) {

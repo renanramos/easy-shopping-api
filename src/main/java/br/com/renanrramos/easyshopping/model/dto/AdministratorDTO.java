@@ -11,11 +11,17 @@ import java.util.stream.Collectors;
 
 import br.com.renanrramos.easyshopping.enums.Profile;
 import br.com.renanrramos.easyshopping.model.Administrator;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author renan.ramos
  *
  */
+@Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class AdministratorDTO {
 	
 	private Long id;
@@ -25,36 +31,13 @@ public class AdministratorDTO {
 	private Profile profile;
 	
 	public AdministratorDTO() {
+		// Intentionally empty
 	}
 	
 	public AdministratorDTO(Administrator administrator) {
 		this.id = administrator.getId();
 		this.name = administrator.getName();
 		this.profile = administrator.getProfile();
-	}
-	
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public Profile getProfile() {
-		return profile;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setProfile(Profile profile) {
-		this.profile = profile;
 	}
 
 	public static AdministratorDTO converterAdministratorToAdministratorDTO(Administrator administrator) {
