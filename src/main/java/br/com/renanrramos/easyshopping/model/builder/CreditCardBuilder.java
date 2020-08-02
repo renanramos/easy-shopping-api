@@ -36,7 +36,7 @@ public class CreditCardBuilder {
 		return this;
 	}
 
-	public CreditCardBuilder withCalidDate(LocalDate validDate) {
+	public CreditCardBuilder withValidDate(LocalDate validDate) {
 		this.creditCard.setValidDate(validDate);
 		return this;
 	}
