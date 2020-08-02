@@ -8,27 +8,26 @@ package br.com.renanrramos.easyshopping.model.form;
 
 import br.com.renanrramos.easyshopping.model.ProductCategory;
 import br.com.renanrramos.easyshopping.model.builder.ProductCategoryBuilder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author renan.ramos
  *
  */
+@Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class ProductCategoryForm {
 
 	private String name;
 	
 	public ProductCategoryForm() {
+		// Intentionlly empty
 	}
 
 	public ProductCategoryForm(String name) {
-		this.name = name;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
 		this.name = name;
 	}
 
@@ -42,5 +41,5 @@ public class ProductCategoryForm {
 	public String toString() {
 		return "ProductCategoryForm [name=" + name + "]";
 	}
-		
+	
 }

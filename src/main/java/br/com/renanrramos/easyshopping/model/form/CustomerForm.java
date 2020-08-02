@@ -12,11 +12,17 @@ import br.com.renanrramos.easyshopping.enums.Profile;
 import br.com.renanrramos.easyshopping.model.Customer;
 import br.com.renanrramos.easyshopping.model.builder.CustomerBuilder;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author renan.ramos
  *
  */
+@Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class CustomerForm {
 
 	private String name;
@@ -30,45 +36,13 @@ public class CustomerForm {
 	private Profile profile;
 	
 	public CustomerForm() {
-		
+		// Intentionally empty
 	}
 	
 	public CustomerForm(String name, String email, String cpf) {
 		this.name = name;
 		this.email = email;
 		this.cpf = cpf;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public String getCpf() {
-		return cpf;
-	}
-
-	public Profile getProfile() {
-		return profile;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
-
-	public void setProfile(Profile profile) {
-		this.profile = profile;
 	}
 
 	public static Customer converterCustomerFormToCustomer(CustomerForm customerForm) {

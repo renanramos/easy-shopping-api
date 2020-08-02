@@ -8,11 +8,17 @@ package br.com.renanrramos.easyshopping.model.form;
 
 import br.com.renanrramos.easyshopping.model.Address;
 import br.com.renanrramos.easyshopping.model.builder.AddressBuilder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author renan.ramos
  *
  */
+@Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class AddressForm {
 
 	private String streetName;
@@ -28,6 +34,7 @@ public class AddressForm {
 	private Long customerId;
 
 	public AddressForm() {
+		// Intentionally empty
 	}
 
 	public AddressForm(String streetName, String district, Long number, String cep, String state, Long customerId) {
@@ -39,55 +46,6 @@ public class AddressForm {
 		this.customerId = customerId;
 	}
 
-	public String getStreetName() {
-		return streetName;
-	}
-
-	public String getDistrict() {
-		return district;
-	}
-
-	public Long getNumber() {
-		return number;
-	}
-
-	public String getCep() {
-		return cep;
-	}
-
-	public String getState() {
-		return state;
-	}
-
-	public Long getCustomerId() {
-		return customerId;
-	}
-
-	public void setStreetName(String streetName) {
-		this.streetName = streetName;
-	}
-
-	public void setDistrict(String district) {
-		this.district = district;
-	}
-
-	public void setNumber(Long number) {
-		this.number = number;
-	}
-
-	public void setCep(String cep) {
-		this.cep = cep;
-	}
-
-	public void setState(String state) {
-		this.state = state;
-	}
-
-	public void setCustomerId(Long customerId) {
-		this.customerId = customerId;
-	}
-	
-
 	public static Address convertAddressFormToAddress(AddressForm addressForm) {
 		return AddressBuilder
 				.builder()
@@ -97,6 +55,5 @@ public class AddressForm {
 				.withState(addressForm.getState())
 				.withStreetName(addressForm.getStreetName())
 				.build();
-	}
-	
+	}	
 }

@@ -10,11 +10,17 @@ import javax.validation.constraints.Email;
 
 import br.com.renanrramos.easyshopping.model.Company;
 import br.com.renanrramos.easyshopping.model.builder.CompanyBuilder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author renan.ramos
  *
  */
+@Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class CompanyForm {
 
 	private String registeredNumber;
@@ -27,44 +33,13 @@ public class CompanyForm {
 	private String phone;
 
 	public CompanyForm() {
+		// Intentionally empty
 	}
 
 	public CompanyForm(String name, String registeredNumber, String email, String phone) {
 		this.name = name;
 		this.registeredNumber = registeredNumber;
 		this.email = email;
-		this.phone = phone;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public String getRegisteredNumber() {
-		return registeredNumber;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setRegisteredNumber(String registeredNumber) {
-		this.registeredNumber = registeredNumber;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 

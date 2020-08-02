@@ -7,13 +7,18 @@
 package br.com.renanrramos.easyshopping.model.form;
 
 import br.com.renanrramos.easyshopping.model.Product;
-import br.com.renanrramos.easyshopping.model.ProductCategory;
 import br.com.renanrramos.easyshopping.model.builder.ProductBuilder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author renan.ramos
  *
  */
+@Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class ProductForm {
 
 	private String name;
@@ -27,6 +32,7 @@ public class ProductForm {
 	private Long storeId;
 
 	public ProductForm() {
+		// Intentionally empty
 	}
 
 	public ProductForm(String name, String description, double price, Long productCategoryId, Long storeId) {
@@ -36,47 +42,7 @@ public class ProductForm {
 		this.productCategoryId = productCategoryId;
 		this.storeId = storeId;
 	}
-	
-	public String getName() {
-		return name;
-	}
 
-	public String getDescription() {
-		return description;
-	}
-
-	public double getPrice() {
-		return price;
-	}
-
-	public Long getProductCategoryId() {
-		return productCategoryId;
-	}
-
-	public Long getStoreId() {
-		return storeId;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public void setPrice(double price) {
-		this.price = price;
-	}
-
-	public void setProductCategoryId(Long productCategoryId) {
-		this.productCategoryId = productCategoryId;
-	}
-
-	public void setStoreId(Long storeId) {
-		this.storeId = storeId;
-	}
-	
 	public static Product converterProductFormToProduct(ProductForm productForm) {
 		return ProductBuilder.builder()
 				.withName(productForm.getName())

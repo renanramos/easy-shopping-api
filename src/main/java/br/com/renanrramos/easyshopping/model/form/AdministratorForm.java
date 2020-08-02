@@ -11,11 +11,17 @@ import javax.validation.constraints.Size;
 
 import br.com.renanrramos.easyshopping.model.Administrator;
 import br.com.renanrramos.easyshopping.model.builder.AdministratorBuilder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author renan.ramos
  *
  */
+@Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class AdministratorForm {
 
 	@NotBlank
@@ -23,17 +29,10 @@ public class AdministratorForm {
 	private String name;
 	
 	public AdministratorForm() {
+		// Intentionally empty
 	}
 
 	public AdministratorForm(String name) {
-		this.name = name;
-	}
-	
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
 		this.name = name;
 	}
 
