@@ -17,8 +17,11 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -86,5 +89,65 @@ public class CreditCardController {
 		List<CreditCard> creditCards = creditCardService.findAll();
 		return ResponseEntity.ok(CreditCardDTO.converterCreditCardListToCreditCardDTOList(creditCards));
 	}
-	
+
+	@ResponseBody
+	@GetMapping(path = "/{id}")
+	@ApiOperation(value = "Get a credit card by id")
+	public ResponseEntity<CreditCardDTO> getCreditCardById(@PathVariable("id") Long creditCardId) {
+		Optional<CreditCard> creditCardOptional = creditCardService.findById(creditCardId);
+
+		if (creditCardOptional.isPresent()) {
+			CreditCard creditCard = creditCardOptional.get();
+			return ResponseEntity.ok(CreditCardDTO.converterCreditCardToCreditCardDTO(creditCard));
+		}
+
+		return ResponseEntity.notFound().build();
+	}
+
+	@ResponseBody
+	@PutMapping(path = "/{id}")
+	@ApiOperation(value = "Update a credit card")
+	public ResponseEntity<?> updateCreditCard(@PathVariable("id") Long creditCardId, @RequestBody CreditCardForm creditCardForm, UriComponentsBuilder uriBuilder) {
+		
+		if (creditCardForm.getCustomerId() == null) {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.CUSTOMER_NOT_FOUND);
+		}
+
+		Optional<Customer> customerOptional = customerService.findById(creditCardForm.getCustomerId());
+		Customer customer;
+		if (customerOptional.isPresent()) {
+			customer = customerOptional.get();
+		} else {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.CUSTOMER_NOT_FOUND);
+		}
+
+		Optional<CreditCard> creditCardOptional = creditCardService.findById(creditCardId);
+
+		if (creditCardOptional.isPresent()) {
+
+			CreditCard creditCard = CreditCardForm.converterCreditCardFormToCreditCard(creditCardForm);
+			creditCard.setId(creditCardId);
+			creditCard.setCustomer(customer);
+			creditCard = creditCardService.save(creditCard);
+			uri = uriBuilder.path("/creditCards/{id}").buildAndExpand(creditCard.getId()).encode().toUri();
+			return ResponseEntity.accepted().location(uri).body(CreditCardDTO.converterCreditCardToCreditCardDTO(creditCard));
+		} else {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.CREDIT_CARD_NOT_FOUND);
+		}
+	}
+
+	@ResponseBody
+	@DeleteMapping(path = "/{id}")
+	@Transactional
+	@ApiOperation(value = "Remove a credit card")
+	public ResponseEntity<?> removeCreditCard(@PathVariable("id") Long creditCardId) {
+		Optional<CreditCard> creditCardOptional = creditCardService.findById(creditCardId);
+
+		if (creditCardOptional.isPresent()) {
+			creditCardService.remove(creditCardId);
+			return ResponseEntity.ok().build();
+		} else {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.CREDIT_CARD_NOT_FOUND);
+		}
+	}
 }
