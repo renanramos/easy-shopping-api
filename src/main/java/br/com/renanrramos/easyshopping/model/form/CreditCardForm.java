@@ -22,7 +22,7 @@ import lombok.Setter;
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class CreditCardForm {
-
+	
 	private String creditCardNumber;
 
 	private String ownerName;
@@ -31,18 +31,22 @@ public class CreditCardForm {
 
 	private Integer code;
 
+	private Long customerId;
+
 	public CreditCardForm() {
 		// Intentionally empty
 	}
 
-	public CreditCardForm(String creditCardNumber, String ownerName, LocalDate validDate, Integer code) {
+	public CreditCardForm(String creditCardNumber, String ownerName, 
+			LocalDate validDate, Integer code, Long customerId) {
 		this.creditCardNumber = creditCardNumber;
 		this.ownerName = ownerName;
 		this.validDate = validDate;
 		this.code = code;
+		this.customerId = customerId;
 	}
 
-	public static CreditCard convertCreditCardFormToCreditCard(CreditCardForm creditCardForm) {
+	public static CreditCard converterCreditCardFormToCreditCard(CreditCardForm creditCardForm) {
 		return CreditCardBuilder
 				.builder()
 				.withCreditCardNumber(creditCardForm.getCreditCardNumber())
