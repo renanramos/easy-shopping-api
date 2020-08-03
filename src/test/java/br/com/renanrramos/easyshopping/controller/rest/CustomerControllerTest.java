@@ -50,7 +50,7 @@ import br.com.renanrramos.easyshopping.service.impl.CustomerService;
 @ContextConfiguration(classes = {
 		CustomerController.class
 })
-class CustomerControllerTest {
+public class CustomerControllerTest {
 
 	private final String BASE_URL = "/customers";
 
@@ -87,7 +87,6 @@ class CustomerControllerTest {
 				.content(objectMapper.writeValueAsString(customer))
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
 			.andExpect(status().isCreated())
-			.andExpect(jsonPath("$.id", is(1)))
 			.andExpect(jsonPath("$.name", is("name")));
 
 		verify(mockService, times(1)).save(any(Customer.class));
