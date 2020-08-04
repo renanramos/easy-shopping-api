@@ -15,6 +15,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -100,7 +101,7 @@ public class CustomerController {
 			uri = uriBuilder.path("/customers/{id}").buildAndExpand(customerId).encode().toUri();
 			return ResponseEntity.accepted().location(uri).body(customerUpdatedDTO);
 		} else {
-			throw new EntityNotFoundException(ExceptionMessagesConstants.ACCOUNT_NOT_FOUND);
+			return ResponseEntity.notFound().build();
 		}
 	}
 
