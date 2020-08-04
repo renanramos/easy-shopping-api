@@ -6,19 +6,20 @@
  */
 package br.com.renanrramos.easyshopping.controller.rest;
 
-import java.util.HashSet;
-
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -92,6 +93,72 @@ public class CustomerControllerTest {
 		verify(mockService, times(1)).save(any(Customer.class));
 	}
 
+	@Test
+	public void shouldReturnBadRequestWhenTryingCreateCustomer() throws JsonProcessingException, Exception {
+		Customer customer = new Customer();
+
+		when(mockService.save(any(Customer.class))).thenReturn(customer);
+
+		mockMvc.perform(post(BASE_URL)
+				.content(objectMapper.writeValueAsString(customer))
+				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
+			.andExpect(status().isBadRequest());
+
+		verify(mockService, times(1)).save(any(Customer.class));
+	}
+
+	@Test
+	public void shouldReturnListOfCustomers() throws JsonProcessingException, Exception {
+		List<Customer> customers = new ArrayList<Customer>();
+		customers.add(getCustomerInstance());
+		customers.add(getCustomerInstance());
+		customers.add(getCustomerInstance());
+
+		when(mockService.findAll()).thenReturn(customers);
+
+		mockMvc.perform(get(BASE_URL)
+				.content(objectMapper.writeValueAsString(customers))
+				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
+			.andExpect(status().isOk());
+
+		verify(mockService, times(1)).findAll();
+	}
+
+	@Test
+	public void shouldReturnEmtpyListOfCustomrers() throws JsonProcessingException, Exception {
+		List<Customer> customers = new ArrayList<Customer>();
+
+		when(mockService.findAll()).thenReturn(customers);
+
+		mockMvc.perform(get(BASE_URL))
+			.andExpect(status().isNoContent());
+
+		verify(mockService, times(1)).findAll();	
+	}
+
+	@Test
+	public void shouldReturnCustomerById() throws Exception {
+		when(mockService.findById(customerId)).thenReturn(Optional.of(getCustomerInstance()));
+
+		mockMvc.perform(get(BASE_URL + "/" + customerId))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.id", is(1)))
+			.andExpect(jsonPath("$.name", is("name")));
+
+		verify(mockService, times(1)).findById(customerId);
+	}
+
+	@Test
+	public void shouldReturnNotFoundWithAnInvalidCustomerId() throws Exception {
+		Customer customer = new Customer();
+		
+		when(mockService.findById(2L)).thenReturn(Optional.of(customer));
+
+		mockMvc.perform(get(BASE_URL + "/" + customerId))
+			.andExpect(status().isNotFound());
+
+		verify(mockService, times(1)).findById(customerId);
+	}
 
 	private static Customer getCustomerInstance() {
 		Customer customer = new Customer();
