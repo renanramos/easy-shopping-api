@@ -152,7 +152,7 @@ public class CompanyControllerTest {
 	}
 
 	@Test
-	public void shoudReturnNotFoundWithAnInvalidAdministratorId() throws Exception {
+	public void shoudReturnNotFoundWithAnInvalidCustomerId() throws Exception {
 		Company company = new Company();
 
 		when(mockService.findById(2L)).thenReturn(Optional.of(company));
