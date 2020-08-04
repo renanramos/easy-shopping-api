@@ -26,7 +26,7 @@ import lombok.Setter;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class User implements Serializable{
+public class User implements Serializable{
  
 	private static final long serialVersionUID = -234475925678811197L;
 
@@ -39,8 +39,11 @@ public abstract class User implements Serializable{
 	@NotBlank
 	@Column(nullable = false, length = 50)
 	private String name;
-	
-			
+
+	@NotBlank
+	@Column(nullable = false, length = 50)
+	private String email;
+
 	public User() {
 		// Intentionally empty
 	}
