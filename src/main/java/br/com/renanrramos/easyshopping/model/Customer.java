@@ -47,7 +47,7 @@ public class Customer extends User{
 
 	@ApiModelProperty(hidden = true)
 	@Enumerated(EnumType.STRING)
-	private Profile profile;
+	private Profile profile = Profile.CUSTOMER;
 
 	@OneToMany(targetEntity = Address.class, cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.EAGER)
 	private Set<Address> address;

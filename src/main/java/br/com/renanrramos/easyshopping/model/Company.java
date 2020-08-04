@@ -49,7 +49,7 @@ public class Company extends User implements Serializable{
 
 	@ApiModelProperty(hidden = true)
 	@Enumerated(EnumType.STRING)
-	private Profile profile;
+	private Profile profile = Profile.COMPANY;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "company", fetch = FetchType.EAGER)
 	private List<Store> stores = new ArrayList<>();

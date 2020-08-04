@@ -30,7 +30,7 @@ public class Administrator extends User{
 
 	@ApiModelProperty(hidden = true)
 	@Enumerated(EnumType.STRING)
-	private Profile profile;
+	private Profile profile = Profile.ADMINISTRATOR;
 
 	public Administrator() {
 		// Intentionally empty

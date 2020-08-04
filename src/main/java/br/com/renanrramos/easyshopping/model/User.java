@@ -10,6 +10,8 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,6 +19,8 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.validation.constraints.NotBlank;
 
+import br.com.renanrramos.easyshopping.enums.Profile;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -44,6 +48,10 @@ public class User implements Serializable{
 	@Column(nullable = false, length = 50)
 	private String email;
 
+	@ApiModelProperty(hidden = true)
+	@Enumerated(EnumType.STRING)
+	private Profile profile;
+	
 	public User() {
 		// Intentionally empty
 	}
