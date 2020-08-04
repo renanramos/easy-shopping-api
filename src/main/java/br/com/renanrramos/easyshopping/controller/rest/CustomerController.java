@@ -62,7 +62,7 @@ public class CustomerController {
 			uri = uriBuilder.path("/customers/{id}").buildAndExpand(customerCreated.getId()).encode().toUri();
 			return ResponseEntity.created(uri).body(CustomerDTO.converterToCustomerDTO(customer));
 		}
-		return ResponseEntity.noContent().build();
+		return ResponseEntity.badRequest().build();
 	}
 	
 	@ResponseBody
@@ -70,6 +70,9 @@ public class CustomerController {
 	@ApiOperation(value = "Get all customers")
 	public ResponseEntity<List<CustomerDTO>> getCustomers() {		
 		List<Customer> customers = customerService.findAll();
+		if (customers.isEmpty()) {
+			return ResponseEntity.noContent().build();
+		}
 		return ResponseEntity.ok(CustomerDTO.converterCustomerListToCustomerDTOList(customers));
 	}
 	
@@ -100,8 +103,7 @@ public class CustomerController {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.ACCOUNT_NOT_FOUND);
 		}
 	}
-	
-	
+
 	@ResponseBody
 	@DeleteMapping("/{id}")
 	@Transactional
