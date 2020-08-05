@@ -34,19 +34,23 @@ public class CustomerForm {
 	
 	@ApiModelProperty(hidden = true)
 	private Profile profile;
-	
+
+	private String password;
+
 	public CustomerForm() {
 		// Intentionally empty
 	}
 	
-	public CustomerForm(String name, String email, String cpf) {
+	public CustomerForm(String name, String email, String cpf, String password) {
 		this.name = name;
 		this.email = email;
 		this.cpf = cpf;
+		this.password = password;
 	}
 
 	public static Customer converterCustomerFormToCustomer(CustomerForm customerForm) {
 		return CustomerBuilder.builder()
+				.withPassword(customerForm.getPassword())
 				.withCpf(customerForm.getCpf())
 				.withEmail(customerForm.getEmail())
 				.withName(customerForm.getName())

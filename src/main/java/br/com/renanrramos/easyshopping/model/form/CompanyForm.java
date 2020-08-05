@@ -30,21 +30,25 @@ public class CompanyForm {
 	@Email
 	private String email;
 
+	private String password;
+	
 	private String phone;
 
 	public CompanyForm() {
 		// Intentionally empty
 	}
 
-	public CompanyForm(String name, String registeredNumber, String email, String phone) {
+	public CompanyForm(String name, String registeredNumber, String email, String phone, String password) {
 		this.name = name;
 		this.registeredNumber = registeredNumber;
 		this.email = email;
+		this.password = password;
 		this.phone = phone;
 	}
 
 	public static Company converterCompanyFormToCompany(CompanyForm companyForm) {
 		return CompanyBuilder.builder()
+				.withPassword(companyForm.getPassword())
 				.withName(companyForm.getName())
 				.withEmail(companyForm.getEmail())
 				.withPhone(companyForm.getPhone())
