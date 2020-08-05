@@ -6,11 +6,26 @@
  */
 package br.com.renanrramos.easyshopping.controller.rest;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import java.net.URI;
 
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import br.com.renanrramos.easyshopping.model.User;
+import br.com.renanrramos.easyshopping.model.dto.UserDTO;
+import br.com.renanrramos.easyshopping.model.form.UserForm;
+import br.com.renanrramos.easyshopping.service.impl.UserService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * @author renan.ramos
@@ -22,4 +37,21 @@ import io.swagger.annotations.Api;
 @Api(tags = "Users")
 public class UserController {
 
+	@Autowired
+	private UserService userService;
+
+	private URI uri;
+
+	@ResponseBody
+	@Transactional
+	@PostMapping
+	@ApiOperation(value = "Register new user")
+	public ResponseEntity<UserDTO> registerNewUser(@RequestBody UserForm userForm, UriComponentsBuilder uriBuilder) {
+		User user = userService.register(UserForm.converterUserFormToUser(userForm));
+		if (user.getId() != null) {
+			uri = uriBuilder.path("/{id}").buildAndExpand(user.getId()).encode().toUri();
+			return ResponseEntity.created(uri).body(UserDTO.converterUserToUserDTO(user));
+		}
+		return ResponseEntity.noContent().build();
+	}
 }
