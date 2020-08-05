@@ -6,6 +6,9 @@
  */
 package br.com.renanrramos.easyshopping.model.form;
 
+import br.com.renanrramos.easyshopping.enums.Profile;
+import br.com.renanrramos.easyshopping.model.User;
+import br.com.renanrramos.easyshopping.model.builder.UserBuilder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,22 +22,36 @@ import lombok.Setter;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class UserForm {
 
+	private String name;
+
 	private String email;
 
 	private String password;
+
+	private Profile profile;
 
 	public UserForm() {
 		// Intentionally empty
 	}
 
-	public UserForm(String email, String password) {
-		super();
+	public UserForm(String name, String email, String password, Profile profile) {
+		this.name = name;
 		this.email = email;
 		this.password = password;
+		this.profile = profile;
+	}
+
+	public static User converterUserFormToUser(UserForm userForm) {
+		return UserBuilder.builder()
+				.withName(userForm.getName())
+				.withEmail(userForm.getEmail())
+				.withPassword(userForm.getPassword())
+				.withProfile(userForm.getProfile())
+				.build();
 	}
 
 	@Override
 	public String toString() {
-		return "UserForm [email=" + email + "]";
+		return "UserForm [name=" + name + ", email=" + email + ", password=" + password + ", profile=" + profile + "]";
 	}
 }
