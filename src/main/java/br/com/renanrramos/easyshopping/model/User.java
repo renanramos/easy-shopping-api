@@ -29,14 +29,14 @@ import lombok.Setter;
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User implements Serializable{
  
 	private static final long serialVersionUID = -234475925678811197L;
 
 	@EqualsAndHashCode.Include
 	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
 	private Long id;
 	
@@ -51,7 +51,11 @@ public class User implements Serializable{
 	@ApiModelProperty(hidden = true)
 	@Enumerated(EnumType.STRING)
 	private Profile profile;
-	
+
+	@NotBlank
+	@Column(nullable = false, length = 50)
+	private String password;
+
 	public User() {
 		// Intentionally empty
 	}
@@ -59,6 +63,5 @@ public class User implements Serializable{
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + "]";
-	}
-	
+	}	
 }

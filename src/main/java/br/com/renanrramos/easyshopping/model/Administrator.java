@@ -9,6 +9,7 @@ package br.com.renanrramos.easyshopping.model;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.PrimaryKeyJoinColumn;
 
 import br.com.renanrramos.easyshopping.enums.Profile;
 import io.swagger.annotations.ApiModelProperty;
@@ -24,6 +25,7 @@ import lombok.Setter;
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @Entity
+@PrimaryKeyJoinColumn(name="id")
 public class Administrator extends User{
 
 	private static final long serialVersionUID = 8713673214822893155L;
@@ -34,14 +36,6 @@ public class Administrator extends User{
 
 	public Administrator() {
 		// Intentionally empty
-	}
-	
-	public Profile getProfile() {
-		return profile;
-	}
-
-	public void setProfile(Profile profile) {
-		this.profile = profile;
 	}
 
 	@Override

@@ -12,16 +12,10 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+import javax.persistence.PrimaryKeyJoinColumn;
 
-import br.com.renanrramos.easyshopping.enums.Profile;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,26 +25,16 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @Entity
+@PrimaryKeyJoinColumn(name="id")
 public class Company extends User implements Serializable{
 
 	private static final long serialVersionUID = -5594496999476155657L;
-	
-	@NotBlank
+
 	private String registeredNumber;
-	
-	@Email
-	@NotBlank
-	private String email;
-	
-	@NotBlank
+
 	private String phone;
 
-	@ApiModelProperty(hidden = true)
-	@Enumerated(EnumType.STRING)
-	private Profile profile = Profile.COMPANY;
-	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "company", fetch = FetchType.EAGER)
 	private List<Store> stores = new ArrayList<>();
 
@@ -60,7 +44,6 @@ public class Company extends User implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Company [registeredNumber=" + registeredNumber + ", email=" + email + ", phone=" + phone + ", profile="
-				+ profile + ", stores=" + stores + "]";
+		return "Company [registeredNumber=" + registeredNumber + "]";
 	}
 }
