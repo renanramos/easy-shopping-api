@@ -6,7 +6,7 @@
  */
 package br.com.renanrramos.easyshopping.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import br.com.renanrramos.easyshopping.model.Store;
 
@@ -14,6 +14,6 @@ import br.com.renanrramos.easyshopping.model.Store;
  * @author renan.ramos
  *
  */
-public interface StoreRepository extends JpaRepository<Store, Long>{
+public interface StoreRepository extends PagingAndSortingRepository<Store, Long>{
 
 }
