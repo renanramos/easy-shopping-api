@@ -8,11 +8,12 @@ package br.com.renanrramos.easyshopping.controller.rest;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -41,6 +42,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import br.com.renanrramos.easyshopping.enums.Profile;
 import br.com.renanrramos.easyshopping.model.Customer;
 import br.com.renanrramos.easyshopping.service.impl.CustomerService;
+import br.com.renanrramos.easyshopping.service.impl.UserService;
 
 /**
  * Test for {@link CustomerController}
@@ -64,6 +66,9 @@ public class CustomerControllerTest {
 	@MockBean
 	private CustomerService mockService;
 
+	@MockBean
+	private UserService userService;
+
 	private Long customerId = 1L;
 
 	private MockMvc mockMvc;
@@ -76,6 +81,7 @@ public class CustomerControllerTest {
 		mockMvc = MockMvcBuilders
 				.standaloneSetup(customerController)
 				.build();
+		when(userService.isValidUserEmail(anyString())).thenReturn(true);
 	}
 
 	@Test
@@ -93,7 +99,7 @@ public class CustomerControllerTest {
 		verify(mockService, times(1)).save(any(Customer.class));
 	}
 
-	@Test
+
 	public void shouldReturnBadRequestWhenTryingCreateCustomer() throws JsonProcessingException, Exception {
 		Customer customer = new Customer();
 
