@@ -51,4 +51,7 @@ public class CustomerService implements CommonService<Customer>{
 		customerRepository.deleteById(customerId);
 	}
 
+	public boolean isCpfInvalid(String cpf) {
+		return customerRepository.findTopCustomerByCpf(cpf) == null;
+	}
 }
