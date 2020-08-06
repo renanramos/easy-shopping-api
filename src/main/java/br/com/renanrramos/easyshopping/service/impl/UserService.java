@@ -6,8 +6,6 @@
  */
 package br.com.renanrramos.easyshopping.service.impl;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +22,8 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 
-	public boolean isValidUserEmail(String email) {
-		List<User> user = userRepository.getUserByEmail(email);
-		return user.isEmpty();
+	public boolean isUserEmailInvalid(String email) {
+		User user = userRepository.findTopUserByEmail(email);
+		return user == null;
 	}
 }
