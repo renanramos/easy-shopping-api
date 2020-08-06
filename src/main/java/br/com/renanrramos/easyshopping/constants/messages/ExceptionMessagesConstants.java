@@ -23,6 +23,7 @@ public class ExceptionMessagesConstants {
 	public static final String INVALID_ID = "O id informado é inválido.";
 
 	public static final String EMAIL_ALREADY_EXIST = "O email informado já é utilizado.";
+	public static final String CPF_ALREADY_EXIST = "O CPF informado já está cadastrado.";
 
 	public static final String INVALID_EMAIL_TITLE = "Email inválido";
 }
