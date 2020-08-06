@@ -81,7 +81,8 @@ public class CustomerControllerTest {
 		mockMvc = MockMvcBuilders
 				.standaloneSetup(customerController)
 				.build();
-		when(userService.isValidUserEmail(anyString())).thenReturn(true);
+		when(userService.isUserEmailInvalid(anyString())).thenReturn(false);
+		when(mockService.isCpfInvalid(anyString())).thenReturn(false);
 	}
 
 	@Test
@@ -137,7 +138,7 @@ public class CustomerControllerTest {
 		when(mockService.findAll()).thenReturn(customers);
 
 		mockMvc.perform(get(BASE_URL))
-			.andExpect(status().isNoContent());
+			.andExpect(status().isOk());
 
 		verify(mockService, times(1)).findAll();	
 	}

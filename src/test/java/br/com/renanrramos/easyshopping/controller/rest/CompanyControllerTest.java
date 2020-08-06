@@ -83,7 +83,7 @@ public class CompanyControllerTest {
 		mockMvc = MockMvcBuilders
 				.standaloneSetup(companyController)
 				.build();
-		when(userService.isValidUserEmail(anyString())).thenReturn(true);
+		when(userService.isUserEmailInvalid(anyString())).thenReturn(false);
 	}
 	
 	@Test
