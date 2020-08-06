@@ -13,6 +13,7 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import org.hibernate.validator.internal.engine.messageinterpolation.parser.MessageDescriptorFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,10 +28,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
+import br.com.renanrramos.easyshopping.constants.sql.EasyShoppingConstants;
 import br.com.renanrramos.easyshopping.model.Customer;
 import br.com.renanrramos.easyshopping.model.dto.CustomerDTO;
 import br.com.renanrramos.easyshopping.model.form.CustomerForm;
 import br.com.renanrramos.easyshopping.service.impl.CustomerService;
+import br.com.renanrramos.easyshopping.service.impl.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -46,6 +50,9 @@ public class CustomerController {
 	
 	@Autowired
 	private CustomerService customerService;
+
+	@Autowired
+	private UserService userService;
 	
 	private URI uri;
 	
@@ -55,10 +62,14 @@ public class CustomerController {
 	@ApiOperation(value = "Save a new customer")
 	public ResponseEntity<CustomerDTO> saveCustomer(@Valid @RequestBody CustomerForm customerForm, UriComponentsBuilder uriBuilder) {
 		Customer customer = CustomerForm.converterCustomerFormToCustomer(customerForm);
-		Customer customerCreated = customerService.save(customer);
-		if (customerCreated.getId() != null) {
-			uri = uriBuilder.path("/customers/{id}").buildAndExpand(customerCreated.getId()).encode().toUri();
-			return ResponseEntity.created(uri).body(CustomerDTO.converterToCustomerDTO(customer));
+		if (userService.isValidUserEmail(customer.getEmail())) {
+			Customer customerCreated = customerService.save(customer);
+			if (customerCreated.getId() != null) {
+				uri = uriBuilder.path("/customers/{id}").buildAndExpand(customerCreated.getId()).encode().toUri();
+				return ResponseEntity.created(uri).body(CustomerDTO.converterToCustomerDTO(customer));
+			}
+		} else {
+			throw new MessageDescriptorFormatException(ExceptionMessagesConstants.EMAIL_ALREADY_EXIST);
 		}
 		return ResponseEntity.badRequest().build();
 	}
