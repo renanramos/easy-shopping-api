@@ -21,4 +21,8 @@ public class ExceptionMessagesConstants {
 	public static final String CREDIT_CARD_NOT_FOUND = "Cartão de crédito não localizado.";
 	
 	public static final String INVALID_ID = "O id informado é inválido.";
+
+	public static final String EMAIL_ALREADY_EXIST = "O email informado já é utilizado.";
+
+	public static final String INVALID_EMAIL_TITLE = "Email inválido";
 }
