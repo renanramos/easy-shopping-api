@@ -63,7 +63,7 @@ public class CompanyController {
 	public ResponseEntity<CompanyDTO> saveCompany(@Valid @RequestBody CompanyForm companyForm, UriComponentsBuilder uriBuilder) {
 		Company company = CompanyForm.converterCompanyFormToCompany(companyForm);
 
-		if (!userService.isValidUserEmail(company.getEmail())) {
+		if (userService.isUserEmailInvalid(company.getEmail())) {
 			throw new MessageDescriptorFormatException(ExceptionMessagesConstants.EMAIL_ALREADY_EXIST);				
 		}
 
