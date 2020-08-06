@@ -8,6 +8,7 @@ package br.com.renanrramos.easyshopping.controller.exceptionhandler;
 
 import javax.persistence.EntityNotFoundException;
 
+import org.hibernate.validator.internal.engine.messageinterpolation.parser.MessageDescriptorFormatException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.model.error.ApiError;
 import br.com.renanrramos.easyshopping.model.error.builder.ApiErrorBuilder;
 
@@ -45,6 +47,15 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler{
 	protected ResponseEntity<Object> handleEntityNotFound(EntityNotFoundException ex) {
 		return buildResponseEntity(new ApiErrorBuilder()
 				.withStatus(HttpStatus.NOT_FOUND)
+				.withMessage(ex.getMessage())
+				.build());
+	}
+
+	@ExceptionHandler(MessageDescriptorFormatException.class)
+	protected ResponseEntity<Object> handleEmailUnavailable(MessageDescriptorFormatException ex) {
+		return buildResponseEntity(new ApiErrorBuilder()
+				.withStatus(HttpStatus.CONFLICT)
+				.withErrorTitle(ExceptionMessagesConstants.INVALID_EMAIL_TITLE)
 				.withMessage(ex.getMessage())
 				.build());
 	}
