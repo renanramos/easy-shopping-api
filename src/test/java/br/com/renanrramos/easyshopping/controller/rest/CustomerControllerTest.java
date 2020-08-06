@@ -9,6 +9,7 @@ package br.com.renanrramos.easyshopping.controller.rest;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -121,26 +122,26 @@ public class CustomerControllerTest {
 		customers.add(getCustomerInstance());
 		customers.add(getCustomerInstance());
 
-		when(mockService.findAll()).thenReturn(customers);
+		when(mockService.findAllPageable(anyInt(), anyInt(), anyString())).thenReturn(customers);
 
 		mockMvc.perform(get(BASE_URL)
 				.content(objectMapper.writeValueAsString(customers))
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk());
 
-		verify(mockService, times(1)).findAll();
+		verify(mockService, times(1)).findAllPageable(anyInt(), anyInt(), anyString());
 	}
 
 	@Test
 	public void shouldReturnEmtpyListOfCustomrers() throws JsonProcessingException, Exception {
 		List<Customer> customers = new ArrayList<Customer>();
 
-		when(mockService.findAll()).thenReturn(customers);
+		when(mockService.findAllPageable(anyInt(), anyInt(), anyString())).thenReturn(customers);
 
 		mockMvc.perform(get(BASE_URL))
 			.andExpect(status().isOk());
 
-		verify(mockService, times(1)).findAll();	
+		verify(mockService, times(1)).findAllPageable(anyInt(), anyInt(), anyString());	
 	}
 
 	@Test
