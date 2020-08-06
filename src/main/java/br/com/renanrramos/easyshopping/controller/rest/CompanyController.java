@@ -14,6 +14,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import org.hibernate.validator.internal.engine.messageinterpolation.parser.MessageDescriptorFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -33,6 +34,7 @@ import br.com.renanrramos.easyshopping.model.Company;
 import br.com.renanrramos.easyshopping.model.dto.CompanyDTO;
 import br.com.renanrramos.easyshopping.model.form.CompanyForm;
 import br.com.renanrramos.easyshopping.service.impl.CompanyService;
+import br.com.renanrramos.easyshopping.service.impl.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -48,7 +50,10 @@ public class CompanyController {
 
 	@Autowired
 	private CompanyService companyService;
-	
+
+	@Autowired
+	private UserService userService;
+
 	private URI uri;
 	
 	@ResponseBody
@@ -57,11 +62,17 @@ public class CompanyController {
 	@ApiOperation(value = "Save a new company")
 	public ResponseEntity<CompanyDTO> saveCompany(@Valid @RequestBody CompanyForm companyForm, UriComponentsBuilder uriBuilder) {
 		Company company = CompanyForm.converterCompanyFormToCompany(companyForm);
+
+		if (!userService.isValidUserEmail(company.getEmail())) {
+			throw new MessageDescriptorFormatException(ExceptionMessagesConstants.EMAIL_ALREADY_EXIST);				
+		}
+
 		Company companyCreated = companyService.save(company);
 		if (companyCreated.getId() != null) {
 			uri = uriBuilder.path("/companies/{id}").buildAndExpand(companyCreated.getId()).encode().toUri();			
 			return ResponseEntity.created(uri).body(CompanyDTO.converterToCompanyDTO(companyCreated));
 		}
+		
 		return ResponseEntity.badRequest().build();
 	}
 	
