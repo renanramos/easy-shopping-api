@@ -42,16 +42,4 @@ public class UserController {
 
 	private URI uri;
 
-	@ResponseBody
-	@Transactional
-	@PostMapping
-	@ApiOperation(value = "Register new user")
-	public ResponseEntity<UserDTO> registerNewUser(@RequestBody UserForm userForm, UriComponentsBuilder uriBuilder) {
-		User user = userService.register(UserForm.converterUserFormToUser(userForm));
-		if (user.getId() != null) {
-			uri = uriBuilder.path("/{id}").buildAndExpand(user.getId()).encode().toUri();
-			return ResponseEntity.created(uri).body(UserDTO.converterUserToUserDTO(user));
-		}
-		return ResponseEntity.noContent().build();
-	}
 }
