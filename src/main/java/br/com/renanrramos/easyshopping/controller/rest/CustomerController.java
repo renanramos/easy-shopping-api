@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
-import br.com.renanrramos.easyshopping.constants.sql.EasyShoppingConstants;
 import br.com.renanrramos.easyshopping.model.Customer;
 import br.com.renanrramos.easyshopping.model.dto.CustomerDTO;
 import br.com.renanrramos.easyshopping.model.form.CustomerForm;
@@ -62,15 +61,21 @@ public class CustomerController {
 	@ApiOperation(value = "Save a new customer")
 	public ResponseEntity<CustomerDTO> saveCustomer(@Valid @RequestBody CustomerForm customerForm, UriComponentsBuilder uriBuilder) {
 		Customer customer = CustomerForm.converterCustomerFormToCustomer(customerForm);
-		if (userService.isValidUserEmail(customer.getEmail())) {
-			Customer customerCreated = customerService.save(customer);
-			if (customerCreated.getId() != null) {
-				uri = uriBuilder.path("/customers/{id}").buildAndExpand(customerCreated.getId()).encode().toUri();
-				return ResponseEntity.created(uri).body(CustomerDTO.converterToCustomerDTO(customer));
-			}
-		} else {
+
+		if (customerService.isCpfInvalid(customer.getCpf())) {
+			throw new MessageDescriptorFormatException(ExceptionMessagesConstants.CPF_ALREADY_EXIST);
+		}
+
+		if (userService.isUserEmailInvalid(customer.getEmail())) {
 			throw new MessageDescriptorFormatException(ExceptionMessagesConstants.EMAIL_ALREADY_EXIST);
 		}
+
+		Customer customerCreated = customerService.save(customer);
+		if (customerCreated.getId() != null) {
+			uri = uriBuilder.path("/customers/{id}").buildAndExpand(customerCreated.getId()).encode().toUri();
+			return ResponseEntity.created(uri).body(CustomerDTO.converterToCustomerDTO(customer));
+		}
+
 		return ResponseEntity.badRequest().build();
 	}
 	
@@ -79,9 +84,6 @@ public class CustomerController {
 	@ApiOperation(value = "Get all customers")
 	public ResponseEntity<List<CustomerDTO>> getCustomers() {		
 		List<Customer> customers = customerService.findAll();
-		if (customers.isEmpty()) {
-			return ResponseEntity.noContent().build();
-		}
 		return ResponseEntity.ok(CustomerDTO.converterCustomerListToCustomerDTOList(customers));
 	}
 	
