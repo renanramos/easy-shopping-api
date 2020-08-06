@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -86,8 +87,11 @@ public class AddressController {
 	@ResponseBody
 	@GetMapping
 	@ApiOperation(value = "Get all addresses")
-	public ResponseEntity<List<AddressDTO>> getAddresses() {
-		List<Address> addresses = addressService.findAll();
+	public ResponseEntity<List<AddressDTO>> getAddresses(
+			@RequestParam(defaultValue = "0") Integer pageNo, 
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "id") String sortBy) {
+		List<Address> addresses = addressService.findAllPageable(pageNo, pageSize, sortBy);
 		return ResponseEntity.ok(AddressDTO.convertAddressListToAddressDTOList(addresses));	
 	}
 	

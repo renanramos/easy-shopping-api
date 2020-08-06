@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -68,11 +69,11 @@ public class AdministratorController {
 	@ResponseBody
 	@GetMapping
 	@ApiOperation(value = "Get all administrators")
-	public ResponseEntity<List<AdministratorDTO>> getAdministrators() {
+	public ResponseEntity<List<AdministratorDTO>> getAdministrators(
+			@RequestParam(defaultValue = "0") Integer pageNo, 
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "id") String sortBy) {
 		List<AdministratorDTO> administrators = AdministratorDTO.converterAdministratorListToAdministratorDTO(administratorService.findAll());
-		if (administrators.isEmpty()) {
-			return ResponseEntity.noContent().build();			
-		}
 		return ResponseEntity.ok(administrators); 
 	}
 	

@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -79,11 +80,11 @@ public class CompanyController {
 	@ResponseBody
 	@GetMapping
 	@ApiOperation(value = "Get all companies")
-	public ResponseEntity<List<CompanyDTO>> getCompanies() {
-		List<CompanyDTO> listOfCompanyDTOs = CompanyDTO.converterCompanyListToCompanyDTOList(companyService.findAll());
-		if (listOfCompanyDTOs.isEmpty()) {
-			return ResponseEntity.noContent().build();
-		}
+	public ResponseEntity<List<CompanyDTO>> getCompanies(
+			@RequestParam(defaultValue = "0") Integer pageNumber, 
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "id") String sortBy) {
+		List<CompanyDTO> listOfCompanyDTOs = CompanyDTO.converterCompanyListToCompanyDTOList(companyService.findAllPageable(pageNumber, pageSize, sortBy));
 		return ResponseEntity.ok(listOfCompanyDTOs);
 	}
 	
