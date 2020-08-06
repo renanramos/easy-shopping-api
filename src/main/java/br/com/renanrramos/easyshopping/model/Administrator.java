@@ -13,7 +13,6 @@ import javax.persistence.PrimaryKeyJoinColumn;
 
 import br.com.renanrramos.easyshopping.enums.Profile;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,7 +22,6 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @Entity
 @PrimaryKeyJoinColumn(name="id")
 public class Administrator extends User{
