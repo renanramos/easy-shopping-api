@@ -46,6 +46,8 @@ public class Customer extends User{
 
 	@Override
 	public String toString() {
-		return "Customer [cpf=" + cpf + "]";
+		return "Customer [cpf=" + cpf + ", address=" + address + ", name= " + getName() + "]";
 	}
+
+	
 }
