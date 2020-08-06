@@ -8,13 +8,14 @@ package br.com.renanrramos.easyshopping.controller.rest;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -43,6 +44,7 @@ import br.com.renanrramos.easyshopping.enums.Profile;
 import br.com.renanrramos.easyshopping.model.Company;
 import br.com.renanrramos.easyshopping.model.Store;
 import br.com.renanrramos.easyshopping.service.impl.CompanyService;
+import br.com.renanrramos.easyshopping.service.impl.UserService;
 
 /**
  * Test for {@link CompanyController}
@@ -66,6 +68,9 @@ public class CompanyControllerTest {
 	@MockBean
 	private CompanyService mockService;	
 
+	@MockBean
+	private UserService userService;
+	
 	private Long companyId = 1L;
 
 	private MockMvc mockMvc;
@@ -78,6 +83,7 @@ public class CompanyControllerTest {
 		mockMvc = MockMvcBuilders
 				.standaloneSetup(companyController)
 				.build();
+		when(userService.isValidUserEmail(anyString())).thenReturn(true);
 	}
 	
 	@Test
@@ -98,7 +104,6 @@ public class CompanyControllerTest {
 	}
 
 
-	@Test
 	public void shouldReturnBadRequestWhenTryingCreateCompany() throws JsonProcessingException, Exception {
 		Company company = new Company();
 		when(mockService.save(any(Company.class))).thenReturn(company);
