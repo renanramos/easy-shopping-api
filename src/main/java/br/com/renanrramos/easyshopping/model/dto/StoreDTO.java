@@ -6,14 +6,11 @@
  */
 package br.com.renanrramos.easyshopping.model.dto;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import br.com.renanrramos.easyshopping.model.Company;
 import br.com.renanrramos.easyshopping.model.Product;
 import br.com.renanrramos.easyshopping.model.Store;
-import br.com.renanrramos.easyshopping.model.builder.CompanyBuilder;
 import br.com.renanrramos.easyshopping.model.builder.ProductBuilder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
