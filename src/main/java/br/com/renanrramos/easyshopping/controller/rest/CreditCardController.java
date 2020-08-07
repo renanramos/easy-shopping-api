@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -85,8 +86,11 @@ public class CreditCardController {
 	@ResponseBody
 	@GetMapping
 	@ApiOperation(value = "Get all credit cards")
-	public ResponseEntity<List<CreditCardDTO>> getCreditCards() {
-		List<CreditCard> creditCards = creditCardService.findAll();
+	public ResponseEntity<List<CreditCardDTO>> getCreditCards(
+			@RequestParam(defaultValue = "0") Integer pageNumber, 
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "id") String sortBy) {
+		List<CreditCard> creditCards = creditCardService.findAllPageable(pageNumber, pageSize, sortBy);
 		return ResponseEntity.ok(CreditCardDTO.converterCreditCardListToCreditCardDTOList(creditCards));
 	}
 
