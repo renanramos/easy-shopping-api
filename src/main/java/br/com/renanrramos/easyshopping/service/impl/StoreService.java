@@ -17,7 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import br.com.renanrramos.easyshopping.model.ProductCategory;
 import br.com.renanrramos.easyshopping.model.Store;
 import br.com.renanrramos.easyshopping.repository.StoreRepository;
 import br.com.renanrramos.easyshopping.service.CommonService;
@@ -63,5 +62,9 @@ public class StoreService implements CommonService<Store>{
 	@Override
 	public void remove(Long storeId) {
 		storeRepository.deleteById(storeId);
+	}
+
+	public List<Store> findStoreByCompanyId(Long companyId) {
+		return storeRepository.findStoreByCompanyId(companyId);
 	}
 }

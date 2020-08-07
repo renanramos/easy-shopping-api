@@ -36,7 +36,7 @@ public class StoreDTO {
 	
 	private String corporateName;
 
-	private Company company;
+	private Long companyId;
 	
 	public StoreDTO() {
 		// Intentionally empty
@@ -47,7 +47,7 @@ public class StoreDTO {
 		this.name = store.getName();
 		this.registeredNumber = store.getRegisteredNumber();
 		this.corporateName = store.getCorporateName();
-		this.company = getCompanyInfo(store.getCompany());
+		this.companyId = store.getCompany().getId();
 	}
 
 	public static List<StoreDTO> converterStoreListToStoreDTOList(List<Store> stores) {
@@ -57,13 +57,6 @@ public class StoreDTO {
 	public static StoreDTO converterStoreToStoreDTO(Store store) {
 		return new StoreDTO(store);
 	}
-
-	private static List<Product> setProducts(Store store) {
-		if (store.getProducts() != null) {
-			return store.getProducts().stream().map(StoreDTO::getProductInfo).collect(Collectors.toList());
-		}
-		return Collections.emptyList();
-	}
 	
 	private static Product getProductInfo(Product product) {
 		return ProductBuilder.builder()
@@ -71,14 +64,6 @@ public class StoreDTO {
 				.withName(product.getName())
 				.withPrice(product.getPrice())
 				.withProductCategory(product.getProductCategory())
-				.build();
-	}
-
-	private static Company getCompanyInfo(Company company) {
-		return CompanyBuilder.builder()
-				.withName(company.getName())
-				.withPhone(company.getPhone())
-				.withEmail(company.getEmail())
 				.build();
 	}
 }
