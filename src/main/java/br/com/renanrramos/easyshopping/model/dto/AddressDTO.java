@@ -36,7 +36,9 @@ public class AddressDTO {
 	private String state;
 	
 	private Long customerId;
-	
+
+	private String city;
+
 	public AddressDTO() {
 		// Intentionally empty
 	}
@@ -49,6 +51,7 @@ public class AddressDTO {
 		this.cep = address.getCep();
 		this.state = address.getState();
 		this.customerId = address.getCustomer().getId();
+		this.city = address.getCity();
 				
 	}
 
@@ -63,7 +66,6 @@ public class AddressDTO {
 	@Override
 	public String toString() {
 		return "AddressDTO [id=" + id + ", streetName=" + streetName + ", district=" + district + ", number=" + number
-				+ ", cep=" + cep + ", state=" + state + ", customerId=" + customerId + "]";
+				+ ", cep=" + cep + ", state=" + state + ", customerId=" + customerId + ", city=" + city + "]";
 	}
-
 }

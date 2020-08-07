@@ -54,7 +54,12 @@ public class AddressBuilder {
 		this.address.setCustomer(customer);
 		return this;
 	}
-	
+
+	public AddressBuilder withCity(String city) {
+		this.address.setCity(city);
+		return this;
+	}
+
 	public Address build() {
 		return this.address;
 	}

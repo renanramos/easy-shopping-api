@@ -30,20 +30,23 @@ public class AddressForm {
 	private String cep;
 
 	private String state;
-	
+
+	private String city;
+
 	private Long customerId;
 
 	public AddressForm() {
 		// Intentionally empty
 	}
 
-	public AddressForm(String streetName, String district, Long number, String cep, String state, Long customerId) {
+	public AddressForm(String streetName, String district, Long number, String cep, String state, Long customerId, String city) {
 		this.streetName = streetName;
 		this.district = district;
 		this.number = number;
 		this.cep = cep;
 		this.state = state;
 		this.customerId = customerId;
+		this.city = city;
 	}
 
 	public static Address converterAddressFormToAddress(AddressForm addressForm) {
@@ -54,12 +57,13 @@ public class AddressForm {
 				.withNumber(addressForm.getNumber())
 				.withState(addressForm.getState())
 				.withStreetName(addressForm.getStreetName())
+				.withCity(addressForm.getCity())
 				.build();
 	}
 
 	@Override
 	public String toString() {
 		return "AddressForm [streetName=" + streetName + ", district=" + district + ", number=" + number + ", cep="
-				+ cep + ", state=" + state + ", customerId=" + customerId + "]";
+				+ cep + ", state=" + state + ", city=" + city + ", customerId=" + customerId + "]";
 	}
 }

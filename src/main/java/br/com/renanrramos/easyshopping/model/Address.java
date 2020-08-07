@@ -56,6 +56,9 @@ public class Address implements Serializable{
 	
 	@NotBlank
 	private String state;
+
+	@NotBlank
+	private String city;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "customer_id")
@@ -69,6 +72,6 @@ public class Address implements Serializable{
 	@Override
 	public String toString() {
 		return "Address [id=" + id + ", streetName=" + streetName + ", district=" + district + ", number=" + number
-				+ ", cep=" + cep + ", state=" + state + "]";
+				+ ", cep=" + cep + ", state=" + state + ", city=" + city + ", customer=" + customer + "]";
 	}
 }
