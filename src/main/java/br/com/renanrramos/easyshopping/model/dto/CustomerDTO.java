@@ -37,8 +37,6 @@ public class CustomerDTO {
 	private String email;
 
 	private Profile profile;
-	
-	private Set<Address> address;
 
 	public CustomerDTO() {
 		// Intentionally empty
@@ -50,9 +48,6 @@ public class CustomerDTO {
 		this.cpf = customer.getCpf();
 		this.email = customer.getEmail();
 		this.profile = customer.getProfile();
-		this.address = customer.getAddress() != null ?
-				customer.getAddress().stream().map(CustomerDTO::getAddressInfo).collect(Collectors.toSet()) :
-					new HashSet<>();
 	}
 
 	public static List<CustomerDTO> converterCustomerListToCustomerDTOList(List<Customer> customer) {
@@ -67,15 +62,5 @@ public class CustomerDTO {
 	public String toString() {
 		return "CustomerDTO [id=" + id + ", name=" + name + ", cpf=" + cpf + ", email=" + email + ", profile=" + profile
 				+ "]";
-	}
-
-	private static Address getAddressInfo(Address address) {
-		return AddressBuilder.builder()
-				.withCep(address.getCep())
-				.withDistrict(address.getDistrict())
-				.withNumber(address.getNumber())
-				.withState(address.getState())
-				.withStreetName(address.getStreetName())
-				.build();
 	}
 }
