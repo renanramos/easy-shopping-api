@@ -73,7 +73,7 @@ public class AdministratorController {
 			@RequestParam(defaultValue = "0") Integer pageNo, 
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy) {
-		List<AdministratorDTO> administrators = AdministratorDTO.converterAdministratorListToAdministratorDTO(administratorService.findAll());
+		List<AdministratorDTO> administrators = AdministratorDTO.converterAdministratorListToAdministratorDTO(administratorService.findAllPageable(pageNo, pageSize, sortBy));
 		return ResponseEntity.ok(administrators); 
 	}
 	
