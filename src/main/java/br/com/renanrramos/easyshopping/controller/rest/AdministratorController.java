@@ -70,10 +70,10 @@ public class AdministratorController {
 	@GetMapping
 	@ApiOperation(value = "Get all administrators")
 	public ResponseEntity<List<AdministratorDTO>> getAdministrators(
-			@RequestParam(defaultValue = "0") Integer pageNo, 
+			@RequestParam(defaultValue = "0") Integer pageNumber, 
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy) {
-		List<AdministratorDTO> administrators = AdministratorDTO.converterAdministratorListToAdministratorDTO(administratorService.findAllPageable(pageNo, pageSize, sortBy));
+		List<AdministratorDTO> administrators = AdministratorDTO.converterAdministratorListToAdministratorDTO(administratorService.findAllPageable(pageNumber, pageSize, sortBy));
 		return ResponseEntity.ok(administrators); 
 	}
 	
