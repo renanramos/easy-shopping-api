@@ -88,10 +88,14 @@ public class AddressController {
 	@GetMapping
 	@ApiOperation(value = "Get all addresses")
 	public ResponseEntity<List<AddressDTO>> getAddresses(
+			@RequestParam(required = false) Long customerId,
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy) {
-		List<Address> addresses = addressService.findAllPageable(pageNumber, pageSize, sortBy);
+		List<Address> addresses =
+				customerId == null ?
+				addressService.findAllPageable(pageNumber, pageSize, sortBy) :
+				addressService.findByCustomerId(customerId);
 		return ResponseEntity.ok(AddressDTO.convertAddressListToAddressDTOList(addresses));	
 	}
 	

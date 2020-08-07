@@ -64,4 +64,8 @@ public class AddressService implements CommonService<Address> {
 	public List<Address> findAll() {
 		return new ArrayList<>();
 	}
+
+	public List<Address> findByCustomerId(Long customerId) {
+		return addressRepository.findAddressByCustomerId(customerId);
+	}
 }
