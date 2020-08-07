@@ -33,7 +33,7 @@ import io.swagger.annotations.ApiOperation;
  */
 @RestController
 @CrossOrigin
-@RequestMapping(path = "users", produces = "application/json")
+@RequestMapping(path = "api/users", produces = "application/json")
 @Api(tags = "Users")
 public class UserController {
 

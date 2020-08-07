@@ -43,7 +43,7 @@ import io.swagger.annotations.ApiOperation;
  */
 @RestController
 @CrossOrigin
-@RequestMapping(path = "productCategories", produces = "application/json")
+@RequestMapping(path = "api/product-categories", produces = "application/json")
 @Api(tags = "Product categories")
 public class ProductCategoryController {
 

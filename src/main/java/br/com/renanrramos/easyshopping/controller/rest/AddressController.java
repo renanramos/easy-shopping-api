@@ -45,7 +45,7 @@ import io.swagger.annotations.ApiOperation;
  */
 @RestController
 @CrossOrigin
-@RequestMapping(path = "addresses", produces = "application/json")
+@RequestMapping(path = "api/addresses", produces = "application/json")
 @Api(tags = "Address")
 public class AddressController {
 

@@ -43,7 +43,7 @@ import io.swagger.annotations.ApiOperation;
  */
 @RestController
 @CrossOrigin
-@RequestMapping(path = "admin", produces = "application/json")
+@RequestMapping(path = "api/admin", produces = "application/json")
 @Api(tags = "Administrators")
 public class AdministratorController {
 

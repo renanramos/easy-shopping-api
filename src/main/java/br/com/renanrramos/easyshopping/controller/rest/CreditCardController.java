@@ -44,7 +44,7 @@ import io.swagger.annotations.ApiOperation;
  */
 @RestController
 @CrossOrigin
-@RequestMapping(path = "creditCards", produces = "application/json")
+@RequestMapping(path = "api/credit-cards", produces = "application/json")
 @Api(tags = "CreditCard")
 public class CreditCardController {
 
