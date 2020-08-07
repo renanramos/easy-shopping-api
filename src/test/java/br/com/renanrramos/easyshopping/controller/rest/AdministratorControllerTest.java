@@ -7,7 +7,10 @@
 package br.com.renanrramos.easyshopping.controller.rest;
 
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -55,7 +58,7 @@ import br.com.renanrramos.easyshopping.service.impl.AdministratorService;
 })
 public class AdministratorControllerTest {
 	
-	private final String BASE_URL = "/admin";
+	private final String BASE_URL = "/api/admin";
 
 	@Rule
 	public final ExpectedException exception = ExpectedException.none();
@@ -114,24 +117,25 @@ public class AdministratorControllerTest {
 		admins.add(getAdministratorInstance());
 		admins.add(getAdministratorInstance());
 		
-		when(mockService.findAll()).thenReturn(admins);
+		when(mockService.findAllPageable(anyInt(), anyInt(), anyString())).thenReturn(admins);
 		
 		mockMvc.perform(get(BASE_URL))
 			.andExpect(status().isOk());
 		
-		verify(mockService, times(1)).findAll();
+		verify(mockService, times(1)).findAllPageable(anyInt(), anyInt(), anyString());
 	}
 	
 	@Test
 	public void shouldReturnEmptyListAdministrators() throws Exception {
 		List<Administrator> admins = new ArrayList<Administrator>();
 		
-		when(mockService.findAll()).thenReturn(admins);
+		when(mockService.findAllPageable(anyInt(), anyInt(), anyString())).thenReturn(admins);
 		
 		mockMvc.perform(get(BASE_URL))
-			.andExpect(status().isNoContent());
+			.andExpect(status().isOk());
 		
-		verify(mockService, times(1)).findAll();
+		verify(mockService, times(1)).findAllPageable(anyInt(), anyInt(), anyString());
+		assertTrue(mockService.findAllPageable(anyInt(), anyInt(), anyString()).isEmpty());
 	}
 	
 	@Test

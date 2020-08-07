@@ -56,7 +56,7 @@ import br.com.renanrramos.easyshopping.service.impl.UserService;
 })
 public class CustomerControllerTest {
 
-	private final String BASE_URL = "/customers";
+	private final String BASE_URL = "/api/customers";
 
 	@Rule
 	public final ExpectedException exception = ExpectedException.none();

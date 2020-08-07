@@ -8,6 +8,7 @@ package br.com.renanrramos.easyshopping.controller.rest;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -57,7 +58,7 @@ import br.com.renanrramos.easyshopping.service.impl.UserService;
 })
 public class CompanyControllerTest {
 
-	private final String BASE_URL = "/companies";
+	private final String BASE_URL = "/api/companies";
 
 	@Rule
 	public final ExpectedException exception = ExpectedException.none();
@@ -124,24 +125,24 @@ public class CompanyControllerTest {
 		companies.add(getCompanyInstance());
 		companies.add(getCompanyInstance());
 
-		when(mockService.findAll()).thenReturn(companies);
+		when(mockService.findAllPageable(anyInt(), anyInt(), anyString())).thenReturn(companies);
 
 		mockMvc.perform(get(BASE_URL))
 			.andExpect(status().isOk());
 
-		verify(mockService, times(1)).findAll();
+		verify(mockService, times(1)).findAllPageable(anyInt(), anyInt(), anyString());
 	}
 
 	@Test
 	public void shouldReturnEmptyListOfCompanies() throws Exception {
 		List<Company> companies = new ArrayList<Company>();
 
-		when(mockService.findAll()).thenReturn(companies);
+		when(mockService.findAllPageable(anyInt(), anyInt(), anyString())).thenReturn(companies);
 
 		mockMvc.perform(get(BASE_URL))
-			.andExpect(status().isNoContent());
+			.andExpect(status().isOk());
 
-		verify(mockService, times(1)).findAll();
+		verify(mockService, times(1)).findAllPageable(anyInt(), anyInt(), anyString());
 	}
 
 	@Test

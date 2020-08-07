@@ -11,6 +11,8 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -62,7 +64,7 @@ import br.com.renanrramos.easyshopping.service.impl.CustomerService;
 })
 public class AddressControllerTest {
 	
-	private final String BASE_URL = "/addresses";
+	private final String BASE_URL = "/api/addresses";
 
 	@Rule
 	public final ExpectedException exception = ExpectedException.none();
@@ -146,26 +148,26 @@ public class AddressControllerTest {
 		addresses.add(getAddress());
 		addresses.add(getAddress());
 
-		when(mockService.findAll()).thenReturn(addresses);
+		when(mockService.findAllPageable(anyInt(), anyInt(), anyString())).thenReturn(addresses);
 
 		mockMvc.perform(get(BASE_URL))
 			.andExpect(status().isOk());
 
-		verify(mockService, times(1)).findAll();
-		assertThat(mockService.findAll().size(), equalTo(3));
+		verify(mockService, times(1)).findAllPageable(anyInt(), anyInt(), anyString());
+		assertThat(mockService.findAllPageable(anyInt(), anyInt(), anyString()).size(), equalTo(3));
 	}
 
 	@Test
 	public void shouldReturnEmptyListOfAddress() throws Exception {
 		List<Address> addresses = new ArrayList<Address>();
 
-		when(mockService.findAll()).thenReturn(addresses);
+		when(mockService.findAllPageable(anyInt(), anyInt(), anyString())).thenReturn(addresses);
 
 		mockMvc.perform(get(BASE_URL))
 			.andExpect(status().isOk());
 
-		verify(mockService, times(1)).findAll();
-		assertTrue(mockService.findAll().isEmpty());
+		verify(mockService, times(1)).findAllPageable(anyInt(), anyInt(), anyString());
+		assertTrue(mockService.findAllPageable(anyInt(), anyInt(), anyString()).isEmpty());
 	}
 
 	@Test
