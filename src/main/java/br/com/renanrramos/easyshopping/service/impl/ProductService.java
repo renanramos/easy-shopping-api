@@ -64,5 +64,8 @@ public class ProductService implements CommonService<Product>{
 	public void remove(Long productId) {
 		productRepository.deleteById(productId);
 	}
-	
+
+	public List<Product> findProductByStoreId(Long storeId) {
+		return productRepository.findProductByStoreId(storeId);
+	}
 }

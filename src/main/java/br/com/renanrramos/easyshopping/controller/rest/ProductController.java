@@ -103,10 +103,14 @@ public class ProductController {
 	@GetMapping
 	@ApiOperation(value = "Get all products")
 	public ResponseEntity<List<ProductDTO>> getProducts(
+			@RequestParam(required = false) Long storeId,
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy) {
-		List<Product> products = productService.findAllPageable(pageNumber, pageSize, sortBy);
+		List<Product> products =
+				(storeId == null) ?
+				productService.findAllPageable(pageNumber, pageSize, sortBy) :
+				productService.findProductByStoreId(storeId);
 		return ResponseEntity.ok(ProductDTO.converterProductListToProductDTOList(products));		
 	}
 	

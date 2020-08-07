@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import br.com.renanrramos.easyshopping.model.Product;
-import br.com.renanrramos.easyshopping.model.Store;
-import br.com.renanrramos.easyshopping.model.builder.StoreBuilder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,7 +33,7 @@ public class ProductDTO {
 	
 	private String productCategoryName;
 	
-	private Store store;
+	private Long storeId;
 	
 	public ProductDTO() {
 		// Intentionally empty
@@ -47,7 +45,7 @@ public class ProductDTO {
 		this.description = product.getDescription();
 		this.price = product.getPrice();
 		this.productCategoryName = product.getProductCategory().getName();
-		this.store = getStoreInfo(product.getStore());
+		this.storeId = product.getStore().getId();
 	}
 
 	public static List<ProductDTO> converterProductListToProductDTOList(List<Product> products) {
@@ -61,15 +59,6 @@ public class ProductDTO {
 	@Override
 	public String toString() {
 		return "ProductDTO [id=" + id + ", name=" + name + ", description=" + description + ", price=" + price
-				+ ", productCategoryName=" + productCategoryName + ", store=" + store + "]";
+				+ ", productCategoryName=" + productCategoryName + ", storeId=" + storeId + "]";
 	}
-
-	private static Store getStoreInfo(Store store) {
-		return StoreBuilder.builder()
-				.withCorporateName(store.getCorporateName())
-				.withName(store.getName())
-				.withRegisteredNumber(store.getRegisteredNumber())
-				.build();
-	}
-	
 }
