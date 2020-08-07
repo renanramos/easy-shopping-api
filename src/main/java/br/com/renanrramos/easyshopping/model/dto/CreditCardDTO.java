@@ -34,6 +34,8 @@ public class CreditCardDTO {
 
 	private Integer code;
 
+	private Long customerId;
+
 	public CreditCardDTO() {
 		// Intentionally empty
 	}
@@ -44,6 +46,7 @@ public class CreditCardDTO {
 		this.ownerName = creditCard.getOwnerName();
 		this.validDate = creditCard.getValidDate();
 		this.code = creditCard.getCode();
+		this.customerId = creditCard.getCustomer().getId();
 	}
 
 	public static CreditCardDTO converterCreditCardToCreditCardDTO(CreditCard creditCard) {
@@ -57,6 +60,6 @@ public class CreditCardDTO {
 	@Override
 	public String toString() {
 		return "CreditCardDTO [id=" + id + ", creditCardNumber=" + creditCardNumber + ", ownerName=" + ownerName
-				+ ", validDate=" + validDate + ", code=" + code + "]";
+				+ ", validDate=" + validDate + ", code=" + code + ", customerId=" + customerId + "]";
 	}
 }
