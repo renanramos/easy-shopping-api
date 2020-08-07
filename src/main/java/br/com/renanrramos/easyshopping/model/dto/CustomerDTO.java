@@ -6,15 +6,11 @@
  */
 package br.com.renanrramos.easyshopping.model.dto;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import br.com.renanrramos.easyshopping.enums.Profile;
-import br.com.renanrramos.easyshopping.model.Address;
 import br.com.renanrramos.easyshopping.model.Customer;
-import br.com.renanrramos.easyshopping.model.builder.AddressBuilder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
