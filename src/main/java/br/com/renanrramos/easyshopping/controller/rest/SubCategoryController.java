@@ -7,6 +7,7 @@
 package br.com.renanrramos.easyshopping.controller.rest;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -15,9 +16,11 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -69,9 +72,25 @@ public class SubCategoryController {
 			subcategory.setProductCategory(productCategory);
 			subcategory = subcategoryService.save(subcategory);
 			uri = uriBuilders.path("/subcategories/{id}").buildAndExpand(subcategory.getId()).encode().toUri();
-			return ResponseEntity.created(uri).body(SubcategoryDTO.convertSubCategoryToSubCategoryDTO(subcategory));
+			return ResponseEntity.created(uri).body(SubcategoryDTO.convertSubcategoryToSubcategoryDTO(subcategory));
 		} else {
 			throw new EasyShoppingException(ExceptionMessagesConstants.PRODUCT_CATEGORY_NOT_FOUND);
 		}
+	}
+
+	@ResponseBody
+	@GetMapping
+	@ApiOperation(value = "Get all subcategories")
+	public ResponseEntity<List<SubcategoryDTO>> getSubcategories(
+			@RequestParam(required = false) Long productCategoryId,
+			@RequestParam(defaultValue = "0") Integer pageNumber, 
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "id") String sortBy) {
+		
+		List<Subcategory> subcategories =
+				(productCategoryId == null) ?
+						subcategoryService.findAllPageable(pageNumber, pageSize, sortBy) :
+						subcategoryService.findSubcategoryByProductCatgoryId(pageNumber, pageSize, sortBy, productCategoryId);
+		return ResponseEntity.ok(SubcategoryDTO.convertSubcategoryListToSubcategoryDTOList(subcategories));
 	}
 }

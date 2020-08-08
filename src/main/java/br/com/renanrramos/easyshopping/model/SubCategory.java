@@ -22,6 +22,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import br.com.renanrramos.easyshopping.constants.messages.ValidationMessagesConstants;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -44,14 +45,14 @@ public class Subcategory implements Serializable{
 	@ApiModelProperty(hidden = true)
 	private Long id;
 
-	@NotBlank
+	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	@Column(nullable = false, length = 250)
 	private String name;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "productCategory_id")
 	@Fetch(FetchMode.JOIN)
-	@NotNull
+	@NotNull(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private ProductCategory productCategory;
 
 	public Subcategory() {

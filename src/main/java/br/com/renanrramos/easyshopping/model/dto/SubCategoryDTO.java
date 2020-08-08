@@ -32,17 +32,17 @@ public class SubcategoryDTO {
 		// Intentionally empty
 	}
 
-	public SubcategoryDTO(Subcategory subCategory) {
-		this.name = subCategory.getName();
-		this.productCategoryId = Optional.ofNullable(subCategory.getProductCategory().getId()).orElse(null);
+	public SubcategoryDTO(Subcategory subcategory) {
+		this.name = subcategory.getName();
+		this.productCategoryId = Optional.ofNullable(subcategory.getProductCategory().getId()).orElse(null);
 	}
 
-	public static List<SubcategoryDTO> convertSubCategoryListToSubCategoryDTOList(List<Subcategory> subCategories) {
-		return subCategories.stream().map(SubcategoryDTO::new).collect(Collectors.toList());
+	public static List<SubcategoryDTO> convertSubcategoryListToSubcategoryDTOList(List<Subcategory> subcategories) {
+		return subcategories.stream().map(SubcategoryDTO::new).collect(Collectors.toList());
 	}
 
-	public static SubcategoryDTO convertSubCategoryToSubCategoryDTO(Subcategory subCategory) {
-		return new SubcategoryDTO(subCategory);
+	public static SubcategoryDTO convertSubcategoryToSubcategoryDTO(Subcategory subcategory) {
+		return new SubcategoryDTO(subcategory);
 	}
 
 	@Override
