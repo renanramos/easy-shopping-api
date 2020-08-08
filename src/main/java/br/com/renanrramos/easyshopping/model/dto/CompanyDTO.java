@@ -7,13 +7,10 @@
 package br.com.renanrramos.easyshopping.model.dto;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import br.com.renanrramos.easyshopping.enums.Profile;
 import br.com.renanrramos.easyshopping.model.Company;
-import br.com.renanrramos.easyshopping.model.Store;
-import br.com.renanrramos.easyshopping.model.builder.StoreBuilder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -38,9 +35,7 @@ public class CompanyDTO {
 	private String phone;
 
 	private Profile profile;
-	
-	private Set<Store> stores;
-	
+
 	public CompanyDTO() {
 		// Intentionally empty
 	}
@@ -52,9 +47,6 @@ public class CompanyDTO {
 		this.email = company.getEmail();
 		this.phone = company.getPhone();
 		this.profile = company.getProfile();
-		this.stores = company.getStores().isEmpty() 
-					? null 
-					: company.getStores().stream().map(CompanyDTO::getStoreInfo).collect(Collectors.toSet());
 	}
 
 	public static List<CompanyDTO> converterCompanyListToCompanyDTOList(List<Company> companies) {
@@ -71,14 +63,5 @@ public class CompanyDTO {
 				+ ", phone=" + phone + ", profile=" + profile + ", getId()=" + getId() + ", getName()=" + getName()
 				+ ", getRegisteredNumber()=" + getRegisteredNumber() + ", getEmail()=" + getEmail() + ", getPhone()="
 				+ getPhone() + ", getProfile()=" + getProfile() + "]";
-	}
-
-	
-	private static Store getStoreInfo(Store store) {
-		return StoreBuilder.builder()
-				.withCorporateName(store.getCorporateName())
-				.withName(store.getName())
-				.withRegisteredNumber(store.getRegisteredNumber())
-				.build();
 	}
 }

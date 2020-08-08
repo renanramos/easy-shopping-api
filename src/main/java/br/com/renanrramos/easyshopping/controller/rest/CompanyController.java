@@ -88,7 +88,7 @@ public class CompanyController {
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy) {
-		List<CompanyDTO> listOfCompanyDTOs = CompanyDTO.converterCompanyListToCompanyDTOList(companyService.findAllPageable(pageNumber, pageSize, sortBy));
+		List<CompanyDTO> listOfCompanyDTOs = CompanyDTO.converterCompanyListToCompanyDTOList(companyService.findAllPageable(pageNumber, pageSize, sortBy, null));
 		return ResponseEntity.ok(listOfCompanyDTOs);
 	}
 

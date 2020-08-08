@@ -37,7 +37,7 @@ public class CompanyService implements CommonService<Company>{
 	}
 
 	@Override
-	public List<Company> findAllPageable(Integer pageNumber, Integer pageSize, String sortBy) {
+	public List<Company> findAllPageable(Integer pageNumber, Integer pageSize, String sortBy, Long id) {
 		Pageable page = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
 		Page<Company> pagedResult = companyRepository.findAll(page); 
 		return pagedResult.hasContent() ?
