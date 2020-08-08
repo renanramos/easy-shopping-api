@@ -41,7 +41,7 @@ public class AdministratorService implements CommonService<Administrator>{
 	}
 
 	@Override
-	public List<Administrator> findAllPageable(Integer pageNumber, Integer pageSize, String sortBy) {
+	public List<Administrator> findAllPageable(Integer pageNumber, Integer pageSize, String sortBy, Long id) {
 		Pageable page = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
 		Page<Administrator> pagedResult = administratorRepository.findAll(page); 
 		return pagedResult.hasContent() ?

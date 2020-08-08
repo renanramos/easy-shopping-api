@@ -76,7 +76,7 @@ public class AdministratorController {
             @RequestParam(defaultValue = "id") String sortBy) {
 		List<Administrator> administrators =
 				(searchByName == null) ?
-						administratorService.findAllPageable(pageNumber, pageSize, sortBy) :
+						administratorService.findAllPageable(pageNumber, pageSize, sortBy, null) :
 						administratorService.searchAdministratorByName(searchByName);				 
 		return ResponseEntity.ok(AdministratorDTO.converterAdministratorListToAdministratorDTO(administrators)); 
 	}
