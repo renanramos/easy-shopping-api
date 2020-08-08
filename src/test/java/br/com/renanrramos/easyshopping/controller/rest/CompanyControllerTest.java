@@ -125,24 +125,24 @@ public class CompanyControllerTest {
 		companies.add(getCompanyInstance());
 		companies.add(getCompanyInstance());
 
-		when(mockService.findAllPageable(anyInt(), anyInt(), anyString())).thenReturn(companies);
+		when(mockService.findAllPageable(anyInt(), anyInt(), anyString(), any())).thenReturn(companies);
 
 		mockMvc.perform(get(BASE_URL))
 			.andExpect(status().isOk());
 
-		verify(mockService, times(1)).findAllPageable(anyInt(), anyInt(), anyString());
+		verify(mockService, times(1)).findAllPageable(anyInt(), anyInt(), anyString(), any());
 	}
 
 	@Test
 	public void shouldReturnEmptyListOfCompanies() throws Exception {
 		List<Company> companies = new ArrayList<Company>();
 
-		when(mockService.findAllPageable(anyInt(), anyInt(), anyString())).thenReturn(companies);
+		when(mockService.findAllPageable(anyInt(), anyInt(), anyString(), any())).thenReturn(companies);
 
 		mockMvc.perform(get(BASE_URL))
 			.andExpect(status().isOk());
 
-		verify(mockService, times(1)).findAllPageable(anyInt(), anyInt(), anyString());
+		verify(mockService, times(1)).findAllPageable(anyInt(), anyInt(), anyString(), any());
 	}
 
 	@Test
