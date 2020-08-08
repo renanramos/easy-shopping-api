@@ -24,6 +24,11 @@ public class ExceptionMessagesConstants {
 
 	public static final String EMAIL_ALREADY_EXIST = "O email informado já é utilizado.";
 	public static final String CPF_ALREADY_EXIST = "O CPF informado já está cadastrado.";
+	public static final String CNPJ_ALREADY_EXIST = "O CNPJ informado já está cadastrado.";
 
-	public static final String INVALID_EMAIL_TITLE = "Email inválido";
+	public static final String INVALID_FIELDS_TITLE = "Valor do campo inválido!";
+
+	public ExceptionMessagesConstants() {
+		// Intentionally empty
+	}
 }
