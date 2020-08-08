@@ -6,8 +6,6 @@
  */
 package br.com.renanrramos.easyshopping.model.form;
 
-import javax.validation.constraints.Email;
-
 import br.com.renanrramos.easyshopping.enums.Profile;
 import br.com.renanrramos.easyshopping.model.Customer;
 import br.com.renanrramos.easyshopping.model.builder.CustomerBuilder;
@@ -26,8 +24,7 @@ import lombok.Setter;
 public class CustomerForm {
 
 	private String name;
-	
-	@Email
+
 	private String email;
 	
 	private String cpf;
