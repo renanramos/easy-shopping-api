@@ -6,10 +6,13 @@
  */
 package br.com.renanrramos.easyshopping.model.dto;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import br.com.renanrramos.easyshopping.model.ProductCategory;
+import br.com.renanrramos.easyshopping.model.SubCategory;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,7 +29,9 @@ public class ProductCategoryDTO {
 	private Long id;
 
 	private String name;
-	
+
+	private List<SubCategory> subCategories;
+
 	public ProductCategoryDTO() {
 		// Intentionally empty
 	}
@@ -34,6 +39,7 @@ public class ProductCategoryDTO {
 	public ProductCategoryDTO(ProductCategory productCategory) {
 		this.id = productCategory.getId();
 		this.name = productCategory.getName();
+		this.subCategories = Optional.ofNullable(productCategory.getSubCategories()).orElse(new ArrayList<>());
 	}
 	
 	public static List<ProductCategoryDTO> converterProductCategoryListToProductCategoryDTOList(List<ProductCategory> productCategory) {
