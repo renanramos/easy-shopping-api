@@ -28,7 +28,7 @@ public class ExceptionMessagesConstants {
 
 	public static final String INVALID_FIELDS_TITLE = "Valor do campo inválido!";
 
-	public ExceptionMessagesConstants() {
+	private ExceptionMessagesConstants() {
 		// Intentionally empty
 	}
 }
