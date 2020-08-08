@@ -64,23 +64,20 @@ public class AddressController {
 	public ResponseEntity<AddressDTO> saveAddress(@Valid @RequestBody AddressForm addressForm, UriComponentsBuilder uriBuilder) {
 		
 		if (addressForm.getCustomerId() == null) {
-			throw new EntityNotFoundException(ExceptionMessagesConstants.CUSTOMER_NOT_FOUND);
+			throw new EntityNotFoundException(ExceptionMessagesConstants.INVALID_ID);
 		}
 
 		Optional<Customer> customerOptional = customerService.findById(addressForm.getCustomerId());
-		
+
 		if (customerOptional.isPresent()) {
-			
 			Customer customer = customerOptional.get();
 			Address address = AddressForm.converterAddressFormToAddress(addressForm);
 			address.setCustomer(customer);
 			address = addressService.save(address);
 			uri = uriBuilder.path("/addresses/{id}").buildAndExpand(address.getId()).encode().toUri();
-			
 			return ResponseEntity.created(uri).body(AddressDTO.convertAddressToAddressDTO(address));
-			
 		} else {
-			return ResponseEntity.notFound().build();
+			throw new EntityNotFoundException(ExceptionMessagesConstants.CUSTOMER_NOT_FOUND);
 		}
 	}
 	
@@ -104,12 +101,9 @@ public class AddressController {
 	@ApiOperation(value = "Get an address by id")
 	public ResponseEntity<AddressDTO> getAddressById(@PathVariable("id") Long addressId) {
 		Optional<Address> addressOptional = addressService.findById(addressId);
-		
 		if(addressOptional.isPresent()) {
-			Address address = addressOptional.get();
-			return ResponseEntity.ok(AddressDTO.convertAddressToAddressDTO(address));
+			return ResponseEntity.ok(AddressDTO.convertAddressToAddressDTO(addressOptional.get()));
 		}
-		
 		return ResponseEntity.notFound().build();
 	}
 	
@@ -121,7 +115,7 @@ public class AddressController {
 	public ResponseEntity<?> updateAddress(@PathVariable("id") Long addressId, @RequestBody AddressForm addressForm, UriComponentsBuilder uriBuilder) {
 		
 		if (addressForm.getCustomerId() == null) {
-			throw new EntityNotFoundException(ExceptionMessagesConstants.INVALID_ID);
+			throw new EntityNotFoundException(ExceptionMessagesConstants.CUSTOMER_NOT_FOUND);
 		}
 
 		Optional<Customer> customerOptional = customerService.findById(addressForm.getCustomerId());
