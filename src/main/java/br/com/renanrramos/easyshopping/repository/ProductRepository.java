@@ -19,4 +19,6 @@ import br.com.renanrramos.easyshopping.model.Product;
 public interface ProductRepository extends PagingAndSortingRepository<Product, Long>{
 
 	List<Product> findProductByStoreId(Long storeId);
+
+	List<Product> findProductByProductCategoryId(Long productCategoryId);
 }
