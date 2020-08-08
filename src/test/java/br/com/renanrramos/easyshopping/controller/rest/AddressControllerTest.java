@@ -13,6 +13,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -127,19 +128,6 @@ public class AddressControllerTest {
 		
 		verify(mockService, never()).save(any(Address.class));
 	}
-	
-	@Test
-	public void shouldReturnNotFoundWhenCustomerDoesntExist() throws JsonProcessingException, Exception {
-		AddressForm addressForm = new AddressForm();
-		addressForm.setCustomerId(1L);
-
-		mockMvc.perform(post(BASE_URL)
-				.content(objecMapper.writeValueAsString(addressForm))
-				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
-				.andExpect(status().isNotFound());
-
-		verify(mockService, never()).save(any(Address.class));
-	}
 
 	@Test
 	public void shouldReturnAListOfAddresses() throws Exception {
@@ -148,26 +136,26 @@ public class AddressControllerTest {
 		addresses.add(getAddress());
 		addresses.add(getAddress());
 
-		when(mockService.findAllPageable(anyInt(), anyInt(), anyString())).thenReturn(addresses);
+		when(mockService.findAllPageable(anyInt(), anyInt(), anyString(), any())).thenReturn(addresses);
 
 		mockMvc.perform(get(BASE_URL))
 			.andExpect(status().isOk());
 
-		verify(mockService, times(1)).findAllPageable(anyInt(), anyInt(), anyString());
-		assertThat(mockService.findAllPageable(anyInt(), anyInt(), anyString()).size(), equalTo(3));
+		verify(mockService, times(1)).findAllPageable(anyInt(), anyInt(), anyString(), any());
+		assertThat(mockService.findAllPageable(anyInt(), anyInt(), anyString(), any()).size(), equalTo(3));
 	}
 
 	@Test
 	public void shouldReturnEmptyListOfAddress() throws Exception {
 		List<Address> addresses = new ArrayList<Address>();
 
-		when(mockService.findAllPageable(anyInt(), anyInt(), anyString())).thenReturn(addresses);
+		when(mockService.findAllPageable(anyInt(), anyInt(), anyString(), any())).thenReturn(addresses);
 
 		mockMvc.perform(get(BASE_URL))
 			.andExpect(status().isOk());
 
-		verify(mockService, times(1)).findAllPageable(anyInt(), anyInt(), anyString());
-		assertTrue(mockService.findAllPageable(anyInt(), anyInt(), anyString()).isEmpty());
+		verify(mockService, times(1)).findAllPageable(anyInt(), anyInt(), anyString(), any());
+		assertTrue(mockService.findAllPageable(anyInt(), anyInt(), anyString(), any()).isEmpty());
 	}
 
 	@Test
