@@ -24,6 +24,8 @@ import lombok.Setter;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class SubcategoryDTO {
 
+	private Long id;
+
 	private String name;
 
 	private Long productCategoryId;
@@ -33,6 +35,7 @@ public class SubcategoryDTO {
 	}
 
 	public SubcategoryDTO(Subcategory subcategory) {
+		this.id = subcategory.getId();
 		this.name = subcategory.getName();
 		this.productCategoryId = Optional.ofNullable(subcategory.getProductCategory().getId()).orElse(null);
 	}

@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -88,5 +89,16 @@ public class SubCategoryController {
             @RequestParam(defaultValue = "id") String sortBy) {
 		List<Subcategory> subcategories = subcategoryService.findAllPageable(pageNumber, pageSize, sortBy, productCategoryId);
 		return ResponseEntity.ok(SubcategoryDTO.convertSubcategoryListToSubcategoryDTOList(subcategories));
+	}
+
+	@ResponseBody
+	@GetMapping(path = "/{id}")
+	@ApiOperation(value = "Get subcategory by id")
+	public ResponseEntity<SubcategoryDTO> getSubcategoriesBydId(@PathVariable("id") Long subcategoryId) {
+		Optional<Subcategory> subcategoryOptional = subcategoryService.findById(subcategoryId);
+		if (subcategoryOptional.isPresent()) {
+			return ResponseEntity.ok(SubcategoryDTO.convertSubcategoryToSubcategoryDTO(subcategoryOptional.get()));			
+		}
+		return ResponseEntity.notFound().build();
 	}
 }
