@@ -16,7 +16,7 @@ public class ExceptionMessagesConstants {
 	public static final String COMPANY_NOT_FOUND = "Empresa não localizada.";
 	public static final String ADDRESS_NOT_FOUND = "Endereço não localizado.";
 	public static final String ACCOUNT_NOT_FOUND = "A conta informada não foi localizada.";
-	public static final String PRODUCT_CATEGORY_NOT_FOUND = "A categoria informada não foi localizada.";
+	public static final String PRODUCT_CATEGORY_NOT_FOUND = "A categoria do produto informada não foi localizada.";
 	public static final String PRODUCT_NOT_FOUND = "O produto informado não foi localizado.";
 	public static final String STORE_NOT_FOUND = "A loja informada não foi lcocalizada.";
 	public static final String CREDIT_CARD_NOT_FOUND = "Cartão de crédito não localizado.";
