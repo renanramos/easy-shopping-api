@@ -117,25 +117,25 @@ public class AdministratorControllerTest {
 		admins.add(getAdministratorInstance());
 		admins.add(getAdministratorInstance());
 		
-		when(mockService.findAllPageable(anyInt(), anyInt(), anyString())).thenReturn(admins);
+		when(mockService.findAllPageable(anyInt(), anyInt(), anyString(), any())).thenReturn(admins);
 		
 		mockMvc.perform(get(BASE_URL))
 			.andExpect(status().isOk());
 		
-		verify(mockService, times(1)).findAllPageable(anyInt(), anyInt(), anyString());
+		verify(mockService, times(1)).findAllPageable(anyInt(), anyInt(), anyString(), any());
 	}
 	
 	@Test
 	public void shouldReturnEmptyListAdministrators() throws Exception {
 		List<Administrator> admins = new ArrayList<Administrator>();
 		
-		when(mockService.findAllPageable(anyInt(), anyInt(), anyString())).thenReturn(admins);
+		when(mockService.findAllPageable(anyInt(), anyInt(), anyString(), any())).thenReturn(admins);
 		
 		mockMvc.perform(get(BASE_URL))
 			.andExpect(status().isOk());
 		
-		verify(mockService, times(1)).findAllPageable(anyInt(), anyInt(), anyString());
-		assertTrue(mockService.findAllPageable(anyInt(), anyInt(), anyString()).isEmpty());
+		verify(mockService, times(1)).findAllPageable(anyInt(), anyInt(), anyString(), any());
+		assertTrue(mockService.findAllPageable(anyInt(), anyInt(), anyString(), any()).isEmpty());
 	}
 	
 	@Test
