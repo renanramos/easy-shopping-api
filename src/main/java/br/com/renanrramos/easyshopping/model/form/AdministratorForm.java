@@ -6,9 +6,6 @@
  */
 package br.com.renanrramos.easyshopping.model.form;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-
 import br.com.renanrramos.easyshopping.enums.Profile;
 import br.com.renanrramos.easyshopping.model.Administrator;
 import br.com.renanrramos.easyshopping.model.builder.AdministratorBuilder;
@@ -39,7 +36,7 @@ public class AdministratorForm {
 		// Intentionally empty
 	}
 
-	public AdministratorForm(String name, String email, String password, Profile profile) {
+	public AdministratorForm(String name, String email, String password) {
 		this.name = name;
 		this.email = email;
 		this.profile = Profile.ADMINISTRATOR;
