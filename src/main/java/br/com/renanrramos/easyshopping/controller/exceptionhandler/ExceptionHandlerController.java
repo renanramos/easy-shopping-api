@@ -47,6 +47,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler{
 				.withStatus(HttpStatus.BAD_REQUEST)
 				.withErrorTitle(error)
 				.withMessage(ex.getMessage())
+				.withErrors(new ArrayList<>())
 				.build());
 	}
 
@@ -55,7 +56,9 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler{
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
 		return buildResponseEntity(new ApiErrorBuilder()
 				.withStatus(status)
+				.withErrorTitle(status.getReasonPhrase())
 				.withMessage(ex.getMessage())
+				.withErrors(new ArrayList<>())
 				.build());
 	}
 
@@ -71,13 +74,16 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler{
 			
 	        return buildResponseEntity(new ApiErrorBuilder()
 				.withStatus(HttpStatus.BAD_REQUEST)
+				.withErrorTitle(ExceptionMessagesConstants.INVALID_FIELDS_TITLE)
 				.withMessage(ExceptionMessagesConstants.INVALID_FIELDS_TITLE)
 				.withErrors(errors)
 				.build());
 		}
 		return buildResponseEntity(new ApiErrorBuilder()
 				.withStatus(HttpStatus.BAD_REQUEST)
+				.withErrorTitle(ExceptionMessagesConstants.ERRORS_FOUND)
 				.withMessage(ex.getLocalizedMessage())
+				.withErrors(new ArrayList<>())
 				.build());
 	}
 	
@@ -86,6 +92,8 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler{
 		return buildResponseEntity(new ApiErrorBuilder()
 				.withStatus(HttpStatus.NOT_FOUND)
 				.withMessage(ex.getMessage())
+				.withErrorTitle(ExceptionMessagesConstants.NOT_FOUND_TITLE)
+				.withErrors(new ArrayList<>())
 				.build());
 	}
 
@@ -95,6 +103,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler{
 				.withStatus(HttpStatus.CONFLICT)
 				.withErrorTitle(ExceptionMessagesConstants.INVALID_FIELDS_TITLE)
 				.withMessage(ex.getMessage())
+				.withErrors(new ArrayList<>())
 				.build());
 	}
 	
