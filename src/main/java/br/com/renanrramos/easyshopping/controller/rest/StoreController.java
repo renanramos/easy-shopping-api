@@ -89,10 +89,7 @@ public class StoreController {
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy) {
-		List<Store> stores = 
-				(companyId == null) ?
-				storeService.findAllPageable(pageNumber, pageSize, sortBy) :
-				storeService.findStoreByCompanyId(companyId);
+		List<Store> stores = storeService.findAllPageable(pageNumber, pageSize, sortBy, companyId);
 		return ResponseEntity.ok(StoreDTO.converterStoreListToStoreDTOList(stores));
 	}
 	

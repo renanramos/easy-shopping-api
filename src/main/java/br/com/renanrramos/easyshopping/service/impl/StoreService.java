@@ -36,9 +36,12 @@ public class StoreService implements CommonService<Store>{
 		return storeRepository.save(store);
 	}
 
-	public List<Store> findAllPageable(Integer pageNumber, Integer pageSize, String sortBy) {
+	public List<Store> findAllPageable(Integer pageNumber, Integer pageSize, String sortBy, Long companyId) {
 		Pageable page = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
-		Page<Store> pagedResult = storeRepository.findAll(page); 
+		Page<Store> pagedResult = 
+				(companyId == null) ?
+				storeRepository.findAll(page) :
+					storeRepository.findStoreByCompanyId(page, companyId);
 		return pagedResult.hasContent() ?
 				pagedResult.getContent() :
 					new ArrayList<>();
@@ -62,9 +65,5 @@ public class StoreService implements CommonService<Store>{
 	@Override
 	public void remove(Long storeId) {
 		storeRepository.deleteById(storeId);
-	}
-
-	public List<Store> findStoreByCompanyId(Long companyId) {
-		return storeRepository.findStoreByCompanyId(companyId);
 	}
 }

@@ -6,8 +6,8 @@
  */
 package br.com.renanrramos.easyshopping.repository;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import br.com.renanrramos.easyshopping.model.Store;
@@ -18,5 +18,5 @@ import br.com.renanrramos.easyshopping.model.Store;
  */
 public interface StoreRepository extends PagingAndSortingRepository<Store, Long>{
 
-	List<Store> findStoreByCompanyId(Long companyId);
+	Page<Store> findStoreByCompanyId(Pageable page, Long companyId);
 }
