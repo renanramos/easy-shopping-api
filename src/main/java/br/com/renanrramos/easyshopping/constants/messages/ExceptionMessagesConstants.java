@@ -35,6 +35,9 @@ public class ExceptionMessagesConstants {
 
 	public static final String INVALID_FIELDS_TITLE = "Valor do campo inválido!";
 
+	public static final String NOT_FOUND_TITLE = "Não encontrado";
+	public static final String ERRORS_FOUND = "Erros encontrados";
+
 	private ExceptionMessagesConstants() {
 		// Intentionally empty
 	}
