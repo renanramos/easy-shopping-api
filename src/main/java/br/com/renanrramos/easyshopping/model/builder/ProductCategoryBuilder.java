@@ -6,7 +6,10 @@
  */
 package br.com.renanrramos.easyshopping.model.builder;
 
+import java.util.List;
+
 import br.com.renanrramos.easyshopping.model.ProductCategory;
+import br.com.renanrramos.easyshopping.model.SubCategory;
 
 /**
  * @author renan.ramos
@@ -16,10 +19,7 @@ public class ProductCategoryBuilder {
 
 	
 	private ProductCategory productCategory;
-	
-	/**
-	 * 
-	 */
+
 	private ProductCategoryBuilder() {
 		this.productCategory = new ProductCategory();
 	}
@@ -32,7 +32,12 @@ public class ProductCategoryBuilder {
 		this.productCategory.setName(name);
 		return this;
 	}
-	
+
+	public ProductCategoryBuilder withSubCategory(List<SubCategory> subCategories) {
+		this.productCategory.setSubCategories(subCategories);
+		return this;
+	}
+
 	public ProductCategory build() {
 		return this.productCategory;
 	}
