@@ -20,6 +20,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import br.com.renanrramos.easyshopping.constants.messages.ValidationMessagesConstants;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -42,27 +43,28 @@ public class Address implements Serializable{
 	@ApiModelProperty(hidden = true)
 	private Long id;
 	
-	@NotBlank
+	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String streetName;
 	
-	@NotBlank
+	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String district;
-	
-	@NotNull
+
+	@NotNull(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private Long number;
 	
-	@NotBlank
+	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String cep;
 	
-	@NotBlank
+	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String state;
 
-	@NotBlank
+	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String city;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "customer_id")
 	@Fetch(FetchMode.JOIN)
+	@NotNull
 	private Customer customer;
 	
 	public Address() {
