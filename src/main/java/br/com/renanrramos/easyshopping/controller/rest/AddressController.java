@@ -117,12 +117,11 @@ public class AddressController {
 
 		Optional<Customer> customerOptional = customerService.findById(addressForm.getCustomerId());
 
-		Customer customer;
-		if (customerOptional.isPresent()) {
-			customer = customerOptional.get();
-		} else {
+		if (!customerOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.CUSTOMER_NOT_FOUND);
 		}
+
+		Customer customer = customerOptional.get();
 
 		Optional<Address> addressOptional = addressService.findById(addressId);
 		

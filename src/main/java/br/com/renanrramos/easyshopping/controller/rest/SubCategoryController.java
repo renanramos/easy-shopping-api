@@ -10,15 +10,18 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -58,11 +61,11 @@ public class SubCategoryController {
 	@ResponseBody
 	@PostMapping
 	@Transactional
-	@ApiOperation(value = "Save a new sub category")
-	public ResponseEntity<SubcategoryDTO> saveSubcategory(@Valid @RequestBody SubcategoryForm subcategoryForm, UriComponentsBuilder uriBuilders) throws EasyShoppingException {
+	@ApiOperation(value = "Save a new subcategory")
+	public ResponseEntity<SubcategoryDTO> saveSubcategory(@Valid @RequestBody SubcategoryForm subcategoryForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 
 		if (subcategoryForm.getProductCategoryId() == null) {
-			throw new EasyShoppingException(ExceptionMessagesConstants.PRODUCT_ID_NOT_FOUND_ON_REQUEST);
+			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_ID_NOT_FOUND_ON_REQUEST);
 		}
 
 		Optional<ProductCategory> productCategoryOptional = productCategoryService.findById(subcategoryForm.getProductCategoryId());
@@ -72,10 +75,10 @@ public class SubCategoryController {
 			Subcategory subcategory = SubcategoryForm.convertSubcategoryFormToSubcategory(subcategoryForm);
 			subcategory.setProductCategory(productCategory);
 			subcategory = subcategoryService.save(subcategory);
-			uri = uriBuilders.path("/subcategories/{id}").buildAndExpand(subcategory.getId()).encode().toUri();
+			uri = uriBuilder.path("/subcategories/{id}").buildAndExpand(subcategory.getId()).encode().toUri();
 			return ResponseEntity.created(uri).body(SubcategoryDTO.convertSubcategoryToSubcategoryDTO(subcategory));
 		} else {
-			throw new EasyShoppingException(ExceptionMessagesConstants.PRODUCT_CATEGORY_NOT_FOUND);
+			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_NOT_FOUND);
 		}
 	}
 
@@ -100,5 +103,54 @@ public class SubCategoryController {
 			return ResponseEntity.ok(SubcategoryDTO.convertSubcategoryToSubcategoryDTO(subcategoryOptional.get()));			
 		}
 		return ResponseEntity.notFound().build();
+	}
+
+	@ResponseBody
+	@PutMapping(path = "/{id}")
+	@Transactional
+	@ApiOperation(value = "Update a subcategory")
+	public ResponseEntity<SubcategoryDTO> updateSubcategory(@PathVariable("id") Long subcategoryId, @RequestBody SubcategoryForm subcategoryForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
+
+		if (subcategoryForm.getProductCategoryId() == null) {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_ID_NOT_FOUND_ON_REQUEST);
+		}
+
+		Optional<ProductCategory> productCatgoryOptional = productCategoryService.findById(subcategoryForm.getProductCategoryId());
+
+		if (!productCatgoryOptional.isPresent()) {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_NOT_FOUND);
+		}
+
+		ProductCategory productCategory = productCatgoryOptional.get();
+
+		Optional<Subcategory> subcategoryOptional = subcategoryService.findById(subcategoryId);
+
+		if (subcategoryOptional.isPresent()) {
+			
+			Subcategory subcategory = SubcategoryForm.convertSubcategoryFormToSubcategory(subcategoryForm);
+			subcategory.setId(subcategoryId);
+			subcategory.setProductCategory(productCategory);
+			subcategory = subcategoryService.save(subcategory);
+			
+			uri = uriBuilder.path("/subcategories/{id}").buildAndExpand(subcategory.getId()).encode().toUri();
+			return ResponseEntity.accepted().location(uri).body(SubcategoryDTO.convertSubcategoryToSubcategoryDTO(subcategory));
+		} else {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.SUBCATEGORY_NOT_FOUND);
+		}		
+	}
+
+	@ResponseBody
+	@DeleteMapping(path = "/{id}")
+	@Transactional
+	@ApiOperation(value = "Remove a subcategory")
+	public ResponseEntity<?> removeSubcategory(@PathVariable("id") Long subcategoryId) throws EasyShoppingException {
+		Optional<Subcategory> subcategoryOptional = subcategoryService.findById(subcategoryId);
+
+		if (subcategoryOptional.isPresent()) {
+			subcategoryService.remove(subcategoryId);
+			return ResponseEntity.ok().build();
+		} else {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.SUBCATEGORY_NOT_FOUND);
+		}
 	}
 }
