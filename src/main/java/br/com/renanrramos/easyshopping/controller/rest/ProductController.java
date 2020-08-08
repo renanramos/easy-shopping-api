@@ -61,7 +61,7 @@ public class ProductController {
 	
 	@Autowired
 	private StoreService storeService;
-	
+
 	@ResponseBody
 	@PostMapping
 	@Transactional
@@ -70,16 +70,17 @@ public class ProductController {
 		
 		Long productCategoryId = productForm.getProductCategoryId();
 		Long storeId = productForm.getStoreId();
-		
-		Store store = new Store();
-		Optional<Store> storeOptional = storeService.findById(storeId); 
+
+		Optional<Store> storeOptional = storeService.findById(storeId);
+
+		Store store;
 		if (storeOptional.isPresent()) {
 			store = storeOptional.get();
 		} else {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.STORE_NOT_FOUND);
 		}
 		
-		ProductCategory productCategory = new ProductCategory();
+		ProductCategory productCategory;
 		
 		Optional<ProductCategory> productCategoryOptional = productCategoryService.findById(productCategoryId);
 		if (productCategoryOptional.isPresent()) {
@@ -98,7 +99,7 @@ public class ProductController {
 		
 		return ResponseEntity.created(uri).body(ProductDTO.convertProductToProductDTO(product));
 	}
-	
+
 	@ResponseBody
 	@GetMapping
 	@ApiOperation(value = "Get all products")
@@ -113,7 +114,7 @@ public class ProductController {
 				productService.findProductByStoreId(storeId);
 		return ResponseEntity.ok(ProductDTO.converterProductListToProductDTOList(products));		
 	}
-	
+
 	@ResponseBody
 	@GetMapping(path = "/{id}")
 	@ApiOperation(value = "Get a product by id")
@@ -131,62 +132,62 @@ public class ProductController {
 	@ApiOperation(value = "Update a product")
 	public ResponseEntity<ProductDTO> updateProduct(@PathVariable("id") Long productId, @Valid @RequestBody ProductForm productForm,
 			UriComponentsBuilder uriBuilder) {
+
 		if (productId == null) {
-			return ResponseEntity.badRequest().build();
+			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_NOT_FOUND);
 		}
 		
 		Optional<Product> productOptional = productService.findById(productId);
 		
-		if (productOptional.isPresent()) {
-		
-			Long productCategoryId = productForm.getProductCategoryId();
-			
-			ProductCategory productCategory = new ProductCategory();
-			Optional<ProductCategory> productCategoryOptional = productCategoryService.findById(productCategoryId);
-			
-			if (productCategoryOptional.isPresent()) {
-				productCategory = productCategoryOptional.get();
-			} else {
-				throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_NOT_FOUND);
-			}
-		
-			Long storeId = productForm.getStoreId();
-			
-			Store store;
-			Optional<Store> storeOptional = storeService.findById(storeId);
-			
-			if (storeOptional.isPresent()) {
-				store = storeOptional.get();
-			} else {
-				throw new EntityNotFoundException(ExceptionMessagesConstants.STORE_NOT_FOUND);
-			}
-
-			Product product = ProductForm.converterProductFormToProduct(productForm);
-			product.setProductCategory(productCategory);
-			product.setStore(store);
-			product.setId(productId);
-			product = productService.save(product);
-			
-			uri = uriBuilder.path("/products/{id}").buildAndExpand(productId).encode().toUri();
-			
-			return ResponseEntity.accepted().location(uri).body(ProductDTO.convertProductToProductDTO(product));
-		} else {
+		if (!productOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_NOT_FOUND);
 		}
+
+		Long productCategoryId = productForm.getProductCategoryId();
+		
+		ProductCategory productCategory;
+		Optional<ProductCategory> productCategoryOptional = productCategoryService.findById(productCategoryId);
+		
+		if (productCategoryOptional.isPresent()) {
+			productCategory = productCategoryOptional.get();
+		} else {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_NOT_FOUND);
+		}
+	
+		Long storeId = productForm.getStoreId();
+		
+		Store store;
+		Optional<Store> storeOptional = storeService.findById(storeId);
+		
+		if (storeOptional.isPresent()) {
+			store = storeOptional.get();
+		} else {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.STORE_NOT_FOUND);
+		}
+
+		Product product = ProductForm.converterProductFormToProduct(productForm);
+		product.setProductCategory(productCategory);
+		product.setStore(store);
+		product.setId(productId);
+		product = productService.save(product);
+		
+		uri = uriBuilder.path("/products/{id}").buildAndExpand(productId).encode().toUri();
+		
+		return ResponseEntity.accepted().location(uri).body(ProductDTO.convertProductToProductDTO(product));
 	}
 	
 	@ResponseBody
 	@DeleteMapping(path = "/{id}")
 	@ApiOperation(value = "Remove a product")
 	public ResponseEntity<?> deleteProduct(@PathVariable("id") Long productId) {
-		
 		Optional<Product> productOptional = productService.findById(productId);
-		
-		if (productOptional.isPresent()) {
-			productService.remove(productId);
-			return ResponseEntity.accepted().build();
-		} else {
+
+		if (!productOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_NOT_FOUND);
 		}
+
+		productService.remove(productId);
+
+		return ResponseEntity.accepted().build();
 	}
 }
