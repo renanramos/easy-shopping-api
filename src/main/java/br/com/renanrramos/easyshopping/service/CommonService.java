@@ -25,5 +25,5 @@ public interface CommonService<T> {
 	
 	public void remove(Long entityId);
 
-	public List<T> findAllPageable(Integer pageNumber, Integer pageSize, String sort);
+	public List<T> findAllPageable(Integer pageNumber, Integer pageSize, String sort, Long id);
 }
