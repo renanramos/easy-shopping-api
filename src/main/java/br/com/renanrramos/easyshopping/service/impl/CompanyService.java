@@ -64,8 +64,9 @@ public class CompanyService implements CommonService<Company>{
 	public List<Company> findAll() {
 		return new ArrayList<>();
 	}
-	
-	public boolean isValidCompanyId(Long companyId) {
-		return companyRepository.existsById(companyId);
+
+	public boolean isRegisteredNumberInvalid(String registeredNumber) {
+		Company company = companyRepository.findTopCompanyByRegisteredNumber(registeredNumber);
+		return Optional.ofNullable(company).isPresent();
 	}
 }
