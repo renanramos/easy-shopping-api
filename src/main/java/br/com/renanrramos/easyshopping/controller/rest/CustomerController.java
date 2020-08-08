@@ -87,7 +87,7 @@ public class CustomerController {
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy) {		
-		List<Customer> customers = customerService.findAllPageable(pageNumber, pageSize, sortBy);
+		List<Customer> customers = customerService.findAllPageable(pageNumber, pageSize, sortBy, null);
 		return ResponseEntity.ok(CustomerDTO.converterCustomerListToCustomerDTOList(customers));
 	}
 	

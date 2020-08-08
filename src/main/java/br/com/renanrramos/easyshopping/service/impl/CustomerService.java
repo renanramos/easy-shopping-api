@@ -36,7 +36,7 @@ public class CustomerService implements CommonService<Customer>{
 	}
 
 	@Override
-	public List<Customer> findAllPageable(Integer pageNumber, Integer pageSize, String sortBy) {
+	public List<Customer> findAllPageable(Integer pageNumber, Integer pageSize, String sortBy, Long id) {
 		Pageable page = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
 		Page<Customer> pagedResult = customerRepository.findAll(page); 
 		return pagedResult.hasContent() ?
