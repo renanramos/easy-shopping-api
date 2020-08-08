@@ -16,4 +16,5 @@ import br.com.renanrramos.easyshopping.model.Company;
  */
 public interface CompanyRepository extends PagingAndSortingRepository<Company, Long>{
 
+	Company findTopCompanyByRegisteredNumber(String registeredNumber);
 }
