@@ -32,8 +32,8 @@ public class SubcategoryService implements CommonService<Subcategory>{
 	private SubCategoryRepository subCategoryRepository;
 	
 	@Override
-	public Subcategory save(Subcategory subCategory) {
-		return subCategoryRepository.save(subCategory);
+	public Subcategory save(Subcategory subcategory) {
+		return subCategoryRepository.save(subcategory);
 	}
 
 	@Override
@@ -42,18 +42,18 @@ public class SubcategoryService implements CommonService<Subcategory>{
 	}
 
 	@Override
-	public Optional<Subcategory> findById(Long subCategoryId) {
-		return subCategoryRepository.findById(subCategoryId);
+	public Optional<Subcategory> findById(Long subcategoryId) {
+		return subCategoryRepository.findById(subcategoryId);
 	}
 
 	@Override
-	public Subcategory update(Subcategory subCategory) {
-		return subCategoryRepository.save(subCategory);
+	public Subcategory update(Subcategory subcategory) {
+		return subCategoryRepository.save(subcategory);
 	}
 
 	@Override
-	public void remove(Long subCategoryId) {
-		subCategoryRepository.deleteById(subCategoryId);
+	public void remove(Long subcategoryId) {
+		subCategoryRepository.deleteById(subcategoryId);
 	}
 
 	@Override

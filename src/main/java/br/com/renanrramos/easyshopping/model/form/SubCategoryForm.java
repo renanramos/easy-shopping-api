@@ -34,10 +34,10 @@ public class SubcategoryForm {
 		this.productCategoryId = productCategoryId;
 	}
 
-	public Subcategory convertSubCategoryFormToSubCategory(SubcategoryForm subCategoryForm) {
+	public static Subcategory convertSubcategoryFormToSubcategory(SubcategoryForm subcategoryForm) {
 		return new SubcategoryBuilder()
 				.builder()
-				.withName(subCategoryForm.getName())
+				.withName(subcategoryForm.getName())
 				.build();
 	}
 
