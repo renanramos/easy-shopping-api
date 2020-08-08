@@ -69,4 +69,7 @@ public class AdministratorService implements CommonService<Administrator>{
 		return new ArrayList<>();
 	}
 
+	public List<Administrator> searchAdministratorByName(String name) {
+		return administratorRepository.findAdministratorByNameContains(name);
+	}
 }

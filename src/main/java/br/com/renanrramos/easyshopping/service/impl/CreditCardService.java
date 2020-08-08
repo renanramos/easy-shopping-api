@@ -65,4 +65,7 @@ public class CreditCardService implements CommonService<CreditCard>{
 		creditCardRepository.deleteById(creditCardId);
 	}
 
+	public List<CreditCard> findCreditCardByCustomerId(Long customerId) {
+		return creditCardRepository.findCreditCardByCustomerId(customerId);
+	}
 }
