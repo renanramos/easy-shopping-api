@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import br.com.renanrramos.easyshopping.model.ProductCategory;
-import br.com.renanrramos.easyshopping.model.SubCategory;
+import br.com.renanrramos.easyshopping.model.Subcategory;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,7 +30,7 @@ public class ProductCategoryDTO {
 
 	private String name;
 
-	private List<SubCategory> subCategories;
+	private List<Subcategory> subCategories;
 
 	public ProductCategoryDTO() {
 		// Intentionally empty
@@ -39,7 +39,7 @@ public class ProductCategoryDTO {
 	public ProductCategoryDTO(ProductCategory productCategory) {
 		this.id = productCategory.getId();
 		this.name = productCategory.getName();
-		this.subCategories = Optional.ofNullable(productCategory.getSubCategories()).orElse(new ArrayList<>());
+		this.subCategories = Optional.ofNullable(productCategory.getSubcategories()).orElse(new ArrayList<>());
 	}
 	
 	public static List<ProductCategoryDTO> converterProductCategoryListToProductCategoryDTOList(List<ProductCategory> productCategory) {

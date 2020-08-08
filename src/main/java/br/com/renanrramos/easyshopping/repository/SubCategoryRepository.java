@@ -8,12 +8,12 @@ package br.com.renanrramos.easyshopping.repository;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-import br.com.renanrramos.easyshopping.model.SubCategory;
+import br.com.renanrramos.easyshopping.model.Subcategory;
 
 /**
  * @author renan.ramos
  *
  */
-public interface SubCategoryRepository extends PagingAndSortingRepository<SubCategory, Long> {
+public interface SubCategoryRepository extends PagingAndSortingRepository<Subcategory, Long> {
 
 }

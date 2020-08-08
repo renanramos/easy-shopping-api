@@ -7,35 +7,35 @@
 package br.com.renanrramos.easyshopping.model.builder;
 
 import br.com.renanrramos.easyshopping.model.ProductCategory;
-import br.com.renanrramos.easyshopping.model.SubCategory;
+import br.com.renanrramos.easyshopping.model.Subcategory;
 
 /**
  * @author renan.ramos
  *
  */
-public class SubCategoryBuilder {
+public class SubcategoryBuilder {
 
-	private SubCategory subcategory;
+	private Subcategory subcategory;
 
-	public SubCategoryBuilder() {
-		this.subcategory = new SubCategory();
+	public SubcategoryBuilder() {
+		this.subcategory = new Subcategory();
 	}
 
-	public SubCategoryBuilder builder() {
-		return new SubCategoryBuilder();
+	public SubcategoryBuilder builder() {
+		return new SubcategoryBuilder();
 	}
 
-	public SubCategoryBuilder withName(String name) {
+	public SubcategoryBuilder withName(String name) {
 		this.subcategory.setName(name);
 		return this;
 	}
 
-	public SubCategoryBuilder withProductCategory(ProductCategory productCategory) {
+	public SubcategoryBuilder withProductCategory(ProductCategory productCategory) {
 		this.subcategory.setProductCategory(productCategory);
 		return this;
 	}
 
-	public SubCategory build() {
+	public Subcategory build() {
 		return this.subcategory;
 	}
 }

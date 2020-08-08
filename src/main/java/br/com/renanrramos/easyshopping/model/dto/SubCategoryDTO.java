@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import br.com.renanrramos.easyshopping.model.SubCategory;
+import br.com.renanrramos.easyshopping.model.Subcategory;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,31 +22,31 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class SubCategoryDTO {
+public class SubcategoryDTO {
 
 	private String name;
 
 	private Long productCategoryId;
 
-	public SubCategoryDTO() {
+	public SubcategoryDTO() {
 		// Intentionally empty
 	}
 
-	public SubCategoryDTO(SubCategory subCategory) {
+	public SubcategoryDTO(Subcategory subCategory) {
 		this.name = subCategory.getName();
 		this.productCategoryId = Optional.ofNullable(subCategory.getProductCategory().getId()).orElse(null);
 	}
 
-	public static List<SubCategoryDTO> convertSubCategoryListToSubCategoryDTOList(List<SubCategory> subCategories) {
-		return subCategories.stream().map(SubCategoryDTO::new).collect(Collectors.toList());
+	public static List<SubcategoryDTO> convertSubCategoryListToSubCategoryDTOList(List<Subcategory> subCategories) {
+		return subCategories.stream().map(SubcategoryDTO::new).collect(Collectors.toList());
 	}
 
-	public static SubCategoryDTO convertSubCategoryToSubCategoryDTO(SubCategory subCategory) {
-		return new SubCategoryDTO(subCategory);
+	public static SubcategoryDTO convertSubCategoryToSubCategoryDTO(Subcategory subCategory) {
+		return new SubcategoryDTO(subCategory);
 	}
 
 	@Override
 	public String toString() {
-		return "SubCategoryDTO [name=" + name + ", productCategoryId=" + productCategoryId + "]";
+		return "SubcategoryDTO [name=" + name + ", productCategoryId=" + productCategoryId + "]";
 	}
 }

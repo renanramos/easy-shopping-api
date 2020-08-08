@@ -17,7 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import br.com.renanrramos.easyshopping.model.SubCategory;
+import br.com.renanrramos.easyshopping.model.Subcategory;
 import br.com.renanrramos.easyshopping.repository.SubCategoryRepository;
 import br.com.renanrramos.easyshopping.service.CommonService;
 
@@ -26,28 +26,28 @@ import br.com.renanrramos.easyshopping.service.CommonService;
  *
  */
 @Service
-public class SubCategoryService implements CommonService<SubCategory>{
+public class SubcategoryService implements CommonService<Subcategory>{
 
 	@Autowired
 	private SubCategoryRepository subCategoryRepository;
 	
 	@Override
-	public SubCategory save(SubCategory subCategory) {
+	public Subcategory save(Subcategory subCategory) {
 		return subCategoryRepository.save(subCategory);
 	}
 
 	@Override
-	public List<SubCategory> findAll() {
+	public List<Subcategory> findAll() {
 		return new ArrayList<>();
 	}
 
 	@Override
-	public Optional<SubCategory> findById(Long subCategoryId) {
+	public Optional<Subcategory> findById(Long subCategoryId) {
 		return subCategoryRepository.findById(subCategoryId);
 	}
 
 	@Override
-	public SubCategory update(SubCategory subCategory) {
+	public Subcategory update(Subcategory subCategory) {
 		return subCategoryRepository.save(subCategory);
 	}
 
@@ -57,9 +57,9 @@ public class SubCategoryService implements CommonService<SubCategory>{
 	}
 
 	@Override
-	public List<SubCategory> findAllPageable(Integer pageNumber, Integer pageSize, String sort) {
+	public List<Subcategory> findAllPageable(Integer pageNumber, Integer pageSize, String sort) {
 		Pageable page = PageRequest.of(pageNumber, pageSize, Sort.by(sort));
-		Page<SubCategory> pagedResult = subCategoryRepository.findAll(page); 
+		Page<Subcategory> pagedResult = subCategoryRepository.findAll(page); 
 		return pagedResult.hasContent() ?
 				pagedResult.getContent() :
 					new ArrayList<>();

@@ -9,7 +9,7 @@ package br.com.renanrramos.easyshopping.model.builder;
 import java.util.List;
 
 import br.com.renanrramos.easyshopping.model.ProductCategory;
-import br.com.renanrramos.easyshopping.model.SubCategory;
+import br.com.renanrramos.easyshopping.model.Subcategory;
 
 /**
  * @author renan.ramos
@@ -33,8 +33,8 @@ public class ProductCategoryBuilder {
 		return this;
 	}
 
-	public ProductCategoryBuilder withSubCategory(List<SubCategory> subCategories) {
-		this.productCategory.setSubCategories(subCategories);
+	public ProductCategoryBuilder withSubCategory(List<Subcategory> subcategories) {
+		this.productCategory.setSubcategories(subcategories);
 		return this;
 	}
 

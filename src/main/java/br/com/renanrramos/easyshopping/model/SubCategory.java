@@ -35,7 +35,7 @@ import lombok.Setter;
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-public class SubCategory implements Serializable{
+public class Subcategory implements Serializable{
 
 	private static final long serialVersionUID = 1026705649369198665L;
 
@@ -54,12 +54,12 @@ public class SubCategory implements Serializable{
 	@NotNull
 	private ProductCategory productCategory;
 
-	public SubCategory() {
+	public Subcategory() {
 		// Intentionally empty
 	}
 
 	@Override
 	public String toString() {
-		return "SubCategory [id=" + id + ", name=" + name + ", productCategory=" + productCategory.getId() + "]";
+		return "Subcategory [id=" + id + ", name=" + name + ", productCategory=" + productCategory.getId() + "]";
 	}
 }

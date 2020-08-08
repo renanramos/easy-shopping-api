@@ -6,8 +6,8 @@
  */
 package br.com.renanrramos.easyshopping.model.form;
 
-import br.com.renanrramos.easyshopping.model.SubCategory;
-import br.com.renanrramos.easyshopping.model.builder.SubCategoryBuilder;
+import br.com.renanrramos.easyshopping.model.Subcategory;
+import br.com.renanrramos.easyshopping.model.builder.SubcategoryBuilder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,23 +19,23 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class SubCategoryForm {
+public class SubcategoryForm {
 
 	private String name;
 
 	private Long productCategoryId;
 
-	public SubCategoryForm() {
+	public SubcategoryForm() {
 		// Intentionally empty
 	}
 
-	public SubCategoryForm(String name, Long productCategoryId) {
+	public SubcategoryForm(String name, Long productCategoryId) {
 		this.name = name;
 		this.productCategoryId = productCategoryId;
 	}
 
-	public SubCategory convertSubCategoryFormToSubCategory(SubCategoryForm subCategoryForm) {
-		return new SubCategoryBuilder()
+	public Subcategory convertSubCategoryFormToSubCategory(SubcategoryForm subCategoryForm) {
+		return new SubcategoryBuilder()
 				.builder()
 				.withName(subCategoryForm.getName())
 				.build();
@@ -43,6 +43,6 @@ public class SubCategoryForm {
 
 	@Override
 	public String toString() {
-		return "SubCategoryForm [name=" + name + ", productCategoryId=" + productCategoryId + "]";
+		return "SubcategoryForm [name=" + name + ", productCategoryId=" + productCategoryId + "]";
 	}
 }

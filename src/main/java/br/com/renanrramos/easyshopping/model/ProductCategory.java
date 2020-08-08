@@ -45,8 +45,8 @@ public class ProductCategory implements Serializable{
 	@Column(nullable = false, length = 250)
 	private String name;
 
-	@OneToMany(targetEntity = SubCategory.class, cascade = CascadeType.ALL, mappedBy = "productCategory", fetch = FetchType.EAGER)
-	private List<SubCategory> subCategories;
+	@OneToMany(targetEntity = Subcategory.class, cascade = CascadeType.ALL, mappedBy = "productCategory", fetch = FetchType.EAGER)
+	private List<Subcategory> subcategories;
 	
 	public ProductCategory() {
 		// Intentionally empty
