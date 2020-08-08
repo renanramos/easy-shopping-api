@@ -68,4 +68,8 @@ public class ProductService implements CommonService<Product>{
 	public List<Product> findProductByStoreId(Long storeId) {
 		return productRepository.findProductByStoreId(storeId);
 	}
+
+	public List<Product> findProductByProductCategoryId(Long productCategoryId) {
+		return productRepository.findProductByProductCategoryId(productCategoryId);
+	}
 }
