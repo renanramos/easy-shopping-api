@@ -91,10 +91,7 @@ public class CreditCardController {
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy) {
-		List<CreditCard> creditCards = 
-				(customerId == null) ?
-				creditCardService.findAllPageable(pageNumber, pageSize, sortBy) :
-				creditCardService.findCreditCardByCustomerId(customerId);
+		List<CreditCard> creditCards = creditCardService.findAllPageable(pageNumber, pageSize, sortBy, customerId);
 		return ResponseEntity.ok(CreditCardDTO.converterCreditCardListToCreditCardDTOList(creditCards));
 	}
 

@@ -37,9 +37,12 @@ public class CreditCardService implements CommonService<CreditCard>{
 	}
 
 	@Override
-	public List<CreditCard> findAllPageable(Integer pageNumber, Integer pageSize, String sortBy) {
+	public List<CreditCard> findAllPageable(Integer pageNumber, Integer pageSize, String sortBy, Long customerId) {
 		Pageable page = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
-		Page<CreditCard> pagedResult = creditCardRepository.findAll(page); 
+		Page<CreditCard> pagedResult = 
+				(customerId == null) ?
+				creditCardRepository.findAll(page) :
+				creditCardRepository.findCreditCardByCustomerId(page, customerId);
 		return pagedResult.hasContent() ?
 				pagedResult.getContent() :
 					new ArrayList<>();
@@ -63,9 +66,5 @@ public class CreditCardService implements CommonService<CreditCard>{
 	@Override
 	public void remove(Long creditCardId) {
 		creditCardRepository.deleteById(creditCardId);
-	}
-
-	public List<CreditCard> findCreditCardByCustomerId(Long customerId) {
-		return creditCardRepository.findCreditCardByCustomerId(customerId);
 	}
 }
