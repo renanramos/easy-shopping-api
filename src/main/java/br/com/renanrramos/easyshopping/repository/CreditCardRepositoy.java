@@ -6,6 +6,8 @@
  */
 package br.com.renanrramos.easyshopping.repository;
 
+import java.util.List;
+
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import br.com.renanrramos.easyshopping.model.CreditCard;
@@ -15,5 +17,6 @@ import br.com.renanrramos.easyshopping.model.CreditCard;
  *
  */
 public interface CreditCardRepositoy extends PagingAndSortingRepository<CreditCard, Long>{
-
+	
+	List<CreditCard> findCreditCardByCustomerId(Long customerId);
 }

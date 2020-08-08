@@ -6,6 +6,8 @@
  */
 package br.com.renanrramos.easyshopping.repository;
 
+import java.util.List;
+
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import br.com.renanrramos.easyshopping.model.Administrator;
@@ -16,4 +18,5 @@ import br.com.renanrramos.easyshopping.model.Administrator;
  */
 public interface AdministratorRepository extends PagingAndSortingRepository<Administrator, Long> {
 
+	List<Administrator> findAdministratorByNameContains(String name);
 }
