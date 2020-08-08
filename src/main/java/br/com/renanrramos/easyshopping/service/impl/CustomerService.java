@@ -44,20 +44,24 @@ public class CustomerService implements CommonService<Customer>{
 					new ArrayList<>();
 	}
 
+	@Override
 	public Optional<Customer> findById(Long customerId) {
 		return customerRepository.findById(customerId);
 	}
 
+	@Override
 	public Customer update(Customer customer) {
 		return customerRepository.save(customer);
 	}
 
+	@Override
 	public void remove(Long customerId) {
 		customerRepository.deleteById(customerId);
 	}
 
 	public boolean isCpfInvalid(String cpf) {
-		return customerRepository.findTopCustomerByCpf(cpf) == null;
+		Customer customer = customerRepository.findTopCustomerByCpf(cpf); 
+		return  Optional.ofNullable(customer).isPresent();
 	}
 
 	@Override
