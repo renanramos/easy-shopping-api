@@ -55,7 +55,6 @@ public class User implements Serializable{
 	@Enumerated(EnumType.STRING)
 	private Profile profile;
 
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	@Column(nullable = false, length = 50)
 	private String password;
 

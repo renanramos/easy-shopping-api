@@ -21,7 +21,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
+import br.com.renanrramos.easyshopping.constants.messages.PatternValidationConstants;
+import br.com.renanrramos.easyshopping.constants.messages.ValidationMessagesConstants;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -48,8 +51,7 @@ public class Store implements Serializable{
 	@Column(nullable = false, length = 50)
 	private String name;
 	
-	@NotBlank
-	@Column(nullable = false, length = 50)
+	@Pattern(regexp = PatternValidationConstants.REGISTERED_NUMBER_PATTERN, message = ValidationMessagesConstants.INVALID_REGISTERED_NUMBER_FORMAT)
 	private String registeredNumber;
 	
 	@NotBlank
