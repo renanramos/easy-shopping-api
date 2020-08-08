@@ -122,26 +122,26 @@ public class CustomerControllerTest {
 		customers.add(getCustomerInstance());
 		customers.add(getCustomerInstance());
 
-		when(mockService.findAllPageable(anyInt(), anyInt(), anyString())).thenReturn(customers);
+		when(mockService.findAllPageable(anyInt(), anyInt(), anyString(), any())).thenReturn(customers);
 
 		mockMvc.perform(get(BASE_URL)
 				.content(objectMapper.writeValueAsString(customers))
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk());
 
-		verify(mockService, times(1)).findAllPageable(anyInt(), anyInt(), anyString());
+		verify(mockService, times(1)).findAllPageable(anyInt(), anyInt(), anyString(), any());
 	}
 
 	@Test
 	public void shouldReturnEmtpyListOfCustomrers() throws JsonProcessingException, Exception {
 		List<Customer> customers = new ArrayList<Customer>();
 
-		when(mockService.findAllPageable(anyInt(), anyInt(), anyString())).thenReturn(customers);
+		when(mockService.findAllPageable(anyInt(), anyInt(), anyString(), any())).thenReturn(customers);
 
 		mockMvc.perform(get(BASE_URL))
 			.andExpect(status().isOk());
 
-		verify(mockService, times(1)).findAllPageable(anyInt(), anyInt(), anyString());	
+		verify(mockService, times(1)).findAllPageable(anyInt(), anyInt(), anyString(), any());	
 	}
 
 	@Test
