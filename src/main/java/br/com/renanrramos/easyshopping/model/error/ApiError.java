@@ -7,6 +7,7 @@
 package br.com.renanrramos.easyshopping.model.error;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 
@@ -25,6 +26,8 @@ public class ApiError {
 	private String errorTitle;
 	
 	private String message;
+
+	private List<String> errors;
 	
 	public ApiError() {
 		this.timeStamp = LocalDateTime.now();
@@ -42,11 +45,12 @@ public class ApiError {
 		this.message = ex.getLocalizedMessage();
 	}
 	
-	public ApiError(HttpStatus status, String errorTitle, Throwable ex) {
+	public ApiError(HttpStatus status, String errorTitle, Throwable ex, List<String> errors) {
 		this.timeStamp = LocalDateTime.now();
 		this.status = status;
 		this.errorTitle = errorTitle;
 		this.message = ex.getLocalizedMessage();
+		this.errors = errors;
 	}
 
 	public HttpStatus getStatus() {
@@ -71,5 +75,13 @@ public class ApiError {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public List<String> getErrors() {
+		return errors;
+	}
+
+	public void setErrors(List<String> errors) {
+		this.errors = errors;
 	}
 }

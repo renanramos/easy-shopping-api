@@ -6,6 +6,8 @@
  */
 package br.com.renanrramos.easyshopping.model.error.builder;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 
 import br.com.renanrramos.easyshopping.model.error.ApiError;
@@ -40,7 +42,11 @@ public class ApiErrorBuilder {
 		this.apiError.setMessage(message);
 		return this;
 	}
-	
+
+	public ApiErrorBuilder withErrors(List<String> errors) {
+		this.apiError.setErrors(errors);
+		return this;
+	}
 	public ApiError build() {
 		return this.apiError;
 	}
