@@ -112,10 +112,7 @@ public class ProductController {
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy) {
-		List<Product> products =
-				(storeId == null) ?
-				productService.findAllPageable(pageNumber, pageSize, sortBy) :
-				productService.findProductByStoreId(storeId);
+		List<Product> products = productService.findAllPageable(pageNumber, pageSize, sortBy, storeId);
 		return ResponseEntity.ok(ProductDTO.converterProductListToProductDTOList(products));		
 	}
 
@@ -127,10 +124,7 @@ public class ProductController {
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy) {
-		List<Product> products =
-				(productCategoryName == null) ?
-				productService.findAllPageable(pageNumber, pageSize, sortBy) :
-				productService.findProductByProductCategoryId(productCategoryName);
+		List<Product> products = productService.findProductByProductCategoryId(pageNumber, pageSize, sortBy, productCategoryName);
 		return ResponseEntity.ok(ProductDTO.converterProductListToProductDTOList(products));		
 	}
 	

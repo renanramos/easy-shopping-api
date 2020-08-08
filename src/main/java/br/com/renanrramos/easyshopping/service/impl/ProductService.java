@@ -37,9 +37,12 @@ public class ProductService implements CommonService<Product>{
 	}
 
 	@Override
-	public List<Product> findAllPageable(Integer pageNumber, Integer pageSize, String sortBy) {
+	public List<Product> findAllPageable(Integer pageNumber, Integer pageSize, String sortBy, Long storeId) {
 		Pageable page = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
-		Page<Product> pagedResult = productRepository.findAll(page); 
+		Page<Product> pagedResult = 
+				(storeId == null) ?
+				productRepository.findAll(page) :
+				productRepository.findProductByStoreId(page, storeId);
 		return pagedResult.hasContent() ?
 				pagedResult.getContent() :
 					new ArrayList<>();
@@ -65,11 +68,11 @@ public class ProductService implements CommonService<Product>{
 		productRepository.deleteById(productId);
 	}
 
-	public List<Product> findProductByStoreId(Long storeId) {
-		return productRepository.findProductByStoreId(storeId);
-	}
-
-	public List<Product> findProductByProductCategoryId(String productCategoryName) {
-		return productRepository.findProductByProductCategory_NameContaining(productCategoryName);
+	public List<Product> findProductByProductCategoryId(Integer pageNumber, Integer pageSize, String sortBy, String productCategoryName) {
+		Pageable page = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
+		Page<Product> pagedResult = productRepository.findProductByProductCategory_NameContaining(page, productCategoryName);
+		return pagedResult.hasContent() ?
+				pagedResult.getContent() :
+					new ArrayList<>();
 	}
 }
