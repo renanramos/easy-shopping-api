@@ -57,17 +57,12 @@ public class SubcategoryService implements CommonService<Subcategory>{
 	}
 
 	@Override
-	public List<Subcategory> findAllPageable(Integer pageNumber, Integer pageSize, String sort) {
+	public List<Subcategory> findAllPageable(Integer pageNumber, Integer pageSize, String sort, Long productCategoryId) {
 		Pageable page = PageRequest.of(pageNumber, pageSize, Sort.by(sort));
-		Page<Subcategory> pagedResult = subCategoryRepository.findAll(page); 
-		return pagedResult.hasContent() ?
-				pagedResult.getContent() :
-					new ArrayList<>();
-	}
-
-	public List<Subcategory> findSubcategoryByProductCatgoryId(Integer pageNumber, Integer pageSize, String sort, Long productCategoryId) {
-		Pageable page = PageRequest.of(pageNumber, pageSize, Sort.by(sort));
-		Page<Subcategory> pagedResult = subCategoryRepository.findSubcategoryByProductCategoryId(page, productCategoryId);
+		Page<Subcategory> pagedResult = 
+				(productCategoryId == null) ?
+				subCategoryRepository.findAll(page) :
+				subCategoryRepository.findSubcategoryByProductCategoryId(page, productCategoryId);
 		return pagedResult.hasContent() ?
 				pagedResult.getContent() :
 					new ArrayList<>();

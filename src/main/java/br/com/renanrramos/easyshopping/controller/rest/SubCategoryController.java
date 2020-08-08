@@ -86,11 +86,7 @@ public class SubCategoryController {
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy) {
-		
-		List<Subcategory> subcategories =
-				(productCategoryId == null) ?
-						subcategoryService.findAllPageable(pageNumber, pageSize, sortBy) :
-						subcategoryService.findSubcategoryByProductCatgoryId(pageNumber, pageSize, sortBy, productCategoryId);
+		List<Subcategory> subcategories = subcategoryService.findAllPageable(pageNumber, pageSize, sortBy, productCategoryId);
 		return ResponseEntity.ok(SubcategoryDTO.convertSubcategoryListToSubcategoryDTOList(subcategories));
 	}
 }
