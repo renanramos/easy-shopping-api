@@ -14,7 +14,6 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
-import org.hibernate.validator.internal.engine.messageinterpolation.parser.MessageDescriptorFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -31,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
+import br.com.renanrramos.easyshopping.exception.EasyShoppingException;
 import br.com.renanrramos.easyshopping.model.Company;
 import br.com.renanrramos.easyshopping.model.dto.CompanyDTO;
 import br.com.renanrramos.easyshopping.model.form.CompanyForm;
@@ -61,11 +61,15 @@ public class CompanyController {
 	@PostMapping
 	@Transactional
 	@ApiOperation(value = "Save a new company")
-	public ResponseEntity<CompanyDTO> saveCompany(@Valid @RequestBody CompanyForm companyForm, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<CompanyDTO> saveCompany(@Valid @RequestBody CompanyForm companyForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 		Company company = CompanyForm.converterCompanyFormToCompany(companyForm);
 
 		if (userService.isUserEmailInvalid(company.getEmail())) {
-			throw new MessageDescriptorFormatException(ExceptionMessagesConstants.EMAIL_ALREADY_EXIST);				
+			throw new EasyShoppingException(ExceptionMessagesConstants.EMAIL_ALREADY_EXIST);				
+		}
+
+		if (companyService.isRegisteredNumberInvalid(company.getRegisteredNumber())) {
+			throw new EasyShoppingException(ExceptionMessagesConstants.CNPJ_ALREADY_EXIST);
 		}
 
 		Company companyCreated = companyService.save(company);
@@ -73,7 +77,7 @@ public class CompanyController {
 			uri = uriBuilder.path("/companies/{id}").buildAndExpand(companyCreated.getId()).encode().toUri();			
 			return ResponseEntity.created(uri).body(CompanyDTO.converterToCompanyDTO(companyCreated));
 		}
-		
+
 		return ResponseEntity.badRequest().build();
 	}
 	
