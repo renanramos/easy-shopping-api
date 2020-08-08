@@ -76,7 +76,7 @@ public class ProductCategoryController {
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy) {
-		List<ProductCategory> productCategories = productCategoryService.findAllPageable(pageNumber, pageSize, sortBy);
+		List<ProductCategory> productCategories = productCategoryService.findAllPageable(pageNumber, pageSize, sortBy, null);
 		return ResponseEntity.ok(ProductCategoryDTO.converterProductCategoryListToProductCategoryDTOList(productCategories));
 	}
 	

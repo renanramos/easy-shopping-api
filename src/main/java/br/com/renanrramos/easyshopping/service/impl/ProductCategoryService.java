@@ -37,7 +37,7 @@ public class ProductCategoryService implements CommonService<ProductCategory>{
 	}
 
 	@Override
-	public List<ProductCategory> findAllPageable(Integer pageNumber, Integer pageSize, String sortBy) {
+	public List<ProductCategory> findAllPageable(Integer pageNumber, Integer pageSize, String sortBy, Long id) {
 		Pageable page = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
 		Page<ProductCategory> pagedResult = productCategoryRepository.findAll(page); 
 		return pagedResult.hasContent() ?
