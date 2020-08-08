@@ -13,7 +13,11 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
+import br.com.renanrramos.easyshopping.constants.messages.PatternValidationConstants;
+import br.com.renanrramos.easyshopping.constants.messages.ValidationMessagesConstants;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,6 +35,8 @@ public class Customer extends User{
 	private static final long serialVersionUID = 7345201836941654514L;
 
 	@EqualsAndHashCode.Include
+	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
+	@Pattern(regexp = PatternValidationConstants.CPF_PATTERN, message = ValidationMessagesConstants.INVALID_REGISTERED_NUMBER_FORMAT)
 	private String cpf;
 
 	@OneToMany(targetEntity = Address.class, cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.EAGER)

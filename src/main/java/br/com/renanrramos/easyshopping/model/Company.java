@@ -15,7 +15,10 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
+import javax.validation.constraints.Pattern;
 
+import br.com.renanrramos.easyshopping.constants.messages.PatternValidationConstants;
+import br.com.renanrramos.easyshopping.constants.messages.ValidationMessagesConstants;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,7 +33,8 @@ import lombok.Setter;
 public class Company extends User implements Serializable{
 
 	private static final long serialVersionUID = -5594496999476155657L;
-
+	
+	@Pattern(regexp = PatternValidationConstants.REGISTERED_NUMBER_PATTERN, message = ValidationMessagesConstants.INVALID_REGISTERED_NUMBER_FORMAT)
 	private String registeredNumber;
 
 	private String phone;
