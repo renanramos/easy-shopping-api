@@ -89,10 +89,7 @@ public class AddressController {
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy) {
-		List<Address> addresses =
-				customerId == null ?
-				addressService.findAllPageable(pageNumber, pageSize, sortBy) :
-				addressService.findByCustomerId(customerId);
+		List<Address> addresses = addressService.findAllPageable(pageNumber, pageSize, sortBy, customerId);
 		return ResponseEntity.ok(AddressDTO.convertAddressListToAddressDTOList(addresses));	
 	}
 	
