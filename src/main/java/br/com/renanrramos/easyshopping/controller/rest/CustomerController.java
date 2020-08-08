@@ -106,17 +106,28 @@ public class CustomerController {
 	@PutMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Update a customer")
-	public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable("id") Long customerId, @RequestBody CustomerForm customerForm, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable("id") Long customerId, @RequestBody CustomerForm customerForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
+
 		Optional<Customer> customerToUpdate = customerService.findById(customerId);
-		if(customerToUpdate.isPresent()) {			
-			Customer customer = CustomerForm.converterCustomerFormToCustomer(customerForm);
-			customer.setId(customerId);
-			CustomerDTO customerUpdatedDTO = CustomerDTO.converterToCustomerDTO(customerService.save(customer));
-			uri = uriBuilder.path("/customers/{id}").buildAndExpand(customerId).encode().toUri();
-			return ResponseEntity.accepted().location(uri).body(customerUpdatedDTO);
-		} else {
-			return ResponseEntity.notFound().build();
+
+		if (!customerToUpdate.isPresent()) {
+			throw new EasyShoppingException(ExceptionMessagesConstants.CUSTOMER_NOT_FOUND);
 		}
+
+		Customer customer = CustomerForm.converterCustomerFormToCustomer(customerForm);
+
+		if (customerService.isCpfInvalid(customer.getCpf())) {
+			throw new EasyShoppingException(ExceptionMessagesConstants.CPF_ALREADY_EXIST);
+		}
+
+		if (userService.isUserEmailInvalid(customer.getEmail())) {
+			throw new EasyShoppingException(ExceptionMessagesConstants.EMAIL_ALREADY_EXIST);
+		}
+
+		customer.setId(customerId);
+		CustomerDTO customerUpdatedDTO = CustomerDTO.converterToCustomerDTO(customerService.save(customer));
+		uri = uriBuilder.path("/customers/{id}").buildAndExpand(customerId).encode().toUri();
+		return ResponseEntity.accepted().location(uri).body(customerUpdatedDTO);
 	}
 
 	@ResponseBody
@@ -128,8 +139,8 @@ public class CustomerController {
 		if (customerToRemove.isPresent()) {
 			customerService.remove(customerId);
 			return ResponseEntity.ok().build();
-		} else {
-			return ResponseEntity.notFound().build();
 		}
+
+		return ResponseEntity.notFound().build();
 	}	
 }

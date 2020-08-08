@@ -91,7 +91,7 @@ public class CompanyController {
 		List<CompanyDTO> listOfCompanyDTOs = CompanyDTO.converterCompanyListToCompanyDTOList(companyService.findAllPageable(pageNumber, pageSize, sortBy));
 		return ResponseEntity.ok(listOfCompanyDTOs);
 	}
-	
+
 	@ResponseBody
 	@GetMapping(path = "/{id}")
 	@ApiOperation(value = "Get a company by id")

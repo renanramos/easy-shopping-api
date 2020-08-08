@@ -64,7 +64,7 @@ public class CreditCardController {
 	public ResponseEntity<CreditCardDTO> saveCreditCard(@Valid @RequestBody CreditCardForm creditCardForm, UriComponentsBuilder uriBuilder) {
 
 		if (creditCardForm.getCustomerId() == null) {
-			throw new EntityNotFoundException(ExceptionMessagesConstants.CUSTOMER_NOT_FOUND);
+			throw new EntityNotFoundException(ExceptionMessagesConstants.CUSTOMER_ID_NOT_FOUND_ON_REQUEST);
 		}
 
 		Optional<Customer> customerOptional = customerService.findById(creditCardForm.getCustomerId()); 
@@ -79,7 +79,7 @@ public class CreditCardController {
 
 			return ResponseEntity.created(uri).body(CreditCardDTO.converterCreditCardToCreditCardDTO(creditCard));
 		} else {
-			return ResponseEntity.notFound().build();
+			throw new EntityNotFoundException(ExceptionMessagesConstants.CUSTOMER_NOT_FOUND);
 		}
 	}
 
@@ -87,10 +87,14 @@ public class CreditCardController {
 	@GetMapping
 	@ApiOperation(value = "Get all credit cards")
 	public ResponseEntity<List<CreditCardDTO>> getCreditCards(
+			@RequestParam(required = false) Long customerId,
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy) {
-		List<CreditCard> creditCards = creditCardService.findAllPageable(pageNumber, pageSize, sortBy);
+		List<CreditCard> creditCards = 
+				(customerId == null) ?
+				creditCardService.findAllPageable(pageNumber, pageSize, sortBy) :
+				creditCardService.findCreditCardByCustomerId(customerId);
 		return ResponseEntity.ok(CreditCardDTO.converterCreditCardListToCreditCardDTOList(creditCards));
 	}
 
@@ -114,7 +118,7 @@ public class CreditCardController {
 	public ResponseEntity<?> updateCreditCard(@PathVariable("id") Long creditCardId, @RequestBody CreditCardForm creditCardForm, UriComponentsBuilder uriBuilder) {
 		
 		if (creditCardForm.getCustomerId() == null) {
-			throw new EntityNotFoundException(ExceptionMessagesConstants.CUSTOMER_NOT_FOUND);
+			throw new EntityNotFoundException(ExceptionMessagesConstants.CUSTOMER_ID_NOT_FOUND_ON_REQUEST);
 		}
 
 		Optional<Customer> customerOptional = customerService.findById(creditCardForm.getCustomerId());
@@ -128,7 +132,6 @@ public class CreditCardController {
 		Optional<CreditCard> creditCardOptional = creditCardService.findById(creditCardId);
 
 		if (creditCardOptional.isPresent()) {
-
 			CreditCard creditCard = CreditCardForm.converterCreditCardFormToCreditCard(creditCardForm);
 			creditCard.setId(creditCardId);
 			creditCard.setCustomer(customer);

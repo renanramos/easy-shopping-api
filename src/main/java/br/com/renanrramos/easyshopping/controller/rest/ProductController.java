@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
+import br.com.renanrramos.easyshopping.exception.EasyShoppingException;
 import br.com.renanrramos.easyshopping.model.Product;
 import br.com.renanrramos.easyshopping.model.ProductCategory;
 import br.com.renanrramos.easyshopping.model.Store;
@@ -66,29 +67,32 @@ public class ProductController {
 	@PostMapping
 	@Transactional
 	@ApiOperation(value = "Save a new product")
-	public ResponseEntity<ProductDTO> saveProduct(@Valid @RequestBody ProductForm productForm, UriComponentsBuilder uriComponentsBuilder) {
-		
-		Long productCategoryId = productForm.getProductCategoryId();
-		Long storeId = productForm.getStoreId();
+	public ResponseEntity<ProductDTO> saveProduct(@Valid @RequestBody ProductForm productForm, UriComponentsBuilder uriComponentsBuilder) throws EasyShoppingException {
 
-		Optional<Store> storeOptional = storeService.findById(storeId);
+		if (productForm.getProductCategoryId() == null) {
+			throw new EasyShoppingException(ExceptionMessagesConstants.PRODUCT_CATEGORY_ID_NOT_FOUND_ON_REQUEST);
+		}
 
-		Store store;
-		if (storeOptional.isPresent()) {
-			store = storeOptional.get();
-		} else {
-			throw new EntityNotFoundException(ExceptionMessagesConstants.STORE_NOT_FOUND);
+		if (productForm.getStoreId() == null) {
+			throw new EasyShoppingException(ExceptionMessagesConstants.STORE_ID_NOT_FOUND_ON_REQUEST);
 		}
 		
-		ProductCategory productCategory;
+		Optional<ProductCategory> productCategoryOptional = productCategoryService.findById(productForm.getProductCategoryId());
 		
-		Optional<ProductCategory> productCategoryOptional = productCategoryService.findById(productCategoryId);
-		if (productCategoryOptional.isPresent()) {
-			productCategory = productCategoryOptional.get();
-		} else {
-			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_NOT_FOUND);
+		if (!productCategoryOptional.isPresent()) {
+			throw new EasyShoppingException(ExceptionMessagesConstants.PRODUCT_CATEGORY_NOT_FOUND);
 		}
+
+		Optional<Store> storeOptional = storeService.findById(productForm.getStoreId());
+
+		if (!storeOptional.isPresent()) {
+			throw new EasyShoppingException(ExceptionMessagesConstants.STORE_NOT_FOUND);
+		}
+
+		Store store = storeOptional.get();
 		
+		ProductCategory productCategory = productCategoryOptional.get();
+
 		Product product = ProductForm.converterProductFormToProduct(productForm);
 		product.setProductCategory(productCategory);
 		product.setStore(store);
@@ -116,6 +120,21 @@ public class ProductController {
 	}
 
 	@ResponseBody
+	@GetMapping(path = "/search")
+	@ApiOperation(value = "Get all products by product category")
+	public ResponseEntity<List<ProductDTO>> getProductsByProductCategory(
+			@RequestParam(required = false, name = "Product category name") String productCategoryName,
+			@RequestParam(defaultValue = "0") Integer pageNumber, 
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "id") String sortBy) {
+		List<Product> products =
+				(productCategoryName == null) ?
+				productService.findAllPageable(pageNumber, pageSize, sortBy) :
+				productService.findProductByProductCategoryId(productCategoryName);
+		return ResponseEntity.ok(ProductDTO.converterProductListToProductDTOList(products));		
+	}
+	
+	@ResponseBody
 	@GetMapping(path = "/{id}")
 	@ApiOperation(value = "Get a product by id")
 	public ResponseEntity<ProductDTO> getProductById(@PathVariable("id") Long productId) {
@@ -134,36 +153,38 @@ public class ProductController {
 			UriComponentsBuilder uriBuilder) {
 
 		if (productId == null) {
-			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_NOT_FOUND);
+			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_ID_NOT_FOUND_ON_REQUEST);
 		}
-		
+
+		if (productForm.getProductCategoryId() == null) {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_ID_NOT_FOUND_ON_REQUEST);
+		}
+
+		if (productForm.getStoreId() == null) {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.STORE_ID_NOT_FOUND_ON_REQUEST);
+		}
+
 		Optional<Product> productOptional = productService.findById(productId);
-		
+
 		if (!productOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_NOT_FOUND);
 		}
 
-		Long productCategoryId = productForm.getProductCategoryId();
+		Optional<ProductCategory> productCategoryOptional = productCategoryService.findById(productForm.getProductCategoryId());
 		
-		ProductCategory productCategory;
-		Optional<ProductCategory> productCategoryOptional = productCategoryService.findById(productCategoryId);
-		
-		if (productCategoryOptional.isPresent()) {
-			productCategory = productCategoryOptional.get();
-		} else {
+		if (!productCategoryOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_NOT_FOUND);
 		}
-	
-		Long storeId = productForm.getStoreId();
+
+		ProductCategory productCategory = productCategoryOptional.get();
+
+		Optional<Store> storeOptional = storeService.findById(productForm.getStoreId());
 		
-		Store store;
-		Optional<Store> storeOptional = storeService.findById(storeId);
-		
-		if (storeOptional.isPresent()) {
-			store = storeOptional.get();
-		} else {
+		if (!storeOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.STORE_NOT_FOUND);
 		}
+
+		Store store = storeOptional.get();
 
 		Product product = ProductForm.converterProductFormToProduct(productForm);
 		product.setProductCategory(productCategory);
@@ -185,9 +206,7 @@ public class ProductController {
 		if (!productOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_NOT_FOUND);
 		}
-
 		productService.remove(productId);
-
 		return ResponseEntity.accepted().build();
 	}
 }

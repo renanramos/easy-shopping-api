@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
+import br.com.renanrramos.easyshopping.exception.EasyShoppingException;
 import br.com.renanrramos.easyshopping.model.Company;
 import br.com.renanrramos.easyshopping.model.Store;
 import br.com.renanrramos.easyshopping.model.dto.StoreDTO;
@@ -61,18 +62,23 @@ public class StoreController {
 	@Transactional
 	@PostMapping
 	@ApiOperation(value = "Save a new store")
-	public ResponseEntity<StoreDTO> saveStore(@Valid @RequestBody StoreForm storeForm, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<StoreDTO> saveStore(@Valid @RequestBody StoreForm storeForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
+		
+		if (storeForm.getCompanyId() == null) {
+			throw new EasyShoppingException(ExceptionMessagesConstants.COMPANY_ID_NOT_FOUND_ON_REQUEST);
+		}
+
 		Optional<Company> company = companyService.findById(storeForm.getCompanyId());
-		if (company.isPresent()) {
-			Store store = StoreForm.converterStoreFormToStore(storeForm);
-			store.setCompany(company.get());
-			store = storeService.save(store);
-			if (store.getId() != null) {
-				uri = uriBuilder.path("/stores/{id}").buildAndExpand(store.getId()).encode().toUri();
-				return ResponseEntity.created(uri).body(StoreDTO.converterStoreToStoreDTO(store));
-			}
-		}	
-		return ResponseEntity.badRequest().build();
+		
+		if (!company.isPresent()) {
+			throw new EasyShoppingException(ExceptionMessagesConstants.COMPANY_NOT_FOUND);
+		}
+
+		Store store = StoreForm.converterStoreFormToStore(storeForm);
+		store.setCompany(company.get());
+		store = storeService.save(store);
+		uri = uriBuilder.path("/stores/{id}").buildAndExpand(store.getId()).encode().toUri();
+		return ResponseEntity.created(uri).body(StoreDTO.converterStoreToStoreDTO(store));
 	}
 
 	@ResponseBody
@@ -106,8 +112,14 @@ public class StoreController {
 	@PutMapping("/{id}")
 	@Transactional
 	@ApiOperation(value = "Update a store")
-	public ResponseEntity<StoreDTO> updateStore(@PathVariable("id") Long storeId, @RequestBody StoreForm storeForm, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<StoreDTO> updateStore(@PathVariable("id") Long storeId, @RequestBody StoreForm storeForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
+
+		if (storeId == null) {
+			throw new EasyShoppingException(ExceptionMessagesConstants.STORE_ID_NOT_FOUND_ON_REQUEST);
+		}
+
 		Optional<Store> storeOptional = storeService.findById(storeId);
+
 		if (storeOptional.isPresent()) {
 			Store store = StoreForm.converterStoreFormToStore(storeForm);
 			store.setId(storeId);

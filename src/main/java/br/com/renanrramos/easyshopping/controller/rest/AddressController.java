@@ -64,7 +64,7 @@ public class AddressController {
 	public ResponseEntity<AddressDTO> saveAddress(@Valid @RequestBody AddressForm addressForm, UriComponentsBuilder uriBuilder) {
 		
 		if (addressForm.getCustomerId() == null) {
-			throw new EntityNotFoundException(ExceptionMessagesConstants.INVALID_ID);
+			throw new EntityNotFoundException(ExceptionMessagesConstants.CUSTOMER_ID_NOT_FOUND_ON_REQUEST);
 		}
 
 		Optional<Customer> customerOptional = customerService.findById(addressForm.getCustomerId());
@@ -115,10 +115,11 @@ public class AddressController {
 	public ResponseEntity<?> updateAddress(@PathVariable("id") Long addressId, @RequestBody AddressForm addressForm, UriComponentsBuilder uriBuilder) {
 		
 		if (addressForm.getCustomerId() == null) {
-			throw new EntityNotFoundException(ExceptionMessagesConstants.CUSTOMER_NOT_FOUND);
+			throw new EntityNotFoundException(ExceptionMessagesConstants.CUSTOMER_ID_NOT_FOUND_ON_REQUEST);
 		}
 
 		Optional<Customer> customerOptional = customerService.findById(addressForm.getCustomerId());
+
 		Customer customer;
 		if (customerOptional.isPresent()) {
 			customer = customerOptional.get();
