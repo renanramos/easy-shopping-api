@@ -6,6 +6,8 @@
  */
 package br.com.renanrramos.easyshopping.service.impl;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,6 @@ public class UserService {
 
 	public boolean isUserEmailInvalid(String email) {
 		User user = userRepository.findTopUserByEmail(email);
-		return user == null;
+		return Optional.ofNullable(user).isPresent();
 	}
 }
