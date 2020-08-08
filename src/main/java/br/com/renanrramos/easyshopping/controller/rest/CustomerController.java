@@ -13,7 +13,6 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
-import org.hibernate.validator.internal.engine.messageinterpolation.parser.MessageDescriptorFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -30,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
+import br.com.renanrramos.easyshopping.exception.EasyShoppingException;
 import br.com.renanrramos.easyshopping.model.Customer;
 import br.com.renanrramos.easyshopping.model.dto.CustomerDTO;
 import br.com.renanrramos.easyshopping.model.form.CustomerForm;
@@ -60,15 +60,15 @@ public class CustomerController {
 	@Transactional
 	@PostMapping
 	@ApiOperation(value = "Save a new customer")
-	public ResponseEntity<CustomerDTO> saveCustomer(@Valid @RequestBody CustomerForm customerForm, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<CustomerDTO> saveCustomer(@Valid @RequestBody CustomerForm customerForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 		Customer customer = CustomerForm.converterCustomerFormToCustomer(customerForm);
 
 		if (customerService.isCpfInvalid(customer.getCpf())) {
-			throw new MessageDescriptorFormatException(ExceptionMessagesConstants.CPF_ALREADY_EXIST);
+			throw new EasyShoppingException(ExceptionMessagesConstants.CPF_ALREADY_EXIST);
 		}
 
 		if (userService.isUserEmailInvalid(customer.getEmail())) {
-			throw new MessageDescriptorFormatException(ExceptionMessagesConstants.EMAIL_ALREADY_EXIST);
+			throw new EasyShoppingException(ExceptionMessagesConstants.EMAIL_ALREADY_EXIST);
 		}
 
 		Customer customerCreated = customerService.save(customer);
