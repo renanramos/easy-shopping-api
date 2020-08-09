@@ -18,7 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import br.com.renanrramos.easyshopping.model.Subcategory;
-import br.com.renanrramos.easyshopping.repository.SubCategoryRepository;
+import br.com.renanrramos.easyshopping.repository.SubcategoryRepository;
 import br.com.renanrramos.easyshopping.service.CommonService;
 
 /**
@@ -29,7 +29,7 @@ import br.com.renanrramos.easyshopping.service.CommonService;
 public class SubcategoryService implements CommonService<Subcategory>{
 
 	@Autowired
-	private SubCategoryRepository subCategoryRepository;
+	private SubcategoryRepository subCategoryRepository;
 	
 	@Override
 	public Subcategory save(Subcategory subcategory) {

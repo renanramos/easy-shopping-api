@@ -16,6 +16,6 @@ import br.com.renanrramos.easyshopping.model.Subcategory;
  * @author renan.ramos
  *
  */
-public interface SubCategoryRepository extends PagingAndSortingRepository<Subcategory, Long> {
+public interface SubcategoryRepository extends PagingAndSortingRepository<Subcategory, Long> {
 	Page<Subcategory> findSubcategoryByProductCategoryId(Pageable page, Long productCategoryId);
 }
