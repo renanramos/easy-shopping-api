@@ -15,6 +15,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
+import br.com.renanrramos.easyshopping.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.model.Administrator;
 import br.com.renanrramos.easyshopping.model.dto.AdministratorDTO;
 import br.com.renanrramos.easyshopping.model.form.AdministratorForm;
@@ -74,9 +76,14 @@ public class AdministratorController {
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy) {
+		Pageable page = new PageableFactory()
+				.withPage(pageNumber)
+				.withSize(pageSize)
+				.withSort(sortBy)
+				.buildPageable();
 		List<Administrator> administrators =
 				(searchByName == null) ?
-						administratorService.findAllPageable(pageNumber, pageSize, sortBy, null) :
+						administratorService.findAllPageable(page, null) :
 						administratorService.searchAdministratorByName(searchByName);				 
 		return ResponseEntity.ok(AdministratorDTO.converterAdministratorListToAdministratorDTO(administrators)); 
 	}
@@ -123,7 +130,7 @@ public class AdministratorController {
 	@DeleteMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Remove an administrator")
-	public ResponseEntity<?> removeAdministrator(@PathVariable("id") Long administratorId) {
+	public ResponseEntity<AdministratorDTO> removeAdministrator(@PathVariable("id") Long administratorId) {
 
 		if (administratorId == null) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.INVALID_ID);

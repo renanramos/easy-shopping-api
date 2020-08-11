@@ -15,6 +15,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,6 +32,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.exception.EasyShoppingException;
+import br.com.renanrramos.easyshopping.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.model.ProductCategory;
 import br.com.renanrramos.easyshopping.model.Subcategory;
 import br.com.renanrramos.easyshopping.model.dto.SubcategoryDTO;
@@ -48,7 +50,7 @@ import io.swagger.annotations.ApiOperation;
 @CrossOrigin
 @RequestMapping(path = "api/subcategories", produces = "application/json")
 @Api(tags = "Subcategories")
-public class SubCategoryController {
+public class SubcategoryController {
 
 	@Autowired
 	private SubcategoryService subcategoryService;
@@ -90,7 +92,12 @@ public class SubCategoryController {
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy) {
-		List<Subcategory> subcategories = subcategoryService.findAllPageable(pageNumber, pageSize, sortBy, productCategoryId);
+		Pageable page = new PageableFactory()
+				.withPage(pageNumber)
+				.withSize(pageSize)
+				.withSort(sortBy)
+				.buildPageable();
+		List<Subcategory> subcategories = subcategoryService.findAllPageable(page, productCategoryId);
 		return ResponseEntity.ok(SubcategoryDTO.convertSubcategoryListToSubcategoryDTOList(subcategories));
 	}
 
@@ -143,7 +150,7 @@ public class SubCategoryController {
 	@DeleteMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Remove a subcategory")
-	public ResponseEntity<?> removeSubcategory(@PathVariable("id") Long subcategoryId) throws EasyShoppingException {
+	public ResponseEntity<SubcategoryDTO> removeSubcategory(@PathVariable("id") Long subcategoryId) throws EasyShoppingException {
 		Optional<Subcategory> subcategoryOptional = subcategoryService.findById(subcategoryId);
 
 		if (subcategoryOptional.isPresent()) {

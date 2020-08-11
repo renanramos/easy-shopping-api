@@ -15,6 +15,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,6 +32,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.exception.EasyShoppingException;
+import br.com.renanrramos.easyshopping.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.model.Product;
 import br.com.renanrramos.easyshopping.model.ProductCategory;
 import br.com.renanrramos.easyshopping.model.Store;
@@ -53,6 +55,8 @@ import io.swagger.annotations.ApiOperation;
 public class ProductController {
 
 	private URI uri;
+
+	private Pageable page;
 	
 	@Autowired
 	private ProductService productService;
@@ -112,7 +116,12 @@ public class ProductController {
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy) {
-		List<Product> products = productService.findAllPageable(pageNumber, pageSize, sortBy, storeId);
+		page = new PageableFactory()
+				.withPage(pageNumber)
+				.withSize(pageSize)
+				.withSort(sortBy)
+				.buildPageable();
+		List<Product> products = productService.findAllPageable(page, storeId);
 		return ResponseEntity.ok(ProductDTO.converterProductListToProductDTOList(products));		
 	}
 
@@ -124,7 +133,12 @@ public class ProductController {
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy) {
-		List<Product> products = productService.findProductByProductCategoryId(pageNumber, pageSize, sortBy, productCategoryName);
+		page = new PageableFactory()
+				.withPage(pageNumber)
+				.withSize(pageSize)
+				.withSort(sortBy)
+				.buildPageable();
+		List<Product> products = productService.findProductByProductCategoryId(page, productCategoryName);
 		return ResponseEntity.ok(ProductDTO.converterProductListToProductDTOList(products));		
 	}
 	
@@ -194,7 +208,7 @@ public class ProductController {
 	@ResponseBody
 	@DeleteMapping(path = "/{id}")
 	@ApiOperation(value = "Remove a product")
-	public ResponseEntity<?> deleteProduct(@PathVariable("id") Long productId) {
+	public ResponseEntity<ProductDTO> deleteProduct(@PathVariable("id") Long productId) {
 		Optional<Product> productOptional = productService.findById(productId);
 
 		if (!productOptional.isPresent()) {
