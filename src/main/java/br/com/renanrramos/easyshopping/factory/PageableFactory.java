@@ -10,28 +10,52 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * @author renan.ramos
  *
  */
+@Getter
+@Setter
 public class PageableFactory {
 
-	private final int page;
-	private final int size;
-	private final String sort;
+	private int pageNumber;
+	private int pageSize;
+	private String sortBy;
 	
-	public PageableFactory(int page, int size, String sort) {
-		this.page = page;
-		this.size = size;
-		this.sort = sort;
+	public PageableFactory() {
+		// Intentionally empty
 	}
 	
-	public Pageable getPageable() {
-		Pageable pageable = PageRequest.of(page, size);
+	public PageableFactory(int pageNumber, int pageSize, String sortBy) {
+		this.pageNumber = pageNumber;
+		this.pageSize = pageSize;
+		this.sortBy = sortBy;
+	}
+
+	public PageableFactory withPage(int pageNumber) {
+		this.pageNumber = pageNumber;
+		return this;
+	}
+
+	public PageableFactory withSize(int pageSize) {
+		this.pageSize = pageSize;
+		return this;
+	}
+
+	public PageableFactory withSort(String sortBy) {
+		this.sortBy = sortBy;
+		return this;
+	}
+
+	public Pageable buildPageable() {
+		Pageable pageable = PageRequest.of(pageNumber, pageSize);
 		
-		if (sort != null) {
-			if (sort.contains(",")) {
-				String p[] = sort.split(",");
+		if (sortBy != null) {
+			if (sortBy.contains(",")) {
+				String p[] = sortBy.split(",");
 				String sortType = p[0];
 				String sortDirection = p[1];
 				
@@ -40,16 +64,14 @@ public class PageableFactory {
 				}
 				
 				if (sortDirection.equalsIgnoreCase("asc")) {
-					pageable = PageRequest.of(page, size, Sort.by(sortType).ascending());
+					pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortType).ascending());
 				} else {
-					pageable = PageRequest.of(page, size, Sort.by(sortType).descending());
+					pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortType).descending());
 				}
 			} else {
-				pageable = PageRequest.of(page, size, Sort.by(sort).ascending());
+				pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy).ascending());
 			}
 		}
 		return pageable;
 	}
-	
-	
 }
