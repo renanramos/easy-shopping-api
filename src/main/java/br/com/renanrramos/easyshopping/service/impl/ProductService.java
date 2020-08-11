@@ -12,9 +12,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import br.com.renanrramos.easyshopping.model.Product;
@@ -37,8 +35,7 @@ public class ProductService implements CommonService<Product>{
 	}
 
 	@Override
-	public List<Product> findAllPageable(Integer pageNumber, Integer pageSize, String sortBy, Long storeId) {
-		Pageable page = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
+	public List<Product> findAllPageable(Pageable page, Long storeId) {
 		Page<Product> pagedResult = 
 				(storeId == null) ?
 				productRepository.findAll(page) :
@@ -49,7 +46,7 @@ public class ProductService implements CommonService<Product>{
 	}
 	
 	@Override
-	public List<Product> findAll() {
+	public List<Product> findAll(Pageable page) {
 		return new ArrayList<>();
 	}
 
@@ -68,8 +65,7 @@ public class ProductService implements CommonService<Product>{
 		productRepository.deleteById(productId);
 	}
 
-	public List<Product> findProductByProductCategoryId(Integer pageNumber, Integer pageSize, String sortBy, String productCategoryName) {
-		Pageable page = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
+	public List<Product> findProductByProductCategoryId(Pageable page, String productCategoryName) {
 		Page<Product> pagedResult = productRepository.findProductByProductCategory_NameContaining(page, productCategoryName);
 		return pagedResult.hasContent() ?
 				pagedResult.getContent() :

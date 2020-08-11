@@ -12,9 +12,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import br.com.renanrramos.easyshopping.model.CreditCard;
@@ -37,8 +35,7 @@ public class CreditCardService implements CommonService<CreditCard>{
 	}
 
 	@Override
-	public List<CreditCard> findAllPageable(Integer pageNumber, Integer pageSize, String sortBy, Long customerId) {
-		Pageable page = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
+	public List<CreditCard> findAllPageable(Pageable page, Long customerId) {
 		Page<CreditCard> pagedResult = 
 				(customerId == null) ?
 				creditCardRepository.findAll(page) :
@@ -46,11 +43,6 @@ public class CreditCardService implements CommonService<CreditCard>{
 		return pagedResult.hasContent() ?
 				pagedResult.getContent() :
 					new ArrayList<>();
-	}
-	
-	@Override
-	public List<CreditCard> findAll() {
-		return new ArrayList<>();
 	}
 
 	@Override
@@ -66,5 +58,10 @@ public class CreditCardService implements CommonService<CreditCard>{
 	@Override
 	public void remove(Long creditCardId) {
 		creditCardRepository.deleteById(creditCardId);
+	}
+
+	@Override
+	public List<CreditCard> findAll(Pageable page) {
+		return new ArrayList<>();
 	}
 }

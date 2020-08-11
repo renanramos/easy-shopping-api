@@ -12,9 +12,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import br.com.renanrramos.easyshopping.model.Subcategory;
@@ -37,7 +35,7 @@ public class SubcategoryService implements CommonService<Subcategory>{
 	}
 
 	@Override
-	public List<Subcategory> findAll() {
+	public List<Subcategory> findAll(Pageable page) {
 		return new ArrayList<>();
 	}
 
@@ -57,8 +55,7 @@ public class SubcategoryService implements CommonService<Subcategory>{
 	}
 
 	@Override
-	public List<Subcategory> findAllPageable(Integer pageNumber, Integer pageSize, String sort, Long productCategoryId) {
-		Pageable page = PageRequest.of(pageNumber, pageSize, Sort.by(sort));
+	public List<Subcategory> findAllPageable(Pageable page, Long productCategoryId) {
 		Page<Subcategory> pagedResult = 
 				(productCategoryId == null) ?
 				subCategoryRepository.findAll(page) :

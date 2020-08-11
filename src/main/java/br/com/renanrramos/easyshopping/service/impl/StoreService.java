@@ -12,9 +12,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import br.com.renanrramos.easyshopping.model.Store;
@@ -36,8 +34,7 @@ public class StoreService implements CommonService<Store>{
 		return storeRepository.save(store);
 	}
 
-	public List<Store> findAllPageable(Integer pageNumber, Integer pageSize, String sortBy, Long companyId) {
-		Pageable page = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
+	public List<Store> findAllPageable(Pageable page, Long companyId) {
 		Page<Store> pagedResult = 
 				(companyId == null) ?
 				storeRepository.findAll(page) :
@@ -48,7 +45,7 @@ public class StoreService implements CommonService<Store>{
 	}
 
 	@Override
-	public List<Store> findAll() {
+	public List<Store> findAll(Pageable page) {
 		return new ArrayList<>();
 	}
 

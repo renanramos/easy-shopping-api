@@ -12,9 +12,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import br.com.renanrramos.easyshopping.model.Address;
@@ -37,9 +35,7 @@ public class AddressService implements CommonService<Address> {
 	}
 
 	@Override
-	public List<Address> findAllPageable(Integer pageNumber, Integer pageSize, String sortBy, Long customerId) {
-		Pageable page = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
-
+	public List<Address> findAllPageable(Pageable page, Long customerId) {
 		Page<Address> pagedResult = 
 				(customerId == null) ?
 				addressRepository.findAll(page) :
@@ -66,7 +62,7 @@ public class AddressService implements CommonService<Address> {
 	}
 
 	@Override
-	public List<Address> findAll() {
-		return new ArrayList<>();
+	public List<Address> findAll(Pageable page) {
+		return null;
 	}
 }

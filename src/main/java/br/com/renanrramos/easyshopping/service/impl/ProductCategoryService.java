@@ -12,9 +12,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import br.com.renanrramos.easyshopping.model.ProductCategory;
@@ -37,8 +35,7 @@ public class ProductCategoryService implements CommonService<ProductCategory>{
 	}
 
 	@Override
-	public List<ProductCategory> findAllPageable(Integer pageNumber, Integer pageSize, String sortBy, Long id) {
-		Pageable page = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
+	public List<ProductCategory> findAllPageable(Pageable page, Long id) {
 		Page<ProductCategory> pagedResult = productCategoryRepository.findAll(page); 
 		return pagedResult.hasContent() ?
 				pagedResult.getContent() :
@@ -46,7 +43,7 @@ public class ProductCategoryService implements CommonService<ProductCategory>{
 	}
 
 	@Override
-	public List<ProductCategory> findAll() {
+	public List<ProductCategory> findAll(Pageable page) {
 		return new ArrayList<>();
 	}
 
@@ -64,5 +61,4 @@ public class ProductCategoryService implements CommonService<ProductCategory>{
 	public void remove(Long productCategoryId) {
 		productCategoryRepository.deleteById(productCategoryId);
 	}
-
 }

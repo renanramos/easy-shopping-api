@@ -12,9 +12,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import br.com.renanrramos.easyshopping.model.Company;
@@ -37,8 +35,7 @@ public class CompanyService implements CommonService<Company>{
 	}
 
 	@Override
-	public List<Company> findAllPageable(Integer pageNumber, Integer pageSize, String sortBy, Long id) {
-		Pageable page = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
+	public List<Company> findAll(Pageable page) {
 		Page<Company> pagedResult = companyRepository.findAll(page); 
 		return pagedResult.hasContent() ?
 				pagedResult.getContent() :
@@ -60,13 +57,13 @@ public class CompanyService implements CommonService<Company>{
 		companyRepository.deleteById(companyId);
 	}
 
-	@Override
-	public List<Company> findAll() {
-		return new ArrayList<>();
-	}
-
 	public boolean isRegisteredNumberInvalid(String registeredNumber) {
 		Company company = companyRepository.findTopCompanyByRegisteredNumber(registeredNumber);
 		return Optional.ofNullable(company).isPresent();
+	}
+
+	@Override
+	public List<Company> findAllPageable(Pageable page, Long id) {
+		return new ArrayList<>();
 	}
 }

@@ -12,9 +12,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import br.com.renanrramos.easyshopping.model.Administrator;
@@ -41,9 +39,8 @@ public class AdministratorService implements CommonService<Administrator>{
 	}
 
 	@Override
-	public List<Administrator> findAllPageable(Integer pageNumber, Integer pageSize, String sortBy, Long id) {
-		Pageable page = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
-		Page<Administrator> pagedResult = administratorRepository.findAll(page); 
+	public List<Administrator> findAllPageable(Pageable page, Long administratorId) {
+		Page<Administrator> pagedResult = administratorRepository.findAll(page);
 		return pagedResult.hasContent() ?
 				pagedResult.getContent() :
 					new ArrayList<>();
@@ -64,12 +61,12 @@ public class AdministratorService implements CommonService<Administrator>{
 		administratorRepository.deleteById(administratorId);
 	}
 
-	@Override
-	public List<Administrator> findAll() {
-		return new ArrayList<>();
-	}
-
 	public List<Administrator> searchAdministratorByName(String name) {
 		return administratorRepository.findAdministratorByNameContains(name);
+	}
+
+	@Override
+	public List<Administrator> findAll(Pageable page) {
+		return null;
 	}
 }

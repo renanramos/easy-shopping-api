@@ -12,9 +12,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import br.com.renanrramos.easyshopping.model.Customer;
@@ -31,13 +29,13 @@ public class CustomerService implements CommonService<Customer>{
 	@Autowired
 	private CustomerRepository customerRepository;
 
+	@Override
 	public Customer save(Customer customer) {
 		return customerRepository.save(customer);
 	}
 
 	@Override
-	public List<Customer> findAllPageable(Integer pageNumber, Integer pageSize, String sortBy, Long id) {
-		Pageable page = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
+	public List<Customer> findAllPageable(Pageable page, Long id) {
 		Page<Customer> pagedResult = customerRepository.findAll(page); 
 		return pagedResult.hasContent() ?
 				pagedResult.getContent() :
@@ -65,7 +63,7 @@ public class CustomerService implements CommonService<Customer>{
 	}
 
 	@Override
-	public List<Customer> findAll() {
+	public List<Customer> findAll(Pageable page) {
 		return new ArrayList<>();
 	}
 }
