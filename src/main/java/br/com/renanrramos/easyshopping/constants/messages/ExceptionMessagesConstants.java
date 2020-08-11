@@ -38,6 +38,9 @@ public class ExceptionMessagesConstants {
 	public static final String NOT_FOUND_TITLE = "Não encontrado";
 	public static final String ERRORS_FOUND = "Erros encontrados";
 
+	public static final String INVALID_CREDENTIALS = "Email/senha inválidos.";
+	public static final String USER_DISABLED = "Usuário desabilitado";
+
 	private ExceptionMessagesConstants() {
 		// Intentionally empty
 	}
