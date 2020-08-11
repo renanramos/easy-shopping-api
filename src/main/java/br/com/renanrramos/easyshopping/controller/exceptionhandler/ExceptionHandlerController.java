@@ -106,7 +106,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler{
 				.withErrors(new ArrayList<>())
 				.build());
 	}
-	
+
 	private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
 		return new ResponseEntity<>(apiError, apiError.getStatus());
 	}
