@@ -10,7 +10,6 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
-import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -67,7 +66,7 @@ public class SubcategoryController {
 	public ResponseEntity<SubcategoryDTO> saveSubcategory(@Valid @RequestBody SubcategoryForm subcategoryForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 
 		if (subcategoryForm.getProductCategoryId() == null) {
-			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_ID_NOT_FOUND_ON_REQUEST);
+			throw new EasyShoppingException(ExceptionMessagesConstants.PRODUCT_ID_NOT_FOUND_ON_REQUEST);
 		}
 
 		Optional<ProductCategory> productCategoryOptional = productCategoryService.findById(subcategoryForm.getProductCategoryId());
@@ -80,7 +79,7 @@ public class SubcategoryController {
 			uri = uriBuilder.path("/subcategories/{id}").buildAndExpand(subcategory.getId()).encode().toUri();
 			return ResponseEntity.created(uri).body(SubcategoryDTO.convertSubcategoryToSubcategoryDTO(subcategory));
 		} else {
-			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_NOT_FOUND);
+			throw new EasyShoppingException(ExceptionMessagesConstants.PRODUCT_CATEGORY_NOT_FOUND);
 		}
 	}
 
@@ -119,13 +118,13 @@ public class SubcategoryController {
 	public ResponseEntity<SubcategoryDTO> updateSubcategory(@PathVariable("id") Long subcategoryId, @RequestBody SubcategoryForm subcategoryForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 
 		if (subcategoryForm.getProductCategoryId() == null) {
-			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_ID_NOT_FOUND_ON_REQUEST);
+			throw new EasyShoppingException(ExceptionMessagesConstants.PRODUCT_CATEGORY_ID_NOT_FOUND_ON_REQUEST);
 		}
 
 		Optional<ProductCategory> productCatgoryOptional = productCategoryService.findById(subcategoryForm.getProductCategoryId());
 
 		if (!productCatgoryOptional.isPresent()) {
-			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_NOT_FOUND);
+			throw new EasyShoppingException(ExceptionMessagesConstants.PRODUCT_CATEGORY_NOT_FOUND);
 		}
 
 		ProductCategory productCategory = productCatgoryOptional.get();
@@ -142,7 +141,7 @@ public class SubcategoryController {
 			uri = uriBuilder.path("/subcategories/{id}").buildAndExpand(subcategory.getId()).encode().toUri();
 			return ResponseEntity.accepted().location(uri).body(SubcategoryDTO.convertSubcategoryToSubcategoryDTO(subcategory));
 		} else {
-			throw new EntityNotFoundException(ExceptionMessagesConstants.SUBCATEGORY_NOT_FOUND);
+			throw new EasyShoppingException(ExceptionMessagesConstants.SUBCATEGORY_NOT_FOUND);
 		}		
 	}
 
@@ -157,7 +156,7 @@ public class SubcategoryController {
 			subcategoryService.remove(subcategoryId);
 			return ResponseEntity.ok().build();
 		} else {
-			throw new EntityNotFoundException(ExceptionMessagesConstants.SUBCATEGORY_NOT_FOUND);
+			throw new EasyShoppingException(ExceptionMessagesConstants.SUBCATEGORY_NOT_FOUND);
 		}
 	}
 }
