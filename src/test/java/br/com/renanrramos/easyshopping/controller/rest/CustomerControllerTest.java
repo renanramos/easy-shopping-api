@@ -8,6 +8,7 @@ package br.com.renanrramos.easyshopping.controller.rest;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.times;
@@ -28,8 +29,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
@@ -69,6 +73,9 @@ public class CustomerControllerTest {
 
 	@MockBean
 	private UserService userService;
+
+	@Mock
+	private Pageable page;
 
 	private Long customerId = 1L;
 
@@ -122,26 +129,26 @@ public class CustomerControllerTest {
 		customers.add(getCustomerInstance());
 		customers.add(getCustomerInstance());
 
-		when(mockService.findAllPageable(anyInt(), anyInt(), anyString(), any())).thenReturn(customers);
+		when(mockService.findAllPageable(eq(page), any())).thenReturn(customers);
 
 		mockMvc.perform(get(BASE_URL)
 				.content(objectMapper.writeValueAsString(customers))
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk());
 
-		verify(mockService, times(1)).findAllPageable(anyInt(), anyInt(), anyString(), any());
+		verify(mockService, times(1)).findAllPageable(any(Pageable.class), any());
 	}
 
 	@Test
 	public void shouldReturnEmtpyListOfCustomrers() throws JsonProcessingException, Exception {
 		List<Customer> customers = new ArrayList<Customer>();
 
-		when(mockService.findAllPageable(anyInt(), anyInt(), anyString(), any())).thenReturn(customers);
+		when(mockService.findAllPageable(eq(page), any())).thenReturn(customers);
 
 		mockMvc.perform(get(BASE_URL))
 			.andExpect(status().isOk());
 
-		verify(mockService, times(1)).findAllPageable(anyInt(), anyInt(), anyString(), any());	
+		verify(mockService, times(1)).findAllPageable(any(Pageable.class), any());	
 	}
 
 	@Test

@@ -6,22 +6,17 @@
  */
 package br.com.renanrramos.easyshopping.controller.rest;
 
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -34,8 +29,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
@@ -78,6 +75,9 @@ public class AddressControllerTest {
 	@MockBean
 	private CustomerService customerService;
 
+	@Mock
+	private Pageable page;
+	
 	private Optional<Customer> customerOptional = Optional.of(getCustomer());
 
 	private MockMvc mockMvc;
@@ -135,26 +135,24 @@ public class AddressControllerTest {
 		addresses.add(getAddress());
 		addresses.add(getAddress());
 
-		when(mockService.findAllPageable(anyInt(), anyInt(), anyString(), any())).thenReturn(addresses);
+		when(mockService.findAllPageable(eq(page), any())).thenReturn(addresses);
 
 		mockMvc.perform(get(BASE_URL))
 			.andExpect(status().isOk());
 
-		verify(mockService, times(1)).findAllPageable(anyInt(), anyInt(), anyString(), any());
-		assertThat(mockService.findAllPageable(anyInt(), anyInt(), anyString(), any()).size(), equalTo(3));
+		verify(mockService, times(1)).findAllPageable(any(Pageable.class), any());
 	}
 
 	@Test
 	public void shouldReturnEmptyListOfAddress() throws Exception {
 		List<Address> addresses = new ArrayList<Address>();
 
-		when(mockService.findAllPageable(anyInt(), anyInt(), anyString(), any())).thenReturn(addresses);
+		when(mockService.findAllPageable(eq(page), any())).thenReturn(addresses);
 
 		mockMvc.perform(get(BASE_URL))
 			.andExpect(status().isOk());
 
-		verify(mockService, times(1)).findAllPageable(anyInt(), anyInt(), anyString(), any());
-		assertTrue(mockService.findAllPageable(anyInt(), anyInt(), anyString(), any()).isEmpty());
+		verify(mockService, times(1)).findAllPageable(any(Pageable.class), any());
 	}
 
 	@Test

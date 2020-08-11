@@ -7,10 +7,8 @@
 package br.com.renanrramos.easyshopping.controller.rest;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -30,8 +28,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
@@ -72,6 +72,9 @@ public class AdministratorControllerTest {
 	
 	@MockBean
 	private AdministratorService mockService;
+
+	@Mock
+	private Pageable page;
 
 	@Before
 	public void before() {
@@ -117,25 +120,24 @@ public class AdministratorControllerTest {
 		admins.add(getAdministratorInstance());
 		admins.add(getAdministratorInstance());
 		
-		when(mockService.findAllPageable(anyInt(), anyInt(), anyString(), any())).thenReturn(admins);
+		when(mockService.findAllPageable(eq(page), any())).thenReturn(admins);
 		
 		mockMvc.perform(get(BASE_URL))
 			.andExpect(status().isOk());
 		
-		verify(mockService, times(1)).findAllPageable(anyInt(), anyInt(), anyString(), any());
+		verify(mockService, times(1)).findAllPageable(any(Pageable.class), any());
 	}
 	
 	@Test
 	public void shouldReturnEmptyListAdministrators() throws Exception {
 		List<Administrator> admins = new ArrayList<Administrator>();
 		
-		when(mockService.findAllPageable(anyInt(), anyInt(), anyString(), any())).thenReturn(admins);
+		when(mockService.findAllPageable(eq(page), any())).thenReturn(admins);
 		
 		mockMvc.perform(get(BASE_URL))
 			.andExpect(status().isOk());
 		
-		verify(mockService, times(1)).findAllPageable(anyInt(), anyInt(), anyString(), any());
-		assertTrue(mockService.findAllPageable(anyInt(), anyInt(), anyString(), any()).isEmpty());
+		verify(mockService, times(1)).findAllPageable(any(Pageable.class), any());
 	}
 	
 	@Test

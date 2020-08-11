@@ -8,8 +8,8 @@ package br.com.renanrramos.easyshopping.controller.rest;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -29,8 +29,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
@@ -71,7 +73,10 @@ public class CompanyControllerTest {
 
 	@MockBean
 	private UserService userService;
-	
+
+	@Mock
+	private Pageable page;
+
 	private Long companyId = 1L;
 
 	private MockMvc mockMvc;
@@ -125,24 +130,24 @@ public class CompanyControllerTest {
 		companies.add(getCompanyInstance());
 		companies.add(getCompanyInstance());
 
-		when(mockService.findAllPageable(anyInt(), anyInt(), anyString(), any())).thenReturn(companies);
+		when(mockService.findAllPageable(eq(page), any())).thenReturn(companies);
 
 		mockMvc.perform(get(BASE_URL))
 			.andExpect(status().isOk());
 
-		verify(mockService, times(1)).findAllPageable(anyInt(), anyInt(), anyString(), any());
+		verify(mockService, times(1)).findAllPageable(any(Pageable.class), any());
 	}
 
 	@Test
 	public void shouldReturnEmptyListOfCompanies() throws Exception {
 		List<Company> companies = new ArrayList<Company>();
 
-		when(mockService.findAllPageable(anyInt(), anyInt(), anyString(), any())).thenReturn(companies);
+		when(mockService.findAllPageable(eq(page), any())).thenReturn(companies);
 
 		mockMvc.perform(get(BASE_URL))
 			.andExpect(status().isOk());
 
-		verify(mockService, times(1)).findAllPageable(anyInt(), anyInt(), anyString(), any());
+		verify(mockService, times(1)).findAllPageable(any(Pageable.class), any());
 	}
 
 	@Test
