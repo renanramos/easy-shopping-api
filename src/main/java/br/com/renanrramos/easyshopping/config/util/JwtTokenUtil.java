@@ -4,7 +4,7 @@
  * Creator: renan.ramos - 11/08/2020
  * ------------------------------------------------------------
  */
-package br.com.renanrramos.easyshopping.config;
+package br.com.renanrramos.easyshopping.config.util;
 
 import java.io.Serializable;
 import java.util.Date;

@@ -30,12 +30,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.renanrramos.easyshopping.config.util.EasyShoppingUtils;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
+import br.com.renanrramos.easyshopping.exception.EasyShoppingException;
 import br.com.renanrramos.easyshopping.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.model.Administrator;
 import br.com.renanrramos.easyshopping.model.dto.AdministratorDTO;
 import br.com.renanrramos.easyshopping.model.form.AdministratorForm;
 import br.com.renanrramos.easyshopping.service.impl.AdministratorService;
+import br.com.renanrramos.easyshopping.service.impl.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -51,15 +54,29 @@ public class AdministratorController {
 
 	@Autowired
 	private AdministratorService administratorService;
-	
+
+	@Autowired
+	private UserService userService;
+
+	@Autowired
+	private EasyShoppingUtils easyShoppingUtils;
+
 	private URI uri;
 	
 	@ResponseBody
-	@PostMapping
+	@PostMapping(path = "/register")
 	@Transactional
 	@ApiOperation(value = "Save a new administrator")
-	public ResponseEntity<AdministratorDTO> saveAdministrator(@Valid @RequestBody AdministratorForm administratorForm, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<AdministratorDTO> saveAdministrator(@Valid @RequestBody AdministratorForm administratorForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 		Administrator administrator = AdministratorForm.converterAdministratorFormToAdministrator(administratorForm);
+
+		if (userService.isUserEmailInvalid(administrator.getEmail())) {
+			throw new EasyShoppingException(ExceptionMessagesConstants.EMAIL_ALREADY_EXIST);
+		}
+
+		String password = easyShoppingUtils.encodePassword(administrator.getPassword());
+		administrator.setPassword(password);
+
 		Administrator administratorCreated = administratorService.save(administrator);
 		if (administratorCreated.getId() != null) {
 			uri = uriBuilder.path("/admin/{id}").buildAndExpand(administratorCreated.getId()).encode().toUri();

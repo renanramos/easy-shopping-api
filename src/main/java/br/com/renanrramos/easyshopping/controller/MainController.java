@@ -19,10 +19,11 @@ import org.springframework.web.servlet.view.RedirectView;
 @Controller
 @RequestMapping("/")
 public class MainController {
-
+	
 	@GetMapping("/")
 	public RedirectView redirectWithUsingRedirectView(RedirectAttributes attributes) {
 		return new RedirectView("swagger-ui.html");
 	}
+
 	
 }
