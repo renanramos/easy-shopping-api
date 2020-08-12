@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.renanrramos.easyshopping.config.JwtTokenUtil;
+import br.com.renanrramos.easyshopping.config.util.JwtTokenUtil;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.exception.EasyShoppingException;
 import br.com.renanrramos.easyshopping.model.form.LoginForm;
@@ -53,13 +53,13 @@ public class UserController {
 	@ResponseBody
 	@PostMapping(path = "/login")
 	@Transactional
-	public ResponseEntity<Object> login(@Valid @RequestBody LoginForm loginForm) throws EasyShoppingException {
+	public ResponseEntity<JwtResponse> login(@Valid @RequestBody LoginForm loginForm) throws EasyShoppingException {
 		authentication(loginForm.getEmail(), loginForm.getPassword());
-		final UserDetails userDetails = userDetailsService.loadUserByUsername(loginForm.getEmail());
-		final String token = jwtTokenUtil.generateToken(userDetails);
+		UserDetails userDetails = userDetailsService.loadUserByUsername(loginForm.getEmail());
+		String token = jwtTokenUtil.generateToken(userDetails);
 		return ResponseEntity.ok(new JwtResponse(token));
 	}
-
+	
 	private void authentication(String email, String password) throws EasyShoppingException {
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));			

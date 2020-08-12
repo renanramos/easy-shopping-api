@@ -60,7 +60,7 @@ public class CompanyController {
 	private URI uri;
 	
 	@ResponseBody
-	@PostMapping
+	@PostMapping(path = "/register")
 	@Transactional
 	@ApiOperation(value = "Save a new company")
 	public ResponseEntity<CompanyDTO> saveCompany(@Valid @RequestBody CompanyForm companyForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {

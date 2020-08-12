@@ -59,8 +59,8 @@ public class CustomerController {
 	private URI uri;
 	
 	@ResponseBody
+	@PostMapping(path = "/register")
 	@Transactional
-	@PostMapping
 	@ApiOperation(value = "Save a new customer")
 	public ResponseEntity<CustomerDTO> saveCustomer(@Valid @RequestBody CustomerForm customerForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 		Customer customer = CustomerForm.converterCustomerFormToCustomer(customerForm);
