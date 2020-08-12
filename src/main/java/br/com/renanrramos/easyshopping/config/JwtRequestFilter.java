@@ -13,6 +13,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,6 +34,8 @@ import io.jsonwebtoken.ExpiredJwtException;
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter{
 
+	private static final Logger LOG = LoggerFactory.getLogger(JwtRequestFilter.class);
+
 	@Autowired
 	private JwtUserDetailsService jwtUserDetailsService;
 
@@ -42,6 +46,8 @@ public class JwtRequestFilter extends OncePerRequestFilter{
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		String requestTokenHeader = request.getHeader("Authorization");
+
+		LOG.info("RequestHeader token: {}", requestTokenHeader);
 
 		String email = null;
 		String jwtToken = null;
