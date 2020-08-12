@@ -48,7 +48,7 @@ public class User implements Serializable{
 
 	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	@Email
-	@Column(nullable = false, length = 50)
+	@Column(nullable = false, length = 250)
 	private String email;
 
 	@ApiModelProperty(hidden = true)
