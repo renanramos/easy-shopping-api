@@ -25,12 +25,16 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 
-	public boolean isUserEmailInvalid(String email) {
-		User user = userRepository.findTopUserByEmail(email);
-		return Optional.ofNullable(user).isPresent();
+	public boolean isUserEmailAlreadyInUse(String email) {
+		Optional<User> user = userRepository.findTopUserByEmail(email);
+		return user.isPresent();
 	}
 
 	public Optional<User> login(LoginForm loginForm) {
 		return userRepository.findTopUserByEmailAndPassword(loginForm.getEmail(), loginForm.getPassword());
+	}
+
+	public Optional<User> findUserByEmail(String email) {
+		return userRepository.findTopUserByEmail(email);
 	}
 }
