@@ -59,7 +59,8 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
 	}
 
 	private SecurityContext securityContext() {
-		return SecurityContext.builder().securityReferences(defaultAuth())
+		return SecurityContext.builder()
+				.securityReferences(defaultAuth())
 				.forPaths(PathSelectors.regex(DEFAULT_INCLUDE_PATTERN)).build();
 	}
 
@@ -81,7 +82,7 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
 	}
 
 	List<SecurityReference> defaultAuth() {
-		AuthorizationScope authorizationScope = new AuthorizationScope("/api/users/login", "administrators");
+		AuthorizationScope authorizationScope = new AuthorizationScope("/login", "Log in");
 		AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
 		authorizationScopes[0] = authorizationScope;
 		return Lists.newArrayList(new SecurityReference("JWT", authorizationScopes));
