@@ -88,7 +88,7 @@ public class CustomerControllerTest {
 		mockMvc = MockMvcBuilders
 				.standaloneSetup(customerController)
 				.build();
-		when(userService.isUserEmailInvalid(anyString())).thenReturn(false);
+		when(userService.isUserEmailAlreadyInUse(anyString())).thenReturn(false);
 		when(mockService.isCpfInvalid(anyString())).thenReturn(false);
 	}
 
