@@ -69,7 +69,7 @@ public class CustomerController {
 			throw new EasyShoppingException(ExceptionMessagesConstants.CPF_ALREADY_EXIST);
 		}
 
-		if (userService.isUserEmailInvalid(customer.getEmail())) {
+		if (userService.isUserEmailAlreadyInUse(customer.getEmail())) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.EMAIL_ALREADY_EXIST);
 		}
 
@@ -127,7 +127,7 @@ public class CustomerController {
 			throw new EasyShoppingException(ExceptionMessagesConstants.CPF_ALREADY_EXIST);
 		}
 
-		if (userService.isUserEmailInvalid(customer.getEmail())) {
+		if (userService.isUserEmailAlreadyInUse(customer.getEmail())) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.EMAIL_ALREADY_EXIST);
 		}
 

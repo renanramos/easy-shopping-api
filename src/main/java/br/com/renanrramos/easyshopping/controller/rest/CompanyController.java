@@ -66,7 +66,7 @@ public class CompanyController {
 	public ResponseEntity<CompanyDTO> saveCompany(@Valid @RequestBody CompanyForm companyForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 		Company company = CompanyForm.converterCompanyFormToCompany(companyForm);
 
-		if (userService.isUserEmailInvalid(company.getEmail())) {
+		if (userService.isUserEmailAlreadyInUse(company.getEmail())) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.EMAIL_ALREADY_EXIST);				
 		}
 

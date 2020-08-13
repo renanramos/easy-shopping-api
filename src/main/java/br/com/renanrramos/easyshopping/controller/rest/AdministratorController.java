@@ -48,7 +48,7 @@ import io.swagger.annotations.ApiOperation;
  */
 @RestController
 @CrossOrigin
-@RequestMapping(path = "api/admin", produces = "application/json")
+@RequestMapping(path = "/api/admin", produces = "application/json")
 @Api(tags = "Administrators")
 public class AdministratorController {
 
@@ -70,7 +70,7 @@ public class AdministratorController {
 	public ResponseEntity<AdministratorDTO> saveAdministrator(@Valid @RequestBody AdministratorForm administratorForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 		Administrator administrator = AdministratorForm.converterAdministratorFormToAdministrator(administratorForm);
 
-		if (userService.isUserEmailInvalid(administrator.getEmail())) {
+		if (userService.isUserEmailAlreadyInUse(administrator.getEmail())) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.EMAIL_ALREADY_EXIST);
 		}
 
