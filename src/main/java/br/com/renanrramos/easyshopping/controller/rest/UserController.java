@@ -11,10 +11,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.renanrramos.easyshopping.config.util.JwtTokenUtil;
-import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.exception.EasyShoppingException;
 import br.com.renanrramos.easyshopping.model.form.LoginForm;
 import br.com.renanrramos.easyshopping.model.jwt.JwtResponse;
@@ -37,12 +32,9 @@ import io.swagger.annotations.Api;
  */
 @RestController
 @CrossOrigin
-@RequestMapping(path = "api/users", produces = "application/json")
+@RequestMapping(path = "/users", produces = "application/json")
 @Api(tags = "Users")
 public class UserController {
-
-	@Autowired
-	private AuthenticationManager authenticationManager;
 
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
@@ -51,22 +43,11 @@ public class UserController {
 	private JwtUserDetailsService userDetailsService;
 
 	@ResponseBody
-	@PostMapping(path = "/login")
+	@PostMapping(path = "/authentication")
 	@Transactional
 	public ResponseEntity<JwtResponse> login(@Valid @RequestBody LoginForm loginForm) throws EasyShoppingException {
-		authentication(loginForm.getEmail(), loginForm.getPassword());
 		UserDetails userDetails = userDetailsService.loadUserByUsername(loginForm.getEmail());
 		String token = jwtTokenUtil.generateToken(userDetails);
 		return ResponseEntity.ok(new JwtResponse(token));
-	}
-	
-	private void authentication(String email, String password) throws EasyShoppingException {
-		try {
-			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));			
-		} catch (DisabledException ex) {
-			throw new EasyShoppingException(ExceptionMessagesConstants.USER_DISABLED);
-		} catch (BadCredentialsException ex) {
-			throw new EasyShoppingException(ExceptionMessagesConstants.INVALID_CREDENTIALS);
-		}
 	}
 }
