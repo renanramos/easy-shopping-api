@@ -20,7 +20,7 @@ import br.com.renanrramos.easyshopping.model.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>{
 	
-	User findTopUserByEmail(String email);
+	Optional<User> findTopUserByEmail(String email);
 
 	Optional<User> findTopUserByEmailAndPassword(String email, String password);
 }
