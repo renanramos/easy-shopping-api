@@ -59,7 +59,7 @@ public class User implements Serializable{
 
 	@NotBlank
 	@JsonIgnore
-	@Column(nullable = false, length = 50)
+	@Column(nullable = false, length = 250)
 	private String password;
 
 	public User() {
