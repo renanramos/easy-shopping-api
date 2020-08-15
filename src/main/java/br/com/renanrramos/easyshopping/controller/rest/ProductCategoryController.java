@@ -17,6 +17,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,6 +64,7 @@ public class ProductCategoryController {
 	@Transactional
 	@PostMapping
 	@ApiOperation(value = "Save a new product category")
+	@PreAuthorize("hasRole('ADMINISTRATOR')")
 	public ResponseEntity<ProductCategoryDTO> saveProductCategory(@Valid @RequestBody ProductCategoryForm productCategoryForm, 
 			UriComponentsBuilder uriBuilder) {
 		ProductCategory productCategory = ProductCategoryForm.converterProductCategoryFormToProductCategory(productCategoryForm);
@@ -109,6 +111,7 @@ public class ProductCategoryController {
 	@PutMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Update a product category")
+	@PreAuthorize("hasRole('ADMINISTRATOR')")
 	public ResponseEntity<ProductCategoryDTO> updateProductCategory(@PathVariable("id") Long productCategoryId, 
 			@RequestBody ProductCategoryForm productCategoryForm, UriComponentsBuilder uriBuilder) {
 		Optional<ProductCategory> productCategoryOptional = productCategoryService.findById(productCategoryId);
@@ -129,6 +132,7 @@ public class ProductCategoryController {
 	@DeleteMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Remove a product category")
+	@PreAuthorize("hasRole('ADMINISTRATOR')")
 	public ResponseEntity<ProductCategoryDTO> removeProductCategory(@PathVariable("id") Long productCategoryId) throws EasyShoppingException {
 		Optional<ProductCategory> productCategoryOptional = productCategoryService.findById(productCategoryId);
 

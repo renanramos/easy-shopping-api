@@ -17,6 +17,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -64,6 +65,7 @@ public class StoreController {
 	@Transactional
 	@PostMapping
 	@ApiOperation(value = "Save a new store")
+	@PreAuthorize("hasRole('COMPANY') || hasRole('ADMINISTRATOR')")
 	public ResponseEntity<StoreDTO> saveStore(@Valid @RequestBody StoreForm storeForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 		
 		if (storeForm.getCompanyId() == null) {
@@ -116,6 +118,7 @@ public class StoreController {
 	@PutMapping("/{id}")
 	@Transactional
 	@ApiOperation(value = "Update a store")
+	@PreAuthorize("hasRole('COMPANY') || hasRole('ADMINISTRATOR')")
 	public ResponseEntity<StoreDTO> updateStore(@PathVariable("id") Long storeId, @RequestBody StoreForm storeForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 
 		if (storeId == null) {
@@ -139,6 +142,7 @@ public class StoreController {
 	@DeleteMapping("/{id}")
 	@Transactional
 	@ApiOperation(value = "Remove a store")
+	@PreAuthorize("hasRole('COMPANY') || hasRole('ADMINISTRATOR')")
 	public ResponseEntity<StoreDTO> deleteStore(@PathVariable("id") Long storeId) {
 		Optional<Store> storeOptional = storeService.findById(storeId);
 		if (storeOptional.isPresent()) {

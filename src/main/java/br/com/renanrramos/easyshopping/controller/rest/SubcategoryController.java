@@ -16,6 +16,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,6 +64,7 @@ public class SubcategoryController {
 	@PostMapping
 	@Transactional
 	@ApiOperation(value = "Save a new subcategory")
+	@PreAuthorize("hasRole('ADMINISTRATOR')")
 	public ResponseEntity<SubcategoryDTO> saveSubcategory(@Valid @RequestBody SubcategoryForm subcategoryForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 
 		if (subcategoryForm.getProductCategoryId() == null) {
@@ -115,6 +117,7 @@ public class SubcategoryController {
 	@PutMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Update a subcategory")
+	@PreAuthorize("hasRole('ADMINISTRATOR')")
 	public ResponseEntity<SubcategoryDTO> updateSubcategory(@PathVariable("id") Long subcategoryId, @RequestBody SubcategoryForm subcategoryForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 
 		if (subcategoryForm.getProductCategoryId() == null) {
@@ -149,6 +152,7 @@ public class SubcategoryController {
 	@DeleteMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Remove a subcategory")
+	@PreAuthorize("hasRole('ADMINISTRATOR')")
 	public ResponseEntity<SubcategoryDTO> removeSubcategory(@PathVariable("id") Long subcategoryId) throws EasyShoppingException {
 		Optional<Subcategory> subcategoryOptional = subcategoryService.findById(subcategoryId);
 

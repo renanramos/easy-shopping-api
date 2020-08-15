@@ -17,6 +17,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -67,6 +68,7 @@ public class AdministratorController {
 	@PostMapping(path = "/register")
 	@Transactional
 	@ApiOperation(value = "Save a new administrator")
+	@PreAuthorize("hasRole('ADMINISTRATOR')")
 	public ResponseEntity<AdministratorDTO> saveAdministrator(@Valid @RequestBody AdministratorForm administratorForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 		Administrator administrator = AdministratorForm.converterAdministratorFormToAdministrator(administratorForm);
 
@@ -88,6 +90,7 @@ public class AdministratorController {
 	@ResponseBody
 	@GetMapping
 	@ApiOperation(value = "Get all administrators")
+	@PreAuthorize("hasRole('ADMINISTRATOR')")
 	public ResponseEntity<List<AdministratorDTO>> getAdministrators(
 			@RequestParam(required = false, name = "Pesquisa por nome") String searchByName,
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
@@ -108,6 +111,7 @@ public class AdministratorController {
 	@ResponseBody
 	@GetMapping(path = "/{id}")
 	@ApiOperation(value = "Get an administrator by id")
+	@PreAuthorize("hasRole('ADMINISTRATOR')")
 	public ResponseEntity<AdministratorDTO> getAdministratorById(@PathVariable("id") Long administratorId) {
 		
 		if (administratorId == null) {
@@ -125,6 +129,7 @@ public class AdministratorController {
 	@PutMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Update an administrator")
+	@PreAuthorize("hasRole('ADMINISTRATOR')")
 	public ResponseEntity<AdministratorDTO> updateAdministrator(@PathVariable("id") Long administratorId, @RequestBody AdministratorForm administratorForm, UriComponentsBuilder uriBuilder) {
 
 		if (administratorId == null) {
@@ -149,6 +154,7 @@ public class AdministratorController {
 	@DeleteMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Remove an administrator")
+	@PreAuthorize("hasRole('ADMINISTRATOR')")
 	public ResponseEntity<AdministratorDTO> removeAdministrator(@PathVariable("id") Long administratorId) {
 
 		if (administratorId == null) {

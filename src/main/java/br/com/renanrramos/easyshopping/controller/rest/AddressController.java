@@ -17,6 +17,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,6 +64,7 @@ public class AddressController {
 	@PostMapping
 	@Transactional
 	@ApiOperation(value = "Save a new address")
+	@PreAuthorize("hasRole('CUSTOMER') || hasRole('ADMINISTRATOR')")
 	public ResponseEntity<AddressDTO> saveAddress(@Valid @RequestBody AddressForm addressForm, UriComponentsBuilder uriBuilder) {
 		
 		if (addressForm.getCustomerId() == null) {
@@ -116,6 +118,7 @@ public class AddressController {
 	@PutMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Update an address")
+	@PreAuthorize("hasRole('CUSTOMER') || hasRole('ADMINISTRATOR')")
 	public ResponseEntity<AddressDTO> updateAddress(@PathVariable("id") Long addressId, @RequestBody AddressForm addressForm, UriComponentsBuilder uriBuilder) {
 		
 		if (addressForm.getCustomerId() == null) {
@@ -149,6 +152,7 @@ public class AddressController {
 	@DeleteMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Remove an address")
+	@PreAuthorize("hasRole('CUSTOMER') || hasRole('ADMINISTRATOR')")
 	public ResponseEntity<AddressDTO> removeAddress(@PathVariable("id") Long addressId) {
 		Optional<Address> addressOptional = addressService.findById(addressId);
 		if (addressOptional.isPresent()) {

@@ -17,6 +17,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,6 +64,7 @@ public class CreditCardController {
 	@PostMapping
 	@Transactional
 	@ApiOperation(value = "Save a new Credit Card")
+	@PreAuthorize("hasRole('CUSTOMER') || hasRole('ADMINISTRATOR')")
 	public ResponseEntity<CreditCardDTO> saveCreditCard(@Valid @RequestBody CreditCardForm creditCardForm, UriComponentsBuilder uriBuilder) {
 
 		if (creditCardForm.getCustomerId() == null) {
@@ -88,6 +90,7 @@ public class CreditCardController {
 	@ResponseBody
 	@GetMapping
 	@ApiOperation(value = "Get all credit cards")
+	@PreAuthorize("hasRole('CUSTOMER') || hasRole('ADMINISTRATOR')")
 	public ResponseEntity<List<CreditCardDTO>> getCreditCards(
 			@RequestParam(required = false) Long customerId,
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
@@ -105,6 +108,7 @@ public class CreditCardController {
 	@ResponseBody
 	@GetMapping(path = "/{id}")
 	@ApiOperation(value = "Get a credit card by id")
+	@PreAuthorize("hasRole('CUSTOMER') || hasRole('ADMINISTRATOR')")
 	public ResponseEntity<CreditCardDTO> getCreditCardById(@PathVariable("id") Long creditCardId) {
 		Optional<CreditCard> creditCardOptional = creditCardService.findById(creditCardId);
 
@@ -119,6 +123,7 @@ public class CreditCardController {
 	@ResponseBody
 	@PutMapping(path = "/{id}")
 	@ApiOperation(value = "Update a credit card")
+	@PreAuthorize("hasRole('CUSTOMER') || hasRole('ADMINISTRATOR')")
 	public ResponseEntity<CreditCardDTO> updateCreditCard(@PathVariable("id") Long creditCardId, @RequestBody CreditCardForm creditCardForm, UriComponentsBuilder uriBuilder) {
 		
 		if (creditCardForm.getCustomerId() == null) {
@@ -151,6 +156,7 @@ public class CreditCardController {
 	@DeleteMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Remove a credit card")
+	@PreAuthorize("hasRole('CUSTOMER') || hasRole('ADMINISTRATOR')")
 	public ResponseEntity<CreditCardDTO> removeCreditCard(@PathVariable("id") Long creditCardId) {
 		Optional<CreditCard> creditCardOptional = creditCardService.findById(creditCardId);
 

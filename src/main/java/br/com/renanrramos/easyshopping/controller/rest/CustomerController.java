@@ -16,6 +16,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -66,6 +67,7 @@ public class CustomerController {
 	@PostMapping(path = "/register")
 	@Transactional
 	@ApiOperation(value = "Save a new customer")
+	@PreAuthorize("hasRole('CUSTOMER') || hasRole('ADMINISTRATOR')")
 	public ResponseEntity<CustomerDTO> saveCustomer(@Valid @RequestBody CustomerForm customerForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 		Customer customer = CustomerForm.converterCustomerFormToCustomer(customerForm);
 
@@ -120,6 +122,7 @@ public class CustomerController {
 	@PutMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Update a customer")
+	@PreAuthorize("hasRole('CUSTOMER') || hasRole('ADMINISTRATOR')")
 	public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable("id") Long customerId, @RequestBody CustomerForm customerForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 
 		Optional<Customer> customerToUpdate = customerService.findById(customerId);
@@ -148,6 +151,7 @@ public class CustomerController {
 	@DeleteMapping("/{id}")
 	@Transactional
 	@ApiOperation(value = "Remove a customer")
+	@PreAuthorize("hasRole('COMPANY') || hasRole('ADMINISTRATOR')")
 	public ResponseEntity<CustomerDTO> removeCustomer(@PathVariable("id") Long customerId) {
 		Optional<Customer> customerToRemove = customerService.findById(customerId);
 		if (customerToRemove.isPresent()) {
