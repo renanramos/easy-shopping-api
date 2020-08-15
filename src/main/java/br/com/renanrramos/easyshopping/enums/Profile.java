@@ -15,10 +15,10 @@ public enum Profile {
 	COMPANY("COMPANY"),
 	ADMINISTRATOR("ADMINISTRATOR");
 
-	private String ROLE;
+	private String role;
 	
 	Profile(String profile) {
-		this.ROLE = ROLE + "_" + profile.toUpperCase();
+		this.role = "ROLE_" + profile.toUpperCase();
 	}
 
 }
