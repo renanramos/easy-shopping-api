@@ -6,12 +6,13 @@
  */
 package br.com.renanrramos.easyshopping.service.jwt;
 
-import java.util.ArrayList;
-import java.util.Optional;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -28,25 +29,18 @@ import br.com.renanrramos.easyshopping.service.impl.UserService;
 @Service
 public class JwtUserDetailsService implements UserDetailsService{
 
-	private static final Logger LOG = LoggerFactory.getLogger(JwtUserDetailsService.class);
+	private Logger LOG = LoggerFactory.getLogger(JwtUserDetailsService.class);
 	
 	@Autowired
 	private UserService userService;
-	
+
 	@Override
 	public UserDetails loadUserByUsername(String email) {
-
-		LOG.info("Email selecionado: {} ", email);
-		
-		Optional<br.com.renanrramos.easyshopping.model.User> userOptional = userService.findUserByEmail(email);
-		if(!userOptional.isPresent()) {
-			LOG.error("Email não encontrado: {} ", email);
-			throw new UsernameNotFoundException(ExceptionMessagesConstants.INVALID_CREDENTIALS);
-		}
-
-		br.com.renanrramos.easyshopping.model.User userEasyShopping = userOptional.get();
-
-		return new User(email, userEasyShopping.getName(), new ArrayList<>());
+		br.com.renanrramos.easyshopping.model.User user = userService.findUserByEmail(email)
+				.orElseThrow(() -> new UsernameNotFoundException(ExceptionMessagesConstants.USER_NOT_FOUND));
+		LOG.info("User role : {}", user.getProfile().getRole());
+		List<GrantedAuthority> authorityList = AuthorityUtils.createAuthorityList(user.getProfile().getRole());
+		return new User(email, user.getName(), authorityList);
 	}
 
 }
