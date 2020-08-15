@@ -51,7 +51,7 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping(path = "/api/admin", produces = "application/json")
 @Api(tags = "Administrators")
 public class AdministratorController {
-
+	
 	@Autowired
 	private AdministratorService administratorService;
 
@@ -62,7 +62,7 @@ public class AdministratorController {
 	private EasyShoppingUtils easyShoppingUtils;
 
 	private URI uri;
-	
+
 	@ResponseBody
 	@PostMapping(path = "/register")
 	@Transactional
@@ -132,15 +132,17 @@ public class AdministratorController {
 		}
 
 		Optional<Administrator> administratorOptional = administratorService.findById(administratorId);
-		if (administratorOptional.isPresent()) {
-			Administrator administrator = AdministratorForm.converterAdministratorFormToAdministrator(administratorForm);
-			administrator.setId(administratorId);
-			AdministratorDTO administratorUpdated = AdministratorDTO.converterAdministratorToAdministratorDTO(administratorService.save(administrator));
-			uri = uriBuilder.path("/admin/{id}").buildAndExpand(administrator.getId()).encode().toUri();
-			return ResponseEntity.accepted().location(uri).body(administratorUpdated);
-		} else {
+
+		if (!administratorOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.ACCOUNT_NOT_FOUND);
 		}
+		
+		Administrator administrator = AdministratorForm.converterAdministratorFormToAdministrator(administratorForm);
+		administrator.setId(administratorId);
+		AdministratorDTO administratorUpdated = AdministratorDTO.converterAdministratorToAdministratorDTO(administratorService.save(administrator));
+		uri = uriBuilder.path("/admin/{id}").buildAndExpand(administrator.getId()).encode().toUri();
+
+		return ResponseEntity.accepted().location(uri).body(administratorUpdated);
 	}
 	
 	@ResponseBody
@@ -154,12 +156,13 @@ public class AdministratorController {
 		}
 
 		Optional<Administrator> administratorOptional = administratorService.findById(administratorId);
-		if (administratorOptional.isPresent()) {
-			administratorService.remove(administratorId);
-			return ResponseEntity.ok().build();
-		} else {
+
+		if (!administratorOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.ACCOUNT_NOT_FOUND);
 		}
+		
+		administratorService.remove(administratorId);
+		return ResponseEntity.ok().build();
 	}
 }
 
