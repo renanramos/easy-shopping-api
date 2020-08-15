@@ -127,8 +127,8 @@ public class ProductController {
 
 	@ResponseBody
 	@GetMapping(path = "/search")
-	@ApiOperation(value = "Get all products by product category")
-	public ResponseEntity<List<ProductDTO>> getProductsByProductCategory(
+	@ApiOperation(value = "Search all products by product category")
+	public ResponseEntity<List<ProductDTO>> searchProductsByProductCategory(
 			@RequestParam(required = false, name = "Product category name") String productCategoryName,
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
             @RequestParam(defaultValue = "10") Integer pageSize,
@@ -138,7 +138,7 @@ public class ProductController {
 				.withSize(pageSize)
 				.withSort(sortBy)
 				.buildPageable();
-		List<Product> products = productService.findProductByProductCategoryId(page, productCategoryName);
+		List<Product> products = productService.searchProductByProductCategoryName(page, productCategoryName);
 		return ResponseEntity.ok(ProductDTO.converterProductListToProductDTOList(products));		
 	}
 	
