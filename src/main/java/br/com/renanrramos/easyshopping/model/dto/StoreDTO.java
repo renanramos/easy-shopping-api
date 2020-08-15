@@ -9,9 +9,7 @@ package br.com.renanrramos.easyshopping.model.dto;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import br.com.renanrramos.easyshopping.model.Product;
 import br.com.renanrramos.easyshopping.model.Store;
-import br.com.renanrramos.easyshopping.model.builder.ProductBuilder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -53,14 +51,5 @@ public class StoreDTO {
 	
 	public static StoreDTO converterStoreToStoreDTO(Store store) {
 		return new StoreDTO(store);
-	}
-	
-	private static Product getProductInfo(Product product) {
-		return ProductBuilder.builder()
-				.withDescription(product.getDescription())
-				.withName(product.getName())
-				.withPrice(product.getPrice())
-				.withProductCategory(product.getProductCategory())
-				.build();
 	}
 }
