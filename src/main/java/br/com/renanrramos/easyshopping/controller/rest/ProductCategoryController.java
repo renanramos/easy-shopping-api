@@ -31,11 +31,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
+import br.com.renanrramos.easyshopping.exception.EasyShoppingException;
 import br.com.renanrramos.easyshopping.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.model.ProductCategory;
 import br.com.renanrramos.easyshopping.model.dto.ProductCategoryDTO;
 import br.com.renanrramos.easyshopping.model.form.ProductCategoryForm;
 import br.com.renanrramos.easyshopping.service.impl.ProductCategoryService;
+import br.com.renanrramos.easyshopping.service.impl.ProductService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -52,6 +54,9 @@ public class ProductCategoryController {
 	@Autowired
 	private ProductCategoryService productCategoryService;
 
+	@Autowired
+	private ProductService productService;
+
 	private URI uri;
 	
 	@ResponseBody
@@ -62,13 +67,14 @@ public class ProductCategoryController {
 			UriComponentsBuilder uriBuilder) {
 		ProductCategory productCategory = ProductCategoryForm.converterProductCategoryFormToProductCategory(productCategoryForm);
 		productCategory = productCategoryService.save(productCategory);
-		if (productCategory.getId() != null) {
-			uri = uriBuilder.path("/productCategories/{id}").buildAndExpand(productCategory.getId()).encode().toUri();
-			return ResponseEntity.created(uri)
-					.body(ProductCategoryDTO.converterProductCategoryToProductCategoryDTO(productCategory));
+
+		if (productCategory.getId() == null) {
+			throw new InternalError(ExceptionMessagesConstants.INTERNAL_ERROR);
 		}
-		
-		return ResponseEntity.noContent().build();
+
+		uri = uriBuilder.path("/productCategories/{id}").buildAndExpand(productCategory.getId()).encode().toUri();
+		return ResponseEntity.created(uri)
+				.body(ProductCategoryDTO.converterProductCategoryToProductCategoryDTO(productCategory));
 	}
 	
 	@ResponseBody
@@ -106,28 +112,36 @@ public class ProductCategoryController {
 	public ResponseEntity<ProductCategoryDTO> updateProductCategory(@PathVariable("id") Long productCategoryId, 
 			@RequestBody ProductCategoryForm productCategoryForm, UriComponentsBuilder uriBuilder) {
 		Optional<ProductCategory> productCategoryOptional = productCategoryService.findById(productCategoryId);
-		if (productCategoryOptional.isPresent()) {
-			ProductCategory productCategory = ProductCategoryForm.converterProductCategoryFormToProductCategory(productCategoryForm);
-			productCategory.setId(productCategoryId);
-			ProductCategoryDTO productCategoryDTO = ProductCategoryDTO.converterProductCategoryToProductCategoryDTO(productCategoryService.save(productCategory));
-			uri = uriBuilder.path("/productCategories/{id}").buildAndExpand(productCategoryDTO).encode().toUri();
-			return ResponseEntity.accepted().location(uri).body(productCategoryDTO);
-		} else {
+
+		if (!productCategoryOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_NOT_FOUND);
 		}
+
+		ProductCategory productCategory = ProductCategoryForm.converterProductCategoryFormToProductCategory(productCategoryForm);
+		productCategory.setId(productCategoryId);
+		ProductCategoryDTO productCategoryDTO = ProductCategoryDTO.converterProductCategoryToProductCategoryDTO(productCategoryService.save(productCategory));
+		uri = uriBuilder.path("/productCategories/{id}").buildAndExpand(productCategoryDTO).encode().toUri();
+
+		return ResponseEntity.accepted().location(uri).body(productCategoryDTO);
 	}
 	
 	@ResponseBody
 	@DeleteMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Remove a product category")
-	public ResponseEntity<ProductCategoryDTO> removeProductCategory(@PathVariable("id") Long productCategoryId) {
+	public ResponseEntity<ProductCategoryDTO> removeProductCategory(@PathVariable("id") Long productCategoryId) throws EasyShoppingException {
 		Optional<ProductCategory> productCategoryOptional = productCategoryService.findById(productCategoryId);
-		if (productCategoryOptional.isPresent()) {
-			productCategoryService.remove(productCategoryId);
-			return ResponseEntity.ok().build();
-		} else {
+
+		if (!productCategoryOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_NOT_FOUND);
 		}
+		
+		if (productService.isThereAnyProductWithProductCategoryId(productCategoryId)) {
+			throw new EasyShoppingException(ExceptionMessagesConstants.CANNOT_REMOVE_PRODUCT_CATEGORY_IN_USE);
+		}
+		
+		productCategoryService.remove(productCategoryId);
+
+		return ResponseEntity.ok().build();
 	}
 }
