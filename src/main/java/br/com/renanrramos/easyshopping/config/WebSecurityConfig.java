@@ -21,6 +21,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import br.com.renanrramos.easyshopping.enums.Profile;
+
 /**
  * @author renan.ramos
  *
@@ -60,9 +62,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 			.authorizeRequests()
 			.antMatchers(
 					"/",
-					"/users/authentication",
-					"/api/customers/register",
-					"/api/companies/register",
 					"/api/products",
 					"/api/products/{id}",
 					"/v2/api-docs",
@@ -70,9 +69,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                     "/swagger-resources/**",
                     "/configuration/**",
                     "/swagger-ui.html",
-                    "/webjars/**")
-			.permitAll()
-			.anyRequest().authenticated()
+                    "/webjars/**").permitAll()
+			.antMatchers("/api/admin/**").access("hasRole('" + Profile.ADMINISTRATOR.name() + "')")
 			.and()
 			.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

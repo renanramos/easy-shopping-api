@@ -6,10 +6,19 @@
  */
 package br.com.renanrramos.easyshopping.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum Profile {
 
-	CUSTOMER,
-	COMPANY,
-	ADMINISTRATOR
+	CUSTOMER("CUSTOMER"),
+	COMPANY("COMPANY"),
+	ADMINISTRATOR("ADMINISTRATOR");
+
+	private String ROLE;
 	
+	Profile(String profile) {
+		this.ROLE = ROLE + "_" + profile.toUpperCase();
+	}
+
 }
