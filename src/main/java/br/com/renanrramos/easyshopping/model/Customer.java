@@ -6,6 +6,7 @@
  */
 package br.com.renanrramos.easyshopping.model;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -41,7 +42,10 @@ public class Customer extends User{
 
 	@OneToMany(targetEntity = Address.class, cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.EAGER)
 	private Set<Address> address;
-	
+
+	@OneToMany(targetEntity = CreditCard.class, cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.EAGER)
+	private Set<CreditCard> creditCards;
+
 	public Customer() {
 		// Intentionally empty
 	}
