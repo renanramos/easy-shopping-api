@@ -21,6 +21,7 @@ public class ExceptionMessagesConstants {
 	public static final String STORE_NOT_FOUND = "A loja informada não foi lcocalizada.";
 	public static final String CREDIT_CARD_NOT_FOUND = "Cartão de crédito não localizado.";
 	public static final String SUBCATEGORY_NOT_FOUND = "Subcategoria não localizada.";
+	public static final String USER_NOT_FOUND = "Usuário não localizado.";
 	
 	public static final String INVALID_ID = "O id informado é inválido.";
 	public static final String CUSTOMER_ID_NOT_FOUND_ON_REQUEST = "Id do cliente é obrigatório.";
