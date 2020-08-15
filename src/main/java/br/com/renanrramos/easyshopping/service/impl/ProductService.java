@@ -65,10 +65,14 @@ public class ProductService implements CommonService<Product>{
 		productRepository.deleteById(productId);
 	}
 
-	public List<Product> findProductByProductCategoryId(Pageable page, String productCategoryName) {
+	public List<Product> searchProductByProductCategoryName(Pageable page, String productCategoryName) {
 		Page<Product> pagedResult = productRepository.findProductByProductCategory_NameContaining(page, productCategoryName);
 		return pagedResult.hasContent() ?
 				pagedResult.getContent() :
 					new ArrayList<>();
+	}
+
+	public boolean isThereAnyProductWithProductCategoryId(Long productCategoryId) {
+		return productRepository.findProductByProductCategoryId(productCategoryId).isPresent();
 	}
 }
