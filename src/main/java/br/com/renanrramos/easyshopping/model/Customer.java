@@ -6,7 +6,6 @@
  */
 package br.com.renanrramos.easyshopping.model;
 
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -31,6 +30,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @PrimaryKeyJoinColumn(name="id")
+@EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 public class Customer extends User{
 
 	private static final long serialVersionUID = 7345201836941654514L;
@@ -57,7 +57,5 @@ public class Customer extends User{
 	@Override
 	public String toString() {
 		return "Customer [cpf=" + cpf + ", address=" + address + ", name= " + getName() + "]";
-	}
-
-	
+	}	
 }

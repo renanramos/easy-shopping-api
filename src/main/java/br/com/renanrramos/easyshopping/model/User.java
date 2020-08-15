@@ -31,9 +31,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class User implements Serializable{
  
 	private static final long serialVersionUID = -234475925678811197L;

@@ -19,6 +19,7 @@ import javax.validation.constraints.Pattern;
 
 import br.com.renanrramos.easyshopping.constants.messages.PatternValidationConstants;
 import br.com.renanrramos.easyshopping.constants.messages.ValidationMessagesConstants;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,6 +31,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @PrimaryKeyJoinColumn(name="id")
+@EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 public class Company extends User implements Serializable{
 
 	private static final long serialVersionUID = -5594496999476155657L;

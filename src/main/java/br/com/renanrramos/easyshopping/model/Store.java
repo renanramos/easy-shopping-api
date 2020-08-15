@@ -36,8 +36,8 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Store implements Serializable{
 
 	private static final long serialVersionUID = 979835710158008524L;

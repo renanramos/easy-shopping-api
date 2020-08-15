@@ -13,6 +13,7 @@ import javax.persistence.PrimaryKeyJoinColumn;
 
 import br.com.renanrramos.easyshopping.enums.Profile;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,6 +25,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @PrimaryKeyJoinColumn(name="id")
+@EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 public class Administrator extends User{
 
 	private static final long serialVersionUID = 8713673214822893155L;

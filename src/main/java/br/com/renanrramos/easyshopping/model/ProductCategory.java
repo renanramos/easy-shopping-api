@@ -30,8 +30,8 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class ProductCategory implements Serializable{
  
 	private static final long serialVersionUID = -4711255794768433234L;

@@ -32,8 +32,8 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class CreditCard implements Serializable{
 
 	private static final long serialVersionUID = 4576301775857441140L;
