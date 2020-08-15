@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.renanrramos.easyshopping.config.util.EasyShoppingUtils;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.exception.EasyShoppingException;
 import br.com.renanrramos.easyshopping.factory.PageableFactory;
@@ -55,7 +56,10 @@ public class CustomerController {
 
 	@Autowired
 	private UserService userService;
-	
+
+	@Autowired
+	private EasyShoppingUtils easyShoppingUtils;
+
 	private URI uri;
 	
 	@ResponseBody
@@ -72,6 +76,9 @@ public class CustomerController {
 		if (userService.isUserEmailAlreadyInUse(customer.getEmail())) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.EMAIL_ALREADY_EXIST);
 		}
+
+		String password = easyShoppingUtils.encodePassword(customer.getPassword());
+		customer.setPassword(password);
 
 		Customer customerCreated = customerService.save(customer);
 		if (customerCreated.getId() != null) {

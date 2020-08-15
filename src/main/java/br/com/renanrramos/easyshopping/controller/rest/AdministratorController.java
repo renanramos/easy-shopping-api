@@ -51,7 +51,7 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping(path = "/api/admin", produces = "application/json")
 @Api(tags = "Administrators")
 public class AdministratorController {
-	
+
 	@Autowired
 	private AdministratorService administratorService;
 
