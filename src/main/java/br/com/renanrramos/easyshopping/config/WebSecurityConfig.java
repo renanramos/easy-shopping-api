@@ -6,8 +6,6 @@
  */
 package br.com.renanrramos.easyshopping.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,8 +32,6 @@ import br.com.renanrramos.easyshopping.enums.Profile;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
-
-	private static final Logger LOG = LoggerFactory.getLogger(WebSecurityConfig.class);
 
 	@Autowired
 	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
