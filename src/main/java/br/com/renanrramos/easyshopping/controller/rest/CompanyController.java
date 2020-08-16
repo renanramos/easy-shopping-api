@@ -17,7 +17,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -68,7 +67,6 @@ public class CompanyController {
 	@PostMapping(path = "/register")
 	@Transactional
 	@ApiOperation(value = "Save a new company")
-	@PreAuthorize("hasRole('COMPANY') || hasRole('ADMINISTRATOR')")
 	public ResponseEntity<CompanyDTO> saveCompany(@Valid @RequestBody CompanyForm companyForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 		Company company = CompanyForm.converterCompanyFormToCompany(companyForm);
 
@@ -123,7 +121,6 @@ public class CompanyController {
 	@PutMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Update a company")
-	@PreAuthorize("hasRole('COMPANY') || hasRole('ADMINISTRATOR')")
 	public ResponseEntity<CompanyDTO> updateCompany(@PathVariable("id") Long companyId, @Valid @RequestBody CompanyForm companyForm, UriComponentsBuilder uriBuilder) {
 		Optional<Company> companyOptional = companyService.findById(companyId);
 		if(companyOptional.isPresent()) {
@@ -141,7 +138,6 @@ public class CompanyController {
 	@DeleteMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Remove a company")
-	@PreAuthorize("hasRole('COMPANY') || hasRole('ADMINISTRATOR')")
 	public ResponseEntity<CompanyDTO> removeCompany(@PathVariable("id") Long companyId) {
 		Optional<Company> companyOptional = companyService.findById(companyId);
 		if (companyOptional.isPresent()) {

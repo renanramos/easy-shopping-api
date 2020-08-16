@@ -17,7 +17,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -72,7 +71,6 @@ public class ProductController {
 	@PostMapping
 	@Transactional
 	@ApiOperation(value = "Save a new product")
-	@PreAuthorize("hasRole('COMPANY') || hasRole('ADMINISTRATOR')")
 	public ResponseEntity<ProductDTO> saveProduct(@Valid @RequestBody ProductForm productForm, UriComponentsBuilder uriComponentsBuilder) throws EasyShoppingException {
 
 		if (productForm.getProductCategoryId() == null) {
@@ -159,7 +157,6 @@ public class ProductController {
 	@PutMapping("/{id}")
 	@Transactional
 	@ApiOperation(value = "Update a product")
-	@PreAuthorize("hasRole('COMPANY') || hasRole('ADMINISTRATOR')")
 	public ResponseEntity<ProductDTO> updateProduct(@PathVariable("id") Long productId, @Valid @RequestBody ProductForm productForm,
 			UriComponentsBuilder uriBuilder) {
 
@@ -211,7 +208,6 @@ public class ProductController {
 	@ResponseBody
 	@DeleteMapping(path = "/{id}")
 	@ApiOperation(value = "Remove a product")
-	@PreAuthorize("hasRole('COMPANY') || hasRole('ADMINISTRATOR')")
 	public ResponseEntity<ProductDTO> deleteProduct(@PathVariable("id") Long productId) {
 		Optional<Product> productOptional = productService.findById(productId);
 
