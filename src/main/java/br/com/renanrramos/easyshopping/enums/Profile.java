@@ -21,4 +21,7 @@ public enum Profile {
 		this.role = "ROLE_" + profile.toUpperCase();
 	}
 
+	public static String getProfileName(Profile profile) {
+		return profile.name().toUpperCase();
+	}
 }
