@@ -58,12 +58,12 @@ public class JwtRequestFilter extends OncePerRequestFilter{
 			try {
 				email = jwtTokenUtil.getUsernameFromToken(jwtToken);
 			} catch(IllegalArgumentException e) {
-				System.out.println("Unable to get JWT token");
+				LOG.warn("Unable to get JWT token");
 			} catch(ExpiredJwtException e) {
-				System.out.println("JWT token has expired");
+				LOG.warn("JWT token has expired");
 			}
 		} else {
-			logger.warn("JWT token does not begin with Bearer string");
+			LOG.warn("JWT token does not begin with Bearer string");
 		}
 
 		if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
