@@ -105,6 +105,7 @@ public class AddressController {
 	@ResponseBody
 	@GetMapping(path = "/{id}")
 	@ApiOperation(value = "Get an address by id")
+	@PreAuthorize("hasRole('CUSTOMER') || hasRole('ADMINISTRATOR')")
 	public ResponseEntity<AddressDTO> getAddressById(@PathVariable("id") Long addressId) {
 		Optional<Address> addressOptional = addressService.findById(addressId);
 		if(addressOptional.isPresent()) {
