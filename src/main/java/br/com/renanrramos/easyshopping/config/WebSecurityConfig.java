@@ -79,7 +79,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                     "/configuration/**",
                     "/swagger-ui.html",
                     "/webjars/**").permitAll()
-			.antMatchers(HttpMethod.POST, "/api/customers/register").permitAll()
+			.antMatchers("/api/customers/register").permitAll()
 			.antMatchers("/api/customers/**").hasRole(Profile.getProfileName(Profile.CUSTOMER))
 			.antMatchers(HttpMethod.POST, "/api/companies/register").permitAll()
 			.antMatchers("/api/companies/**").hasRole(Profile.getProfileName(Profile.COMPANY))
