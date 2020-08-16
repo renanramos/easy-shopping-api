@@ -6,9 +6,12 @@
  */
 package br.com.renanrramos.easyshopping.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -21,6 +24,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import br.com.renanrramos.easyshopping.enums.Profile;
+
 /**
  * @author renan.ramos
  *
@@ -29,6 +34,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
+
+	private static final Logger LOG = LoggerFactory.getLogger(WebSecurityConfig.class);
 
 	@Autowired
 	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
@@ -60,16 +67,32 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 			.authorizeRequests()
 			.antMatchers(
 					"/",
-					"/api/products",
+					"/users/authentication",
+					"/api/products/search",
 					"/api/products/{id}",
+					"/api/products",
+					"/api/stores",
+					"/api/stores/{id}",
+					"/api/product-categories",
+					"/api/product-categories/{id}",
+					"/api/subcategories",
+					"/api/subcategories/{id}",
 					"/v2/api-docs",
                     "/configuration/ui",
                     "/swagger-resources/**",
                     "/configuration/**",
                     "/swagger-ui.html",
                     "/webjars/**").permitAll()
-			.and()
-			.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
+			.antMatchers(HttpMethod.POST, "/api/customers/register").permitAll()
+			.antMatchers("/api/customers/**").hasRole(Profile.getProfileName(Profile.CUSTOMER))
+			.antMatchers(HttpMethod.POST, "/api/companies/register").permitAll()
+			.antMatchers("/api/companies/**").hasRole(Profile.getProfileName(Profile.COMPANY))
+			.antMatchers("/api/credit-cards/**").hasRole(Profile.getProfileName(Profile.CUSTOMER))
+			.antMatchers("/api/addresses/**").hasRole(Profile.getProfileName(Profile.CUSTOMER))
+			.antMatchers("/api/products/**").hasRole(Profile.getProfileName(Profile.COMPANY))
+			.antMatchers("/**").hasRole(Profile.getProfileName(Profile.ADMINISTRATOR))
+			.and().logout().permitAll()
+			.and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 	}
