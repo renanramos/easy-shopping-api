@@ -33,6 +33,28 @@ import br.com.renanrramos.easyshopping.enums.Profile;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
+	private static final String ALL_END_POINTS = "/**";
+
+	private static final String REGISTER = "/register";
+
+	private static final String ID = "/{id}";
+
+	private static final String API_CUSTOMERS = "/api/customers";
+
+	private static final String API_COMPANIES = "/api/companies";
+
+	private static final String API_PRODUCTS = "/api/products";
+
+	private static final String API_STORES = "/api/stores";
+
+	private static final String API_PRODUCT_CATEGORIES = "/api/product-categories";
+
+	private static final String API_ADDRESSES = "/api/addresses";
+
+	private static final String API_CREDIT_CARDS = "/api/credit-cards";
+
+	private static final String API_SUBCATEGORIES = "/api/subcategories";
+
 	@Autowired
 	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
@@ -64,29 +86,37 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 			.antMatchers(
 					"/",
 					"/users/authentication",
-					"/api/products/search",
-					"/api/products/{id}",
-					"/api/products",
-					"/api/stores",
-					"/api/stores/{id}",
-					"/api/product-categories",
-					"/api/product-categories/{id}",
-					"/api/subcategories",
-					"/api/subcategories/{id}",
 					"/v2/api-docs",
                     "/configuration/ui",
                     "/swagger-resources/**",
                     "/configuration/**",
                     "/swagger-ui.html",
                     "/webjars/**").permitAll()
-			.antMatchers("/api/customers/register").permitAll()
-			.antMatchers("/api/customers/**").hasRole(Profile.getProfileName(Profile.CUSTOMER))
-			.antMatchers(HttpMethod.POST, "/api/companies/register").permitAll()
-			.antMatchers("/api/companies/**").hasRole(Profile.getProfileName(Profile.COMPANY))
-			.antMatchers("/api/credit-cards/**").hasRole(Profile.getProfileName(Profile.CUSTOMER))
-			.antMatchers("/api/addresses/**").hasRole(Profile.getProfileName(Profile.CUSTOMER))
-			.antMatchers("/api/products/**").hasRole(Profile.getProfileName(Profile.COMPANY))
-			.antMatchers("/**").hasRole(Profile.getProfileName(Profile.ADMINISTRATOR))
+			.antMatchers(HttpMethod.GET, API_PRODUCTS).permitAll()
+			.antMatchers(HttpMethod.GET, API_PRODUCTS + ID).permitAll()
+			.antMatchers(HttpMethod.GET, API_PRODUCTS + "/search").permitAll()
+			.antMatchers(HttpMethod.GET, API_STORES).permitAll()
+			.antMatchers(HttpMethod.GET, API_STORES + ID).permitAll()
+			.antMatchers(HttpMethod.GET, API_PRODUCT_CATEGORIES).permitAll()
+			.antMatchers(HttpMethod.GET, API_PRODUCT_CATEGORIES + ID).permitAll()
+			.antMatchers(HttpMethod.GET, API_SUBCATEGORIES).permitAll()
+			.antMatchers(HttpMethod.GET, API_SUBCATEGORIES + ID).permitAll()
+			.antMatchers(HttpMethod.GET, API_COMPANIES).permitAll()
+			.antMatchers(HttpMethod.GET, API_COMPANIES + ID).permitAll()
+			.antMatchers(HttpMethod.POST, API_CUSTOMERS + REGISTER).permitAll()
+			.antMatchers(HttpMethod.POST, API_CUSTOMERS).hasRole(Profile.getProfileName(Profile.CUSTOMER))
+			.antMatchers(HttpMethod.DELETE, API_CUSTOMERS).hasRole(Profile.getProfileName(Profile.CUSTOMER))
+			.antMatchers(HttpMethod.PUT, API_CUSTOMERS).hasRole(Profile.getProfileName(Profile.CUSTOMER))
+			.antMatchers(HttpMethod.POST, API_COMPANIES + REGISTER).permitAll()
+			.antMatchers(HttpMethod.POST, API_COMPANIES).hasRole(Profile.getProfileName(Profile.COMPANY))
+			.antMatchers(HttpMethod.DELETE, API_COMPANIES).hasRole(Profile.getProfileName(Profile.COMPANY))
+			.antMatchers(HttpMethod.PUT, API_COMPANIES).hasRole(Profile.getProfileName(Profile.COMPANY))
+			.antMatchers(API_CREDIT_CARDS + ALL_END_POINTS).hasRole(Profile.getProfileName(Profile.CUSTOMER))
+			.antMatchers(API_ADDRESSES + ALL_END_POINTS).hasRole(Profile.getProfileName(Profile.CUSTOMER))
+			.antMatchers(HttpMethod.POST, API_PRODUCTS).hasRole(Profile.getProfileName(Profile.COMPANY))
+			.antMatchers(HttpMethod.DELETE, API_PRODUCTS).hasRole(Profile.getProfileName(Profile.COMPANY))
+			.antMatchers(HttpMethod.PUT, API_PRODUCTS).hasRole(Profile.getProfileName(Profile.COMPANY))
+			.antMatchers(ALL_END_POINTS).hasRole(Profile.getProfileName(Profile.ADMINISTRATOR))
 			.and().logout().permitAll()
 			.and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
