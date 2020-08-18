@@ -58,11 +58,11 @@ public class AddressService implements CommonService<Address> {
 
 	@Override
 	public void remove(Long addressId) {
-		addressRepository.deleteById(addressId);
+		addressRepository.removeById(addressId);
 	}
-
+	
 	@Override
 	public List<Address> findAll(Pageable page) {
-		return null;
+		return new ArrayList<>();
 	}
 }
