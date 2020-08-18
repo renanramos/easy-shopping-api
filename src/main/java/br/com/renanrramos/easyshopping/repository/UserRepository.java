@@ -21,6 +21,4 @@ import br.com.renanrramos.easyshopping.model.User;
 public interface UserRepository extends JpaRepository<User, Long>{
 	
 	Optional<User> findTopUserByEmail(String email);
-
-	Optional<User> findTopUserByEmailAndPassword(String email, String password);
 }
