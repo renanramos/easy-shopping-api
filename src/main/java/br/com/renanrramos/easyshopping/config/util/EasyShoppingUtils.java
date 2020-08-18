@@ -27,4 +27,8 @@ public class EasyShoppingUtils {
 	public String encodePassword(String password) {
 		return bcryptEncoder.encode(password);
 	}
+
+	public boolean verifyPassword(String password, String encodedPassword) {
+		return bcryptEncoder.matches(password, encodedPassword);
+	}
 }
