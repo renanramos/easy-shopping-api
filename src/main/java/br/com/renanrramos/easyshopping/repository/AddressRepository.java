@@ -6,8 +6,12 @@
  */
 package br.com.renanrramos.easyshopping.repository;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import br.com.renanrramos.easyshopping.model.Address;
@@ -16,7 +20,12 @@ import br.com.renanrramos.easyshopping.model.Address;
  * @author renan.ramos
  *
  */
-public interface AddressRepository extends PagingAndSortingRepository<Address, Long>{
+public interface AddressRepository extends PagingAndSortingRepository<Address, Long> {
 	
 	Page<Address> findAddressByCustomerId(Pageable page, Long customerId);
+
+	@Transactional
+	@Modifying
+	@Query("DELETE FROM Address WHERE ID = :addressId")
+	public void removeById(Long addressId);
 }
