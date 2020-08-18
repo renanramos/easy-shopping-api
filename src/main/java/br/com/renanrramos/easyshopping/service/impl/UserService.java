@@ -31,10 +31,12 @@ public class UserService {
 	}
 
 	public Optional<User> login(LoginForm loginForm) {
-		return userRepository.findTopUserByEmailAndPassword(loginForm.getEmail(), loginForm.getPassword());
+		return userRepository.findTopUserByEmail(loginForm.getEmail());
 	}
 
-	public Optional<User> findUserByEmail(String email) {
+	public Optional<User> findUserByEmailAndPassword(String email) {
 		return userRepository.findTopUserByEmail(email);
 	}
+
+	
 }
