@@ -40,10 +40,10 @@ public class Customer extends User{
 	@Pattern(regexp = PatternValidationConstants.CPF_PATTERN, message = ValidationMessagesConstants.INVALID_REGISTERED_NUMBER_FORMAT)
 	private String cpf;
 
-	@OneToMany(targetEntity = Address.class, cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.EAGER)
+	@OneToMany(targetEntity = Address.class, cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.EAGER, orphanRemoval = true)
 	private Set<Address> address;
 
-	@OneToMany(targetEntity = CreditCard.class, cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.EAGER)
+	@OneToMany(targetEntity = CreditCard.class, cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.EAGER, orphanRemoval = false)
 	private Set<CreditCard> creditCards;
 
 	public Customer() {

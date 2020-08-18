@@ -22,6 +22,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import br.com.renanrramos.easyshopping.constants.messages.ValidationMessagesConstants;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -42,16 +43,16 @@ public class CreditCard implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotBlank
+	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String creditCardNumber;
 
-	@NotBlank
+	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String ownerName;
 
-	@NotNull
+	@NotNull(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private LocalDate validDate;
 
-	@NotNull
+	@NotNull(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private Integer code;
 
 	@NotNull
