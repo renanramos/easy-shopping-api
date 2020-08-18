@@ -19,6 +19,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -107,6 +108,16 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler{
 				.build());
 	}
 
+	@ExceptionHandler(UsernameNotFoundException.class)
+	protected ResponseEntity<Object> handleUsernameNotFound(UsernameNotFoundException ex) {
+		return buildResponseEntity(new ApiErrorBuilder()
+				.withStatus(HttpStatus.UNAUTHORIZED)
+				.withErrorTitle(ExceptionMessagesConstants.INVALID_CREDENTIALS)
+				.withMessage(ex.getMessage())
+				.withErrors(new ArrayList<>())
+				.build());
+	}
+	
 	private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
 		return new ResponseEntity<>(apiError, apiError.getStatus());
 	}
