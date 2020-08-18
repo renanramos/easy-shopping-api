@@ -57,7 +57,7 @@ public class CreditCardService implements CommonService<CreditCard>{
 
 	@Override
 	public void remove(Long creditCardId) {
-		creditCardRepository.deleteById(creditCardId);
+		creditCardRepository.removeById(creditCardId);
 	}
 
 	@Override
