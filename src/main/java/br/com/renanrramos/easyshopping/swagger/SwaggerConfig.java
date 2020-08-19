@@ -46,6 +46,7 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
 				.apiInfo(apiInfo())
 				.securityContexts(Lists.newArrayList(securityContext()))
 	            .securitySchemes(Lists.newArrayList(apiKey()))
+				.host("localhost:8081/api")
 				.pathMapping("/")
 				.forCodeGeneration(true)
 				.select()
@@ -69,7 +70,9 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
 	}
 
 	private ApiInfo apiInfo() {
-		return new ApiInfoBuilder().title("Easy Shopping API").description("TCC - PUC Minas 2020")
+		return new ApiInfoBuilder()
+				.title("Easy Shopping API").description("TCC - PUC Minas 2020")
+				.version("1.0.0")
 				.contact(new Contact("Renan R Ramos", "https://github.com/renanramos", "renanrramossi@gmail.com"))
 				.build();
 	}
