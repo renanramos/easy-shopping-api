@@ -24,6 +24,8 @@ public interface AddressRepository extends PagingAndSortingRepository<Address, L
 	
 	Page<Address> findAddressByCustomerId(Pageable page, Long customerId);
 
+	Page<Address> findAddressByStreetNameContaining(Pageable page, String streetName);
+	
 	@Transactional
 	@Modifying
 	@Query("DELETE FROM Address WHERE ID = :addressId")
