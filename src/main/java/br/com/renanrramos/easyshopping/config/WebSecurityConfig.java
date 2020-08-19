@@ -14,6 +14,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -105,28 +106,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 				.antMatchers(HttpMethod.GET, API_COMPANIES + ID).permitAll()
 				.antMatchers(HttpMethod.POST, API_CUSTOMERS + REGISTER).permitAll()
 				.antMatchers(HttpMethod.POST, API_COMPANIES + REGISTER).permitAll()
-				.antMatchers(HttpMethod.POST, API_CUSTOMERS).hasRole(Profile.getProfileName(Profile.CUSTOMER))
-				.antMatchers(HttpMethod.GET, API_CUSTOMERS + ID).hasRole(Profile.getProfileName(Profile.CUSTOMER))
-				.antMatchers(HttpMethod.GET, API_CUSTOMERS).hasRole(Profile.getProfileName(Profile.COMPANY))
-				.antMatchers(HttpMethod.POST, API_STORES).hasRole(Profile.getProfileName(Profile.COMPANY))
-				.antMatchers(HttpMethod.DELETE, API_STORES + ID).hasRole(Profile.getProfileName(Profile.COMPANY))
-				.antMatchers(HttpMethod.PUT, API_STORES + ID).hasRole(Profile.getProfileName(Profile.COMPANY))
-				.antMatchers(HttpMethod.DELETE, API_PRODUCTS + ID).hasRole(Profile.getProfileName(Profile.COMPANY))
-				.antMatchers(HttpMethod.PUT, API_PRODUCTS + ID).hasRole(Profile.getProfileName(Profile.COMPANY))
-				.antMatchers(HttpMethod.GET, API_CUSTOMERS + ID).hasRole(Profile.getProfileName(Profile.COMPANY))
-				.antMatchers(HttpMethod.DELETE, API_CUSTOMERS).hasRole(Profile.getProfileName(Profile.CUSTOMER))
-				.antMatchers(HttpMethod.PUT, API_CUSTOMERS).hasRole(Profile.getProfileName(Profile.CUSTOMER))
-				.antMatchers(HttpMethod.POST, API_COMPANIES).hasRole(Profile.getProfileName(Profile.COMPANY))
-				.antMatchers(HttpMethod.PUT, API_COMPANIES + ID).hasRole(Profile.getProfileName(Profile.COMPANY))
-				.antMatchers(HttpMethod.DELETE, API_COMPANIES).hasRole(Profile.getProfileName(Profile.COMPANY))
-				.antMatchers(HttpMethod.POST, API_PRODUCTS).hasRole(Profile.getProfileName(Profile.COMPANY))
-				.antMatchers(HttpMethod.DELETE, API_PRODUCTS).hasRole(Profile.getProfileName(Profile.COMPANY))
-				.antMatchers(HttpMethod.PUT, API_PRODUCTS).hasRole(Profile.getProfileName(Profile.COMPANY))
-				.antMatchers(API_CREDIT_CARDS + ALL_END_POINTS).hasRole(Profile.getProfileName(Profile.CUSTOMER))
-				.antMatchers(API_ADDRESSES + ALL_END_POINTS).hasRole(Profile.getProfileName(Profile.CUSTOMER))
-			.and()
-			.authorizeRequests()
-				.antMatchers("/**").hasRole(Profile.getProfileName(Profile.ADMINISTRATOR))
+				.antMatchers(API_CREDIT_CARDS + ALL_END_POINTS).hasAnyRole(Profile.getProfileName(Profile.CUSTOMER), Profile.getProfileName(Profile.ADMINISTRATOR))
+				.antMatchers(API_ADDRESSES + ALL_END_POINTS).hasAnyRole(Profile.getProfileName(Profile.CUSTOMER), Profile.getProfileName(Profile.ADMINISTRATOR))
+				.antMatchers(HttpMethod.GET, API_CUSTOMERS).hasAnyRole(Profile.getProfileName(Profile.COMPANY), Profile.getProfileName(Profile.ADMINISTRATOR))
+				.antMatchers(HttpMethod.GET, API_CUSTOMERS + ID).hasAnyRole(Profile.getProfileName(Profile.CUSTOMER), Profile.getProfileName(Profile.ADMINISTRATOR))
+				.antMatchers(HttpMethod.POST, API_STORES).hasAnyRole(Profile.getProfileName(Profile.COMPANY), Profile.getProfileName(Profile.ADMINISTRATOR))
+				.antMatchers(HttpMethod.DELETE, API_STORES + ID).hasAnyRole(Profile.getProfileName(Profile.COMPANY), Profile.getProfileName(Profile.ADMINISTRATOR))
+				.antMatchers(HttpMethod.PUT, API_STORES + ID).hasAnyRole(Profile.getProfileName(Profile.COMPANY), Profile.getProfileName(Profile.ADMINISTRATOR))
+				.antMatchers(HttpMethod.POST, API_PRODUCTS).hasAnyRole(Profile.getProfileName(Profile.COMPANY), Profile.getProfileName(Profile.ADMINISTRATOR))
+				.antMatchers(HttpMethod.DELETE, API_PRODUCTS + ID).hasAnyRole(Profile.getProfileName(Profile.COMPANY), Profile.getProfileName(Profile.ADMINISTRATOR))
+				.antMatchers(HttpMethod.PUT, API_PRODUCTS + ID).hasAnyRole(Profile.getProfileName(Profile.COMPANY), Profile.getProfileName(Profile.ADMINISTRATOR))
+				.antMatchers(HttpMethod.DELETE, API_CUSTOMERS).hasAnyRole(Profile.getProfileName(Profile.CUSTOMER), Profile.getProfileName(Profile.ADMINISTRATOR))
+				.antMatchers(HttpMethod.PUT, API_CUSTOMERS).hasAnyRole(Profile.getProfileName(Profile.CUSTOMER), Profile.getProfileName(Profile.ADMINISTRATOR))
+				.antMatchers(HttpMethod.PUT, API_COMPANIES + ID).hasAnyRole(Profile.getProfileName(Profile.COMPANY), Profile.getProfileName(Profile.ADMINISTRATOR))
+				.antMatchers(HttpMethod.DELETE, API_COMPANIES).hasAnyRole(Profile.getProfileName(Profile.COMPANY), Profile.getProfileName(Profile.ADMINISTRATOR))
 			.and().logout().permitAll()
 			.and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
 			.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
