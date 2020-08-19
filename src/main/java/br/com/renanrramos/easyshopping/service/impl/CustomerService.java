@@ -66,4 +66,12 @@ public class CustomerService implements CommonService<Customer>{
 	public List<Customer> findAll(Pageable page) {
 		return new ArrayList<>();
 	}
+
+	public List<Customer> findCustomerByName(Pageable page, String name) {
+		Page<Customer> pagedResult = customerRepository.findCustomerByNameContaining(page, name);
+		return pagedResult.hasContent() ?
+				pagedResult.getContent() :
+				new ArrayList<>();
+	}
+	
 }
