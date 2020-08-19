@@ -87,6 +87,7 @@ public class AddressController {
 	@GetMapping
 	@ApiOperation(value = "Get all addresses")
 	public ResponseEntity<List<AddressDTO>> getAddresses(
+			@RequestParam(required = false) String streetName,
 			@RequestParam(required = false) Long customerId,
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
             @RequestParam(defaultValue = "10") Integer pageSize,
@@ -96,7 +97,9 @@ public class AddressController {
 				.withSize(pageSize)
 				.withSort(sortBy)
 				.buildPageable();
-		List<Address> addresses = addressService.findAllPageable(page, customerId);
+		List<Address> addresses = (streetName == null) ?
+				addressService.findAllPageable(page, customerId) :
+				addressService.findAddressByStreetName(page, streetName);
 		return ResponseEntity.ok(AddressDTO.convertAddressListToAddressDTOList(addresses));	
 	}
 	
