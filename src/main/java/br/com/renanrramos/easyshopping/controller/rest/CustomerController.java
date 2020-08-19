@@ -93,6 +93,7 @@ public class CustomerController {
 	@GetMapping
 	@ApiOperation(value = "Get all customers")
 	public ResponseEntity<List<CustomerDTO>> getCustomers(
+			@RequestParam(required = false) String name,
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy) {
@@ -101,7 +102,9 @@ public class CustomerController {
 				.withSize(pageSize)
 				.withSort(sortBy)
 				.buildPageable();
-		List<Customer> customers = customerService.findAllPageable(page, null);
+		List<Customer> customers = (name == null) ? 
+				customerService.findAllPageable(page, null) :
+				customerService.findCustomerByName(page, name);
 		return ResponseEntity.ok(CustomerDTO.converterCustomerListToCustomerDTOList(customers));
 	}
 	
