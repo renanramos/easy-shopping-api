@@ -65,4 +65,12 @@ public class AddressService implements CommonService<Address> {
 	public List<Address> findAll(Pageable page) {
 		return new ArrayList<>();
 	}
+
+	public List<Address> findAddressByStreetName(Pageable page, String streetName) {
+		Page<Address> pagedResult =
+				addressRepository.findAddressByStreetNameContaining(page, streetName);
+		return pagedResult.hasContent() ?
+				pagedResult.getContent() :
+					new ArrayList<>();
+	}
 }
