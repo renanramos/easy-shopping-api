@@ -94,6 +94,7 @@ public class CompanyController {
 	@GetMapping
 	@ApiOperation(value = "Get all companies")
 	public ResponseEntity<List<CompanyDTO>> getCompanies(
+			@RequestParam(required = false) String name,
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy) {
@@ -102,7 +103,9 @@ public class CompanyController {
 				.withSize(pageSize)
 				.withSort(sortBy)
 				.buildPageable();
-		List<CompanyDTO> listOfCompanyDTOs = CompanyDTO.converterCompanyListToCompanyDTOList(companyService.findAllPageable(page, null));
+		List<CompanyDTO> listOfCompanyDTOs = (name == null) ?
+				CompanyDTO.converterCompanyListToCompanyDTOList(companyService.findAll(page)) :
+					CompanyDTO.converterCompanyListToCompanyDTOList(companyService.findCompanyByName(page, name));
 		return ResponseEntity.ok(listOfCompanyDTOs);
 	}
 
