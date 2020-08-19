@@ -89,7 +89,7 @@ public class AdministratorController {
 	@GetMapping
 	@ApiOperation(value = "Get all administrators")
 	public ResponseEntity<List<AdministratorDTO>> getAdministrators(
-			@RequestParam(required = false, name = "Pesquisa por nome") String searchByName,
+			@RequestParam(required = false, name = "Pesquisa por nome") String name,
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy) {
@@ -99,9 +99,9 @@ public class AdministratorController {
 				.withSort(sortBy)
 				.buildPageable();
 		List<Administrator> administrators =
-				(searchByName == null) ?
+				(name == null) ?
 						administratorService.findAllPageable(page, null) :
-						administratorService.searchAdministratorByName(searchByName);				 
+						administratorService.searchAdministratorByName(name);				 
 		return ResponseEntity.ok(AdministratorDTO.converterAdministratorListToAdministratorDTO(administrators)); 
 	}
 	
