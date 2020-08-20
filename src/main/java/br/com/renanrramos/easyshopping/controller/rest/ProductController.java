@@ -7,6 +7,7 @@
 package br.com.renanrramos.easyshopping.controller.rest;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -138,7 +139,10 @@ public class ProductController {
 				.withSize(pageSize)
 				.withSort(sortBy)
 				.buildPageable();
-		List<Product> products = productService.searchProductByName(page, name);
+		List<Product> products = 
+				(name != null) ?
+				productService.searchProductByName(page, name) :
+				new ArrayList<>();
 		return ResponseEntity.ok(ProductDTO.converterProductListToProductDTOList(products));		
 	}
 	
