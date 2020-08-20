@@ -23,7 +23,7 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, L
 
 	Page<Product> findProductByStoreId(Pageable page, Long storeId);
 
-	Page<Product> findProductByProductCategory_NameContaining(Pageable page, String productCategoryName);
+	Page<Product> findProductByNameContaining(Pageable page, String name);
 
 	Optional<List<Product>> findProductByProductCategoryId(Long productCategoryId);
 }
