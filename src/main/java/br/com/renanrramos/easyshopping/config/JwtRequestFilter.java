@@ -24,6 +24,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import br.com.renanrramos.easyshopping.config.util.JwtTokenUtil;
+import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.service.jwt.JwtUserDetailsService;
 import io.jsonwebtoken.ExpiredJwtException;
 
@@ -61,12 +62,12 @@ public class JwtRequestFilter extends OncePerRequestFilter{
 				LOG.warn("Unable to get JWT token");
 			} catch(ExpiredJwtException e) {
 				LOG.warn("JWT token has expired");
-				response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, ExceptionMessagesConstants.EXPIRED_TOKEN);
 				filterChain.doFilter(request, response);
 			}
 		} else {
 			LOG.warn("JWT token does not begin with Bearer string");
-			response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, ExceptionMessagesConstants.INVALID_TOKEN);
 			filterChain.doFilter(request, response);
 		}
 
