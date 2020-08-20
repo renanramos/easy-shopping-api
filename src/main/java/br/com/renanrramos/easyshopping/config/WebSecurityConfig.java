@@ -55,6 +55,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
 	private static final String API_SUBCATEGORIES = "/api/subcategories";
 
+	private static final String API_ADMIN = "/api/admin";
+
 	@Autowired
 	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
@@ -119,6 +121,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 				.antMatchers(HttpMethod.PUT, API_CUSTOMERS).hasAnyRole(Profile.getProfileName(Profile.CUSTOMER), Profile.getProfileName(Profile.ADMINISTRATOR))
 				.antMatchers(HttpMethod.PUT, API_COMPANIES + ID).hasAnyRole(Profile.getProfileName(Profile.COMPANY), Profile.getProfileName(Profile.ADMINISTRATOR))
 				.antMatchers(HttpMethod.DELETE, API_COMPANIES).hasAnyRole(Profile.getProfileName(Profile.COMPANY), Profile.getProfileName(Profile.ADMINISTRATOR))
+				.antMatchers(API_ADMIN).hasRole(Profile.getProfileName(Profile.ADMINISTRATOR))
+				.antMatchers(API_ADMIN + ID).hasRole(Profile.getProfileName(Profile.ADMINISTRATOR))
 			.and().logout().permitAll()
 			.and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
 			.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
