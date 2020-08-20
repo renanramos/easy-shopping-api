@@ -19,4 +19,6 @@ import br.com.renanrramos.easyshopping.model.Store;
 public interface StoreRepository extends PagingAndSortingRepository<Store, Long>{
 
 	Page<Store> findStoreByCompanyId(Pageable page, Long companyId);
+
+	Page<Store> findStoreByNameContaining(Pageable page, String name);
 }
