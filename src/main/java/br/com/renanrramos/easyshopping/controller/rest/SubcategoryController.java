@@ -71,22 +71,24 @@ public class SubcategoryController {
 
 		Optional<ProductCategory> productCategoryOptional = productCategoryService.findById(subcategoryForm.getProductCategoryId());
 
-		if (productCategoryOptional.isPresent()) {
-			ProductCategory productCategory = productCategoryOptional.get();
-			Subcategory subcategory = SubcategoryForm.convertSubcategoryFormToSubcategory(subcategoryForm);
-			subcategory.setProductCategory(productCategory);
-			subcategory = subcategoryService.save(subcategory);
-			uri = uriBuilder.path("/subcategories/{id}").buildAndExpand(subcategory.getId()).encode().toUri();
-			return ResponseEntity.created(uri).body(SubcategoryDTO.convertSubcategoryToSubcategoryDTO(subcategory));
-		} else {
+		if (!productCategoryOptional.isPresent()) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.PRODUCT_CATEGORY_NOT_FOUND);
 		}
+
+		ProductCategory productCategory = productCategoryOptional.get();
+		Subcategory subcategory = SubcategoryForm.convertSubcategoryFormToSubcategory(subcategoryForm);
+		subcategory.setProductCategory(productCategory);
+		subcategory = subcategoryService.save(subcategory);
+		uri = uriBuilder.path("/subcategories/{id}").buildAndExpand(subcategory.getId()).encode().toUri();
+
+		return ResponseEntity.created(uri).body(SubcategoryDTO.convertSubcategoryToSubcategoryDTO(subcategory));
 	}
 
 	@ResponseBody
 	@GetMapping
 	@ApiOperation(value = "Get all subcategories")
 	public ResponseEntity<List<SubcategoryDTO>> getSubcategories(
+			@RequestParam(required = false) String name,
 			@RequestParam(required = false) Long productCategoryId,
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
             @RequestParam(defaultValue = "10") Integer pageSize,
@@ -96,7 +98,10 @@ public class SubcategoryController {
 				.withSize(pageSize)
 				.withSort(sortBy)
 				.buildPageable();
-		List<Subcategory> subcategories = subcategoryService.findAllPageable(page, productCategoryId);
+		List<Subcategory> subcategories =
+				(name == null) ?
+				subcategoryService.findAllPageable(page, productCategoryId) :
+				subcategoryService.findSubcategoryByName(page, name);
 		return ResponseEntity.ok(SubcategoryDTO.convertSubcategoryListToSubcategoryDTOList(subcategories));
 	}
 
@@ -131,18 +136,18 @@ public class SubcategoryController {
 
 		Optional<Subcategory> subcategoryOptional = subcategoryService.findById(subcategoryId);
 
-		if (subcategoryOptional.isPresent()) {
-			
-			Subcategory subcategory = SubcategoryForm.convertSubcategoryFormToSubcategory(subcategoryForm);
-			subcategory.setId(subcategoryId);
-			subcategory.setProductCategory(productCategory);
-			subcategory = subcategoryService.save(subcategory);
-			
-			uri = uriBuilder.path("/subcategories/{id}").buildAndExpand(subcategory.getId()).encode().toUri();
-			return ResponseEntity.accepted().location(uri).body(SubcategoryDTO.convertSubcategoryToSubcategoryDTO(subcategory));
-		} else {
+		if (!subcategoryOptional.isPresent()) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.SUBCATEGORY_NOT_FOUND);
-		}		
+		}
+
+		Subcategory subcategory = SubcategoryForm.convertSubcategoryFormToSubcategory(subcategoryForm);
+		subcategory.setId(subcategoryId);
+		subcategory.setProductCategory(productCategory);
+		subcategory = subcategoryService.save(subcategory);
+		
+		uri = uriBuilder.path("/subcategories/{id}").buildAndExpand(subcategory.getId()).encode().toUri();
+
+		return ResponseEntity.accepted().location(uri).body(SubcategoryDTO.convertSubcategoryToSubcategoryDTO(subcategory));
 	}
 
 	@ResponseBody
@@ -152,11 +157,11 @@ public class SubcategoryController {
 	public ResponseEntity<SubcategoryDTO> removeSubcategory(@PathVariable("id") Long subcategoryId) throws EasyShoppingException {
 		Optional<Subcategory> subcategoryOptional = subcategoryService.findById(subcategoryId);
 
-		if (subcategoryOptional.isPresent()) {
-			subcategoryService.remove(subcategoryId);
-			return ResponseEntity.ok().build();
-		} else {
+		if (!subcategoryOptional.isPresent()) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.SUBCATEGORY_NOT_FOUND);
 		}
+
+		subcategoryService.remove(subcategoryId);
+		return ResponseEntity.ok().build();
 	}
 }
