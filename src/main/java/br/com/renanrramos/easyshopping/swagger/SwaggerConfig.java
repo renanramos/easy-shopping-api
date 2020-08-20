@@ -46,7 +46,6 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
 				.apiInfo(apiInfo())
 				.securityContexts(Lists.newArrayList(securityContext()))
 	            .securitySchemes(Lists.newArrayList(apiKey()))
-				.host("localhost:8081/api")
 				.pathMapping("/")
 				.forCodeGeneration(true)
 				.select()
