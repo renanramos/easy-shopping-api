@@ -129,7 +129,7 @@ public class ProductController {
 	@GetMapping(path = "/search")
 	@ApiOperation(value = "Search all products by product category")
 	public ResponseEntity<List<ProductDTO>> searchProductsByProductCategory(
-			@RequestParam(required = false, name = "Product category name") String productCategoryName,
+			@RequestParam(required = false, name = "Product name") String name,
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy) {
@@ -138,7 +138,7 @@ public class ProductController {
 				.withSize(pageSize)
 				.withSort(sortBy)
 				.buildPageable();
-		List<Product> products = productService.searchProductByProductCategoryName(page, productCategoryName);
+		List<Product> products = productService.searchProductByName(page, name);
 		return ResponseEntity.ok(ProductDTO.converterProductListToProductDTOList(products));		
 	}
 	
