@@ -63,12 +63,9 @@ public class JwtRequestFilter extends OncePerRequestFilter{
 			} catch(ExpiredJwtException e) {
 				LOG.warn("JWT token has expired");
 				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, ExceptionMessagesConstants.EXPIRED_TOKEN);
-				filterChain.doFilter(request, response);
 			}
 		} else {
 			LOG.warn("JWT token does not begin with Bearer string");
-			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, ExceptionMessagesConstants.INVALID_TOKEN);
-			filterChain.doFilter(request, response);
 		}
 
 		if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
