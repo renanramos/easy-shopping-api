@@ -61,4 +61,11 @@ public class ProductCategoryService implements CommonService<ProductCategory>{
 	public void remove(Long productCategoryId) {
 		productCategoryRepository.deleteById(productCategoryId);
 	}
+
+	public List<ProductCategory> findAllProductCategoriesByName(Pageable page, String name) {
+		Page<ProductCategory> pagedResult = productCategoryRepository.findProductCategoryByNameContaining(page, name); 
+		return pagedResult.hasContent() ?
+				pagedResult.getContent() :
+					new ArrayList<>();
+	}
 }
