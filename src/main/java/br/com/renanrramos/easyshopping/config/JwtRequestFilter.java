@@ -66,6 +66,8 @@ public class JwtRequestFilter extends OncePerRequestFilter{
 			}
 		} else {
 			LOG.warn("JWT token does not begin with Bearer string");
+			response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+			filterChain.doFilter(request, response);
 		}
 
 		if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
