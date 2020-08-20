@@ -6,6 +6,8 @@
  */
 package br.com.renanrramos.easyshopping.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import br.com.renanrramos.easyshopping.model.ProductCategory;
@@ -16,4 +18,5 @@ import br.com.renanrramos.easyshopping.model.ProductCategory;
  */
 public interface ProductCategoryRepository extends PagingAndSortingRepository<ProductCategory, Long>{
 
+	Page<ProductCategory> findProductCategoryByNameContaining(Pageable page, String name);
 }
