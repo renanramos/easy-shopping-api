@@ -81,6 +81,7 @@ public class ProductCategoryController {
 	@GetMapping
 	@ApiOperation(value = "Get all product categories")
 	public ResponseEntity<List<ProductCategoryDTO>> getProductCategories(
+			@RequestParam(required = false) String name,
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy) {
@@ -89,7 +90,10 @@ public class ProductCategoryController {
 				.withSize(pageSize)
 				.withSort(sortBy)
 				.buildPageable();
-		List<ProductCategory> productCategories = productCategoryService.findAllPageable(page, null);
+		List<ProductCategory> productCategories = 
+				(name == null) ?
+				productCategoryService.findAllPageable(page, null) :
+				productCategoryService.findAllProductCategoriesByName(page, name);
 		return ResponseEntity.ok(ProductCategoryDTO.converterProductCategoryListToProductCategoryDTOList(productCategories));
 	}
 	
