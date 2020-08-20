@@ -63,4 +63,14 @@ public class StoreService implements CommonService<Store>{
 	public void remove(Long storeId) {
 		storeRepository.deleteById(storeId);
 	}
+
+	public List<Store> findStoreByName(Pageable page, String name) {
+		Page<Store> pagedResult = 
+				(name == null) ?
+				storeRepository.findAll(page) :
+				storeRepository.findStoreByNameContaining(page, name);
+		return pagedResult.hasContent() ?
+				pagedResult.getContent() :
+					new ArrayList<>();
+	}
 }
