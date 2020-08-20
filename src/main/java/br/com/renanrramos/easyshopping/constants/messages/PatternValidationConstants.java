@@ -17,5 +17,5 @@ public class PatternValidationConstants {
 	}
 
 	public static final String CPF_PATTERN = "^[0-9]{3}.[0-9]{3}.[0-9]{3}-[0-9]{2}$";
-	public static final String REGISTERED_NUMBER_PATTERN = "^[0-9]{2}[.][0-9]{3}[.][0-9]{4}[-][0-9]{2}$";
+	public static final String REGISTERED_NUMBER_PATTERN = "^[0-9]{2}[.][0-9]{3}[.][0-9]{3}[\\/][0-9]{4}[-][0-9]{2}$";
 }
