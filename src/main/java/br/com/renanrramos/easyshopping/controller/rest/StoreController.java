@@ -87,6 +87,7 @@ public class StoreController {
 	@GetMapping
 	@ApiOperation(value = "Get all stores")
 	public ResponseEntity<List<StoreDTO>> getStores(
+			@RequestParam(required = false) String name,
 			@RequestParam(required = false) Long companyId,
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
             @RequestParam(defaultValue = "10") Integer pageSize,
@@ -96,7 +97,10 @@ public class StoreController {
 				.withSize(pageSize)
 				.withSort(sortBy)
 				.buildPageable();
-		List<Store> stores = storeService.findAllPageable(page, companyId);
+		List<Store> stores = 
+				(name == null) ?
+				storeService.findAllPageable(page, companyId) :
+				storeService.findStoreByName(page, name);
 		return ResponseEntity.ok(StoreDTO.converterStoreListToStoreDTOList(stores));
 	}
 	
