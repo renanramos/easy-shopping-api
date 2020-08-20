@@ -45,6 +45,9 @@ public class ExceptionMessagesConstants {
 	public static final String CANNOT_REMOVE_PRODUCT_CATEGORY_IN_USE = "A categoria do produto ainda é utilizada e não pode ser removida.";
 	public static final String INTERNAL_ERROR = "Erro no momento de efetuar a ação";
 
+	public static final String INVALID_TOKEN = "Token informado é inválido.";
+	public static final String EXPIRED_TOKEN = "Token informado expirou.";
+	
 	private ExceptionMessagesConstants() {
 		// Intentionally empty
 	}
