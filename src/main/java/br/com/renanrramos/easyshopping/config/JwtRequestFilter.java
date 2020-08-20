@@ -24,7 +24,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import br.com.renanrramos.easyshopping.config.util.JwtTokenUtil;
-import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.service.jwt.JwtUserDetailsService;
 import io.jsonwebtoken.ExpiredJwtException;
 
@@ -43,6 +42,10 @@ public class JwtRequestFilter extends OncePerRequestFilter{
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
 
+	private String email;
+
+	private String jwtToken;
+
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
@@ -50,23 +53,7 @@ public class JwtRequestFilter extends OncePerRequestFilter{
 
 		LOG.info("RequestHeader token: {}", requestTokenHeader);
 
-		String email = null;
-		String jwtToken = null;
-
-		if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
-			jwtToken = requestTokenHeader.substring(7);
-			
-			try {
-				email = jwtTokenUtil.getUsernameFromToken(jwtToken);
-			} catch(IllegalArgumentException e) {
-				LOG.warn("Unable to get JWT token");
-			} catch(ExpiredJwtException e) {
-				LOG.warn("JWT token has expired");
-				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, ExceptionMessagesConstants.EXPIRED_TOKEN);
-			}
-		} else {
-			LOG.warn("JWT token does not begin with Bearer string");
-		}
+		validRequestTokenHeader(requestTokenHeader);
 
 		if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 			UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(email);
@@ -81,4 +68,19 @@ public class JwtRequestFilter extends OncePerRequestFilter{
 		filterChain.doFilter(request, response);
 	}
 
+	private void validRequestTokenHeader(String requestTokenHeader) {
+		if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
+
+			jwtToken = requestTokenHeader.substring(7);
+			try {
+				email = jwtTokenUtil.getUsernameFromToken(jwtToken);
+			} catch(IllegalArgumentException e) {
+				LOG.warn("Unable to get JWT token");
+			} catch(ExpiredJwtException e) {
+				LOG.warn("JWT token has expired");
+			}
+		} else {
+			LOG.warn("JWT token does not begin with Bearer string");
+		}
+	}
 }
