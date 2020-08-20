@@ -18,4 +18,6 @@ import br.com.renanrramos.easyshopping.model.Subcategory;
  */
 public interface SubcategoryRepository extends PagingAndSortingRepository<Subcategory, Long> {
 	Page<Subcategory> findSubcategoryByProductCategoryId(Pageable page, Long productCategoryId);
+
+	Page<Subcategory> findSubcategoryByNameContaining(Pageable page, String name);
 }
