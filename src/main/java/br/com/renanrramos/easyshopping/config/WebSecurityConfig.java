@@ -82,6 +82,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		return super.authenticationManagerBean();
 	}
 
+
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring()
+		.antMatchers("/users/authentication");
+	}
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable()
@@ -105,8 +112,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 				.antMatchers(HttpMethod.GET, API_SUBCATEGORIES + ID).permitAll()
 				.antMatchers(HttpMethod.GET, API_COMPANIES).permitAll()
 				.antMatchers(HttpMethod.GET, API_COMPANIES + ID).permitAll()
-				.antMatchers(HttpMethod.POST, API_CUSTOMERS + REGISTER).permitAll()
-				.antMatchers(HttpMethod.POST, API_COMPANIES + REGISTER).permitAll()
+				.antMatchers(API_CUSTOMERS + REGISTER).permitAll()
+				.antMatchers(API_COMPANIES + REGISTER).permitAll()
 				.antMatchers(API_CREDIT_CARDS + ALL_END_POINTS).hasAnyRole(Profile.getProfileName(Profile.CUSTOMER), Profile.getProfileName(Profile.ADMINISTRATOR))
 				.antMatchers(API_ADDRESSES + ALL_END_POINTS).hasAnyRole(Profile.getProfileName(Profile.CUSTOMER), Profile.getProfileName(Profile.ADMINISTRATOR))
 				.antMatchers(HttpMethod.GET, API_CUSTOMERS).hasAnyRole(Profile.getProfileName(Profile.COMPANY), Profile.getProfileName(Profile.ADMINISTRATOR))
@@ -133,10 +140,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 			.and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
 			.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-	}
-
-	@Override
-	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/users/authentication");
 	}
 }
