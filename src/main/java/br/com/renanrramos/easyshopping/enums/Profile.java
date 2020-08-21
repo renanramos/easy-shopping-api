@@ -24,4 +24,11 @@ public enum Profile {
 	public static String getProfileName(Profile profile) {
 		return profile.name().toUpperCase();
 	}
+
+	public static String transformRoleToProfile(String role) {
+		if (role.isEmpty() || role == null) {
+			return "";
+		}
+		return role.substring(5);
+	}
 }
