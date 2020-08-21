@@ -6,6 +6,7 @@
  */
 package br.com.renanrramos.easyshopping.model.builder;
 
+import br.com.renanrramos.easyshopping.model.Company;
 import br.com.renanrramos.easyshopping.model.Product;
 import br.com.renanrramos.easyshopping.model.ProductCategory;
 import br.com.renanrramos.easyshopping.model.Store;
@@ -48,6 +49,11 @@ public class ProductBuilder {
 	
 	public ProductBuilder withProductCategory(ProductCategory productCategory) {
 		this.product.setProductCategory(productCategory);
+		return this;
+	}
+
+	public ProductBuilder withCompany(Company company) {
+		this.product.setCompany(company);
 		return this;
 	}
 	

@@ -31,16 +31,19 @@ public class ProductForm {
 	
 	private Long storeId;
 
+	private Long companyId;
+
 	public ProductForm() {
 		// Intentionally empty
 	}
 
-	public ProductForm(String name, String description, double price, Long productCategoryId, Long storeId) {
+	public ProductForm(String name, String description, double price, Long productCategoryId, Long storeId, Long companyId) {
 		this.name = name;
 		this.description = description;
 		this.price = price;
 		this.productCategoryId = productCategoryId;
 		this.storeId = storeId;
+		this.companyId = companyId;
 	}
 
 	public static Product converterProductFormToProduct(ProductForm productForm) {
@@ -53,8 +56,8 @@ public class ProductForm {
 
 	@Override
 	public String toString() {
-		return "ProductForm [name=" + name + ", description=" + description + ", price=" + price + ", productCategoryId="
-				+ productCategoryId + ", storeId=" + storeId + "]";
-	}
-	
+		return "ProductForm [name=" + name + ", description=" + description + ", price=" + price
+				+ ", productCategoryId=" + productCategoryId + ", storeId=" + storeId + ", companyId=" + companyId
+				+ "]";
+	}	
 }

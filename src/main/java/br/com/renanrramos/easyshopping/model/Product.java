@@ -61,6 +61,10 @@ public class Product implements Serializable{
 	@JoinColumn(name = "store_id")
 	private Store store;
 
+	@ManyToOne
+	@JoinColumn(name = "company_id")
+	private Company company;
+
 	public Product() {
 		// Intentionally empty
 	}
