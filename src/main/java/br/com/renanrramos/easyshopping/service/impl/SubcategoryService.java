@@ -27,11 +27,11 @@ import br.com.renanrramos.easyshopping.service.CommonService;
 public class SubcategoryService implements CommonService<Subcategory>{
 
 	@Autowired
-	private SubcategoryRepository subCategoryRepository;
+	private SubcategoryRepository subcategoryRepository;
 	
 	@Override
 	public Subcategory save(Subcategory subcategory) {
-		return subCategoryRepository.save(subcategory);
+		return subcategoryRepository.save(subcategory);
 	}
 
 	@Override
@@ -41,25 +41,25 @@ public class SubcategoryService implements CommonService<Subcategory>{
 
 	@Override
 	public Optional<Subcategory> findById(Long subcategoryId) {
-		return subCategoryRepository.findById(subcategoryId);
+		return subcategoryRepository.findById(subcategoryId);
 	}
 
 	@Override
 	public Subcategory update(Subcategory subcategory) {
-		return subCategoryRepository.save(subcategory);
+		return subcategoryRepository.save(subcategory);
 	}
 
 	@Override
 	public void remove(Long subcategoryId) {
-		subCategoryRepository.deleteById(subcategoryId);
+		subcategoryRepository.removeById(subcategoryId);
 	}
 
 	@Override
 	public List<Subcategory> findAllPageable(Pageable page, Long productCategoryId) {
 		Page<Subcategory> pagedResult = 
 				(productCategoryId == null) ?
-				subCategoryRepository.findAll(page) :
-				subCategoryRepository.findSubcategoryByProductCategoryId(page, productCategoryId);
+				subcategoryRepository.findAll(page) :
+				subcategoryRepository.findSubcategoryByProductCategoryId(page, productCategoryId);
 		return pagedResult.hasContent() ?
 				pagedResult.getContent() :
 					new ArrayList<>();
@@ -68,8 +68,8 @@ public class SubcategoryService implements CommonService<Subcategory>{
 	public List<Subcategory> findSubcategoryByName(Pageable page, String name) {
 		Page<Subcategory> pagedResult = 
 				(name == null) ?
-				subCategoryRepository.findAll(page) :
-				subCategoryRepository.findSubcategoryByNameContaining(page, name);
+				subcategoryRepository.findAll(page) :
+				subcategoryRepository.findSubcategoryByNameContaining(page, name);
 		return pagedResult.hasContent() ?
 				pagedResult.getContent() :
 					new ArrayList<>();
