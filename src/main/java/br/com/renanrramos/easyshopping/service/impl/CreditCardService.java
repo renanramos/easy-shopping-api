@@ -36,10 +36,7 @@ public class CreditCardService implements CommonService<CreditCard>{
 
 	@Override
 	public List<CreditCard> findAllPageable(Pageable page, Long customerId) {
-		Page<CreditCard> pagedResult = 
-				(customerId == null) ?
-				creditCardRepository.findAll(page) :
-				creditCardRepository.findCreditCardByCustomerId(page, customerId);
+		Page<CreditCard> pagedResult = creditCardRepository.findCreditCardByCustomerId(page, customerId);
 		return pagedResult.hasContent() ?
 				pagedResult.getContent() :
 					new ArrayList<>();

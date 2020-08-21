@@ -10,6 +10,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -153,10 +154,10 @@ public class CustomerController {
 	@ApiOperation(value = "Remove a customer")
 	public ResponseEntity<CustomerDTO> removeCustomer(@PathVariable("id") Long customerId) {
 		Optional<Customer> customerToRemove = customerService.findById(customerId);
-		if (customerToRemove.isPresent()) {
-			customerService.remove(customerId);
-			return ResponseEntity.ok().build();
+		if (!customerToRemove.isPresent()) {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.CUSTOMER_NOT_FOUND);
 		}
-		return ResponseEntity.notFound().build();
+		customerService.remove(customerId);
+		return ResponseEntity.ok().build();
 	}	
 }

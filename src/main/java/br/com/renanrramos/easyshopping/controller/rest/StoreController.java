@@ -128,15 +128,15 @@ public class StoreController {
 
 		Optional<Store> storeOptional = storeService.findById(storeId);
 
-		if (storeOptional.isPresent()) {
-			Store store = StoreForm.converterStoreFormToStore(storeForm);
-			store.setId(storeId);
-			StoreDTO storeUpdatedDTO = StoreDTO.converterStoreToStoreDTO(storeService.save(store));
-			uri = uriBuilder.path("/stores/{id}").buildAndExpand(storeId).encode().toUri();
-			return ResponseEntity.accepted().location(uri).body(storeUpdatedDTO);
-		} else {
+		if (!storeOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.STORE_NOT_FOUND);
 		}
+
+		Store store = StoreForm.converterStoreFormToStore(storeForm);
+		store.setId(storeId);
+		StoreDTO storeUpdatedDTO = StoreDTO.converterStoreToStoreDTO(storeService.save(store));
+		uri = uriBuilder.path("/stores/{id}").buildAndExpand(storeId).encode().toUri();
+		return ResponseEntity.accepted().location(uri).body(storeUpdatedDTO);
 	}
 	
 	@ResponseBody
@@ -145,11 +145,10 @@ public class StoreController {
 	@ApiOperation(value = "Remove a store")
 	public ResponseEntity<StoreDTO> deleteStore(@PathVariable("id") Long storeId) {
 		Optional<Store> storeOptional = storeService.findById(storeId);
-		if (storeOptional.isPresent()) {
-			storeService.remove(storeId);
-			return ResponseEntity.noContent().build();			
-		} else {
+		if (!storeOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.STORE_NOT_FOUND);
 		}
+		storeService.remove(storeId);
+		return ResponseEntity.ok().build();			
 	}
 }

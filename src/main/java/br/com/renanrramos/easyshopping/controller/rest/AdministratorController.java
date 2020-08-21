@@ -108,17 +108,18 @@ public class AdministratorController {
 	@ResponseBody
 	@GetMapping(path = "/{id}")
 	@ApiOperation(value = "Get an administrator by id")
-	public ResponseEntity<AdministratorDTO> getAdministratorById(@PathVariable("id") Long administratorId) {
-		
+	public ResponseEntity<AdministratorDTO> getAdministratorById(@PathVariable("id") Long administratorId) {		
 		if (administratorId == null) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.INVALID_ID);
 		}
-		
+
 		Optional<Administrator> administratorOptional = administratorService.findById(administratorId);
-		if (administratorOptional.isPresent()) {
-			return ResponseEntity.ok(AdministratorDTO.converterAdministratorToAdministratorDTO(administratorOptional.get()));
+
+		if (!administratorOptional.isPresent()) {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.ADMINISTRATOR_NOT_FOUND);
 		}
-		return ResponseEntity.notFound().build();
+
+		return ResponseEntity.ok(AdministratorDTO.converterAdministratorToAdministratorDTO(administratorOptional.get()));
 	}
 	
 	@ResponseBody
@@ -126,7 +127,6 @@ public class AdministratorController {
 	@Transactional
 	@ApiOperation(value = "Update an administrator")
 	public ResponseEntity<AdministratorDTO> updateAdministrator(@PathVariable("id") Long administratorId, @RequestBody AdministratorForm administratorForm, UriComponentsBuilder uriBuilder) {
-
 		if (administratorId == null) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.INVALID_ID);
 		}

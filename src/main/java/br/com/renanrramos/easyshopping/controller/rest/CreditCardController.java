@@ -71,25 +71,24 @@ public class CreditCardController {
 
 		Optional<Customer> customerOptional = customerService.findById(creditCardForm.getCustomerId()); 
 
-		if (customerOptional.isPresent()) {
-			
-			Customer customer = customerOptional.get();
-			CreditCard creditCard = CreditCardForm.converterCreditCardFormToCreditCard(creditCardForm);
-			creditCard.setCustomer(customer);
-			creditCard = creditCardService.save(creditCard);
-			uri = uriBuilder.path("/creditCards/{id}").buildAndExpand(creditCard.getId()).encode().toUri();
-
-			return ResponseEntity.created(uri).body(CreditCardDTO.converterCreditCardToCreditCardDTO(creditCard));
-		} else {
+		if (!customerOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.CUSTOMER_NOT_FOUND);
 		}
+
+		Customer customer = customerOptional.get();
+		CreditCard creditCard = CreditCardForm.converterCreditCardFormToCreditCard(creditCardForm);
+		creditCard.setCustomer(customer);
+		creditCard = creditCardService.save(creditCard);
+		uri = uriBuilder.path("/creditCards/{id}").buildAndExpand(creditCard.getId()).encode().toUri();
+
+		return ResponseEntity.created(uri).body(CreditCardDTO.converterCreditCardToCreditCardDTO(creditCard));
 	}
 
 	@ResponseBody
 	@GetMapping
 	@ApiOperation(value = "Get all credit cards")
 	public ResponseEntity<List<CreditCardDTO>> getCreditCards(
-			@RequestParam(required = false) Long customerId,
+			@RequestParam(required = true) Long customerId,
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy) {
@@ -108,12 +107,12 @@ public class CreditCardController {
 	public ResponseEntity<CreditCardDTO> getCreditCardById(@PathVariable("id") Long creditCardId) {
 		Optional<CreditCard> creditCardOptional = creditCardService.findById(creditCardId);
 
-		if (creditCardOptional.isPresent()) {
-			CreditCard creditCard = creditCardOptional.get();
-			return ResponseEntity.ok(CreditCardDTO.converterCreditCardToCreditCardDTO(creditCard));
+		if (!creditCardOptional.isPresent()) {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.CREDIT_CARD_NOT_FOUND);
 		}
 
-		return ResponseEntity.notFound().build();
+		CreditCard creditCard = creditCardOptional.get();
+		return ResponseEntity.ok(CreditCardDTO.converterCreditCardToCreditCardDTO(creditCard));
 	}
 
 	@ResponseBody
@@ -126,25 +125,26 @@ public class CreditCardController {
 		}
 
 		Optional<Customer> customerOptional = customerService.findById(creditCardForm.getCustomerId());
-		Customer customer;
-		if (customerOptional.isPresent()) {
-			customer = customerOptional.get();
-		} else {
+
+		if (!customerOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.CUSTOMER_NOT_FOUND);
 		}
 
+		Customer customer = customerOptional.get();
+
 		Optional<CreditCard> creditCardOptional = creditCardService.findById(creditCardId);
 
-		if (creditCardOptional.isPresent()) {
-			CreditCard creditCard = CreditCardForm.converterCreditCardFormToCreditCard(creditCardForm);
-			creditCard.setId(creditCardId);
-			creditCard.setCustomer(customer);
-			creditCard = creditCardService.save(creditCard);
-			uri = uriBuilder.path("/creditCards/{id}").buildAndExpand(creditCard.getId()).encode().toUri();
-			return ResponseEntity.accepted().location(uri).body(CreditCardDTO.converterCreditCardToCreditCardDTO(creditCard));
-		} else {
+		if (!creditCardOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.CREDIT_CARD_NOT_FOUND);
 		}
+
+		CreditCard creditCard = CreditCardForm.converterCreditCardFormToCreditCard(creditCardForm);
+		creditCard.setId(creditCardId);
+		creditCard.setCustomer(customer);
+		creditCard = creditCardService.save(creditCard);
+		uri = uriBuilder.path("/creditCards/{id}").buildAndExpand(creditCard.getId()).encode().toUri();
+
+		return ResponseEntity.accepted().location(uri).body(CreditCardDTO.converterCreditCardToCreditCardDTO(creditCard));
 	}
 
 	@ResponseBody
@@ -154,11 +154,11 @@ public class CreditCardController {
 	public ResponseEntity<CreditCardDTO> removeCreditCard(@PathVariable("id") Long creditCardId) {
 		Optional<CreditCard> creditCardOptional = creditCardService.findById(creditCardId);
 
-		if (creditCardOptional.isPresent()) {
-			creditCardService.remove(creditCardId);
-			return ResponseEntity.ok().build();
-		} else {
+		if (!creditCardOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.CREDIT_CARD_NOT_FOUND);
 		}
+
+		creditCardService.remove(creditCardId);
+		return ResponseEntity.ok().build();
 	}
 }

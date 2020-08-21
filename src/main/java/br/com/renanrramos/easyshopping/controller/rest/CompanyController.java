@@ -10,6 +10,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -114,10 +115,10 @@ public class CompanyController {
 	@ApiOperation(value = "Get a company by id")
 	public ResponseEntity<CompanyDTO> getCompanyById(@PathVariable("id") Long companyId) {
 		Optional<Company> company = companyService.findById(companyId);
-		if (company.isPresent()) {
-			return ResponseEntity.ok(CompanyDTO.converterToCompanyDTO(company.get()));			
+		if (!company.isPresent()) {
+			throw new EntityExistsException(ExceptionMessagesConstants.COMPANY_NOT_FOUND);
 		}
-		return ResponseEntity.notFound().build();
+		return ResponseEntity.ok(CompanyDTO.converterToCompanyDTO(company.get()));
 	}
 	
 	@ResponseBody
@@ -126,15 +127,17 @@ public class CompanyController {
 	@ApiOperation(value = "Update a company")
 	public ResponseEntity<CompanyDTO> updateCompany(@PathVariable("id") Long companyId, @Valid @RequestBody CompanyForm companyForm, UriComponentsBuilder uriBuilder) {
 		Optional<Company> companyOptional = companyService.findById(companyId);
-		if(companyOptional.isPresent()) {
-			Company company = CompanyForm.converterCompanyFormToCompany(companyForm);
-			company.setId(companyId);
-			CompanyDTO updatedCompanyDTO = CompanyDTO.converterToCompanyDTO((companyService.save(company)));
-			uri = uriBuilder.path("/companies/{id}").buildAndExpand(company.getId()).encode().toUri();
-			return ResponseEntity.accepted().location(uri).body(updatedCompanyDTO);
-		} else {
+
+		if(!companyOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.ACCOUNT_NOT_FOUND);
 		}
+
+		Company company = CompanyForm.converterCompanyFormToCompany(companyForm);
+		company.setId(companyId);
+		CompanyDTO updatedCompanyDTO = CompanyDTO.converterToCompanyDTO((companyService.save(company)));
+		uri = uriBuilder.path("/companies/{id}").buildAndExpand(company.getId()).encode().toUri();
+
+		return ResponseEntity.accepted().location(uri).body(updatedCompanyDTO);
 	}
 
 	@ResponseBody
@@ -143,11 +146,12 @@ public class CompanyController {
 	@ApiOperation(value = "Remove a company")
 	public ResponseEntity<CompanyDTO> removeCompany(@PathVariable("id") Long companyId) {
 		Optional<Company> companyOptional = companyService.findById(companyId);
-		if (companyOptional.isPresent()) {
-			companyService.remove(companyId);
-			return ResponseEntity.ok().build();
-		} else {
+
+		if (!companyOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.ACCOUNT_NOT_FOUND);
 		}
+
+		companyService.remove(companyId);
+		return ResponseEntity.ok().build();
 	}
 }

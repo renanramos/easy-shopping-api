@@ -58,6 +58,8 @@ public class AddressController {
 	private CustomerService customerService;
 	
 	private URI uri;
+
+	private Pageable page;
 	
 	@ResponseBody
 	@PostMapping
@@ -71,16 +73,17 @@ public class AddressController {
 
 		Optional<Customer> customerOptional = customerService.findById(addressForm.getCustomerId());
 
-		if (customerOptional.isPresent()) {
-			Customer customer = customerOptional.get();
-			Address address = AddressForm.converterAddressFormToAddress(addressForm);
-			address.setCustomer(customer);
-			address = addressService.save(address);
-			uri = uriBuilder.path("/addresses/{id}").buildAndExpand(address.getId()).encode().toUri();
-			return ResponseEntity.created(uri).body(AddressDTO.convertAddressToAddressDTO(address));
-		} else {
+		if (!customerOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.CUSTOMER_NOT_FOUND);
 		}
+
+		Customer customer = customerOptional.get();
+		Address address = AddressForm.converterAddressFormToAddress(addressForm);
+		address.setCustomer(customer);
+		address = addressService.save(address);
+		uri = uriBuilder.path("/addresses/{id}").buildAndExpand(address.getId()).encode().toUri();
+
+		return ResponseEntity.created(uri).body(AddressDTO.convertAddressToAddressDTO(address));
 	}
 	
 	@ResponseBody
@@ -88,11 +91,11 @@ public class AddressController {
 	@ApiOperation(value = "Get all addresses")
 	public ResponseEntity<List<AddressDTO>> getAddresses(
 			@RequestParam(required = false) String streetName,
-			@RequestParam(required = false) Long customerId,
+			@RequestParam(required = true) Long customerId,
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy) {
-		Pageable page = new PageableFactory()
+		page = new PageableFactory()
 				.withPage(pageNumber)
 				.withSize(pageSize)
 				.withSort(sortBy)
@@ -108,10 +111,10 @@ public class AddressController {
 	@ApiOperation(value = "Get an address by id")
 	public ResponseEntity<AddressDTO> getAddressById(@PathVariable("id") Long addressId) {
 		Optional<Address> addressOptional = addressService.findById(addressId);
-		if(addressOptional.isPresent()) {
-			return ResponseEntity.ok(AddressDTO.convertAddressToAddressDTO(addressOptional.get()));
+		if(!addressOptional.isPresent()) {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.ADDRESS_NOT_FOUND);
 		}
-		return ResponseEntity.notFound().build();
+		return ResponseEntity.ok(AddressDTO.convertAddressToAddressDTO(addressOptional.get()));
 	}
 	
 	
@@ -135,17 +138,17 @@ public class AddressController {
 
 		Optional<Address> addressOptional = addressService.findById(addressId);
 		
-		if (addressOptional.isPresent()) {
-			
-			Address address = AddressForm.converterAddressFormToAddress(addressForm);
-			address.setId(addressId);
-			address.setCustomer(customer);
-			address = addressService.save(address);
-			uri = uriBuilder.path("/addresses/{id}").buildAndExpand(address.getId()).encode().toUri();
-			return ResponseEntity.accepted().location(uri).body(AddressDTO.convertAddressToAddressDTO(address));
-		} else {
+		if (!addressOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.ADDRESS_NOT_FOUND);
 		}
+
+		Address address = AddressForm.converterAddressFormToAddress(addressForm);
+		address.setId(addressId);
+		address.setCustomer(customer);
+		address = addressService.save(address);
+		uri = uriBuilder.path("/addresses/{id}").buildAndExpand(address.getId()).encode().toUri();
+
+		return ResponseEntity.accepted().location(uri).body(AddressDTO.convertAddressToAddressDTO(address));
 	}
 	
 	@ResponseBody
@@ -154,12 +157,13 @@ public class AddressController {
 	@ApiOperation(value = "Remove an address")
 	public ResponseEntity<AddressDTO> removeAddress(@PathVariable("id") Long addressId) {
 		Optional<Address> addressOptional = addressService.findById(addressId);
-		if (addressOptional.isPresent()) {
-			addressService.remove(addressId);
-			return ResponseEntity.ok().build();
-		} else {
+
+		if (!addressOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.ADDRESS_NOT_FOUND);
 		}
+
+		addressService.remove(addressId);
+		return ResponseEntity.ok().build();
 	}
 
 }
