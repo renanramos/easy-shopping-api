@@ -38,6 +38,7 @@ import br.com.renanrramos.easyshopping.model.dto.CreditCardDTO;
 import br.com.renanrramos.easyshopping.model.form.CreditCardForm;
 import br.com.renanrramos.easyshopping.service.impl.CreditCardService;
 import br.com.renanrramos.easyshopping.service.impl.CustomerService;
+import br.com.renanrramos.easyshopping.service.impl.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -56,8 +57,13 @@ public class CreditCardController {
 
 	@Autowired
 	private CustomerService customerService;
+
+	@Autowired
+	private UserService userService;
 	
 	private URI uri;
+
+	private Pageable page;
 
 	@ResponseBody
 	@PostMapping
@@ -88,11 +94,13 @@ public class CreditCardController {
 	@GetMapping
 	@ApiOperation(value = "Get all credit cards")
 	public ResponseEntity<List<CreditCardDTO>> getCreditCards(
-			@RequestParam(required = true) Long customerId,
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy) {
-		Pageable page = new PageableFactory()
+
+		Long customerId = userService.getCurrentUserId();
+		
+		page = new PageableFactory()
 				.withPage(pageNumber)
 				.withSize(pageSize)
 				.withSort(sortBy)
