@@ -31,14 +31,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Component
 public class JwtTokenUtil implements Serializable{
 
-	/**
-	 * 
-	 */
 	private static final String USER_ROLE = "user_role";
 
-	/**
-	 * 
-	 */
 	private static final String USER_ID = "user_id";
 
 	private static final long serialVersionUID = 3053901246461570079L;
@@ -61,14 +55,14 @@ public class JwtTokenUtil implements Serializable{
 		return claimsResolver.apply(claims);
 	}
 
-	public Integer getCurrentUserId(String token) {
+	public Object getCurrentUserId(String token) {
 		Claims claim = Jwts.parser()
 				.setSigningKey(secretKey)
 				.parseClaimsJws(token)
 				.getBody();
-		return (Integer) claim.get(USER_ID);
+		return claim.get(USER_ID);
 	}
-
+	
 	public String generateToken(br.com.renanrramos.easyshopping.model.User user) {
 		List<GrantedAuthority> authorityList = createUserAuthorityList(user);
 		Map<String, Object> claims = setClaimsProperties(user);
@@ -105,6 +99,7 @@ public class JwtTokenUtil implements Serializable{
 		return Jwts.builder()
 				.setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
-				.signWith(SignatureAlgorithm.HS512, secretKey).compact();
+				.signWith(SignatureAlgorithm.HS512, secretKey)
+				.compact();
 	}
 }
