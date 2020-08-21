@@ -44,6 +44,13 @@ public class ProductService implements CommonService<Product>{
 				pagedResult.getContent() :
 					new ArrayList<>();
 	}
+
+	public List<Product> findCompanyOwnProducts(Pageable page, Long companyId) {
+		Page<Product> pagedResult = productRepository.findProductByCompanyId(page, companyId);
+		return pagedResult.hasContent() ?
+				pagedResult.getContent() :
+					new ArrayList<>();
+	}
 	
 	@Override
 	public List<Product> findAll(Pageable page) {
