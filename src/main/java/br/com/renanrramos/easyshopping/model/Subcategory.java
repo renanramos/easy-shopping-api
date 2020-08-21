@@ -7,6 +7,7 @@
 package br.com.renanrramos.easyshopping.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +17,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -54,6 +56,11 @@ public class Subcategory implements Serializable{
 	@Fetch(FetchMode.JOIN)
 	@NotNull(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private ProductCategory productCategory;
+
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn(name = "product_id")
+	@Fetch(FetchMode.JOIN)
+	private List<Product> products;
 
 	public Subcategory() {
 		// Intentionally empty

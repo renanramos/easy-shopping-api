@@ -35,14 +35,14 @@ import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConst
 import br.com.renanrramos.easyshopping.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.model.Company;
 import br.com.renanrramos.easyshopping.model.Product;
-import br.com.renanrramos.easyshopping.model.ProductCategory;
 import br.com.renanrramos.easyshopping.model.Store;
+import br.com.renanrramos.easyshopping.model.Subcategory;
 import br.com.renanrramos.easyshopping.model.dto.ProductDTO;
 import br.com.renanrramos.easyshopping.model.form.ProductForm;
 import br.com.renanrramos.easyshopping.service.impl.CompanyService;
-import br.com.renanrramos.easyshopping.service.impl.ProductCategoryService;
 import br.com.renanrramos.easyshopping.service.impl.ProductService;
 import br.com.renanrramos.easyshopping.service.impl.StoreService;
+import br.com.renanrramos.easyshopping.service.impl.SubcategoryService;
 import br.com.renanrramos.easyshopping.service.impl.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -65,7 +65,7 @@ public class ProductController {
 	private ProductService productService;
 	
 	@Autowired
-	private ProductCategoryService productCategoryService;
+	private SubcategoryService productCategoryService;
 	
 	@Autowired
 	private StoreService storeService;
@@ -82,7 +82,7 @@ public class ProductController {
 	@ApiOperation(value = "Save a new product")
 	public ResponseEntity<ProductDTO> saveProduct(@Valid @RequestBody ProductForm productForm, UriComponentsBuilder uriComponentsBuilder) {
 
-		if (productForm.getProductCategoryId() == null) {
+		if (productForm.getProductSubcategoryId() == null) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_ID_NOT_FOUND_ON_REQUEST);
 		}
 
@@ -94,7 +94,7 @@ public class ProductController {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.COMPANY_ID_NOT_FOUND_ON_REQUEST);
 		}
 
-		Optional<ProductCategory> productCategoryOptional = productCategoryService.findById(productForm.getProductCategoryId());
+		Optional<Subcategory> productCategoryOptional = productCategoryService.findById(productForm.getProductSubcategoryId());
 		
 		if (!productCategoryOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_NOT_FOUND);
@@ -116,10 +116,10 @@ public class ProductController {
 		
 		Store store = storeOptional.get();
 		
-		ProductCategory productCategory = productCategoryOptional.get();
+		Subcategory productCategory = productCategoryOptional.get();
 
 		Product product = ProductForm.converterProductFormToProduct(productForm);
-		product.setProductCategory(productCategory);
+		product.setProductSubcategory(productCategory);
 		product.setStore(store);
 		product.setCompany(company);
 
@@ -209,7 +209,7 @@ public class ProductController {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_ID_NOT_FOUND_ON_REQUEST);
 		}
 
-		if (productForm.getProductCategoryId() == null) {
+		if (productForm.getProductSubcategoryId() == null) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_ID_NOT_FOUND_ON_REQUEST);
 		}
 
@@ -227,13 +227,13 @@ public class ProductController {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_NOT_FOUND);
 		}
 
-		Optional<ProductCategory> productCategoryOptional = productCategoryService.findById(productForm.getProductCategoryId());
+		Optional<Subcategory> productCategoryOptional = productCategoryService.findById(productForm.getProductSubcategoryId());
 		
 		if (!productCategoryOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_NOT_FOUND);
 		}
 
-		ProductCategory productCategory = productCategoryOptional.get();
+		Subcategory productCategory = productCategoryOptional.get();
 
 		Optional<Store> storeOptional = storeService.findById(productForm.getStoreId());
 		
@@ -252,7 +252,7 @@ public class ProductController {
 		Company company = companyOptional.get();
 		
 		Product product = ProductForm.converterProductFormToProduct(productForm);
-		product.setProductCategory(productCategory);
+		product.setProductSubcategory(productCategory);
 		product.setStore(store);
 		product.setId(productId);
 		product.setCompany(company);

@@ -8,18 +8,21 @@ package br.com.renanrramos.easyshopping.model;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+import br.com.renanrramos.easyshopping.constants.messages.ValidationMessagesConstants;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -42,20 +45,22 @@ public class Product implements Serializable{
 	@ApiModelProperty(hidden = true)
 	private Long id;
 	
-	@NotBlank
+	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	@Column(nullable = false, length = 50)
 	private String name;
 	
-	@NotBlank
+	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	@Column(nullable = false, length = 250)
 	private String description;
 	
-	@NotNull
+	@NotNull(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private double price;
 	
-	@NotNull
-	@OneToOne(cascade = CascadeType.ALL)
-	private ProductCategory productCategory;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "productSubcategory_id")
+	@Fetch(FetchMode.JOIN)
+	@NotNull(message = ValidationMessagesConstants.EMPTY_FIELD)
+	private Subcategory productSubcategory;
 	
 	@ManyToOne
 	@JoinColumn(name = "store_id")
@@ -72,6 +77,6 @@ public class Product implements Serializable{
 	@Override
 	public String toString() {
 		return "Product [id=" + id + ", name=" + name + ", description=" + description + ", price=" + price
-				+ ", productCategory=" + productCategory + ", store=" + store + "]";
+				+ ", productSubcategory=" + productSubcategory + ", store=" + store + "]";
 	}
 }

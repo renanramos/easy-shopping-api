@@ -46,9 +46,9 @@ public class ProductDTO {
 		this.name = product.getName();
 		this.description = product.getDescription();
 		this.price = product.getPrice();
-		this.productCategoryName = product.getProductCategory().getName();
+		this.productCategoryName = product.getProductSubcategory().getName();
 		this.storeId = product.getStore().getId();
-		this.productCategoryId = product.getProductCategory().getId();
+		this.productCategoryId = product.getProductSubcategory().getId();
 	}
 
 	public static List<ProductDTO> converterProductListToProductDTOList(List<Product> products) {

@@ -79,7 +79,7 @@ public class ProductService implements CommonService<Product>{
 					new ArrayList<>();
 	}
 
-	public boolean isThereAnyProductWithProductCategoryId(Long productCategoryId) {
-		return productRepository.findProductByProductCategoryId(productCategoryId).isPresent();
+	public boolean isThereAnyProductWithSubcategoryId(Long productCategoryId) {
+		return productRepository.findProductByProductSubcategoryId(productCategoryId).isPresent();
 	}
 }

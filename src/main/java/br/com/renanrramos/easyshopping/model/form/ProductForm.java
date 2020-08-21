@@ -27,7 +27,7 @@ public class ProductForm {
 	
 	private double price;
 	
-	private Long productCategoryId;
+	private Long productSubcategoryId;
 	
 	private Long storeId;
 
@@ -37,11 +37,11 @@ public class ProductForm {
 		// Intentionally empty
 	}
 
-	public ProductForm(String name, String description, double price, Long productCategoryId, Long storeId, Long companyId) {
+	public ProductForm(String name, String description, double price, Long productSubcategoryId, Long storeId, Long companyId) {
 		this.name = name;
 		this.description = description;
 		this.price = price;
-		this.productCategoryId = productCategoryId;
+		this.productSubcategoryId = productSubcategoryId;
 		this.storeId = storeId;
 		this.companyId = companyId;
 	}
@@ -57,7 +57,7 @@ public class ProductForm {
 	@Override
 	public String toString() {
 		return "ProductForm [name=" + name + ", description=" + description + ", price=" + price
-				+ ", productCategoryId=" + productCategoryId + ", storeId=" + storeId + ", companyId=" + companyId
+				+ ", productSubcategoryId=" + productSubcategoryId + ", storeId=" + storeId + ", companyId=" + companyId
 				+ "]";
 	}	
 }

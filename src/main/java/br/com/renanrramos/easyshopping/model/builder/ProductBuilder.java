@@ -8,8 +8,8 @@ package br.com.renanrramos.easyshopping.model.builder;
 
 import br.com.renanrramos.easyshopping.model.Company;
 import br.com.renanrramos.easyshopping.model.Product;
-import br.com.renanrramos.easyshopping.model.ProductCategory;
 import br.com.renanrramos.easyshopping.model.Store;
+import br.com.renanrramos.easyshopping.model.Subcategory;
 
 /**
  * @author renan.ramos
@@ -47,8 +47,8 @@ public class ProductBuilder {
 		return this;
 	}
 	
-	public ProductBuilder withProductCategory(ProductCategory productCategory) {
-		this.product.setProductCategory(productCategory);
+	public ProductBuilder withProductCategory(Subcategory productCategory) {
+		this.product.setProductSubcategory(productCategory);
 		return this;
 	}
 
