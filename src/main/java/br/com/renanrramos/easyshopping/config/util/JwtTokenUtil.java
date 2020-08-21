@@ -31,6 +31,16 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Component
 public class JwtTokenUtil implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final String USER_ROLE = "user_role";
+
+	/**
+	 * 
+	 */
+	private static final String USER_ID = "user_id";
+
 	private static final long serialVersionUID = 3053901246461570079L;
 
 	public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
@@ -51,13 +61,26 @@ public class JwtTokenUtil implements Serializable{
 		return claimsResolver.apply(claims);
 	}
 
+	public Integer getCurrentUserId(String token) {
+		Claims claim = Jwts.parser()
+				.setSigningKey(secretKey)
+				.parseClaimsJws(token)
+				.getBody();
+		return (Integer) claim.get(USER_ID);
+	}
+
 	public String generateToken(br.com.renanrramos.easyshopping.model.User user) {
 		List<GrantedAuthority> authorityList = createUserAuthorityList(user);
-		Map<String, Object> claims = new HashMap<>();
-		claims.put("user_id", user.getId());
-		claims.put("user_role", user.getProfile().getRole());
+		Map<String, Object> claims = setClaimsProperties(user);
 		UserDetails userDetails = new User(user.getEmail(), user.getName(), authorityList);
 		return doGenerateToken(claims, userDetails.getUsername());
+	}
+
+	private Map<String, Object> setClaimsProperties(br.com.renanrramos.easyshopping.model.User user) {
+		Map<String, Object> claims = new HashMap<>();
+		claims.put(USER_ID, user.getId());
+		claims.put(USER_ROLE, user.getProfile().getRole());
+		return claims;
 	}
 
 	public List<GrantedAuthority> createUserAuthorityList(br.com.renanrramos.easyshopping.model.User user) {
