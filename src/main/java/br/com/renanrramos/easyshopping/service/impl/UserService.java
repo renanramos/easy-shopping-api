@@ -37,6 +37,4 @@ public class UserService {
 	public Optional<User> findUserByEmailAndPassword(String email) {
 		return userRepository.findTopUserByEmail(email);
 	}
-
-	
 }

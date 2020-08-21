@@ -64,5 +64,4 @@ public class JwtUserDetailsService implements UserDetailsService {
 		LOG.info("User role : {}", user.getProfile().getRole());
 		return user;
 	}
-
 }
