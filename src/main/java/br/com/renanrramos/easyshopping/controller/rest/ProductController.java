@@ -43,6 +43,7 @@ import br.com.renanrramos.easyshopping.service.impl.CompanyService;
 import br.com.renanrramos.easyshopping.service.impl.ProductCategoryService;
 import br.com.renanrramos.easyshopping.service.impl.ProductService;
 import br.com.renanrramos.easyshopping.service.impl.StoreService;
+import br.com.renanrramos.easyshopping.service.impl.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -71,6 +72,9 @@ public class ProductController {
 
 	@Autowired
 	private CompanyService companyService;
+
+	@Autowired
+	private UserService userService;
 
 	@ResponseBody
 	@PostMapping
@@ -129,7 +133,7 @@ public class ProductController {
 	@ResponseBody
 	@GetMapping
 	@ApiOperation(value = "Get all products")
-	public ResponseEntity<List<ProductDTO>> getProducts(
+	public ResponseEntity<List<ProductDTO>> getAllProducts(
 			@RequestParam(required = false) Long storeId,
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
             @RequestParam(defaultValue = "10") Integer pageSize,
@@ -143,6 +147,26 @@ public class ProductController {
 		return ResponseEntity.ok(ProductDTO.converterProductListToProductDTOList(products));		
 	}
 
+	@ResponseBody
+	@GetMapping("/company-products")
+	@ApiOperation(value = "Get all products of the logged in company")
+	public ResponseEntity<List<ProductDTO>> getCompanyOwnProducts(
+			@RequestParam(defaultValue = "0") Integer pageNumber, 
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "id") String sortBy) {
+
+		Long companyId = userService.getCurrentUserId();
+
+		page = new PageableFactory()
+				.withPage(pageNumber)
+				.withSize(pageSize)
+				.withSort(sortBy)
+				.buildPageable();
+		List<Product> products = productService.findCompanyOwnProducts(page, companyId);
+		return ResponseEntity.ok(ProductDTO.converterProductListToProductDTOList(products));		
+	}
+	
+	
 	@ResponseBody
 	@GetMapping(path = "/search")
 	@ApiOperation(value = "Search all products by product category")
