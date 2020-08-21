@@ -80,4 +80,8 @@ public class StoreService implements CommonService<Store>{
 				pagedResult.getContent() :
 					new ArrayList<>();
 	}
+
+	public boolean isRegisteredNumberInvalid(String registeredNumber) {
+		return storeRepository.findTopStoreByRegisteredNumber(registeredNumber).isPresent();
+	}
 }
