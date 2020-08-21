@@ -34,11 +34,13 @@ import org.springframework.web.util.UriComponentsBuilder;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.exception.EasyShoppingException;
 import br.com.renanrramos.easyshopping.factory.PageableFactory;
+import br.com.renanrramos.easyshopping.model.Company;
 import br.com.renanrramos.easyshopping.model.Product;
 import br.com.renanrramos.easyshopping.model.ProductCategory;
 import br.com.renanrramos.easyshopping.model.Store;
 import br.com.renanrramos.easyshopping.model.dto.ProductDTO;
 import br.com.renanrramos.easyshopping.model.form.ProductForm;
+import br.com.renanrramos.easyshopping.service.impl.CompanyService;
 import br.com.renanrramos.easyshopping.service.impl.ProductCategoryService;
 import br.com.renanrramos.easyshopping.service.impl.ProductService;
 import br.com.renanrramos.easyshopping.service.impl.StoreService;
@@ -68,6 +70,9 @@ public class ProductController {
 	@Autowired
 	private StoreService storeService;
 
+	@Autowired
+	private CompanyService companyService;
+
 	@ResponseBody
 	@PostMapping
 	@Transactional
@@ -75,25 +80,37 @@ public class ProductController {
 	public ResponseEntity<ProductDTO> saveProduct(@Valid @RequestBody ProductForm productForm, UriComponentsBuilder uriComponentsBuilder) throws EasyShoppingException {
 
 		if (productForm.getProductCategoryId() == null) {
-			throw new EasyShoppingException(ExceptionMessagesConstants.PRODUCT_CATEGORY_ID_NOT_FOUND_ON_REQUEST);
+			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_ID_NOT_FOUND_ON_REQUEST);
 		}
 
 		if (productForm.getStoreId() == null) {
-			throw new EasyShoppingException(ExceptionMessagesConstants.STORE_ID_NOT_FOUND_ON_REQUEST);
+			throw new EntityNotFoundException(ExceptionMessagesConstants.STORE_ID_NOT_FOUND_ON_REQUEST);
 		}
-		
+
+		if (productForm.getCompanyId() == null) {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.COMPANY_ID_NOT_FOUND_ON_REQUEST);
+		}
+
 		Optional<ProductCategory> productCategoryOptional = productCategoryService.findById(productForm.getProductCategoryId());
 		
 		if (!productCategoryOptional.isPresent()) {
-			throw new EasyShoppingException(ExceptionMessagesConstants.PRODUCT_CATEGORY_NOT_FOUND);
+			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_NOT_FOUND);
 		}
 
 		Optional<Store> storeOptional = storeService.findById(productForm.getStoreId());
 
 		if (!storeOptional.isPresent()) {
-			throw new EasyShoppingException(ExceptionMessagesConstants.STORE_NOT_FOUND);
+			throw new EntityNotFoundException(ExceptionMessagesConstants.STORE_NOT_FOUND);
 		}
 
+		Optional<Company> companyOptional = companyService.findById(productForm.getCompanyId());
+
+		if (!companyOptional.isPresent()) {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.COMPANY_NOT_FOUND);
+		}
+
+		Company company = companyOptional.get();
+		
 		Store store = storeOptional.get();
 		
 		ProductCategory productCategory = productCategoryOptional.get();
@@ -101,6 +118,7 @@ public class ProductController {
 		Product product = ProductForm.converterProductFormToProduct(productForm);
 		product.setProductCategory(productCategory);
 		product.setStore(store);
+		product.setCompany(company);
 
 		product = productService.save(product);
 		
@@ -145,7 +163,7 @@ public class ProductController {
 				new ArrayList<>();
 		return ResponseEntity.ok(ProductDTO.converterProductListToProductDTOList(products));		
 	}
-	
+
 	@ResponseBody
 	@GetMapping(path = "/{id}")
 	@ApiOperation(value = "Get a product by id")
@@ -176,6 +194,10 @@ public class ProductController {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.STORE_ID_NOT_FOUND_ON_REQUEST);
 		}
 
+		if (productForm.getCompanyId() == null) {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.COMPANY_ID_NOT_FOUND_ON_REQUEST);
+		}
+		
 		Optional<Product> productOptional = productService.findById(productId);
 
 		if (!productOptional.isPresent()) {
@@ -198,10 +220,19 @@ public class ProductController {
 
 		Store store = storeOptional.get();
 
+		Optional<Company> companyOptional = companyService.findById(productForm.getCompanyId());
+
+		if (!companyOptional.isPresent()) {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.COMPANY_NOT_FOUND);
+		}
+
+		Company company = companyOptional.get();
+		
 		Product product = ProductForm.converterProductFormToProduct(productForm);
 		product.setProductCategory(productCategory);
 		product.setStore(store);
 		product.setId(productId);
+		product.setCompany(company);
 		product = productService.save(product);
 		
 		uri = uriBuilder.path("/products/{id}").buildAndExpand(productId).encode().toUri();
