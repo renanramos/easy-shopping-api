@@ -74,6 +74,10 @@ public class StoreController {
 			throw new EasyShoppingException(ExceptionMessagesConstants.COMPANY_ID_NOT_FOUND_ON_REQUEST);
 		}
 
+		if (storeService.isRegisteredNumberInvalid(storeForm.getRegisteredNumber())) {
+			throw new EasyShoppingException(ExceptionMessagesConstants.CNPJ_ALREADY_EXIST);
+		}
+
 		Optional<Company> company = companyService.findById(storeForm.getCompanyId());
 		
 		if (!company.isPresent()) {
