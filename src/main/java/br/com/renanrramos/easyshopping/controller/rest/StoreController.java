@@ -39,6 +39,7 @@ import br.com.renanrramos.easyshopping.model.dto.StoreDTO;
 import br.com.renanrramos.easyshopping.model.form.StoreForm;
 import br.com.renanrramos.easyshopping.service.impl.CompanyService;
 import br.com.renanrramos.easyshopping.service.impl.StoreService;
+import br.com.renanrramos.easyshopping.service.impl.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -57,6 +58,9 @@ public class StoreController {
 	
 	@Autowired
 	private CompanyService companyService;
+
+	@Autowired
+	private UserService userService;
 
 	private URI uri;
 	
@@ -101,6 +105,26 @@ public class StoreController {
 				(name == null) ?
 				storeService.findAllPageable(page, companyId) :
 				storeService.findStoreByName(page, name);
+		return ResponseEntity.ok(StoreDTO.converterStoreListToStoreDTOList(stores));
+	}
+
+	@ResponseBody
+	@GetMapping("/company-stores")
+	@ApiOperation(value = "Get all stores of the logged in company")
+	public ResponseEntity<List<StoreDTO>> getCompanyOwnStores(
+			@RequestParam(required = false) String name,
+			@RequestParam(defaultValue = "0") Integer pageNumber, 
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "id") String sortBy) {
+		Pageable page = new PageableFactory()
+				.withPage(pageNumber)
+				.withSize(pageSize)
+				.withSort(sortBy)
+				.buildPageable();
+
+		Long companyId = userService.getCurrentUserId();
+
+		List<Store> stores = storeService.findAllPageable(page, companyId);
 		return ResponseEntity.ok(StoreDTO.converterStoreListToStoreDTOList(stores));
 	}
 	
