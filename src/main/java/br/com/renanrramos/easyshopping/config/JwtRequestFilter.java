@@ -7,6 +7,8 @@
 package br.com.renanrramos.easyshopping.config;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -46,6 +48,10 @@ public class JwtRequestFilter extends OncePerRequestFilter{
 
 	private String jwtToken;
 
+	private Integer userId;
+
+	private Map<Object, Object> credentials = new HashMap<>();
+
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
@@ -66,15 +72,23 @@ public class JwtRequestFilter extends OncePerRequestFilter{
 	private void verifyUserProperties(HttpServletRequest request, UserDetails userDetails) {
 		try {
 			if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
+				
+				setUserCredentialsProperties();
+
 				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = 
-						new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+						new UsernamePasswordAuthenticationToken(userDetails, credentials, userDetails.getAuthorities());
 				usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 				SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 			}
 		} catch (ExpiredJwtException ex) {
 			LOG.info("Error: {}", ex.getMessage());
 		}
+	}
 
+	private Map<Object, Object> setUserCredentialsProperties() {
+		credentials.put("userId", userId);
+		credentials.put("userEmail", email);
+		return credentials;
 	}
 
 	private void validRequestTokenHeader(String requestTokenHeader) {
@@ -83,6 +97,7 @@ public class JwtRequestFilter extends OncePerRequestFilter{
 			jwtToken = requestTokenHeader.substring(7);
 			try {
 				email = jwtTokenUtil.getUsernameFromToken(jwtToken);
+				userId = jwtTokenUtil.getCurrentUserId(jwtToken);
 			} catch(IllegalArgumentException e) {
 				LOG.warn("Unable to get JWT token");
 			} catch(ExpiredJwtException e) {
