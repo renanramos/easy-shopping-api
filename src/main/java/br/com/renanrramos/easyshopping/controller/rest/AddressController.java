@@ -38,6 +38,7 @@ import br.com.renanrramos.easyshopping.model.dto.AddressDTO;
 import br.com.renanrramos.easyshopping.model.form.AddressForm;
 import br.com.renanrramos.easyshopping.service.impl.AddressService;
 import br.com.renanrramos.easyshopping.service.impl.CustomerService;
+import br.com.renanrramos.easyshopping.service.impl.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -56,7 +57,10 @@ public class AddressController {
 	
 	@Autowired
 	private CustomerService customerService;
-	
+
+	@Autowired
+	private UserService userService;
+
 	private URI uri;
 
 	private Pageable page;
@@ -91,7 +95,6 @@ public class AddressController {
 	@ApiOperation(value = "Get all addresses")
 	public ResponseEntity<List<AddressDTO>> getAddresses(
 			@RequestParam(required = false) String streetName,
-			@RequestParam(required = true) Long customerId,
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy) {
@@ -100,6 +103,9 @@ public class AddressController {
 				.withSize(pageSize)
 				.withSort(sortBy)
 				.buildPageable();
+
+		Long customerId = userService.getCurrentUserId();
+
 		List<Address> addresses = (streetName == null) ?
 				addressService.findAllPageable(page, customerId) :
 				addressService.findAddressByStreetName(page, streetName);
