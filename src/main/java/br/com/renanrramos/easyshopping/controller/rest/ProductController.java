@@ -134,7 +134,6 @@ public class ProductController {
 	@GetMapping
 	@ApiOperation(value = "Get all products")
 	public ResponseEntity<List<ProductDTO>> getAllProducts(
-			@RequestParam(required = false) Long subcategoryId,
 			@RequestParam(required = false) Long storeId,
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
             @RequestParam(defaultValue = "10") Integer pageSize,
@@ -144,12 +143,6 @@ public class ProductController {
 				.withSize(pageSize)
 				.withSort(sortBy)
 				.buildPageable();
-		
-		if (subcategoryId != null) {
-			List<Product> products = productService.getProductsBySubcategoryId(page, subcategoryId);
-			return ResponseEntity.ok(ProductDTO.converterProductListToProductDTOList(products));
-		}
-		
 		List<Product> products = productService.findAllPageable(page, storeId);
 		return ResponseEntity.ok(ProductDTO.converterProductListToProductDTOList(products));		
 	}
@@ -194,6 +187,23 @@ public class ProductController {
 		return ResponseEntity.ok(ProductDTO.converterProductListToProductDTOList(products));		
 	}
 
+	@ResponseBody
+	@GetMapping("/subcategory")
+	@ApiOperation(value = "Get all products")
+	public ResponseEntity<List<ProductDTO>> getAllProductsBySubcategory(
+			@RequestParam(required = false) Long subcategoryId,
+			@RequestParam(defaultValue = "0") Integer pageNumber, 
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "id") String sortBy) {
+		page = new PageableFactory()
+				.withPage(pageNumber)
+				.withSize(pageSize)
+				.withSort(sortBy)
+				.buildPageable();
+		List<Product> products = productService.getProductsBySubcategoryId(page, subcategoryId);
+		return ResponseEntity.ok(ProductDTO.converterProductListToProductDTOList(products));		
+	}
+	
 	@ResponseBody
 	@GetMapping(path = "/{id}")
 	@ApiOperation(value = "Get a product by id")
