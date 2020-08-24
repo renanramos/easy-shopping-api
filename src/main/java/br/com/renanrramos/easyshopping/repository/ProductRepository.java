@@ -6,7 +6,6 @@
  */
 package br.com.renanrramos.easyshopping.repository;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -25,7 +24,7 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, L
 
 	Page<Product> findProductByNameContaining(Pageable page, String name);
 
-	Optional<List<Product>> findProductByProductSubcategoryId(Long productCategoryId);
+	Optional<Page<Product>> findProductByProductSubcategoryId(Pageable page, Long productCategoryId);
 
 	Page<Product> findProductByCompanyId(Pageable page, Long companyId);
 }
