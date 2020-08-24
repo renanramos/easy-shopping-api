@@ -31,9 +31,9 @@ public class ProductDTO {
 	
 	private double price;
 
-	private Long productCategoryId;
+	private Long productSubcategoryId;
 	
-	private String productCategoryName;
+	private String productSubcategoryName;
 	
 	private Long storeId;
 	
@@ -46,9 +46,9 @@ public class ProductDTO {
 		this.name = product.getName();
 		this.description = product.getDescription();
 		this.price = product.getPrice();
-		this.productCategoryName = product.getProductSubcategory().getName();
+		this.productSubcategoryName = product.getProductSubcategory().getName();
 		this.storeId = product.getStore().getId();
-		this.productCategoryId = product.getProductSubcategory().getId();
+		this.productSubcategoryId = product.getProductSubcategory().getId();
 	}
 
 	public static List<ProductDTO> converterProductListToProductDTOList(List<Product> products) {
@@ -62,7 +62,7 @@ public class ProductDTO {
 	@Override
 	public String toString() {
 		return "ProductDTO [id=" + id + ", name=" + name + ", description=" + description + ", price=" + price
-				+ ", productCategoryId=" + productCategoryId + ", productCategoryName=" + productCategoryName
+				+ ", productCategoryId=" + productSubcategoryId + ", productSubcategoryName=" + productSubcategoryName
 				+ ", storeId=" + storeId + "]";
 	}
 }
