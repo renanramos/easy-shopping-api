@@ -53,7 +53,7 @@ import io.swagger.annotations.ApiOperation;
  */
 @RestController
 @CrossOrigin
-@RequestMapping(path = "api/products", produces = "application/json")
+@RequestMapping(path = "/api/products", produces = "application/json")
 @Api(tags = "Products")
 public class ProductController {
 
@@ -200,7 +200,6 @@ public class ProductController {
 				.withSize(pageSize)
 				.withSort(sortBy)
 				.buildPageable();
-		System.out.println(subcategoryId + " < === ===== == = == == = == = == ==");
 		List<Product> products = productService.getProductsBySubcategoryId(page, subcategoryId);
 		return ResponseEntity.ok(ProductDTO.converterProductListToProductDTOList(products));		
 	}
