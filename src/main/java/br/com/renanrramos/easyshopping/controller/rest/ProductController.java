@@ -200,6 +200,7 @@ public class ProductController {
 				.withSize(pageSize)
 				.withSort(sortBy)
 				.buildPageable();
+		System.out.println(subcategoryId + " < === ===== == = == == = == = == ==");
 		List<Product> products = productService.getProductsBySubcategoryId(page, subcategoryId);
 		return ResponseEntity.ok(ProductDTO.converterProductListToProductDTOList(products));		
 	}
