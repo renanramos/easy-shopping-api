@@ -70,7 +70,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler{
 		if (cause instanceof ConstraintViolationException) {
 			ConstraintViolationException consEx= (ConstraintViolationException) cause;
 	        for (final ConstraintViolation<?> violation : consEx.getConstraintViolations()) {
-	            errors.add(violation.getPropertyPath() + ": " + violation.getMessage());
+	            errors.add(violation.getMessage());
 	        }
 			
 	        return buildResponseEntity(new ApiErrorBuilder()
