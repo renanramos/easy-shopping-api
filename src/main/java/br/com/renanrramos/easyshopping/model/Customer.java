@@ -37,7 +37,6 @@ public class Customer extends User{
 
 	@EqualsAndHashCode.Include
 	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
-	@Pattern(regexp = PatternValidationConstants.CPF_PATTERN, message = ValidationMessagesConstants.INVALID_REGISTERED_NUMBER_FORMAT)
 	private String cpf;
 
 	@OneToMany(targetEntity = Address.class, cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.EAGER, orphanRemoval = true)
