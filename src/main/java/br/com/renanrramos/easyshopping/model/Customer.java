@@ -14,9 +14,7 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 
-import br.com.renanrramos.easyshopping.constants.messages.PatternValidationConstants;
 import br.com.renanrramos.easyshopping.constants.messages.ValidationMessagesConstants;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
