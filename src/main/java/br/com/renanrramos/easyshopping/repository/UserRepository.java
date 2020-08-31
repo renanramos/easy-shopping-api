@@ -6,6 +6,7 @@
  */
 package br.com.renanrramos.easyshopping.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,4 +22,6 @@ import br.com.renanrramos.easyshopping.model.User;
 public interface UserRepository extends JpaRepository<User, Long>{
 	
 	Optional<User> findTopUserByEmail(String email);
+	
+	Optional<List<User>> findUserByEmail(String email);
 }
