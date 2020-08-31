@@ -8,9 +8,8 @@ package br.com.renanrramos.easyshopping.controller.rest;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -89,7 +88,6 @@ public class CustomerControllerTest {
 				.standaloneSetup(customerController)
 				.build();
 		when(userService.isUserEmailAlreadyInUse(anyString())).thenReturn(false);
-		when(mockService.isCpfInvalid(anyString())).thenReturn(false);
 	}
 
 	@Test
