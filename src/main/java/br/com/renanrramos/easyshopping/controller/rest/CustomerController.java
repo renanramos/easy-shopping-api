@@ -70,7 +70,9 @@ public class CustomerController {
 	public ResponseEntity<CustomerDTO> saveCustomer(@Valid @RequestBody CustomerForm customerForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 		Customer customer = CustomerForm.converterCustomerFormToCustomer(customerForm);
 
-		if (customerService.isCpfInvalid(customer.getCpf())) {
+		Optional<List<Customer>> customerByCpf = customerService.findCustomerByCpf(customer.getCpf()); 
+		
+		if (customerByCpf.isPresent() && customerByCpf.get().size() > 1) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.CPF_ALREADY_EXIST);
 		}
 
@@ -134,7 +136,9 @@ public class CustomerController {
 
 		Customer customer = CustomerForm.converterCustomerFormToCustomer(customerForm);
 
-		if (customerService.isCpfInvalid(customer.getCpf())) {
+		Optional<List<Customer>> customerByCpf = customerService.findCustomerByCpf(customer.getCpf()); 
+		
+		if (customerByCpf.isPresent() && customerByCpf.get().size() > 1) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.CPF_ALREADY_EXIST);
 		}
 
