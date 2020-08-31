@@ -57,9 +57,9 @@ public class CustomerService implements CommonService<Customer>{
 		customerRepository.deleteById(customerId);
 	}
 
-	public boolean isCpfInvalid(String cpf) {
-		Customer customer = customerRepository.findTopCustomerByCpf(cpf); 
-		return  Optional.ofNullable(customer).isPresent();
+	public Optional<List<Customer>> findCustomerByCpf(String cpf) {
+		List<Customer> customers = customerRepository.findCustomerByCpf(cpf); 
+		return  Optional.of(customers);
 	}
 
 	@Override
