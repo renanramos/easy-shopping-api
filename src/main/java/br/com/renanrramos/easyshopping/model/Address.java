@@ -14,10 +14,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import br.com.renanrramos.easyshopping.constants.messages.ValidationMessagesConstants;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -40,16 +43,22 @@ public class Address implements Serializable{
 	@ApiModelProperty(hidden = true)
 	private Long id;
 
+	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String streetName;
 
+	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String district;
 
+	@NotNull(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private Long number;
 
+	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String cep;
 
+	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String state;
 
+	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String city;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

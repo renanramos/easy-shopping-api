@@ -31,7 +31,7 @@ public class CompanyDTO {
 	private String registeredNumber;
 	
 	private String email;
-	
+
 	private String phone;
 
 	private Profile profile;

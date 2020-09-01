@@ -17,7 +17,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
 
+import br.com.renanrramos.easyshopping.constants.messages.ValidationMessagesConstants;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -41,6 +43,7 @@ public class ProductCategory implements Serializable{
 	private Long id;
 
 	@Column(nullable = false, length = 250)
+	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String name;
 
 	@OneToMany(targetEntity = Subcategory.class, cascade = CascadeType.ALL, mappedBy = "productCategory", fetch = FetchType.EAGER)

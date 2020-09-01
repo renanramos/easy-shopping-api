@@ -17,7 +17,9 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
+import javax.validation.constraints.NotBlank;
 
+import br.com.renanrramos.easyshopping.constants.messages.ValidationMessagesConstants;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,8 +37,10 @@ public class Company extends User implements Serializable{
 
 	private static final long serialVersionUID = -5594496999476155657L;
 
+	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String registeredNumber;
 
+	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String phone;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "company", fetch = FetchType.LAZY)

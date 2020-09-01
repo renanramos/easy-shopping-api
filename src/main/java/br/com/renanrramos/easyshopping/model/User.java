@@ -18,9 +18,11 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import br.com.renanrramos.easyshopping.constants.messages.ValidationMessagesConstants;
 import br.com.renanrramos.easyshopping.enums.Profile;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;
@@ -38,15 +40,17 @@ public class User implements Serializable{
 
 	@EqualsAndHashCode.Include
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
 
-	@Column(nullable = false, length = 50)
+	@Column(length = 50)
+	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String name;
 
 	@Email
-	@Column(nullable = false, length = 250)
+	@Column(length = 250)
+	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String email;
 
 	@ApiModelProperty(hidden = true)
@@ -54,7 +58,8 @@ public class User implements Serializable{
 	private Profile profile;
 
 	@JsonIgnore
-	@Column(nullable = false, length = 250)
+	@Column(length = 250)
+	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String password;
 
 	public User() {

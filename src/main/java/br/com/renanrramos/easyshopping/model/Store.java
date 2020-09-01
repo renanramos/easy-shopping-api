@@ -20,6 +20,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 import br.com.renanrramos.easyshopping.constants.messages.PatternValidationConstants;
@@ -47,12 +48,15 @@ public class Store implements Serializable{
 	private Long id;
 
 	@Column(nullable = false, length = 50)
+	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String name;
 	
 	@Pattern(regexp = PatternValidationConstants.REGISTERED_NUMBER_PATTERN, message = ValidationMessagesConstants.INVALID_REGISTERED_NUMBER_FORMAT)
+	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String registeredNumber;
 
 	@Column(nullable = false, length = 250)
+	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String corporateName;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "store")
