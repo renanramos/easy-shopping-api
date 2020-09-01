@@ -48,6 +48,7 @@ public class ExceptionMessagesConstants {
 
 	public static final String INVALID_TOKEN = "Token informado é inválido.";
 	public static final String EXPIRED_TOKEN = "Token informado expirou.";
+	public static final String UNAUTHENTICATED_USER = "Usuário não autenticado";
 
 	private ExceptionMessagesConstants() {
 		// Intentionally empty
