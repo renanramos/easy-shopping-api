@@ -17,6 +17,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
+import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
+
 /**
  * @author renan.ramos
  *
@@ -24,11 +26,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Serializable{
 
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = -8320224783431182767L;
 
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException authException) throws IOException, ServletException {
-		response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+		response.sendError(HttpServletResponse.SC_UNAUTHORIZED, ExceptionMessagesConstants.UNAUTHENTICATED_USER);
 	}
 }
