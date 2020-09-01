@@ -132,13 +132,14 @@ public class SubcategoryController {
 
 		ProductCategory productCategory = productCatgoryOptional.get();
 
-		Optional<Subcategory> subcategoryOptional = subcategoryService.findById(subcategoryId);
+		Optional<Subcategory> currentSubcategory = subcategoryService.findById(subcategoryId);
 
-		if (!subcategoryOptional.isPresent()) {
+		if (!currentSubcategory.isPresent()) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.SUBCATEGORY_NOT_FOUND);
 		}
 
-		Subcategory subcategory = SubcategoryForm.convertSubcategoryFormToSubcategory(subcategoryForm);
+		Subcategory subcategory = SubcategoryForm.convertSubcategoryFormUpdateToSubcategory(subcategoryForm, currentSubcategory.get());
+
 		subcategory.setId(subcategoryId);
 		subcategory.setProductCategory(productCategory);
 		subcategory = subcategoryService.save(subcategory);

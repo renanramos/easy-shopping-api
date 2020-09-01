@@ -19,9 +19,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -108,18 +108,18 @@ public class ProductCategoryController {
 	}
 	
 	@ResponseBody
-	@PutMapping(path = "/{id}")
+	@PatchMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Update a product category")
 	public ResponseEntity<ProductCategoryDTO> updateProductCategory(@PathVariable("id") Long productCategoryId, 
 			@RequestBody ProductCategoryForm productCategoryForm, UriComponentsBuilder uriBuilder) {
-		Optional<ProductCategory> productCategoryOptional = productCategoryService.findById(productCategoryId);
+		Optional<ProductCategory> currentProductCategory = productCategoryService.findById(productCategoryId);
 
-		if (!productCategoryOptional.isPresent()) {
+		if (!currentProductCategory.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_NOT_FOUND);
 		}
 
-		ProductCategory productCategory = ProductCategoryForm.converterProductCategoryFormToProductCategory(productCategoryForm);
+		ProductCategory productCategory = ProductCategoryForm.converterProductCategoryFormUpdateToProductCategory(productCategoryForm, currentProductCategory.get());
 		productCategory.setId(productCategoryId);
 		ProductCategoryDTO productCategoryDTO = ProductCategoryDTO.converterProductCategoryToProductCategoryDTO(productCategoryService.save(productCategory));
 		uri = uriBuilder.path("/productCategories/{id}").buildAndExpand(productCategoryDTO).encode().toUri();

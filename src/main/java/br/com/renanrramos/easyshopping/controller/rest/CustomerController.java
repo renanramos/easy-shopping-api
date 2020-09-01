@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -67,6 +66,7 @@ public class CustomerController {
 	@Transactional
 	@ApiOperation(value = "Save a new customer")
 	public ResponseEntity<CustomerDTO> saveCustomer(@Valid @RequestBody CustomerForm customerForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
+		
 		Customer customer = CustomerForm.converterCustomerFormToCustomer(customerForm);
 
 		Optional<List<Customer>> customerByCpf = customerService.findCustomerByCpf(customer.getCpf()); 
@@ -127,13 +127,13 @@ public class CustomerController {
 	@ApiOperation(value = "Update a customer")
 	public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable("id") Long customerId, @RequestBody CustomerForm customerForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 
-		Optional<Customer> customerToUpdate = customerService.findById(customerId);
+		Optional<Customer> currentCustomer = customerService.findById(customerId);
 
-		if (!customerToUpdate.isPresent()) {
+		if (!currentCustomer.isPresent()) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.CUSTOMER_NOT_FOUND);
 		}
 
-		Customer customerFormConverted = CustomerForm.converterCustomerFormToCustomer(customerForm);
+		Customer customerFormConverted = CustomerForm.converterCustomerFormUpdateToCustomer(customerForm, currentCustomer.get());
 
 		Optional<List<Customer>> customerByCpf = customerService.findCustomerByCpf(customerFormConverted.getCpf()); 
 		

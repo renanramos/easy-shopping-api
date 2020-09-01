@@ -20,9 +20,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -120,17 +120,17 @@ public class CompanyController {
 	}
 	
 	@ResponseBody
-	@PutMapping(path = "/{id}")
+	@PatchMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Update a company")
 	public ResponseEntity<CompanyDTO> updateCompany(@PathVariable("id") Long companyId, @Valid @RequestBody CompanyForm companyForm, UriComponentsBuilder uriBuilder) {
-		Optional<Company> companyOptional = companyService.findById(companyId);
+		Optional<Company> currentCompany = companyService.findById(companyId);
 
-		if(!companyOptional.isPresent()) {
+		if(!currentCompany.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.ACCOUNT_NOT_FOUND);
 		}
 
-		Company company = CompanyForm.converterCompanyFormToCompany(companyForm);
+		Company company = CompanyForm.converterCompanyFormUpdateToCompany(companyForm, currentCompany.get());
 		company.setId(companyId);
 		CompanyDTO updatedCompanyDTO = CompanyDTO.converterToCompanyDTO((companyService.save(company)));
 		uri = uriBuilder.path("/companies/{id}").buildAndExpand(company.getId()).encode().toUri();

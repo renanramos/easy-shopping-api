@@ -20,9 +20,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -214,7 +214,7 @@ public class ProductController {
 	}
 	
 	@ResponseBody
-	@PutMapping("/{id}")
+	@PatchMapping("/{id}")
 	@Transactional
 	@ApiOperation(value = "Update a product")
 	public ResponseEntity<ProductDTO> updateProduct(@PathVariable("id") Long productId, @Valid @RequestBody ProductForm productForm,
@@ -236,9 +236,9 @@ public class ProductController {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.COMPANY_ID_NOT_FOUND_ON_REQUEST);
 		}
 		
-		Optional<Product> productOptional = productService.findById(productId);
+		Optional<Product> currentProduct = productService.findById(productId);
 
-		if (!productOptional.isPresent()) {
+		if (!currentProduct.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_NOT_FOUND);
 		}
 
@@ -266,7 +266,7 @@ public class ProductController {
 
 		Company company = companyOptional.get();
 		
-		Product product = ProductForm.converterProductFormToProduct(productForm);
+		Product product = ProductForm.converterProductFormUpdateToProduct(productForm, currentProduct.get());
 		product.setProductSubcategory(productCategory);
 		product.setStore(store);
 		product.setId(productId);

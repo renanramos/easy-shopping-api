@@ -19,9 +19,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -143,7 +143,7 @@ public class StoreController {
 	}
 	
 	@ResponseBody
-	@PutMapping("/{id}")
+	@PatchMapping("/{id}")
 	@Transactional
 	@ApiOperation(value = "Update a store")
 	public ResponseEntity<StoreDTO> updateStore(@PathVariable("id") Long storeId, @RequestBody StoreForm storeForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
@@ -152,13 +152,13 @@ public class StoreController {
 			throw new EasyShoppingException(ExceptionMessagesConstants.STORE_ID_NOT_FOUND_ON_REQUEST);
 		}
 
-		Optional<Store> storeOptional = storeService.findById(storeId);
+		Optional<Store> currentStore = storeService.findById(storeId);
 
-		if (!storeOptional.isPresent()) {
+		if (!currentStore.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.STORE_NOT_FOUND);
 		}
 
-		Store store = StoreForm.converterStoreFormToStore(storeForm);
+		Store store = StoreForm.converterStoreFormUpdateToStore(storeForm, currentStore.get());
 		store.setId(storeId);
 		StoreDTO storeUpdatedDTO = StoreDTO.converterStoreToStoreDTO(storeService.save(store));
 		uri = uriBuilder.path("/stores/{id}").buildAndExpand(storeId).encode().toUri();
