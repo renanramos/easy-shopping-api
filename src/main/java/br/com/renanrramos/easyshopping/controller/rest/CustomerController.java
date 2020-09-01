@@ -17,9 +17,9 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -47,7 +47,6 @@ import io.swagger.annotations.ApiOperation;
  *
  */
 @RestController
-@CrossOrigin
 @RequestMapping(path = "api/customers", produces = "application/json")
 @Api(tags = "Customers")
 public class CustomerController {
@@ -98,7 +97,7 @@ public class CustomerController {
 	public ResponseEntity<List<CustomerDTO>> getCustomers(
 			@RequestParam(required = false) String name,
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
-            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "20") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy) {
 		Pageable page = new PageableFactory()
 				.withPage(pageNumber)
@@ -123,7 +122,7 @@ public class CustomerController {
 	}
 
 	@ResponseBody
-	@PutMapping(path = "/{id}")
+	@PatchMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Update a customer")
 	public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable("id") Long customerId, @RequestBody CustomerForm customerForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
@@ -134,20 +133,20 @@ public class CustomerController {
 			throw new EasyShoppingException(ExceptionMessagesConstants.CUSTOMER_NOT_FOUND);
 		}
 
-		Customer customer = CustomerForm.converterCustomerFormToCustomer(customerForm);
+		Customer customerFormConverted = CustomerForm.converterCustomerFormToCustomer(customerForm);
 
-		Optional<List<Customer>> customerByCpf = customerService.findCustomerByCpf(customer.getCpf()); 
+		Optional<List<Customer>> customerByCpf = customerService.findCustomerByCpf(customerFormConverted.getCpf()); 
 		
 		if (customerByCpf.isPresent() && customerByCpf.get().size() > 1) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.CPF_ALREADY_EXIST);
 		}
 
-		if (userService.isUserEmailAlreadyInUse(customer.getEmail())) {
+		if (userService.isUserEmailAlreadyInUse(customerFormConverted.getEmail())) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.EMAIL_ALREADY_EXIST);
 		}
 
-		customer.setId(customerId);
-		CustomerDTO customerUpdatedDTO = CustomerDTO.converterToCustomerDTO(customerService.save(customer));
+		customerFormConverted.setId(customerId);
+		CustomerDTO customerUpdatedDTO = CustomerDTO.converterToCustomerDTO(customerService.save(customerFormConverted));
 		uri = uriBuilder.path("/customers/{id}").buildAndExpand(customerId).encode().toUri();
 		return ResponseEntity.accepted().location(uri).body(customerUpdatedDTO);
 	}

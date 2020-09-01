@@ -17,7 +17,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,7 +46,6 @@ import io.swagger.annotations.ApiOperation;
  *
  */
 @RestController
-@CrossOrigin
 @RequestMapping(path = "api/credit-cards", produces = "application/json")
 @Api(tags = "CreditCard")
 public class CreditCardController {
@@ -85,7 +83,7 @@ public class CreditCardController {
 		CreditCard creditCard = CreditCardForm.converterCreditCardFormToCreditCard(creditCardForm);
 		creditCard.setCustomer(customer);
 		creditCard = creditCardService.save(creditCard);
-		uri = uriBuilder.path("/creditCards/{id}").buildAndExpand(creditCard.getId()).encode().toUri();
+		uri = uriBuilder.path("/credit-cards/{id}").buildAndExpand(creditCard.getId()).encode().toUri();
 
 		return ResponseEntity.created(uri).body(CreditCardDTO.converterCreditCardToCreditCardDTO(creditCard));
 	}
@@ -94,11 +92,14 @@ public class CreditCardController {
 	@GetMapping
 	@ApiOperation(value = "Get all credit cards")
 	public ResponseEntity<List<CreditCardDTO>> getCreditCards(
+			@RequestParam Long customerId,
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy) {
 
-		Long customerId = userService.getCurrentUserId();
+		if (customerId == null) {
+			customerId = userService.getCurrentUserId();
+		}
 		
 		page = new PageableFactory()
 				.withPage(pageNumber)
@@ -150,7 +151,7 @@ public class CreditCardController {
 		creditCard.setId(creditCardId);
 		creditCard.setCustomer(customer);
 		creditCard = creditCardService.save(creditCard);
-		uri = uriBuilder.path("/creditCards/{id}").buildAndExpand(creditCard.getId()).encode().toUri();
+		uri = uriBuilder.path("/credit-cards/{id}").buildAndExpand(creditCard.getId()).encode().toUri();
 
 		return ResponseEntity.accepted().location(uri).body(CreditCardDTO.converterCreditCardToCreditCardDTO(creditCard));
 	}
