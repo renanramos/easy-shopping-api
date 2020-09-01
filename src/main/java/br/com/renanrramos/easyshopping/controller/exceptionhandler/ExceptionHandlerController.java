@@ -72,7 +72,6 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler{
 	        for (final ConstraintViolation<?> violation : consEx.getConstraintViolations()) {
 	            errors.add(violation.getMessage());
 	        }
-			
 	        return buildResponseEntity(new ApiErrorBuilder()
 				.withStatus(HttpStatus.BAD_REQUEST)
 				.withErrorTitle(ExceptionMessagesConstants.INVALID_FIELDS_TITLE)
