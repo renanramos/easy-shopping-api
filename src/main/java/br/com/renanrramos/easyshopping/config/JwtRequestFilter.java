@@ -59,6 +59,8 @@ public class JwtRequestFilter extends OncePerRequestFilter{
 
 		LOG.info("RequestHeader token: {}", requestTokenHeader);
 
+		setResponseHeaders(request, response);
+		
 		validRequestTokenHeader(requestTokenHeader);
 
 		if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -68,6 +70,15 @@ public class JwtRequestFilter extends OncePerRequestFilter{
 		}
 
 		filterChain.doFilter(request, response);
+	}
+
+	private HttpServletResponse setResponseHeaders(HttpServletRequest request, HttpServletResponse response) {
+		response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+	    response.setHeader("Access-Control-Allow-Credentials", "true");
+	    response.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE");
+	    response.setHeader("Access-Control-Max-Age", "3600");
+	    response.setHeader("Access-Control-Allow-Headers", "*");
+		return response;
 	}
 
 	private void verifyUserProperties(HttpServletRequest request, UserDetails userDetails) {
