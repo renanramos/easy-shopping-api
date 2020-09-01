@@ -16,13 +16,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import br.com.renanrramos.easyshopping.constants.messages.ValidationMessagesConstants;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -44,22 +41,18 @@ public class Product implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@ApiModelProperty(hidden = true)
 	private Long id;
-	
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
+
 	@Column(nullable = false, length = 50)
 	private String name;
-	
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
+
 	@Column(nullable = false, length = 250)
 	private String description;
-	
-	@NotNull(message = ValidationMessagesConstants.EMPTY_FIELD)
+
 	private double price;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "productSubcategory_id")
 	@Fetch(FetchMode.JOIN)
-	@NotNull(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private Subcategory productSubcategory;
 	
 	@ManyToOne

@@ -6,6 +6,7 @@
  */
 package br.com.renanrramos.easyshopping.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -38,10 +39,10 @@ public class Customer extends User{
 	private String cpf;
 
 	@OneToMany(targetEntity = Address.class, cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.EAGER, orphanRemoval = true)
-	private Set<Address> address;
+	private Set<Address> address = new HashSet<>();
 
 	@OneToMany(targetEntity = CreditCard.class, cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.EAGER, orphanRemoval = true)
-	private Set<CreditCard> creditCards;
+	private Set<CreditCard> creditCards = new HashSet<>();
 
 	public Customer() {
 		// Intentionally empty
@@ -54,5 +55,5 @@ public class Customer extends User{
 	@Override
 	public String toString() {
 		return "Customer [cpf=" + cpf + ", address=" + address + ", name= " + getName() + "]";
-	}	
+	}
 }
