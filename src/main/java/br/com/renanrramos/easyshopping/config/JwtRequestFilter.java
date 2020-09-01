@@ -43,7 +43,7 @@ public class JwtRequestFilter extends OncePerRequestFilter{
 
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
-
+	
 	private String email;
 
 	private String jwtToken;
@@ -66,6 +66,7 @@ public class JwtRequestFilter extends OncePerRequestFilter{
 
 			verifyUserProperties(request, userDetails);
 		}
+
 		filterChain.doFilter(request, response);
 	}
 
