@@ -6,6 +6,8 @@
  */
 package br.com.renanrramos.easyshopping.model.form;
 
+import java.util.Optional;
+
 import br.com.renanrramos.easyshopping.model.Address;
 import br.com.renanrramos.easyshopping.model.builder.AddressBuilder;
 import lombok.EqualsAndHashCode;
@@ -58,6 +60,18 @@ public class AddressForm {
 				.withState(addressForm.getState())
 				.withStreetName(addressForm.getStreetName())
 				.withCity(addressForm.getCity())
+				.build();
+	}
+
+	public static Address converterAddressFormUpdateToAddress(AddressForm addressForm, Address currentAddress) {
+		return AddressBuilder
+				.builder()
+				.withCep(Optional.ofNullable(addressForm.getCep()).orElse(currentAddress.getCep()))
+				.withDistrict(Optional.ofNullable(addressForm.getDistrict()).orElse(currentAddress.getDistrict()))
+				.withNumber(Optional.ofNullable(addressForm.getNumber()).orElse(currentAddress.getNumber()))
+				.withState(Optional.ofNullable(addressForm.getState()).orElse(currentAddress.getState()))
+				.withStreetName(Optional.ofNullable(addressForm.getStreetName()).orElse(currentAddress.getStreetName()))
+				.withCity(Optional.ofNullable(addressForm.getCity()).orElse(currentAddress.getCity()))
 				.build();
 	}
 

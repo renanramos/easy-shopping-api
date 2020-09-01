@@ -6,6 +6,8 @@
  */
 package br.com.renanrramos.easyshopping.model.form;
 
+import java.util.Optional;
+
 import br.com.renanrramos.easyshopping.model.Subcategory;
 import br.com.renanrramos.easyshopping.model.builder.SubcategoryBuilder;
 import lombok.EqualsAndHashCode;
@@ -38,6 +40,13 @@ public class SubcategoryForm {
 		return new SubcategoryBuilder()
 				.builder()
 				.withName(subcategoryForm.getName())
+				.build();
+	}
+
+	public static Subcategory convertSubcategoryFormUpdateToSubcategory(SubcategoryForm subcategoryForm, Subcategory currentSubcategory) {
+		return new SubcategoryBuilder()
+				.builder()
+				.withName(Optional.ofNullable(subcategoryForm.getName()).orElse(currentSubcategory.getName()))
 				.build();
 	}
 

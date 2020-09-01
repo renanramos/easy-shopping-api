@@ -7,6 +7,7 @@
 package br.com.renanrramos.easyshopping.model.form;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import br.com.renanrramos.easyshopping.model.CreditCard;
 import br.com.renanrramos.easyshopping.model.builder.CreditCardBuilder;
@@ -55,7 +56,17 @@ public class CreditCardForm {
 				.withCode(creditCardForm.getCode())
 				.build();
 	}
-	
+
+	public static CreditCard converterCreditCardFormUpdateToCreditCard(CreditCardForm creditCardForm, CreditCard currentCreditCard) {
+		return CreditCardBuilder
+				.builder()
+				.withCreditCardNumber(Optional.ofNullable(creditCardForm.getCreditCardNumber()).orElse(currentCreditCard.getCreditCardNumber()))
+				.withOwnerName(Optional.ofNullable(creditCardForm.getOwnerName()).orElse(currentCreditCard.getOwnerName()))
+				.withValidDate(Optional.ofNullable(creditCardForm.getValidDate()).orElse(currentCreditCard.getValidDate()))
+				.withCode(Optional.ofNullable(creditCardForm.getCode()).orElse(currentCreditCard.getCode()))
+				.build();
+	}
+
 	@Override
 	public String toString() {
 		return "CreditCardForm [creditCardNumber=" + creditCardNumber + ", ownerName=" + ownerName + ", validDate="

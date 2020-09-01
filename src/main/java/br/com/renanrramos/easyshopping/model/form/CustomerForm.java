@@ -6,6 +6,8 @@
  */
 package br.com.renanrramos.easyshopping.model.form;
 
+import java.util.Optional;
+
 import br.com.renanrramos.easyshopping.enums.Profile;
 import br.com.renanrramos.easyshopping.model.Customer;
 import br.com.renanrramos.easyshopping.model.builder.CustomerBuilder;
@@ -54,6 +56,16 @@ public class CustomerForm {
 				.build();
 	}
 
+	public static Customer converterCustomerFormUpdateToCustomer(CustomerForm customerForm, Customer currentCustomer) {
+		
+		return CustomerBuilder.builder()
+				.withPassword(Optional.ofNullable(customerForm.getPassword()).orElse(currentCustomer.getPassword()))
+				.withCpf(Optional.ofNullable(customerForm.getCpf()).orElse(currentCustomer.getCpf()))
+				.withEmail(Optional.ofNullable(customerForm.getEmail()).orElse(currentCustomer.getEmail()))
+				.withName(Optional.ofNullable(customerForm.getName()).orElse(currentCustomer.getName()))
+				.build();
+	}
+	
 	@Override
 	public String toString() {
 		return "CustomerForm [name=" + name + ", email=" + email + ", cpf=" + cpf + ", profile=" + profile + "]";

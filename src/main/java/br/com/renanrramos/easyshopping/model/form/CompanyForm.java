@@ -6,6 +6,8 @@
  */
 package br.com.renanrramos.easyshopping.model.form;
 
+import java.util.Optional;
+
 import br.com.renanrramos.easyshopping.model.Company;
 import br.com.renanrramos.easyshopping.model.builder.CompanyBuilder;
 import lombok.EqualsAndHashCode;
@@ -28,7 +30,7 @@ public class CompanyForm {
 	private String email;
 
 	private String password;
-	
+
 	private String phone;
 
 	public CompanyForm() {
@@ -50,6 +52,16 @@ public class CompanyForm {
 				.withEmail(companyForm.getEmail())
 				.withPhone(companyForm.getPhone())
 				.withRegisteredNumber(companyForm.getRegisteredNumber())
+				.build();
+	}
+
+	public static Company converterCompanyFormUpdateToCompany(CompanyForm companyForm, Company currentCompany) {
+		return CompanyBuilder.builder()
+				.withPassword(Optional.ofNullable(companyForm.getPassword()).orElse(currentCompany.getPassword()))
+				.withName(Optional.ofNullable(companyForm.getName()).orElse(currentCompany.getName()))
+				.withEmail(Optional.ofNullable(companyForm.getEmail()).orElse(currentCompany.getEmail()))
+				.withPhone(Optional.ofNullable(companyForm.getPhone()).orElse(currentCompany.getPhone()))
+				.withRegisteredNumber(Optional.ofNullable(companyForm.getRegisteredNumber()).orElse(currentCompany.getRegisteredNumber()))
 				.build();
 	}
 

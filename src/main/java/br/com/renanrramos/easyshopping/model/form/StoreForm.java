@@ -6,6 +6,8 @@
  */
 package br.com.renanrramos.easyshopping.model.form;
 
+import java.util.Optional;
+
 import br.com.renanrramos.easyshopping.model.Store;
 import br.com.renanrramos.easyshopping.model.builder.StoreBuilder;
 import lombok.EqualsAndHashCode;
@@ -46,6 +48,14 @@ public class StoreForm {
 				.withName(storeForm.getName())
 				.withCorporateName(storeForm.getCorporateName())
 				.withRegisteredNumber(storeForm.getRegisteredNumber())
+				.build();
+	}
+
+	public static Store converterStoreFormUpdateToStore(StoreForm storeForm, Store currentStore) {
+		return StoreBuilder.builder()
+				.withName(Optional.ofNullable(storeForm.getName()).orElse(currentStore.getName()))
+				.withCorporateName(Optional.ofNullable(storeForm.getCorporateName()).orElse(currentStore.getCorporateName()))
+				.withRegisteredNumber(Optional.ofNullable(storeForm.getRegisteredNumber()).orElse(currentStore.getRegisteredNumber()))
 				.build();
 	}
 
