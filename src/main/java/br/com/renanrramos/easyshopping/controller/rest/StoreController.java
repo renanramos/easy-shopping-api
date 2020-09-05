@@ -114,6 +114,7 @@ public class StoreController {
 	@GetMapping("/company-stores")
 	@ApiOperation(value = "Get all stores of the logged in company")
 	public ResponseEntity<List<StoreDTO>> getCompanyOwnStores(
+			@RequestParam(required = false) Long companyIdFromRequestParam,
 			@RequestParam(required = false) String name,
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
             @RequestParam(defaultValue = "10") Integer pageSize,
@@ -124,7 +125,10 @@ public class StoreController {
 				.withSort(sortBy)
 				.buildPageable();
 
-		Long companyId = userService.getCurrentUserId();
+		Long companyId = 
+				(companyIdFromRequestParam == null) 
+					? userService.getCurrentUserId() 
+					: companyIdFromRequestParam;
 
 		List<Store> stores = storeService.findAllPageable(page, companyId);
 		return ResponseEntity.ok(StoreDTO.converterStoreListToStoreDTOList(stores));
