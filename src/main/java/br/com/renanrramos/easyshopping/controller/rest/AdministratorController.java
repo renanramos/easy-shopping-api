@@ -31,6 +31,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.renanrramos.easyshopping.config.util.EasyShoppingUtils;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
+import br.com.renanrramos.easyshopping.enums.Profile;
 import br.com.renanrramos.easyshopping.exception.EasyShoppingException;
 import br.com.renanrramos.easyshopping.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.model.Administrator;
@@ -74,6 +75,7 @@ public class AdministratorController {
 
 		String password = easyShoppingUtils.encodePassword(administrator.getPassword());
 		administrator.setPassword(password);
+		administrator.setProfile(Profile.ADMINISTRATOR);
 
 		Administrator administratorCreated = administratorService.save(administrator);
 		if (administratorCreated.getId() != null) {
