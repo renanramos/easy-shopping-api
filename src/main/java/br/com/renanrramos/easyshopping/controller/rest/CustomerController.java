@@ -31,6 +31,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.renanrramos.easyshopping.config.util.EasyShoppingUtils;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
+import br.com.renanrramos.easyshopping.enums.Profile;
 import br.com.renanrramos.easyshopping.exception.EasyShoppingException;
 import br.com.renanrramos.easyshopping.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.model.Customer;
@@ -81,6 +82,7 @@ public class CustomerController {
 
 		String password = easyShoppingUtils.encodePassword(customer.getPassword());
 		customer.setPassword(password);
+		customer.setProfile(Profile.CUSTOMER);
 
 		Customer customerCreated = customerService.save(customer);
 		if (customerCreated.getId() != null) {
