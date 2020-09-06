@@ -114,7 +114,7 @@ public class StoreController {
 	@GetMapping("/company-stores")
 	@ApiOperation(value = "Get all stores of the logged in company")
 	public ResponseEntity<List<StoreDTO>> getCompanyOwnStores(
-			@RequestParam(required = false) Long companyIdFromRequestParam,
+			@RequestParam(required = false) Long companyIdRequestParam,
 			@RequestParam(required = false) String name,
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
             @RequestParam(defaultValue = "10") Integer pageSize,
@@ -126,11 +126,11 @@ public class StoreController {
 				.buildPageable();
 
 		Long companyId = 
-				(companyIdFromRequestParam == null) 
+				(companyIdRequestParam == null) 
 					? userService.getCurrentUserId() 
-					: companyIdFromRequestParam;
-
+					: companyIdRequestParam;
 		List<Store> stores = storeService.findAllPageable(page, companyId);
+		System.out.println(stores.isEmpty());
 		return ResponseEntity.ok(StoreDTO.converterStoreListToStoreDTOList(stores));
 	}
 	
@@ -156,19 +156,33 @@ public class StoreController {
 			throw new EasyShoppingException(ExceptionMessagesConstants.STORE_ID_NOT_FOUND_ON_REQUEST);
 		}
 
+		if (storeForm.getCompanyId() == null) {
+			throw new EasyShoppingException(ExceptionMessagesConstants.COMPANY_ID_NOT_FOUND_ON_REQUEST);
+		}
+
+		Optional<Company> companyOptional = companyService.findById(storeForm.getCompanyId());
+
+		if (!companyOptional.isPresent()) {
+			throw new EasyShoppingException(ExceptionMessagesConstants.COMPANY_NOT_FOUND);
+		}
+
 		Optional<Store> currentStore = storeService.findById(storeId);
 
 		if (!currentStore.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.STORE_NOT_FOUND);
 		}
 
+		Company company = companyOptional.get();
+
 		Store store = StoreForm.converterStoreFormUpdateToStore(storeForm, currentStore.get());
+		store.setCompany(company);
 		store.setId(storeId);
 		StoreDTO storeUpdatedDTO = StoreDTO.converterStoreToStoreDTO(storeService.save(store));
 		uri = uriBuilder.path("/stores/{id}").buildAndExpand(storeId).encode().toUri();
+
 		return ResponseEntity.accepted().location(uri).body(storeUpdatedDTO);
 	}
-	
+
 	@ResponseBody
 	@DeleteMapping("/{id}")
 	@Transactional
