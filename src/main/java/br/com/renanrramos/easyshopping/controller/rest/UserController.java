@@ -8,6 +8,7 @@ package br.com.renanrramos.easyshopping.controller.rest;
 
 import java.util.Arrays;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.renanrramos.easyshopping.config.util.JwtTokenUtil;
@@ -62,6 +64,22 @@ public class UserController {
 		String role = Profile.getProfileName(user.getProfile());
 
 		response.setRoles(Arrays.asList(role));
+
+		return new ResponseEntity<>(response, responseHeaders, HttpStatus.OK);
+	}
+
+	@PostMapping(path = "/logout")
+	@ResponseStatus(HttpStatus.OK)
+	public ResponseEntity<?> logout(HttpServletRequest request) {
+		HttpHeaders responseHeaders = new HttpHeaders();
+		AuthenticationResponse response = new AuthenticationResponse();
+		String authHeader = request.getHeader("Authorization");
+
+		if (authHeader != null) {
+			
+			String token = authHeader.replace("Bearer ", "").trim();
+			response.setToken(token);
+		}
 
 		return new ResponseEntity<>(response, responseHeaders, HttpStatus.OK);
 	}
