@@ -7,6 +7,7 @@
 package br.com.renanrramos.easyshopping.controller.rest;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -100,14 +101,22 @@ public class CompanyController {
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy) {
-		Pageable page = new PageableFactory()
-				.withPage(pageNumber)
-				.withSize(pageSize)
-				.withSort(sortBy)
-				.buildPageable();
-		List<CompanyDTO> listOfCompanyDTOs = (name == null) ?
-				CompanyDTO.converterCompanyListToCompanyDTOList(companyService.findAll(page)) :
-					CompanyDTO.converterCompanyListToCompanyDTOList(companyService.findCompanyByName(page, name));
+		
+		List<CompanyDTO> listOfCompanyDTOs;
+
+		if (pageSize >= 0) {
+			Pageable page = new PageableFactory()
+					.withPage(pageNumber)
+					.withSize(pageSize)
+					.withSort(sortBy)
+					.buildPageable();
+			listOfCompanyDTOs = (name == null) ?
+					CompanyDTO.converterCompanyListToCompanyDTOList(companyService.findAll(page)) :
+						CompanyDTO.converterCompanyListToCompanyDTOList(companyService.findCompanyByName(page, name));
+		} else {
+			listOfCompanyDTOs = CompanyDTO.converterCompanyListToCompanyDTOList(companyService.findAllCompanies());
+		}
+		
 		return ResponseEntity.ok(listOfCompanyDTOs);
 	}
 

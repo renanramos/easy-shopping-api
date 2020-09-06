@@ -6,6 +6,8 @@
  */
 package br.com.renanrramos.easyshopping.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -21,4 +23,6 @@ public interface CompanyRepository extends PagingAndSortingRepository<Company, L
 	Company findTopCompanyByRegisteredNumber(String registeredNumber);
 
 	Page<Company> findCompanyByNameContaining(Pageable page, String name);
+
+	List<Company> findAll();
 }

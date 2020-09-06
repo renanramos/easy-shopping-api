@@ -42,6 +42,10 @@ public class CompanyService implements CommonService<Company>{
 					new ArrayList<>();
 	}
 
+	public List<Company> findAllCompanies() {
+		return companyRepository.findAll();
+	}
+	
 	@Override
 	public Optional<Company> findById(Long companyId) {
 		return companyRepository.findById(companyId);
