@@ -92,7 +92,7 @@ public class CreditCardController {
 	@GetMapping
 	@ApiOperation(value = "Get all credit cards")
 	public ResponseEntity<List<CreditCardDTO>> getCreditCards(
-			@RequestParam Long customerId,
+			@RequestParam(required =  false) Long customerId,
 			@RequestParam(defaultValue = "0") Integer pageNumber, 
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy) {
