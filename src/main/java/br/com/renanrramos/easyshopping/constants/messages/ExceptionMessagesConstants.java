@@ -50,6 +50,8 @@ public class ExceptionMessagesConstants {
 	public static final String EXPIRED_TOKEN = "Token informado expirou.";
 	public static final String UNAUTHENTICATED_USER = "Usuário não autenticado";
 
+	public static final String WRONG_USER_ID = "Usuário selecionado é diferente do usuário logado.";
+
 	private ExceptionMessagesConstants() {
 		// Intentionally empty
 	}
