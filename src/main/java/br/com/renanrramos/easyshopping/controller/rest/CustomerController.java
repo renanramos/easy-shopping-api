@@ -164,5 +164,5 @@ public class CustomerController {
 		}
 		customerService.remove(customerId);
 		return ResponseEntity.ok().build();
-	}	
+	}
 }

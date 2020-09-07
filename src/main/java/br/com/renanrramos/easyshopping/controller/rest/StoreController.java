@@ -130,7 +130,7 @@ public class StoreController {
 					? userService.getCurrentUserId() 
 					: companyIdRequestParam;
 		List<Store> stores = storeService.findAllPageable(page, companyId);
-		System.out.println(stores.isEmpty());
+
 		return ResponseEntity.ok(StoreDTO.converterStoreListToStoreDTOList(stores));
 	}
 	

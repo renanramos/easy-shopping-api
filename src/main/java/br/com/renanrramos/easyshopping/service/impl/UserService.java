@@ -47,6 +47,10 @@ public class UserService {
 		return userRepository.findTopUserByEmail(email);
 	}
 
+	public Optional<User> findUserById(Long userId) {
+		return userRepository.findById(userId);
+	}
+
 	@SuppressWarnings("unchecked")
 	public Long getCurrentUserId() {
 		auth = SecurityContextHolder.getContext().getAuthentication();
