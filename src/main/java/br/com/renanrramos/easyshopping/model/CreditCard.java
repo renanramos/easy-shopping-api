@@ -49,7 +49,7 @@ public class CreditCard implements Serializable{
 	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String ownerName;
 
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
+	@NotNull(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private LocalDate validDate;
 
 	@NotNull(message = ValidationMessagesConstants.EMPTY_FIELD)
