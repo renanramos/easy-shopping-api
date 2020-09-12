@@ -62,6 +62,10 @@ public class User implements Serializable{
 	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String password;
 
+	@JsonIgnore
+	@Column(nullable = false)
+	private boolean isActive;
+
 	public User() {
 		// Intentionally empty
 	}
