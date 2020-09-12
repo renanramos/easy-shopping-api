@@ -1,0 +1,55 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Easy Shopping</title>
+  <style>
+    html, body { height: 100%; }
+    body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; overflow-x: hidden;}
+    .nav {
+      background-color: #50a591;
+      color: whitesmoke;
+      font: 400 26px Roboto, "Helvetica Neue", sans-serif;
+      height: 4rem;
+      text-align: left;
+      vertical-align: middle;
+      padding-top: 2%;
+      padding-left: 2%;
+    }
+    .content {
+      margin: 2em 3em;
+    }
+    .content a {
+      text-decoration: none;
+      color: #506a64;
+      font-weight: 400;
+
+    }
+    a:hover {
+      font-weight: 500;
+    }
+    .footer {
+      position: absolute;
+      bottom: 0;
+      font-size: 16px;
+      font-weight: 300;
+      left: calc(50% - 60px);
+      padding-bottom: 1%;
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    Easy Shopping
+  </nav>
+  <div class="content">
+    <h1>
+      <span th:text="${message}"></span>
+    </h1>
+    <a href="https://https://app-easy-shopping.herokuapp.com/">Página inicial</a>
+  </div>
+  <footer class="footer">
+    Easy Shooping - 2020 | Renan R. Ramos
+  </footer>
+</body>
+</html>
