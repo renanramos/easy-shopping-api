@@ -34,9 +34,9 @@ import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConst
 import br.com.renanrramos.easyshopping.enums.Profile;
 import br.com.renanrramos.easyshopping.exception.EasyShoppingException;
 import br.com.renanrramos.easyshopping.model.User;
+import br.com.renanrramos.easyshopping.model.builder.MailContentBuilder;
 import br.com.renanrramos.easyshopping.model.form.LoginForm;
 import br.com.renanrramos.easyshopping.model.jwt.AuthenticationResponse;
-import br.com.renanrramos.easyshopping.service.impl.MailContentBuilder;
 import br.com.renanrramos.easyshopping.service.impl.UserService;
 import br.com.renanrramos.easyshopping.service.jwt.JwtUserDetailsService;
 import io.swagger.annotations.Api;

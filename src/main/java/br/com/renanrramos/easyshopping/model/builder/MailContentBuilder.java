@@ -4,10 +4,10 @@
  * Creator: renan.ramos - 11/09/2020
  * ------------------------------------------------------------
  */
-package br.com.renanrramos.easyshopping.service.impl;
+package br.com.renanrramos.easyshopping.model.builder;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -20,7 +20,7 @@ import lombok.AllArgsConstructor;
  * @author renan.ramos
  *
  */
-@Service
+@Component
 @AllArgsConstructor
 public class MailContentBuilder {
 
