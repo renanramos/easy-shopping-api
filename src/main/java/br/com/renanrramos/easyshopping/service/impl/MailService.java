@@ -9,13 +9,11 @@ package br.com.renanrramos.easyshopping.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import br.com.renanrramos.easyshopping.config.util.JwtTokenUtil;
 import br.com.renanrramos.easyshopping.constants.messages.MailContentMessages;
 import br.com.renanrramos.easyshopping.exception.EasyShoppingException;
 import br.com.renanrramos.easyshopping.model.User;
@@ -29,31 +27,31 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class MailService {
 
-	private final JavaMailSender mailSender;
-
 	@Autowired
-	private JwtTokenUtil jwtTokenUtil;
+	private JavaMailSender mailSender;
 
 	@Value("${easy.verification}")
 	private String verificationLink;
 
-	public void sendEmail(User user) throws EasyShoppingException {
-		String token = jwtTokenUtil.generateToken(user);
+	public MailService() {
+		// Intentionally empty
+	}
+	
+	public void sendEmail(String token, User user) throws EasyShoppingException {
 		sendEmail(token, user.getEmail());
 	}
 	
 	@Async
 	private void sendEmail(String token, String recipient) throws EasyShoppingException {
-		MimeMessagePreparator messagePreparator = mimeMessage -> {
-			MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
-			messageHelper.setFrom("noreply-easyshopping@email.com");
-            messageHelper.setTo(recipient);
-            messageHelper.setSubject(MailContentMessages.MAIL_SUBJECT);
-            messageHelper.setText(MailContentMessages.MAIL_BODY + verificationLink + token);
-		};
+		SimpleMailMessage message = new SimpleMailMessage();
+		message.setFrom("easyshoppingpucminas@gmail.com");
+        message.setTo(recipient);
+        message.setSubject(MailContentMessages.MAIL_SUBJECT);
+        message.setText(MailContentMessages.MAIL_BODY + verificationLink + token + "/");
 		try {
-			mailSender.send(messagePreparator);
+			mailSender.send(message);
 		} catch (MailException e) {
+			e.printStackTrace();
 			throw new EasyShoppingException("Exception occurred when sending mail to " + recipient);
 		}
 	}
