@@ -16,8 +16,11 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +36,7 @@ import br.com.renanrramos.easyshopping.exception.EasyShoppingException;
 import br.com.renanrramos.easyshopping.model.User;
 import br.com.renanrramos.easyshopping.model.form.LoginForm;
 import br.com.renanrramos.easyshopping.model.jwt.AuthenticationResponse;
+import br.com.renanrramos.easyshopping.service.impl.MailContentBuilder;
 import br.com.renanrramos.easyshopping.service.impl.UserService;
 import br.com.renanrramos.easyshopping.service.jwt.JwtUserDetailsService;
 import io.swagger.annotations.Api;
@@ -55,6 +59,9 @@ public class UserController {
 	@Autowired
 	private JwtUserDetailsService userDetailsService;
 
+	@Autowired
+	private MailContentBuilder mailContentBuilder;
+
 	@ResponseBody
 	@PostMapping(path = "/login")
 	@Transactional
@@ -62,19 +69,15 @@ public class UserController {
 		HttpHeaders responseHeaders = new HttpHeaders();
 
 		User user = userDetailsService.loadUserByUsernameAndPassword(loginForm);
-		String token = jwtTokenUtil.generateToken(user);
 
-		AuthenticationResponse response = new AuthenticationResponse();
-		response.setId(user.getId());
-		response.setUsername(user.getName());
-		response.setEmail(user.getEmail());
-		response.setToken(token);
+		if (user.isActive()) {
+			String token = jwtTokenUtil.generateToken(user);
+			AuthenticationResponse response = setAuthenticationResponseProps(user, token);		
+			setResponseRoles(user, response);
+			return new ResponseEntity<>(response, responseHeaders, HttpStatus.OK);
+		}
 
-		String role = Profile.getProfileName(user.getProfile());
-
-		response.setRoles(Arrays.asList(role));
-
-		return new ResponseEntity<>(response, responseHeaders, HttpStatus.OK);
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ExceptionMessagesConstants.USER_NOT_FOUND);
 	}
 
 	@PostMapping(path = "/logout")
@@ -85,7 +88,6 @@ public class UserController {
 		String authHeader = request.getHeader("Authorization");
 
 		if (authHeader != null) {
-			
 			String token = authHeader.replace("Bearer ", "").trim();
 			response.setToken(token);
 		}
@@ -110,5 +112,43 @@ public class UserController {
 		}
 
 		return ResponseEntity.ok(userOptional.get());
+	}
+
+	@GetMapping(path = "verification/{token}/", produces = MediaType.TEXT_HTML_VALUE)
+	public ResponseEntity<String> verifyAccount(@PathVariable String token) throws EasyShoppingException {
+		Long userId = Long.parseLong(jwtTokenUtil.getCurrentUserId(token).toString());
+
+		Optional<User> userOptional = userService.findUserById(userId);
+
+		if (!userOptional.isPresent()) {
+			throw new EasyShoppingException(ExceptionMessagesConstants.USER_NOT_FOUND);
+		}
+
+		UserDetails userDetails = userDetailsService.loadUserByUsername(userOptional.get().getEmail());
+
+		if (jwtTokenUtil.validateToken(token, userDetails)) {
+			User user = userOptional.get();
+			user.setActive(true);
+			userService.activatNewUser(user);
+			String htmlResponse = mailContentBuilder.build("Account activated successfully");
+			return ResponseEntity.ok().body(htmlResponse);
+		} else {
+			return new ResponseEntity<>("Invalid token", HttpStatus.UNAUTHORIZED);
+		}
+	}
+
+	private void setResponseRoles(User user, AuthenticationResponse response) {
+		String role = Profile.getProfileName(user.getProfile());
+
+		response.setRoles(Arrays.asList(role));
+	}
+
+	private AuthenticationResponse setAuthenticationResponseProps(User user, String token) {
+		AuthenticationResponse response = new AuthenticationResponse();
+		response.setId(user.getId());
+		response.setUsername(user.getName());
+		response.setEmail(user.getEmail());
+		response.setToken(token);
+		return response;
 	}
 }
