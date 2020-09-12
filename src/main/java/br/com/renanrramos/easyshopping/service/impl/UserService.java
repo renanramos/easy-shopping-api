@@ -51,6 +51,10 @@ public class UserService {
 		return userRepository.findById(userId);
 	}
 
+	public User activatNewUser(User user) {
+		return userRepository.save(user);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public Long getCurrentUserId() {
 		auth = SecurityContextHolder.getContext().getAuthentication();
@@ -67,5 +71,4 @@ public class UserService {
 		List<GrantedAuthority> authorities = auth.getAuthorities().stream().collect(Collectors.toList());
 		return Profile.transformRoleToProfile(authorities.get(0).getAuthority());
 	}
-
 }
