@@ -7,6 +7,7 @@
 package br.com.renanrramos.easyshopping.model.builder;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -30,6 +31,9 @@ public class MailContentBuilder {
 	public String build(String message) {
 		Context context = new Context();
 		context.setVariable("message", message);
+		if (templateEngine.isInitialized()) {
+			return templateEngine.process("mailTemplate.html", context);
+		}
 		templateEngine.addTemplateResolver(getTemplateResolver());
 		return templateEngine.process("mailTemplate.html", context);
 	}
