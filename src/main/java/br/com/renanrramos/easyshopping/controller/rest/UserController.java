@@ -77,8 +77,8 @@ public class UserController {
 			return new ResponseEntity<>(response, responseHeaders, HttpStatus.OK);
 		}
 
-		return ResponseEntity.status(HttpStatus.NOT_FOUND)
-				.body("{\"message\":\"" + ExceptionMessagesConstants.USER_NOT_FOUND + "\"}");
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+				.body("{\"message\":\"" + ExceptionMessagesConstants.UNACTIVATED_USER + "\"}");
 	}
 
 	@PostMapping(path = "/logout")
