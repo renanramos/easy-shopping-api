@@ -141,7 +141,7 @@ public class ProductCategoryController {
 		if (productService.isThereAnyProductWithSubcategoryId(productCategoryId)) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.CANNOT_REMOVE_PRODUCT_CATEGORY_IN_USE);
 		}
-		
+
 		productCategoryService.remove(productCategoryId);
 
 		return ResponseEntity.ok().build();
