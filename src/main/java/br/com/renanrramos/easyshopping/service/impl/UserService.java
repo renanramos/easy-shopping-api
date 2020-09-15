@@ -36,7 +36,7 @@ public class UserService {
 
 	public boolean isUserEmailAlreadyInUse(String email) {
 		Optional<List<User>> user = userRepository.findUserByEmail(email);
-		return user.isPresent() && user.get().size() > 1;
+		return user.isPresent() && !user.get().isEmpty();
 	}
 
 	public Optional<User> login(LoginForm loginForm) {
