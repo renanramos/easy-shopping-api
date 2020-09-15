@@ -80,7 +80,7 @@ public class CustomerController {
 
 		Optional<List<Customer>> customerByCpf = customerService.findCustomerByCpf(customer.getCpf()); 
 		
-		if (customerByCpf.isPresent() && customerByCpf.get().size() > 1) {
+		if (customerByCpf.isPresent() && !customerByCpf.get().isEmpty()) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.CPF_ALREADY_EXIST);
 		}
 
