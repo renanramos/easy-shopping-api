@@ -26,9 +26,6 @@ public enum Profile {
 	}
 
 	public static String transformRoleToProfile(String role) {
-		if (role.isEmpty()) {
-			return "";
-		}
-		return role.substring(5);
+		return role.isEmpty() ? "" : role.substring(5);
 	}
 }
