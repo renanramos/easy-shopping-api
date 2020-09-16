@@ -6,9 +6,11 @@
  */
 package br.com.renanrramos.easyshopping.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +36,10 @@ public class UserService {
 
 	private Authentication auth;
 
-	public boolean isUserEmailAlreadyInUse(String email) {
-		Optional<List<User>> user = userRepository.findUserByEmail(email);
-		return user.isPresent() && !user.get().isEmpty();
+	public boolean isUserEmailAlreadyInUse(String email, Long userId) {
+		Optional<List<User>> userListOptional = userRepository.findUserByEmail(email);
+		List<User> users = userListOptional.isPresent() ? userListOptional.get() : new ArrayList<>();
+		return (userId == null) ? !users.isEmpty() : !hasUserInListOfUsersById(userId, users);
 	}
 
 	public Optional<User> login(LoginForm loginForm) {
@@ -51,7 +54,7 @@ public class UserService {
 		return userRepository.findById(userId);
 	}
 
-	public User activatNewUser(User user) {
+	public User activateNewUser(User user) {
 		return userRepository.save(user);
 	}
 	
@@ -70,5 +73,10 @@ public class UserService {
 		}
 		List<GrantedAuthority> authorities = auth.getAuthorities().stream().collect(Collectors.toList());
 		return Profile.transformRoleToProfile(authorities.get(0).getAuthority());
+	}
+
+	private boolean hasUserInListOfUsersById(Long userId, List<User> users) {
+		Predicate<User> isSameUserId = user -> user.getId().equals(userId);
+		return users.stream().anyMatch(isSameUserId);
 	}
 }
