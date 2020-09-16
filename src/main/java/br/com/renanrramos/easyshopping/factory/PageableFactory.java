@@ -41,7 +41,7 @@ public class PageableFactory {
 	}
 
 	public PageableFactory withSize(int pageSize) {
-		this.pageSize = pageSize;
+		this.pageSize = pageSize >= 1 ? pageSize : Integer.MAX_VALUE;
 		return this;
 	}
 
@@ -52,7 +52,7 @@ public class PageableFactory {
 
 	public Pageable buildPageable() {
 		Pageable pageable = PageRequest.of(pageNumber, pageSize);
-		
+
 		if (sortBy != null) {
 			if (sortBy.contains(",")) {
 				String p[] = sortBy.split(",");
