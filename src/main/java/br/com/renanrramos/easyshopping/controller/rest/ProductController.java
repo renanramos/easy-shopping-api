@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.model.Company;
@@ -133,9 +134,9 @@ public class ProductController {
 	@ApiOperation(value = "Get all products")
 	public ResponseEntity<List<ProductDTO>> getAllProducts(
 			@RequestParam(required = false) Long storeId,
-			@RequestParam(defaultValue = "0") Integer pageNumber, 
-            @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(defaultValue = "id") String sortBy) {
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber, 
+            @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
+            @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
 		page = new PageableFactory()
 				.withPage(pageNumber)
 				.withSize(pageSize)
@@ -149,9 +150,9 @@ public class ProductController {
 	@GetMapping("/company-products")
 	@ApiOperation(value = "Get all products of the logged in company")
 	public ResponseEntity<List<ProductDTO>> getCompanyOwnProducts(
-			@RequestParam(defaultValue = "0") Integer pageNumber, 
-            @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(defaultValue = "id") String sortBy) {
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber, 
+            @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
+            @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
 
 		Long companyId = userService.getCurrentUserId();
 
@@ -170,9 +171,9 @@ public class ProductController {
 	@ApiOperation(value = "Search all products by product category")
 	public ResponseEntity<List<ProductDTO>> searchProductsByProductCategory(
 			@RequestParam(required = false, name = "Product name") String name,
-			@RequestParam(defaultValue = "0") Integer pageNumber, 
-            @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(defaultValue = "id") String sortBy) {
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber, 
+            @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
+            @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
 		page = new PageableFactory()
 				.withPage(pageNumber)
 				.withSize(pageSize)
@@ -190,9 +191,9 @@ public class ProductController {
 	@ApiOperation(value = "Get all products")
 	public ResponseEntity<List<ProductDTO>> getAllProductsBySubcategory(
 			@RequestParam(required = false) Long subcategoryId,
-			@RequestParam(defaultValue = "0") Integer pageNumber, 
-            @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(defaultValue = "id") String sortBy) {
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber, 
+            @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
+            @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
 		page = new PageableFactory()
 				.withPage(pageNumber)
 				.withSize(pageSize)

@@ -31,6 +31,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.renanrramos.easyshopping.config.util.EasyShoppingUtils;
 import br.com.renanrramos.easyshopping.config.util.JwtTokenUtil;
+import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.enums.Profile;
 import br.com.renanrramos.easyshopping.exception.EasyShoppingException;
@@ -84,7 +85,7 @@ public class CustomerController {
 			throw new EasyShoppingException(ExceptionMessagesConstants.CPF_ALREADY_EXIST);
 		}
 
-		if (userService.isUserEmailAlreadyInUse(customer.getEmail())) {
+		if (userService.isUserEmailAlreadyInUse(customer.getEmail(), null)) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.EMAIL_ALREADY_EXIST);
 		}
 
@@ -108,9 +109,9 @@ public class CustomerController {
 	@ApiOperation(value = "Get all customers")
 	public ResponseEntity<List<CustomerDTO>> getCustomers(
 			@RequestParam(required = false) String name,
-			@RequestParam(defaultValue = "0") Integer pageNumber, 
-            @RequestParam(defaultValue = "20") Integer pageSize,
-            @RequestParam(defaultValue = "id") String sortBy) {
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber, 
+            @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
+            @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
 		Pageable page = new PageableFactory()
 				.withPage(pageNumber)
 				.withSize(pageSize)
@@ -153,7 +154,7 @@ public class CustomerController {
 			throw new EasyShoppingException(ExceptionMessagesConstants.CPF_ALREADY_EXIST);
 		}
 
-		if (userService.isUserEmailAlreadyInUse(customerFormConverted.getEmail())) {
+		if (userService.isUserEmailAlreadyInUse(customerFormConverted.getEmail(), customerId)) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.EMAIL_ALREADY_EXIST);
 		}
 

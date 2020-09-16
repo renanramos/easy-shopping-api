@@ -130,7 +130,7 @@ public class UserController {
 		if (jwtTokenUtil.validateToken(token, userDetails)) {
 			User user = userOptional.get();
 			user.setActive(true);
-			userService.activatNewUser(user);
+			userService.activateNewUser(user);
 			String htmlResponse = mailContentBuilder.build("Account activated successfully");
 			return ResponseEntity.ok().body(htmlResponse);
 		} else {

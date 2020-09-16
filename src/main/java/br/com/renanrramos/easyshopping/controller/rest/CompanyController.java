@@ -32,6 +32,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.renanrramos.easyshopping.config.util.EasyShoppingUtils;
 import br.com.renanrramos.easyshopping.config.util.JwtTokenUtil;
+import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.enums.Profile;
 import br.com.renanrramos.easyshopping.exception.EasyShoppingException;
@@ -78,7 +79,7 @@ public class CompanyController {
 	public ResponseEntity<CompanyDTO> saveCompany(@Valid @RequestBody CompanyForm companyForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 		Company company = CompanyForm.converterCompanyFormToCompany(companyForm);
 
-		if (userService.isUserEmailAlreadyInUse(company.getEmail())) {
+		if (userService.isUserEmailAlreadyInUse(company.getEmail(), null)) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.EMAIL_ALREADY_EXIST);				
 		}
 
@@ -107,24 +108,17 @@ public class CompanyController {
 	@ApiOperation(value = "Get all companies")
 	public ResponseEntity<List<CompanyDTO>> getCompanies(
 			@RequestParam(required = false) String name,
-			@RequestParam(defaultValue = "0") Integer pageNumber, 
-            @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(defaultValue = "id") String sortBy) {
-		
-		List<CompanyDTO> listOfCompanyDTOs;
-
-		if (pageSize >= 0) {
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber, 
+            @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
+            @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
 			Pageable page = new PageableFactory()
 					.withPage(pageNumber)
 					.withSize(pageSize)
 					.withSort(sortBy)
 					.buildPageable();
-			listOfCompanyDTOs = (name == null) ?
+			List<CompanyDTO> listOfCompanyDTOs = (name == null) ?
 					CompanyDTO.converterCompanyListToCompanyDTOList(companyService.findAll(page)) :
 						CompanyDTO.converterCompanyListToCompanyDTOList(companyService.findCompanyByName(page, name));
-		} else {
-			listOfCompanyDTOs = CompanyDTO.converterCompanyListToCompanyDTOList(companyService.findAllCompanies());
-		}
 		
 		return ResponseEntity.ok(listOfCompanyDTOs);
 	}
@@ -144,7 +138,7 @@ public class CompanyController {
 	@PatchMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Update a company")
-	public ResponseEntity<CompanyDTO> updateCompany(@PathVariable("id") Long companyId, @Valid @RequestBody CompanyForm companyForm, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<CompanyDTO> updateCompany(@PathVariable("id") Long companyId, @Valid @RequestBody CompanyForm companyForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 		Optional<Company> currentCompany = companyService.findById(companyId);
 
 		if(!currentCompany.isPresent()) {
@@ -152,6 +146,11 @@ public class CompanyController {
 		}
 
 		Company company = CompanyForm.converterCompanyFormUpdateToCompany(companyForm, currentCompany.get());
+		
+		if (userService.isUserEmailAlreadyInUse(company.getEmail(), companyId)) {
+			throw new EasyShoppingException(ExceptionMessagesConstants.EMAIL_ALREADY_EXIST);
+		}
+
 		company.setId(companyId);
 		CompanyDTO updatedCompanyDTO = CompanyDTO.converterToCompanyDTO((companyService.save(company)));
 		uri = uriBuilder.path("/companies/{id}").buildAndExpand(company.getId()).encode().toUri();

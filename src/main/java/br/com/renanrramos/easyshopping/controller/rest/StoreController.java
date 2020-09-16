@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.exception.EasyShoppingException;
 import br.com.renanrramos.easyshopping.factory.PageableFactory;
@@ -79,7 +80,7 @@ public class StoreController {
 		Optional<Company> company = companyService.findById(storeForm.getCompanyId());
 		
 		if (!company.isPresent()) {
-			throw new EasyShoppingException(ExceptionMessagesConstants.COMPANY_NOT_FOUND);
+			throw new EntityNotFoundException(ExceptionMessagesConstants.COMPANY_NOT_FOUND);
 		}
 
 		Store store = StoreForm.converterStoreFormToStore(storeForm);
@@ -95,9 +96,9 @@ public class StoreController {
 	public ResponseEntity<List<StoreDTO>> getStores(
 			@RequestParam(required = false) String name,
 			@RequestParam(required = false) Long companyId,
-			@RequestParam(defaultValue = "0") Integer pageNumber, 
-            @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(defaultValue = "id") String sortBy) {
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber, 
+            @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
+            @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
 		Pageable page = new PageableFactory()
 				.withPage(pageNumber)
 				.withSize(pageSize)
@@ -116,9 +117,9 @@ public class StoreController {
 	public ResponseEntity<List<StoreDTO>> getCompanyOwnStores(
 			@RequestParam(required = false) Long companyIdRequestParam,
 			@RequestParam(required = false) String name,
-			@RequestParam(defaultValue = "0") Integer pageNumber, 
-            @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(defaultValue = "id") String sortBy) {
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber, 
+            @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
+            @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
 		Pageable page = new PageableFactory()
 				.withPage(pageNumber)
 				.withSize(pageSize)
