@@ -9,6 +9,7 @@ package br.com.renanrramos.easyshopping.controller.rest;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -89,7 +90,7 @@ public class CompanyControllerTest {
 		mockMvc = MockMvcBuilders
 				.standaloneSetup(companyController)
 				.build();
-		when(userService.isUserEmailAlreadyInUse(anyString())).thenReturn(false);
+		when(userService.isUserEmailAlreadyInUse(anyString(), anyLong())).thenReturn(false);
 	}
 	
 	@Test
