@@ -53,7 +53,7 @@ public class PageableFactory {
 	public Pageable buildPageable() {
 		Pageable pageable = PageRequest.of(pageNumber, pageSize);
 
-		if (sortBy != null) {
+		if (sortBy != null && pageSize >= 1) {
 			if (sortBy.contains(",")) {
 				String p[] = sortBy.split(",");
 				String sortType = p[0];
