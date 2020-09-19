@@ -25,4 +25,6 @@ public interface StoreRepository extends PagingAndSortingRepository<Store, Long>
 	Page<Store> findStoreByNameContaining(Pageable page, String name);
 
 	Optional<Store> findTopStoreByRegisteredNumber(String registeredNumber);
+
+	Page<Store> findStoreByCompanyIdAndNameContaining(Pageable page,Long companyId, String name);
 }

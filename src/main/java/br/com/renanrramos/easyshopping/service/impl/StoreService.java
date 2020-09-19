@@ -74,6 +74,13 @@ public class StoreService implements CommonService<Store>{
 					new ArrayList<>();
 	}
 
+	public List<Store> findStoreByCompanyIdOrName(Pageable page,Long companyId, String name) {
+		Page<Store> pagedResult = storeRepository.findStoreByCompanyIdAndNameContaining(page, companyId, name);
+		return pagedResult.hasContent() ?
+				pagedResult.getContent() :
+					new ArrayList<>();
+	}
+	
 	public List<Store> findStoreByCompanyId(Pageable page, Long companyId) {
 		Page<Store> pagedResult = storeRepository.findStoreByCompanyId(page, companyId);
 		return pagedResult.hasContent() ?
