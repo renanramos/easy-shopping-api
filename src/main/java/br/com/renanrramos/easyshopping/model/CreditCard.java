@@ -21,6 +21,9 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import br.com.renanrramos.easyshopping.constants.messages.ValidationMessagesConstants;
 import lombok.EqualsAndHashCode;
@@ -50,6 +53,7 @@ public class CreditCard implements Serializable{
 	private String ownerName;
 
 	@NotNull(message = ValidationMessagesConstants.EMPTY_FIELD)
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private LocalDate validDate;
 
 	@NotNull(message = ValidationMessagesConstants.EMPTY_FIELD)
