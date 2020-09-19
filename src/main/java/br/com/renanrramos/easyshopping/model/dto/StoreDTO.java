@@ -7,6 +7,7 @@
 package br.com.renanrramos.easyshopping.model.dto;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import br.com.renanrramos.easyshopping.model.Store;
@@ -32,6 +33,8 @@ public class StoreDTO {
 	private String corporateName;
 
 	private Long companyId;
+
+	private String companyName;
 	
 	public StoreDTO() {
 		// Intentionally empty
@@ -42,7 +45,8 @@ public class StoreDTO {
 		this.name = store.getName();
 		this.registeredNumber = store.getRegisteredNumber();
 		this.corporateName = store.getCorporateName();
-		this.companyId = store.getCompany().getId();
+		this.companyId = Optional.ofNullable(store.getCompany().getId()).orElse(null);
+		this.companyName = Optional.ofNullable(store.getCompany().getName()).orElse("");
 	}
 
 	public static List<StoreDTO> converterStoreListToStoreDTOList(List<Store> stores) {
