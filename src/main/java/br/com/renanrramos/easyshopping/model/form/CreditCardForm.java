@@ -7,6 +7,7 @@
 package br.com.renanrramos.easyshopping.model.form;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import br.com.renanrramos.easyshopping.model.CreditCard;
@@ -28,7 +29,7 @@ public class CreditCardForm {
 
 	private String ownerName;
 
-	private LocalDate validDate;
+	private String validDate;
 
 	private Integer code;
 
@@ -39,7 +40,7 @@ public class CreditCardForm {
 	}
 
 	public CreditCardForm(String creditCardNumber, String ownerName, 
-			LocalDate validDate, Integer code, Long customerId) {
+			String validDate, Integer code, Long customerId) {
 		this.creditCardNumber = creditCardNumber;
 		this.ownerName = ownerName;
 		this.validDate = validDate;
@@ -48,11 +49,12 @@ public class CreditCardForm {
 	}
 
 	public static CreditCard converterCreditCardFormToCreditCard(CreditCardForm creditCardForm) {
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		return CreditCardBuilder
 				.builder()
 				.withCreditCardNumber(creditCardForm.getCreditCardNumber())
 				.withOwnerName(creditCardForm.getOwnerName())
-				.withValidDate(creditCardForm.getValidDate())
+				.withValidDate(LocalDate.parse(creditCardForm.getValidDate(), dateTimeFormatter))
 				.withCode(creditCardForm.getCode())
 				.build();
 	}
@@ -62,7 +64,7 @@ public class CreditCardForm {
 				.builder()
 				.withCreditCardNumber(Optional.ofNullable(creditCardForm.getCreditCardNumber()).orElse(currentCreditCard.getCreditCardNumber()))
 				.withOwnerName(Optional.ofNullable(creditCardForm.getOwnerName()).orElse(currentCreditCard.getOwnerName()))
-				.withValidDate(Optional.ofNullable(creditCardForm.getValidDate()).orElse(currentCreditCard.getValidDate()))
+				.withValidDate(Optional.ofNullable(LocalDate.parse(creditCardForm.getValidDate())).orElse(LocalDate.parse(creditCardForm.getValidDate())))
 				.withCode(Optional.ofNullable(creditCardForm.getCode()).orElse(currentCreditCard.getCode()))
 				.build();
 	}
