@@ -6,6 +6,8 @@
  */
 package br.com.renanrramos.easyshopping.model.form;
 
+import java.util.Optional;
+
 import br.com.renanrramos.easyshopping.enums.Profile;
 import br.com.renanrramos.easyshopping.model.Administrator;
 import br.com.renanrramos.easyshopping.model.builder.AdministratorBuilder;
@@ -48,6 +50,14 @@ public class AdministratorForm {
 				.withName(administrator.getName())
 				.withEmail(administrator.getEmail())
 				.withPassword(administrator.getPassword())
+				.build();
+	}
+
+	public static Administrator converterAdministratorFormUpdateToAmdinistrator(AdministratorForm administratorForm, Administrator administrator) {
+		return AdministratorBuilder.builder()
+				.withName(Optional.ofNullable(administratorForm.getName()).orElse(administrator.getName()))
+				.withEmail(Optional.ofNullable(administratorForm.getEmail()).orElse(administrator.getEmail()))
+				.withPassword(Optional.ofNullable(administratorForm.getPassword()).orElse(administrator.getPassword()))
 				.build();
 	}
 
