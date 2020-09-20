@@ -34,6 +34,8 @@ public class CustomerDTO {
 
 	private Profile profile;
 
+	private boolean isActive;
+
 	public CustomerDTO() {
 		// Intentionally empty
 	}
@@ -44,6 +46,7 @@ public class CustomerDTO {
 		this.cpf = customer.getCpf();
 		this.email = customer.getEmail();
 		this.profile = customer.getProfile();
+		this.isActive = customer.isActive();
 	}
 
 	public static List<CustomerDTO> converterCustomerListToCustomerDTOList(List<Customer> customer) {
