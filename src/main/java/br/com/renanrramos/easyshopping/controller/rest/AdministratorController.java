@@ -148,7 +148,7 @@ public class AdministratorController {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.ACCOUNT_NOT_FOUND);
 		}
 		
-		Administrator administrator = AdministratorForm.converterAdministratorFormToAdministrator(administratorForm);
+		Administrator administrator = AdministratorForm.converterAdministratorFormUpdateToAmdinistrator(administratorForm, administratorOptional.get());
 		administrator.setId(administratorId);
 		AdministratorDTO administratorUpdated = AdministratorDTO.converterAdministratorToAdministratorDTO(administratorService.save(administrator));
 		uri = uriBuilder.path("/admin/{id}").buildAndExpand(administrator.getId()).encode().toUri();
