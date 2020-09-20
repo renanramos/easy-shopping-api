@@ -27,7 +27,11 @@ public class AdministratorDTO {
 	private Long id;
 
 	private String name;
-	
+
+	private String email;
+
+	private boolean isActive;
+
 	private Profile profile;
 	
 	public AdministratorDTO() {
@@ -37,7 +41,9 @@ public class AdministratorDTO {
 	public AdministratorDTO(Administrator administrator) {
 		this.id = administrator.getId();
 		this.name = administrator.getName();
+		this.email = administrator.getEmail();
 		this.profile = administrator.getProfile();
+		this.isActive = administrator.isActive();
 	}
 
 	public static AdministratorDTO converterAdministratorToAdministratorDTO(Administrator administrator) {
