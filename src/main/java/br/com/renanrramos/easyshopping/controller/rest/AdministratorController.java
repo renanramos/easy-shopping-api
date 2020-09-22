@@ -100,7 +100,7 @@ public class AdministratorController {
 	@GetMapping
 	@ApiOperation(value = "Get all administrators")
 	public ResponseEntity<List<AdministratorDTO>> getAdministrators(
-			@RequestParam(required = false, name = "Pesquisa por nome") String name,
+			@RequestParam(required = false) String name,
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber, 
             @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
             @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
@@ -112,7 +112,7 @@ public class AdministratorController {
 		List<Administrator> administrators =
 				(name == null) ?
 						administratorService.findAllPageable(page, null) :
-						administratorService.searchAdministratorByName(name);				 
+						administratorService.searchAdministratorByName(name);
 		return ResponseEntity.ok(AdministratorDTO.converterAdministratorListToAdministratorDTO(administrators)); 
 	}
 	

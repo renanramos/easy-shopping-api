@@ -66,10 +66,7 @@ public class SubcategoryService implements CommonService<Subcategory>{
 	}
 
 	public List<Subcategory> findSubcategoryByName(Pageable page, String name) {
-		Page<Subcategory> pagedResult = 
-				(name == null) ?
-				subcategoryRepository.findAll(page) :
-				subcategoryRepository.findSubcategoryByNameContaining(page, name);
+		Page<Subcategory> pagedResult =	subcategoryRepository.findSubcategoryByNameContaining(page, name);
 		return pagedResult.hasContent() ?
 				pagedResult.getContent() :
 					new ArrayList<>();
