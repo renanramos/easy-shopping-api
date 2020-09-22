@@ -30,6 +30,8 @@ public class SubcategoryDTO {
 
 	private Long productCategoryId;
 
+	private String productCategoryName;
+
 	public SubcategoryDTO() {
 		// Intentionally empty
 	}
@@ -38,6 +40,7 @@ public class SubcategoryDTO {
 		this.id = subcategory.getId();
 		this.name = subcategory.getName();
 		this.productCategoryId = Optional.ofNullable(subcategory.getProductCategory().getId()).orElse(null);
+		this.productCategoryName = Optional.ofNullable(subcategory.getProductCategory().getName()).orElse("");
 	}
 
 	public static List<SubcategoryDTO> convertSubcategoryListToSubcategoryDTOList(List<Subcategory> subcategories) {
