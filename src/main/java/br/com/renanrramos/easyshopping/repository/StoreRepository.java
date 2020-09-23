@@ -30,5 +30,6 @@ public interface StoreRepository extends PagingAndSortingRepository<Store, Long>
 
 	Optional<Store> findTopStoreByRegisteredNumber(String registeredNumber);
 
-	Page<Store> findStoreByCompanyIdAndNameContaining(Pageable page,Long companyId, String name);
+	@Query(EasyShoppingSqlConstants.GET_STORE_WITH_COMPANY_ID) 
+	Page<Store> getStoreWithNameRegisteredNumberCompany(Pageable page, @Param("name")String name, @Param("companyId")Long companyId);
 }
