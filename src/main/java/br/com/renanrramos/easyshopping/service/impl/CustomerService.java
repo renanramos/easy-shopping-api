@@ -68,7 +68,7 @@ public class CustomerService implements CommonService<Customer>{
 	}
 
 	public List<Customer> findCustomerByName(Pageable page, String name) {
-		Page<Customer> pagedResult = customerRepository.findCustomerByNameContaining(page, name);
+		Page<Customer> pagedResult = customerRepository.getCustomerByNameCPFOrEmail(page, name);
 		return pagedResult.hasContent() ?
 				pagedResult.getContent() :
 				new ArrayList<>();
