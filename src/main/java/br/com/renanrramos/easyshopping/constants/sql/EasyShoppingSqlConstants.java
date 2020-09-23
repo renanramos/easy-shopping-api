@@ -22,6 +22,8 @@ public class EasyShoppingSqlConstants {
 
 	public static final String GET_STORE_BY_NAME = "SELECT s FROM Store s LEFT JOIN Company c ON c.id = s.company.id WHERE s.name LIKE %:name% or s.registeredNumber LIKE %:name% or s.corporateName LIKE %:name% or c.name LIKE %:name%";
 
+	public static final String GET_STORE_WITH_COMPANY_ID = "SELECT s FROM Store s LEFT JOIN Company c ON c.id = s.company.id WHERE (:name is null OR s.name LIKE %:name%  OR s.registeredNumber LIKE %:name% OR s.corporateName LIKE %:name% OR c.name LIKE %:name%) AND s.company.id = :companyId";
+
 	private EasyShoppingSqlConstants() {
 		// Intentionally empty
 	}
