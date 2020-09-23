@@ -13,7 +13,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.Param;
 
+import br.com.renanrramos.easyshopping.constants.sql.EasyShoppingSqlConstants;
 import br.com.renanrramos.easyshopping.model.Subcategory;
 
 /**
@@ -23,7 +25,8 @@ import br.com.renanrramos.easyshopping.model.Subcategory;
 public interface SubcategoryRepository extends PagingAndSortingRepository<Subcategory, Long> {
 	Page<Subcategory> findSubcategoryByProductCategoryId(Pageable page, Long productCategoryId);
 
-	Page<Subcategory> findSubcategoryByNameContaining(Pageable page, String name);
+	@Query(EasyShoppingSqlConstants.GET_SUBCATEGORIES_BY_NAME)
+	Page<Subcategory> findSubcategoryName(Pageable page, @Param("name")String name);
 
 	@Transactional
 	@Modifying
