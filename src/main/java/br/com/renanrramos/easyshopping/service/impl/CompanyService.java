@@ -72,7 +72,7 @@ public class CompanyService implements CommonService<Company>{
 	}
 
 	public List<Company> findCompanyByName(Pageable page, String name) {
-		Page<Company> pagedResult = companyRepository.findCompanyByNameContaining(page, name); 
+		Page<Company> pagedResult = companyRepository.getCompanyByNameRegisteredNumberOrEmail(page, name); 
 		return pagedResult.hasContent() ?
 				pagedResult.getContent() :
 					new ArrayList<>();
