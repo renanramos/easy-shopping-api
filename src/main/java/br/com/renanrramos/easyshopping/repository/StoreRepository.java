@@ -10,8 +10,11 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.Param;
 
+import br.com.renanrramos.easyshopping.constants.sql.EasyShoppingSqlConstants;
 import br.com.renanrramos.easyshopping.model.Store;
 
 /**
@@ -22,7 +25,8 @@ public interface StoreRepository extends PagingAndSortingRepository<Store, Long>
 
 	Page<Store> findStoreByCompanyId(Pageable page, Long companyId);
 
-	Page<Store> findStoreByNameContaining(Pageable page, String name);
+	@Query(EasyShoppingSqlConstants.GET_STORE_BY_NAME)
+	Page<Store> getStoreByNameCorporateNameRegisteredNumberOrCompanyName(Pageable page, @Param("name")String name);
 
 	Optional<Store> findTopStoreByRegisteredNumber(String registeredNumber);
 
