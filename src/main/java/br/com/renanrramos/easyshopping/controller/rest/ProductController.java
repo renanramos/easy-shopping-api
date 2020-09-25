@@ -6,6 +6,7 @@
  */
 package br.com.renanrramos.easyshopping.controller.rest;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,18 +29,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.renanrramos.easyshopping.config.util.EasyShoppingUtils;
 import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
+import br.com.renanrramos.easyshopping.exception.EasyShoppingException;
 import br.com.renanrramos.easyshopping.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.model.Company;
 import br.com.renanrramos.easyshopping.model.Product;
+import br.com.renanrramos.easyshopping.model.ProductImage;
 import br.com.renanrramos.easyshopping.model.Store;
 import br.com.renanrramos.easyshopping.model.Subcategory;
 import br.com.renanrramos.easyshopping.model.dto.ProductDTO;
+import br.com.renanrramos.easyshopping.model.dto.ProductImageDTO;
 import br.com.renanrramos.easyshopping.model.form.ProductForm;
+import br.com.renanrramos.easyshopping.model.form.ProductImageForm;
 import br.com.renanrramos.easyshopping.service.impl.CompanyService;
+import br.com.renanrramos.easyshopping.service.impl.ProductImageService;
 import br.com.renanrramos.easyshopping.service.impl.ProductService;
 import br.com.renanrramos.easyshopping.service.impl.StoreService;
 import br.com.renanrramos.easyshopping.service.impl.SubcategoryService;
@@ -55,7 +63,7 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping(path = "/api/products", produces = "application/json")
 @Api(tags = "Products")
 public class ProductController {
-
+	
 	private URI uri;
 
 	private Pageable page;
@@ -74,6 +82,12 @@ public class ProductController {
 
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private ProductImageService productImageService;
+
+	@Autowired
+	private EasyShoppingUtils utils;
 
 	@ResponseBody
 	@PostMapping
@@ -118,7 +132,7 @@ public class ProductController {
 		Subcategory productCategory = productCategoryOptional.get();
 
 		Product product = ProductForm.converterProductFormToProduct(productForm);
-		product.setProductSubcategory(productCategory);
+		product.setSubcategory(productCategory);
 		product.setStore(store);
 		product.setCompany(company);
 
@@ -268,7 +282,7 @@ public class ProductController {
 		Company company = companyOptional.get();
 		
 		Product product = ProductForm.converterProductFormUpdateToProduct(productForm, currentProduct.get());
-		product.setProductSubcategory(productCategory);
+		product.setSubcategory(productCategory);
 		product.setStore(store);
 		product.setId(productId);
 		product.setCompany(company);
@@ -290,5 +304,53 @@ public class ProductController {
 		}
 		productService.remove(productId);
 		return ResponseEntity.accepted().build();
+	}
+
+	@ResponseBody
+	@PostMapping(path = "/images/{id}/upload", headers = "Content-Type=multipart/form-data")
+	public ResponseEntity<?> uploadProductImage(@PathVariable("id")Long productId, ProductImageForm productImageForm, @RequestParam("imageFile") MultipartFile file, UriComponentsBuilder uriComponentsBuilder) throws EasyShoppingException, IOException {
+		Long productFormId = productImageForm.getProductId();
+
+		if (!productFormId.equals(productId)) {
+			throw new EasyShoppingException(ExceptionMessagesConstants.WRONG_PRODUCT_ID);
+		}
+
+		Optional<Product> productOptional = productService.findById(productId);
+
+		if (!productOptional.isPresent()) {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_NOT_FOUND);
+		}
+
+		if (file == null) {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.INVALID_FILE);
+		}
+
+		ProductImage productImage = ProductImageForm.convertProductImageFormToProductImate(productImageForm);
+		productImage.setProduct(productOptional.get());
+
+		byte[] picture = utils.compressImageBytes(file.getBytes());
+
+		productImage.setPicture(picture);
+		
+		productImage = productImageService.save(productImage);
+		if (productImage.getId() != null) {
+			uri = uriComponentsBuilder.path("/products/images/{id}").buildAndExpand(productImage.getProduct().getId()).encode().toUri();
+			return ResponseEntity.created(uri).build();
+		}
+		return ResponseEntity.badRequest().build();
+	}
+
+	@ResponseBody
+	@GetMapping(path = "/images/{id}")
+	public ResponseEntity<List<ProductImageDTO>> getProductImage(@PathVariable("id")Long productId) {
+		
+		Optional<Product> productOptional = productService.findById(productId);
+		
+		if (!productOptional.isPresent()) {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_NOT_FOUND);
+		}
+
+		List<ProductImage> productImages = productImageService.findProductImageByProductId(page, productId);
+		return ResponseEntity.ok(ProductImageDTO.converterProducImageListToProductImageDTOList(productImages));
 	}
 }

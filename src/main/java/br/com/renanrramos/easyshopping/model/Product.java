@@ -7,12 +7,12 @@
 package br.com.renanrramos.easyshopping.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -57,10 +57,9 @@ public class Product implements Serializable{
 
 	private double price;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "productSubcategory_id")
-	@Fetch(FetchMode.JOIN)
-	private Subcategory productSubcategory;
+	@ManyToOne
+	@JoinColumn(name = "subcategory_id")
+	private Subcategory subcategory;
 	
 	@ManyToOne
 	@JoinColumn(name = "store_id")
@@ -70,8 +69,9 @@ public class Product implements Serializable{
 	@JoinColumn(name = "company_id")
 	private Company company;
 
-	@OneToMany(targetEntity = ProductImage.class, cascade = CascadeType.ALL, mappedBy = "productImage", fetch = FetchType.EAGER)
-	private List<ProductImage> images;  
+	@OneToMany(targetEntity = ProductImage.class, cascade = CascadeType.ALL, mappedBy = "product")
+	@Fetch(FetchMode.JOIN)
+	private List<ProductImage> images = new ArrayList<>();  
 
 	public Product() {
 		// Intentionally empty
@@ -80,6 +80,6 @@ public class Product implements Serializable{
 	@Override
 	public String toString() {
 		return "Product [id=" + id + ", name=" + name + ", description=" + description + ", price=" + price
-				+ ", productSubcategory=" + productSubcategory + ", store=" + store + "]";
+				+ ", subcategory=" + subcategory + ", store=" + store + "]";
 	}
 }

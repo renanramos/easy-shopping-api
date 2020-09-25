@@ -80,12 +80,12 @@ public class ProductService implements CommonService<Product>{
 	}
 
 	public boolean isThereAnyProductWithSubcategoryId(Long productCategoryId) {
-		return productRepository.findProductByProductSubcategoryId(null, productCategoryId).hasContent();
+		return productRepository.findProductBySubcategoryId(null, productCategoryId).hasContent();
 	}
 
 	public List<Product> getProductsBySubcategoryId(Pageable page, Long subcategoryId) {
 		Page<Product> pagedResult = 
-						productRepository.findProductByProductSubcategoryId(page, subcategoryId);
+						productRepository.findProductBySubcategoryId(page, subcategoryId);
 		return pagedResult.hasContent() ?
 				pagedResult.getContent() :
 				new ArrayList<>();		

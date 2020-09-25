@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import br.com.renanrramos.easyshopping.model.Product;
+import br.com.renanrramos.easyshopping.model.ProductImage;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,11 +32,13 @@ public class ProductDTO {
 	
 	private double price;
 
-	private Long productSubcategoryId;
+	private Long subcategoryId;
 	
-	private String productSubcategoryName;
+	private String subcategoryName;
 	
 	private Long storeId;
+
+	private ProductImage productImage;
 	
 	public ProductDTO() {
 		// Intentionally empty
@@ -46,9 +49,14 @@ public class ProductDTO {
 		this.name = product.getName();
 		this.description = product.getDescription();
 		this.price = product.getPrice();
-		this.productSubcategoryName = product.getProductSubcategory().getName();
+		this.subcategoryName = product.getSubcategory().getName();
 		this.storeId = product.getStore().getId();
-		this.productSubcategoryId = product.getProductSubcategory().getId();
+		this.subcategoryId = product.getSubcategory().getId();
+		product.getImages().forEach(prodImage -> {
+			if (prodImage.isCoverImage()) {
+				this.productImage = prodImage;
+			}
+		});
 	}
 
 	public static List<ProductDTO> converterProductListToProductDTOList(List<Product> products) {
@@ -62,7 +70,7 @@ public class ProductDTO {
 	@Override
 	public String toString() {
 		return "ProductDTO [id=" + id + ", name=" + name + ", description=" + description + ", price=" + price
-				+ ", productCategoryId=" + productSubcategoryId + ", productSubcategoryName=" + productSubcategoryName
+				+ ", productCategoryId=" + subcategoryId + ", subcategoryName=" + subcategoryName
 				+ ", storeId=" + storeId + "]";
 	}
 }

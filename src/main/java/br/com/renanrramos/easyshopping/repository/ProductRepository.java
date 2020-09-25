@@ -24,5 +24,5 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, L
 
 	Page<Product> findProductByCompanyId(Pageable page, Long companyId);
 
-	Page<Product> findProductByProductSubcategoryId(Pageable page, Long productSubcategoryId);
+	Page<Product> findProductBySubcategoryId(Pageable page, Long subcategoryId);
 }

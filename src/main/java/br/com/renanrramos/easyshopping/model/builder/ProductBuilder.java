@@ -47,8 +47,8 @@ public class ProductBuilder {
 		return this;
 	}
 	
-	public ProductBuilder withProductCategory(Subcategory productCategory) {
-		this.product.setProductSubcategory(productCategory);
+	public ProductBuilder withProductCategory(Subcategory subcategory) {
+		this.product.setSubcategory(subcategory);
 		return this;
 	}
 
