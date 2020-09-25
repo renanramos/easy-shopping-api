@@ -13,3 +13,25 @@ INSERT INTO product_category(name) values('Tecnologia');
 INSERT INTO product_category(name) values('Brinquedos');
 INSERT INTO product_category(name) values('Ferramentas');
 INSERT INTO product_category(name) values('Moda');
+
+INSERT INTO subcategory(name, product_category_id) values('Sofá', 1);
+INSERT INTO subcategory(name, product_category_id) values('Mesa', 1);
+INSERT INTO subcategory(name, product_category_id) values('Batedeira', 2);
+INSERT INTO subcategory(name, product_category_id) values('Liquidificador', 2);
+INSERT INTO subcategory(name, product_category_id) values('Sanduicheira', 2);
+INSERT INTO subcategory(name, product_category_id) values('Notebook', 3);
+INSERT INTO subcategory(name, product_category_id) values('Netbook', 3);
+INSERT INTO subcategory(name, product_category_id) values('Desktop', 3);
+INSERT INTO subcategory(name, product_category_id) values('Lego Star Wars', 4);
+INSERT INTO subcategory(name, product_category_id) values('Alicate', 5);
+INSERT INTO subcategory(name, product_category_id) values('Chave de fenda', 5);
+INSERT INTO subcategory(name, product_category_id) values('Chave de boca', 5);
+INSERT INTO subcategory(name, product_category_id) values('Camisa', 6);
+INSERT INTO subcategory(name, product_category_id) values('Calça', 6);
+INSERT INTO subcategory(name, product_category_id) values('Saia', 6);
+INSERT INTO subcategory(name, product_category_id) values('Vestido', 6);
+INSERT INTO subcategory(name, product_category_id) values('Camiseta', 6);
+
+INSERT INTO store(name, corporate_name, registered_number, company_id) values('Loja', 'Loja 1', '12.123.123/1234-12', 3);
+
+INSERT INTO product(description, name, price, company_id, subcategory_id, store_id) values('Liquidificador de uma marca diferenciada', 'Liquidificador', 120.5, 3, 4, 1);
