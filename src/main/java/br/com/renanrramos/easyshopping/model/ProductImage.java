@@ -18,9 +18,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -46,13 +43,14 @@ public class ProductImage implements Serializable {
 	@Column
 	private String description;
 
-	@Column(length = 10000)
+	@Column(length = 999999)
 	private byte[] picture;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(targetEntity = Product.class, fetch = FetchType.EAGER)
 	@JoinColumn(name = "product_id")
-	@Fetch(FetchMode.JOIN)
 	private Product product;
+
+	private boolean isCoverImage;
 
 	public ProductImage() {
 		// Intentionally empty
