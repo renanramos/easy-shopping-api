@@ -23,24 +23,24 @@ public class ProductImageForm {
 
 	private String description;
 
-	private byte[] picture;
-
 	private Long productId;
+
+	private boolean isCoverImage;
 
 	public ProductImageForm() {
 		// Intentionally empty
 	}
 
-	public ProductImageForm(String description, byte[] picture, Long productId) {
+	public ProductImageForm(String description, Long productId, boolean isCoverImage) {
 		this.description = description;
-		this.picture = picture;
 		this.productId = productId;
+		this.isCoverImage = isCoverImage;
 	}
 
 	public static ProductImage convertProductImageFormToProductImate(ProductImageForm productImageForm) {
 		return ProductImageBuilder.builder()
 				.withDescription(productImageForm.getDescription())
-				.withPicture(productImageForm.getPicture())
+				.withCoverImage(productImageForm.isCoverImage())
 				.build();
 	}
 	

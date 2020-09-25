@@ -40,6 +40,11 @@ public class ProductImageBuilder {
 		return this;
 	}
 
+	public ProductImageBuilder withCoverImage(boolean isCoverImage) {
+		this.productImage.setCoverImage(isCoverImage);
+		return this;
+	}
+
 	public ProductImage build() {
 		return this.productImage;
 	}
