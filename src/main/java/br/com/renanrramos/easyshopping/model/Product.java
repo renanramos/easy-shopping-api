@@ -7,12 +7,12 @@
 package br.com.renanrramos.easyshopping.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,9 +20,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
-
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import br.com.renanrramos.easyshopping.constants.messages.ValidationMessagesConstants;
 import io.swagger.annotations.ApiModelProperty;
@@ -69,9 +66,8 @@ public class Product implements Serializable{
 	@JoinColumn(name = "company_id")
 	private Company company;
 
-	@OneToMany(targetEntity = ProductImage.class, cascade = CascadeType.ALL, mappedBy = "product")
-	@Fetch(FetchMode.JOIN)
-	private List<ProductImage> images = new ArrayList<>();  
+	@OneToMany(targetEntity = ProductImage.class, cascade = CascadeType.ALL, mappedBy = "product", fetch = FetchType.EAGER)
+	private Set<ProductImage> images;  
 
 	public Product() {
 		// Intentionally empty
