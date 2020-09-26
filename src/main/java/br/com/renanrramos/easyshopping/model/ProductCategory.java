@@ -46,7 +46,7 @@ public class ProductCategory implements Serializable{
 	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String name;
 
-	@OneToMany(targetEntity = Subcategory.class, cascade = CascadeType.ALL, mappedBy = "productCategory", fetch = FetchType.EAGER)
+	@OneToMany(targetEntity = Subcategory.class, cascade = CascadeType.ALL, mappedBy = "productCategory", fetch = FetchType.LAZY)
 	private List<Subcategory> subcategories;
 	
 	public ProductCategory() {
