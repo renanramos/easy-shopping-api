@@ -48,7 +48,7 @@ public class ProductImage implements Serializable {
 	@Column
 	private String description;
 
-	@Column(length = 1000)
+	@Column(length = 99999)
 	private byte[] picture;
 
 	@ManyToOne(fetch = FetchType.LAZY)
