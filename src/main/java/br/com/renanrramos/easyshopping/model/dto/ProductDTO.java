@@ -6,7 +6,9 @@
  */
 package br.com.renanrramos.easyshopping.model.dto;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -59,7 +61,11 @@ public class ProductDTO {
 		this.subcategoryName = product.getSubcategory().getName();
 		this.storeId = product.getStore().getId();
 		this.subcategoryId = product.getSubcategory().getId();
-		this.productImages = product.getImages().stream().map(productImage -> descompressImages(productImage)).collect(Collectors.toSet());
+		this.productImages = Optional.ofNullable(setProductImages(product)).orElse(new HashSet<>());
+	}
+
+	private Set<ProductImage> setProductImages(Product product) {
+		return product.getImages() != null ? product.getImages().stream().map(productImage -> descompressImages(productImage)).collect(Collectors.toSet()) : null;
 	}
 
 	public static List<ProductDTO> converterProductListToProductDTOList(List<Product> products) {
