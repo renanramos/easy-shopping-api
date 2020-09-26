@@ -330,6 +330,9 @@ public class ProductController {
 
 		byte[] picture = utils.compressImageBytes(file.getBytes());
 
+		
+		System.out.println("Tamanho da imagem: " + picture.length);
+		
 		productImage.setPicture(picture);
 		
 		productImage = productImageService.save(productImage);
