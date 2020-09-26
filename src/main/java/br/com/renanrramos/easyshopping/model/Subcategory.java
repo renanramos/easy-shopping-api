@@ -58,8 +58,6 @@ public class Subcategory implements Serializable{
 	private ProductCategory productCategory;
 
 	@OneToMany(cascade = CascadeType.ALL)
-//	@JoinColumn(name = "product_id")
-//	@Fetch(FetchMode.JOIN)
 	private List<Product> products = new ArrayList<>();
 
 	public Subcategory() {
