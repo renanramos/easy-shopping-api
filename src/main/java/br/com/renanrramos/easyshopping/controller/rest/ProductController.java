@@ -329,9 +329,6 @@ public class ProductController {
 		productImage.setProduct(productOptional.get());
 
 		byte[] picture = utils.compressImageBytes(file.getBytes());
-
-		
-		System.out.println("Tamanho da imagem: " + picture.length);
 		
 		productImage.setPicture(picture);
 		
