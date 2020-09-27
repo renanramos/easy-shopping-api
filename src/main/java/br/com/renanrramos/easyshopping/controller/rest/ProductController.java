@@ -18,6 +18,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -307,10 +308,12 @@ public class ProductController {
 	}
 
 	@ResponseBody
-	@PostMapping(path = "/images/{id}/upload", headers = "Content-Type=multipart/form-data")
-	public ResponseEntity<?> uploadProductImage(@PathVariable("id")Long productId, ProductImageForm productImageForm, @RequestParam("imageFile") MultipartFile file, UriComponentsBuilder uriComponentsBuilder) throws EasyShoppingException, IOException {
+	@PostMapping(path = "/images/{id}/upload", consumes=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> uploadProductImage(@PathVariable("id")Long productId, @RequestBody ProductImageForm productImageForm, UriComponentsBuilder uriComponentsBuilder) throws EasyShoppingException, IOException {
+//		, MultipartFile file
 		Long productFormId = productImageForm.getProductId();
 
+		
 		if (!productFormId.equals(productId)) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.WRONG_PRODUCT_ID);
 		}
@@ -321,16 +324,18 @@ public class ProductController {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_NOT_FOUND);
 		}
 
-		if (file == null) {
+		byte[] picture = productImageForm.getPicture();
+
+		if (picture == null || picture.length == 0) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.INVALID_FILE);
 		}
 
 		ProductImage productImage = ProductImageForm.convertProductImageFormToProductImate(productImageForm);
 		productImage.setProduct(productOptional.get());
 
-		byte[] picture = utils.compressImageBytes(file.getBytes());
+//		byte[] picture = utils.compressImageBytes(file.getBytes());
 		
-		productImage.setPicture(picture);
+//		productImage.setPicture(picture);
 		
 		productImage = productImageService.save(productImage);
 		if (productImage.getId() != null) {
