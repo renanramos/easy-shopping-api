@@ -26,6 +26,7 @@ INSERT INTO subcategory(name, product_category_id) values('Lego Star Wars', 4);
 INSERT INTO subcategory(name, product_category_id) values('Alicate', 5);
 INSERT INTO subcategory(name, product_category_id) values('Chave de fenda', 5);
 INSERT INTO subcategory(name, product_category_id) values('Chave de boca', 5);
+INSERT INTO subcategory(name, product_category_id) values('Furadeiras', 5);
 INSERT INTO subcategory(name, product_category_id) values('Camisa', 6);
 INSERT INTO subcategory(name, product_category_id) values('Calça', 6);
 INSERT INTO subcategory(name, product_category_id) values('Saia', 6);
