@@ -61,11 +61,7 @@ public class ProductDTO {
 		this.subcategoryName = product.getSubcategory().getName();
 		this.storeId = product.getStore().getId();
 		this.subcategoryId = product.getSubcategory().getId();
-		this.productImages = Optional.ofNullable(setProductImages(product)).orElse(new HashSet<>());
-	}
-
-	private Set<ProductImage> setProductImages(Product product) {
-		return product.getImages() != null ? product.getImages().stream().map(productImage -> descompressImages(productImage)).collect(Collectors.toSet()) : null;
+		this.productImages = Optional.ofNullable(product.getImages()).orElse(new HashSet<>());
 	}
 
 	public static List<ProductDTO> converterProductListToProductDTOList(List<Product> products) {
@@ -81,11 +77,5 @@ public class ProductDTO {
 		return "ProductDTO [id=" + id + ", name=" + name + ", description=" + description + ", price=" + price
 				+ ", productCategoryId=" + subcategoryId + ", subcategoryName=" + subcategoryName
 				+ ", storeId=" + storeId + "]";
-	}
-
-	private ProductImage descompressImages(ProductImage productImage) {
-		byte[] picture = productImage.getPicture();
-		productImage.setPicture(utils.decompressImageBytes(picture));
-		return productImage;
 	}
 }
