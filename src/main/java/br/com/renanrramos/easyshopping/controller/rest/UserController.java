@@ -138,6 +138,22 @@ public class UserController {
 		}
 	}
 
+	@ResponseBody
+	@GetMapping
+	public ResponseEntity<String> searchUserByEmail(@RequestParam("email") String email) {
+
+		Optional<User> userOptional = userService.findUserByEmail(email);
+
+		if (userOptional.isPresent()) {
+			return ResponseEntity.status(HttpStatus.OK)
+					.body("{\"email\":\"" + userOptional.get().getEmail() + "\","
+						+ "\"role\":\"" + userOptional.get().getProfile() + "\"}");
+		}
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND)
+				.body("{\"message\":\"" + ExceptionMessagesConstants.USER_NOT_FOUND + "\"}");
+	}
+
 	private void setResponseRoles(User user, AuthenticationResponse response) {
 		String role = Profile.getProfileName(user.getProfile());
 
