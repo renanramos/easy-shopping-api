@@ -52,6 +52,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.keycloak</groupId>
+			<artifactId>keycloak-spring-boot-starter</artifactId>
+			<version>11.0.2</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
@@ -62,24 +68,19 @@
 		</dependency>
 
 		<dependency>
-		    <groupId>org.springframework.boot</groupId>
-		    <artifactId>spring-boot-starter-mail</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
 
 		<dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
-		</dependency>
-
-		<dependency>
-		    <groupId>org.springframework.security</groupId>
-		    <artifactId>spring-security-oauth2-client</artifactId>
 		</dependency>
 
 		<dependency>
@@ -144,10 +145,10 @@
 			<artifactId>lombok</artifactId>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<dependency>
-		    <groupId>javax.mail</groupId>
-		    <artifactId>javax.mail-api</artifactId>
+			<groupId>javax.mail</groupId>
+			<artifactId>javax.mail-api</artifactId>
 		</dependency>
 
 		<dependency>
@@ -157,6 +158,17 @@
 		</dependency>
 	</dependencies>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.keycloak.bom</groupId>
+				<artifactId>keycloak-adapter-bom</artifactId>
+				<version>11.0.2</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	<build>
 		<plugins>
 			<plugin>
