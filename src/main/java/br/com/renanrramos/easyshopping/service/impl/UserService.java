@@ -54,6 +54,10 @@ public class UserService {
 		return userRepository.findById(userId);
 	}
 
+	public Optional<User> findUserByEmail(String email) {
+		return userRepository.findTopUserByEmail(email);
+	}
+
 	public User activateNewUser(User user) {
 		return userRepository.save(user);
 	}
