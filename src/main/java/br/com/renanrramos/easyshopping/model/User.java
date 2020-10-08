@@ -69,6 +69,10 @@ public class User implements Serializable{
 	@Enumerated(EnumType.STRING)
 	private AuthProvider provider;
 
+	private String providerId;
+
+	private String imageUrl;
+
 	public User() {
 		// Intentionally empty
 	}
