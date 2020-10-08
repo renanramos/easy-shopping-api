@@ -6,24 +6,37 @@
  */
 package br.com.renanrramos.easyshopping.config;
 
+import java.security.cert.CollectionCertStoreParameters;
+import java.util.Collections;
+
+import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
+import org.keycloak.adapters.springsecurity.KeycloakSecurityComponents;
+import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider;
+import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
+import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import br.com.renanrramos.easyshopping.enums.Profile;
+
 
 /**
  * @author renan.ramos
@@ -31,8 +44,9 @@ import br.com.renanrramos.easyshopping.enums.Profile;
  */
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
+@ComponentScan(basePackageClasses = {KeycloakSecurityComponents.class},
+		excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = "org.keycloak.adapters.springsecurity.management.HttpSessionManager"))
+public class WebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter{
 
 	private static final String ALL_END_POINTS = "/**";
 
@@ -67,30 +81,55 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	@Autowired
 	private JwtRequestFilter jwtRequestFilter;
 
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder());
-	}
+//	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+//		auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder());
+//	}
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 
-	@Bean
-	@Override
-	public AuthenticationManager authenticationManagerBean() throws Exception {
-		return super.authenticationManagerBean();
-	}
+//	@Bean(BeanIds.AUTHENTICATION_MANAGER)
+//	@Override
+//	public AuthenticationManager authenticationManagerBean() throws Exception {
+//		return super.authenticationManagerBean();
+//	}
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring()
 		.antMatchers("/users/authentication");
 	}
+	
+//	@Override
+//	protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+//		authenticationManagerBuilder.userDetailsService(jwtUserDetailsService)
+//		.passwordEncoder(passwordEncoder());
+//	}
 
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		KeycloakAuthenticationProvider keycloakAuthProvider = keycloakAuthenticationProvider();
+		keycloakAuthProvider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
+		auth.authenticationProvider(keycloakAuthProvider);
+	}
+
+	@Override
+	protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
+		return new RegisterSessionAuthenticationStrategy(new SessionRegistryImpl());
+	}
+
+	@Bean
+	public KeycloakSpringBootConfigResolver keycloakSpringBootConfigResolver() {
+		return new KeycloakSpringBootConfigResolver();
+	}
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable()
+			.cors()
+			.and()
 			.authorizeRequests()
 				.antMatchers(
 						"/",
@@ -134,10 +173,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 				.antMatchers(HttpMethod.PUT, API_SUBCATEGORIES + ID).hasAnyRole(Profile.getProfileName(Profile.ADMINISTRATOR))
 				.antMatchers(HttpMethod.DELETE, API_SUBCATEGORIES + ID).hasAnyRole(Profile.getProfileName(Profile.ADMINISTRATOR))
 				.antMatchers(API_ADMIN).hasRole(Profile.getProfileName(Profile.ADMINISTRATOR))
-				.antMatchers(API_ADMIN + ID).hasRole(Profile.getProfileName(Profile.ADMINISTRATOR))
-			.and().logout().permitAll()
-			.and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
-			.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+				.antMatchers(API_ADMIN + ID).hasRole(Profile.getProfileName(Profile.ADMINISTRATOR));
+//		super.configure(http);
+//		http.csrf().disable();
+//			.and().logout().permitAll();
+//			.and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
+//			.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+	}
+
+	@Bean
+	CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration config = new CorsConfiguration();
+		config.applyPermitDefaultValues();
+		config.setAllowedMethods(Collections.singletonList("*"));
+		config.setAllowCredentials(true);
+		config.setAllowedOrigins(Collections.singletonList("*"));
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", config);
+		return source;
 	}
 }
