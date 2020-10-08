@@ -12,6 +12,7 @@ import java.util.Map;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -22,8 +23,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.util.WebUtils;
 
 import br.com.renanrramos.easyshopping.config.util.JwtTokenUtil;
 import br.com.renanrramos.easyshopping.service.jwt.JwtUserDetailsService;
@@ -37,6 +40,8 @@ import io.jsonwebtoken.ExpiredJwtException;
 public class JwtRequestFilter extends OncePerRequestFilter{
 
 	private static final Logger LOG = LoggerFactory.getLogger(JwtRequestFilter.class);
+
+	public static final String COOKIE_NAME = "XSRF-TOKEN";
 
 	@Autowired
 	private JwtUserDetailsService jwtUserDetailsService;
@@ -52,23 +57,44 @@ public class JwtRequestFilter extends OncePerRequestFilter{
 
 	private Map<Object, Object> credentials = new HashMap<>();
 
+//	@Override
+//	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+//			throws ServletException, IOException {
+//		String requestTokenHeader = request.getHeader("Authorization");
+//
+//		LOG.info("RequestHeader token: {}", requestTokenHeader);
+//
+//		setResponseHeaders(request, response);
+//		
+//		validRequestTokenHeader(requestTokenHeader);
+//
+//		if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+//			UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(email);
+//
+//			verifyUserProperties(request, userDetails);
+//		}
+//
+//		filterChain.doFilter(request, response);
+//	}
+
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
+		CsrfToken crsf = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
 		String requestTokenHeader = request.getHeader("Authorization");
-
-		LOG.info("RequestHeader token: {}", requestTokenHeader);
-
 		setResponseHeaders(request, response);
-		
-		validRequestTokenHeader(requestTokenHeader);
+//		validRequestTokenHeader(requestTokenHeader);
+		if (requestTokenHeader != null) {
+			Cookie cookie = WebUtils.getCookie(request, COOKIE_NAME);
+			String token = requestTokenHeader.substring(7);//crsf.getToken();
 
-		if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-			UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(email);
-
-			verifyUserProperties(request, userDetails);
+			if (cookie == null || token != null && !token.equals(cookie.getValue()))
+            {
+                cookie = new Cookie(COOKIE_NAME, token);
+                cookie.setPath("/");
+                response.addCookie(cookie);
+            }
 		}
-
 		filterChain.doFilter(request, response);
 	}
 
@@ -104,7 +130,7 @@ public class JwtRequestFilter extends OncePerRequestFilter{
 	}
 
 	private void validRequestTokenHeader(String requestTokenHeader) {
-		if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
+		if (requestTokenHeader != null && !requestTokenHeader.substring(4, requestTokenHeader.length()).isEmpty()) {
 
 			jwtToken = requestTokenHeader.substring(7);
 			try {
@@ -119,4 +145,5 @@ public class JwtRequestFilter extends OncePerRequestFilter{
 			LOG.warn("JWT token does not begin with Bearer string");
 		}
 	}
+
 }
