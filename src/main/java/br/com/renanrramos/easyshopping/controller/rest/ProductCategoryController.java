@@ -10,6 +10,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
+import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -17,6 +18,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -48,6 +50,7 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping(path = "api/product-categories", produces = "application/json")
 @Api(tags = "Product categories")
+@CrossOrigin(origins = "*")
 public class ProductCategoryController {
 
 	@Autowired
@@ -75,7 +78,7 @@ public class ProductCategoryController {
 		return ResponseEntity.created(uri)
 				.body(ProductCategoryDTO.converterProductCategoryToProductCategoryDTO(productCategory));
 	}
-	
+
 	@ResponseBody
 	@GetMapping
 	@ApiOperation(value = "Get all product categories")
