@@ -28,6 +28,7 @@ import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy;
 import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.web.cors.CorsConfiguration;
@@ -44,8 +45,6 @@ import br.com.renanrramos.easyshopping.enums.Profile;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(jsr250Enabled = true)
-@ComponentScan(basePackageClasses = {KeycloakSecurityComponents.class},
-		excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = "org.keycloak.adapters.springsecurity.management.HttpSessionManager"))
 public class WebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter{
 
 	private static final String ALL_END_POINTS = "/**";
@@ -87,7 +86,7 @@ public class WebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter{
 	@Bean
 	@Override
 	protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
-		return new RegisterSessionAuthenticationStrategy(new SessionRegistryImpl());
+		return new NullAuthenticatedSessionStrategy();
 	}
 
 	@Bean
@@ -100,7 +99,6 @@ public class WebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter{
 		super.configure(http);
 		http
 			.csrf().disable()
-			.cors().disable()
 			.authorizeRequests()
 				.antMatchers(
 						"/",
