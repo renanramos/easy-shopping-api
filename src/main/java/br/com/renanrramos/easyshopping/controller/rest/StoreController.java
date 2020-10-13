@@ -7,10 +7,12 @@
 package br.com.renanrramos.easyshopping.controller.rest;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -100,7 +102,8 @@ public class StoreController {
 			@RequestParam(required = false) Long companyId,
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber, 
             @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
+            @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy,
+            HttpServletRequest request) {
 		Pageable page = new PageableFactory()
 				.withPage(pageNumber)
 				.withSize(pageSize)
@@ -127,10 +130,10 @@ public class StoreController {
 				.withSort(sortBy)
 				.buildPageable();
 
-		Long companyId = userService.getCurrentUserId();
-		List<Store> stores = storeService.findStoreByCompanyIdOrName(page, companyId, name);
+//		Long companyId = userService.getCurrentUserId();
+//		List<Store> stores = storeService.findStoreByCompanyIdOrName(page, companyId, name);
 
-		return ResponseEntity.ok(StoreDTO.converterStoreListToStoreDTOList(stores));
+		return ResponseEntity.ok(StoreDTO.converterStoreListToStoreDTOList(new ArrayList<>()));
 	}
 	
 	@ResponseBody
