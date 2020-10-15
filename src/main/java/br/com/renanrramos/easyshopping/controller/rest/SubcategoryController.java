@@ -10,6 +10,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
+import javax.annotation.security.RolesAllowed;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -64,6 +65,7 @@ public class SubcategoryController {
 	@PostMapping
 	@Transactional
 	@ApiOperation(value = "Save a new subcategory")
+	@RolesAllowed("easy-shopping-admin")
 	public ResponseEntity<SubcategoryDTO> saveSubcategory(@Valid @RequestBody SubcategoryForm subcategoryForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 
 		if (subcategoryForm.getProductCategoryId() == null) {
@@ -121,6 +123,7 @@ public class SubcategoryController {
 	@PatchMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Update a subcategory")
+	@RolesAllowed("easy-shopping-admin")
 	public ResponseEntity<SubcategoryDTO> updateSubcategory(@PathVariable("id") Long subcategoryId, @RequestBody SubcategoryForm subcategoryForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 
 		if (subcategoryForm.getProductCategoryId() == null) {
@@ -156,6 +159,7 @@ public class SubcategoryController {
 	@DeleteMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Remove a subcategory")
+	@RolesAllowed("easy-shopping-admin")
 	public ResponseEntity<SubcategoryDTO> removeSubcategory(@PathVariable("id") Long subcategoryId) throws EasyShoppingException {
 		Optional<Subcategory> subcategoryOptional = subcategoryService.findById(subcategoryId);
 

@@ -10,6 +10,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
+import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -65,6 +66,7 @@ public class CustomerController {
 	@PostMapping(path = "/register")
 	@Transactional
 	@ApiOperation(value = "Save a new customer")
+	@RolesAllowed("ADMINISTRATOR")
 	public ResponseEntity<CustomerDTO> saveCustomer(@Valid @RequestBody CustomerForm customerForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 		
 		Customer customer = CustomerForm.converterCustomerFormToCustomer(customerForm);
@@ -91,6 +93,7 @@ public class CustomerController {
 	@ResponseBody
 	@GetMapping
 	@ApiOperation(value = "Get all customers")
+	@RolesAllowed("ADMINISTRATOR")
 	public ResponseEntity<List<CustomerDTO>> getCustomers(
 			@RequestParam(required = false) String name,
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber, 
@@ -110,6 +113,7 @@ public class CustomerController {
 	@ResponseBody
 	@GetMapping(path = "/{id}")
 	@ApiOperation(value = "Get a customer by id")
+	@RolesAllowed("ADMINISTRATOR")
 	public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable("id") Long customerId) {
 		Optional<Customer> customer = customerService.findById(customerId);
 		if (customer.isPresent()) {
@@ -122,6 +126,7 @@ public class CustomerController {
 	@PatchMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Update a customer")
+	@RolesAllowed("CUSTOMER")
 	public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable("id") Long customerId, @RequestBody CustomerForm customerForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 
 		Optional<Customer> currentCustomer = customerService.findById(customerId);
@@ -148,6 +153,7 @@ public class CustomerController {
 	@DeleteMapping("/{id}")
 	@Transactional
 	@ApiOperation(value = "Remove a customer")
+	@RolesAllowed({"ADMINISTRATOR", "CUSTOMER"})
 	public ResponseEntity<CustomerDTO> removeCustomer(@PathVariable("id") Long customerId) {
 		Optional<Customer> customerToRemove = customerService.findById(customerId);
 		if (!customerToRemove.isPresent()) {

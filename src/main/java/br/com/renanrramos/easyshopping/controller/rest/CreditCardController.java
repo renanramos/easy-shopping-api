@@ -10,6 +10,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
+import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -66,6 +67,7 @@ public class CreditCardController {
 	@PostMapping
 	@Transactional
 	@ApiOperation(value = "Save a new Credit Card")
+	@RolesAllowed("easy-shopping-user")
 	public ResponseEntity<CreditCardDTO> saveCreditCard(@Valid @RequestBody CreditCardForm creditCardForm, UriComponentsBuilder uriBuilder) {
 
 		if (creditCardForm.getCustomerId() == null) {
@@ -90,6 +92,7 @@ public class CreditCardController {
 	@ResponseBody
 	@GetMapping
 	@ApiOperation(value = "Get all credit cards")
+	@RolesAllowed("easy-shopping-user")
 	public ResponseEntity<List<CreditCardDTO>> getCreditCards(
 			@RequestParam(required =  false) Long customerId,
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber, 
@@ -112,6 +115,7 @@ public class CreditCardController {
 	@ResponseBody
 	@GetMapping(path = "/{id}")
 	@ApiOperation(value = "Get a credit card by id")
+	@RolesAllowed("easy-shopping-user")
 	public ResponseEntity<CreditCardDTO> getCreditCardById(@PathVariable("id") Long creditCardId) {
 		Optional<CreditCard> creditCardOptional = creditCardService.findById(creditCardId);
 
@@ -126,6 +130,7 @@ public class CreditCardController {
 	@ResponseBody
 	@PatchMapping(path = "/{id}")
 	@ApiOperation(value = "Update a credit card")
+	@RolesAllowed("easy-shopping-user")
 	public ResponseEntity<CreditCardDTO> updateCreditCard(@PathVariable("id") Long creditCardId, @RequestBody CreditCardForm creditCardForm, UriComponentsBuilder uriBuilder) {
 		
 		if (creditCardForm.getCustomerId() == null) {
@@ -159,6 +164,7 @@ public class CreditCardController {
 	@DeleteMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Remove a credit card")
+	@RolesAllowed("easy-shopping-user")
 	public ResponseEntity<CreditCardDTO> removeCreditCard(@PathVariable("id") Long creditCardId) {
 		Optional<CreditCard> creditCardOptional = creditCardService.findById(creditCardId);
 

@@ -10,6 +10,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
+import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -64,6 +65,7 @@ public class ProductCategoryController {
 	@Transactional
 	@PostMapping
 	@ApiOperation(value = "Save a new product category")
+	@RolesAllowed("easy-shopping-admin")
 	public ResponseEntity<ProductCategoryDTO> saveProductCategory(@Valid @RequestBody ProductCategoryForm productCategoryForm, 
 			UriComponentsBuilder uriBuilder) {
 		ProductCategory productCategory = ProductCategoryForm.converterProductCategoryFormToProductCategory(productCategoryForm);
@@ -114,6 +116,7 @@ public class ProductCategoryController {
 	@PatchMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Update a product category")
+	@RolesAllowed("easy-shopping-admin")
 	public ResponseEntity<ProductCategoryDTO> updateProductCategory(@PathVariable("id") Long productCategoryId, 
 			@RequestBody ProductCategoryForm productCategoryForm, UriComponentsBuilder uriBuilder) {
 		Optional<ProductCategory> currentProductCategory = productCategoryService.findById(productCategoryId);
@@ -134,6 +137,7 @@ public class ProductCategoryController {
 	@DeleteMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Remove a product category")
+	@RolesAllowed("easy-shopping-admin")
 	public ResponseEntity<ProductCategoryDTO> removeProductCategory(@PathVariable("id") Long productCategoryId) throws EasyShoppingException {
 		Optional<ProductCategory> productCategoryOptional = productCategoryService.findById(productCategoryId);
 

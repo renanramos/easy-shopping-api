@@ -11,6 +11,7 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
+import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -65,6 +66,7 @@ public class AddressController {
 	@PostMapping
 	@Transactional
 	@ApiOperation(value = "Save a new address")
+	@RolesAllowed("easy-shopping-user")
 	public ResponseEntity<AddressDTO> saveAddress(@Valid @RequestBody AddressForm addressForm, UriComponentsBuilder uriBuilder) {
 		
 		if (addressForm.getCustomerId() == null) {
@@ -89,6 +91,7 @@ public class AddressController {
 	@ResponseBody
 	@GetMapping
 	@ApiOperation(value = "Get all addresses")
+	@RolesAllowed("easy-shopping-user")
 	public ResponseEntity<List<AddressDTO>> getAddresses(
 			@RequestParam(required = false) Long customerId,
 			@RequestParam(required = false) String streetName,
@@ -111,6 +114,7 @@ public class AddressController {
 	@ResponseBody
 	@GetMapping(path = "/{id}")
 	@ApiOperation(value = "Get an address by id")
+	@RolesAllowed("easy-shopping-user")
 	public ResponseEntity<AddressDTO> getAddressById(@PathVariable("id") Long addressId) {
 		Optional<Address> addressOptional = addressService.findById(addressId);
 		if(!addressOptional.isPresent()) {
@@ -124,6 +128,7 @@ public class AddressController {
 	@PatchMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Update an address")
+	@RolesAllowed("easy-shopping-user")
 	public ResponseEntity<AddressDTO> updateAddress(@PathVariable("id") Long addressId, @RequestBody AddressForm addressForm, UriComponentsBuilder uriBuilder) {
 		
 		if (addressForm.getCustomerId() == null) {
@@ -157,6 +162,7 @@ public class AddressController {
 	@DeleteMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Remove an address")
+	@RolesAllowed("easy-shopping-user")
 	public ResponseEntity<AddressDTO> removeAddress(@PathVariable("id") Long addressId) {
 		Optional<Address> addressOptional = addressService.findById(addressId);
 

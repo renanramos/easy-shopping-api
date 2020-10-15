@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -87,6 +88,7 @@ public class ProductController {
 	@PostMapping
 	@Transactional
 	@ApiOperation(value = "Save a new product")
+	@RolesAllowed("easy-shopping-admin")
 	public ResponseEntity<ProductDTO> saveProduct(@Valid @RequestBody ProductForm productForm, UriComponentsBuilder uriComponentsBuilder) {
 
 		if (productForm.getProductSubcategoryId() == null) {
@@ -155,26 +157,6 @@ public class ProductController {
 	}
 
 	@ResponseBody
-	@GetMapping("/company-products")
-	@ApiOperation(value = "Get all products of the logged in company")
-	public ResponseEntity<List<ProductDTO>> getCompanyOwnProducts(
-			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber, 
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
-
-		Long companyId = null;
-
-		page = new PageableFactory()
-				.withPage(pageNumber)
-				.withSize(pageSize)
-				.withSort(sortBy)
-				.buildPageable();
-		List<Product> products = productService.findCompanyOwnProducts(page, companyId);
-		return ResponseEntity.ok(ProductDTO.converterProductListToProductDTOList(products));		
-	}
-	
-	
-	@ResponseBody
 	@GetMapping(path = "/search")
 	@ApiOperation(value = "Search all products by product category")
 	public ResponseEntity<List<ProductDTO>> searchProductsByProductCategory(
@@ -226,6 +208,7 @@ public class ProductController {
 	@PatchMapping("/{id}")
 	@Transactional
 	@ApiOperation(value = "Update a product")
+	@RolesAllowed("easy-shopping-admin")
 	public ResponseEntity<ProductDTO> updateProduct(@PathVariable("id") Long productId, @Valid @RequestBody ProductForm productForm,
 			UriComponentsBuilder uriBuilder) {
 
@@ -290,6 +273,7 @@ public class ProductController {
 	@ResponseBody
 	@DeleteMapping(path = "/{id}")
 	@ApiOperation(value = "Remove a product")
+	@RolesAllowed("easy-shopping-admin")
 	public ResponseEntity<ProductDTO> deleteProduct(@PathVariable("id") Long productId) {
 		Optional<Product> productOptional = productService.findById(productId);
 
@@ -302,10 +286,10 @@ public class ProductController {
 
 	@ResponseBody
 	@PostMapping(path = "/images/{id}/upload", consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RolesAllowed("easy-shopping-admin")
 	public ResponseEntity<?> uploadProductImage(@PathVariable("id")Long productId, @RequestBody ProductImageForm productImageForm, UriComponentsBuilder uriComponentsBuilder) throws EasyShoppingException, IOException {
 		Long productFormId = productImageForm.getProductId();
 
-		
 		if (!productFormId.equals(productId)) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.WRONG_PRODUCT_ID);
 		}
@@ -335,6 +319,7 @@ public class ProductController {
 
 	@ResponseBody
 	@GetMapping(path = "/images/{id}")
+	@RolesAllowed("easy-shopping-admin")
 	public ResponseEntity<List<ProductImageDTO>> getProductImage(@PathVariable("id")Long productId) {
 		
 		Optional<Product> productOptional = productService.findById(productId);

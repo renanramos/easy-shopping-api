@@ -10,6 +10,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
+import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
@@ -122,6 +123,7 @@ public class CompanyController {
 	@PatchMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Update a company")
+	@RolesAllowed({"COMPANY", "ADMINISTRATOR"})
 	public ResponseEntity<CompanyDTO> updateCompany(@PathVariable("id") Long companyId, @Valid @RequestBody CompanyForm companyForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 		Optional<Company> currentCompany = companyService.findById(companyId);
 
@@ -142,6 +144,7 @@ public class CompanyController {
 	@DeleteMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Remove a company")
+	@RolesAllowed({"COMPANY", "ADMINISTRATOR"})
 	public ResponseEntity<CompanyDTO> removeCompany(@PathVariable("id") Long companyId) {
 		Optional<Company> companyOptional = companyService.findById(companyId);
 

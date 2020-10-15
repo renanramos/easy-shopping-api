@@ -7,9 +7,11 @@
 package br.com.renanrramos.easyshopping.controller.rest;
 
 import java.net.URI;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
+import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -65,6 +67,7 @@ public class StoreController {
 	@Transactional
 	@PostMapping
 	@ApiOperation(value = "Save a new store")
+	@RolesAllowed({"ADMINISTRATOR", "COMPANY", "easy-shopping-admin"})
 	public ResponseEntity<StoreDTO> saveStore(@Valid @RequestBody StoreForm storeForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 		
 		if (storeForm.getCompanyId() == null) {
@@ -89,13 +92,15 @@ public class StoreController {
 	}
 
 	@ResponseBody
-	@GetMapping("/company-stores")
+	@GetMapping
 	@ApiOperation(value = "Get all stores of the logged in company")
 	public ResponseEntity<List<StoreDTO>> getCompanyOwnStores(
 			@RequestParam(required = false) String name,
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber, 
             @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
+            @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy,
+            Principal principal) {
+
 		Pageable page = new PageableFactory()
 				.withPage(pageNumber)
 				.withSize(pageSize)
@@ -106,7 +111,6 @@ public class StoreController {
 				(name == null) ?
 				storeService.findAll(page) :
 				storeService.findStoreByName(page, name);
-
 		return ResponseEntity.ok(StoreDTO.converterStoreListToStoreDTOList(stores));
 	}
 	
@@ -126,6 +130,7 @@ public class StoreController {
 	@PatchMapping("/{id}")
 	@Transactional
 	@ApiOperation(value = "Update a store")
+	@RolesAllowed("easy-shopping-admin")
 	public ResponseEntity<StoreDTO> updateStore(@PathVariable("id") Long storeId, @RequestBody StoreForm storeForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 
 		if (storeId == null) {
@@ -163,6 +168,7 @@ public class StoreController {
 	@DeleteMapping("/{id}")
 	@Transactional
 	@ApiOperation(value = "Remove a store")
+	@RolesAllowed({"ADMINISTRATOR", "COMPANY"})
 	public ResponseEntity<StoreDTO> deleteStore(@PathVariable("id") Long storeId) {
 		Optional<Store> storeOptional = storeService.findById(storeId);
 		if (!storeOptional.isPresent()) {
