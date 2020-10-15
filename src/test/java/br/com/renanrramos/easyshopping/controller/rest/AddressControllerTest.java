@@ -8,7 +8,7 @@ package br.com.renanrramos.easyshopping.controller.rest;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -136,24 +136,24 @@ public class AddressControllerTest {
 		addresses.add(getAddress());
 		addresses.add(getAddress());
 
-		when(mockService.findAllPageable(eq(page), anyString())).thenReturn(addresses);
+		when(mockService.findAllPageable(eq(page), anyLong())).thenReturn(addresses);
 
 		mockMvc.perform(get(BASE_URL))
 			.andExpect(status().isOk());
 
-		verify(mockService, times(1)).findAllPageable(any(Pageable.class), anyString());
+		verify(mockService, times(1)).findAllPageable(any(Pageable.class), anyLong());
 	}
 
 	@Test
 	public void shouldReturnEmptyListOfAddress() throws Exception {
 		List<Address> addresses = new ArrayList<Address>();
 
-		when(mockService.findAllPageable(eq(page), anyString())).thenReturn(addresses);
+		when(mockService.findAllPageable(eq(page), anyLong())).thenReturn(addresses);
 
 		mockMvc.perform(get(BASE_URL))
 			.andExpect(status().isOk());
 
-		verify(mockService, times(1)).findAllPageable(any(Pageable.class), anyString());
+		verify(mockService, times(1)).findAllPageable(any(Pageable.class), anyLong());
 	}
 
 	@Test
