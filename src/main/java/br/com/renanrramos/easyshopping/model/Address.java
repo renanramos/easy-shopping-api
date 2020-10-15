@@ -60,6 +60,8 @@ public class Address implements Serializable{
 
 	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String city;
+
+	private String userTokenId;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "customer_id")
