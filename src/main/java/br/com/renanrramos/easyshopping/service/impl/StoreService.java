@@ -46,7 +46,10 @@ public class StoreService implements CommonService<Store>{
 
 	@Override
 	public List<Store> findAll(Pageable page) {
-		return new ArrayList<>();
+		Page<Store> pagedResult = storeRepository.findAll(page);
+		return pagedResult.hasContent() ?
+				pagedResult.getContent() :
+					new ArrayList<>();
 	}
 
 	@Override
