@@ -23,7 +23,6 @@ import javax.validation.constraints.NotBlank;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.renanrramos.easyshopping.constants.messages.ValidationMessagesConstants;
-import br.com.renanrramos.easyshopping.enums.AuthProvider;
 import br.com.renanrramos.easyshopping.enums.Profile;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;
@@ -65,9 +64,6 @@ public class User implements Serializable{
 
 	@Column(nullable = false)
 	private boolean isActive;
-
-	@Enumerated(EnumType.STRING)
-	private AuthProvider provider;
 
 	private String providerId;
 
