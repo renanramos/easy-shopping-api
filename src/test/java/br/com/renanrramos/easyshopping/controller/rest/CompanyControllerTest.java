@@ -8,8 +8,6 @@ package br.com.renanrramos.easyshopping.controller.rest;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -48,7 +46,6 @@ import br.com.renanrramos.easyshopping.enums.Profile;
 import br.com.renanrramos.easyshopping.model.Company;
 import br.com.renanrramos.easyshopping.model.Store;
 import br.com.renanrramos.easyshopping.service.impl.CompanyService;
-import br.com.renanrramos.easyshopping.service.impl.UserService;
 
 /**
  * Test for {@link CompanyController}
@@ -70,10 +67,7 @@ public class CompanyControllerTest {
 	private CompanyController companyController;
 
 	@MockBean
-	private CompanyService mockService;	
-
-	@MockBean
-	private UserService userService;
+	private CompanyService mockService;
 
 	@Mock
 	private Pageable page;
@@ -90,7 +84,6 @@ public class CompanyControllerTest {
 		mockMvc = MockMvcBuilders
 				.standaloneSetup(companyController)
 				.build();
-		when(userService.isUserEmailAlreadyInUse(anyString(), anyLong())).thenReturn(false);
 	}
 	
 	@Test
