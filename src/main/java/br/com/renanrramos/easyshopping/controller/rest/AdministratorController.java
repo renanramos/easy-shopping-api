@@ -40,7 +40,6 @@ import br.com.renanrramos.easyshopping.model.Administrator;
 import br.com.renanrramos.easyshopping.model.dto.AdministratorDTO;
 import br.com.renanrramos.easyshopping.model.form.AdministratorForm;
 import br.com.renanrramos.easyshopping.service.impl.AdministratorService;
-import br.com.renanrramos.easyshopping.service.impl.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -58,9 +57,6 @@ public class AdministratorController {
 	private AdministratorService administratorService;
 
 	@Autowired
-	private UserService userService;
-
-	@Autowired
 	private EasyShoppingUtils easyShoppingUtils;
 
 	private URI uri;
@@ -71,10 +67,6 @@ public class AdministratorController {
 	@ApiOperation(value = "Save a new administrator")
 	public ResponseEntity<AdministratorDTO> saveAdministrator(@Valid @RequestBody AdministratorForm administratorForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 		Administrator administrator = AdministratorForm.converterAdministratorFormToAdministrator(administratorForm);
-
-		if (userService.isUserEmailAlreadyInUse(administrator.getEmail(), null)) {
-			throw new EasyShoppingException(ExceptionMessagesConstants.EMAIL_ALREADY_EXIST);
-		}
 
 		String password = easyShoppingUtils.encodePassword(administrator.getPassword());
 		administrator.setPassword(password);

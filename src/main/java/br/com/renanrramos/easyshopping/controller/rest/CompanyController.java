@@ -41,7 +41,6 @@ import br.com.renanrramos.easyshopping.model.Company;
 import br.com.renanrramos.easyshopping.model.dto.CompanyDTO;
 import br.com.renanrramos.easyshopping.model.form.CompanyForm;
 import br.com.renanrramos.easyshopping.service.impl.CompanyService;
-import br.com.renanrramos.easyshopping.service.impl.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -59,9 +58,6 @@ public class CompanyController {
 	private CompanyService companyService;
 
 	@Autowired
-	private UserService userService;
-
-	@Autowired
 	private EasyShoppingUtils easyShoppingUtils;
 
 	private URI uri;
@@ -72,10 +68,6 @@ public class CompanyController {
 	@ApiOperation(value = "Save a new company")
 	public ResponseEntity<CompanyDTO> saveCompany(@Valid @RequestBody CompanyForm companyForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 		Company company = CompanyForm.converterCompanyFormToCompany(companyForm);
-
-		if (userService.isUserEmailAlreadyInUse(company.getEmail(), null)) {
-			throw new EasyShoppingException(ExceptionMessagesConstants.EMAIL_ALREADY_EXIST);				
-		}
 
 		if (companyService.isRegisteredNumberInvalid(company.getRegisteredNumber())) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.CNPJ_ALREADY_EXIST);
@@ -138,10 +130,6 @@ public class CompanyController {
 		}
 
 		Company company = CompanyForm.converterCompanyFormUpdateToCompany(companyForm, currentCompany.get());
-		
-		if (userService.isUserEmailAlreadyInUse(company.getEmail(), companyId)) {
-			throw new EasyShoppingException(ExceptionMessagesConstants.EMAIL_ALREADY_EXIST);
-		}
 
 		company.setId(companyId);
 		CompanyDTO updatedCompanyDTO = CompanyDTO.converterToCompanyDTO((companyService.save(company)));

@@ -40,7 +40,6 @@ import br.com.renanrramos.easyshopping.model.Customer;
 import br.com.renanrramos.easyshopping.model.dto.CustomerDTO;
 import br.com.renanrramos.easyshopping.model.form.CustomerForm;
 import br.com.renanrramos.easyshopping.service.impl.CustomerService;
-import br.com.renanrramos.easyshopping.service.impl.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -56,9 +55,6 @@ public class CustomerController {
 	
 	@Autowired
 	private CustomerService customerService;
-
-	@Autowired
-	private UserService userService;
 
 	@Autowired
 	private EasyShoppingUtils easyShoppingUtils;
@@ -77,10 +73,6 @@ public class CustomerController {
 		
 		if (customerByCpf.isPresent() && !customerByCpf.get().isEmpty()) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.CPF_ALREADY_EXIST);
-		}
-
-		if (userService.isUserEmailAlreadyInUse(customer.getEmail(), null)) {
-			throw new EasyShoppingException(ExceptionMessagesConstants.EMAIL_ALREADY_EXIST);
 		}
 
 		String password = easyShoppingUtils.encodePassword(customer.getPassword());
@@ -144,10 +136,6 @@ public class CustomerController {
 		
 		if (customerByCpf.isPresent() && customerByCpf.get().size() > 1) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.CPF_ALREADY_EXIST);
-		}
-
-		if (userService.isUserEmailAlreadyInUse(customerFormConverted.getEmail(), customerId)) {
-			throw new EasyShoppingException(ExceptionMessagesConstants.EMAIL_ALREADY_EXIST);
 		}
 
 		customerFormConverted.setId(customerId);
