@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.renanrramos.easyshopping.config.util.EasyShoppingUtils;
-import br.com.renanrramos.easyshopping.config.util.JwtTokenUtil;
 import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.enums.Profile;
@@ -41,7 +40,6 @@ import br.com.renanrramos.easyshopping.model.Administrator;
 import br.com.renanrramos.easyshopping.model.dto.AdministratorDTO;
 import br.com.renanrramos.easyshopping.model.form.AdministratorForm;
 import br.com.renanrramos.easyshopping.service.impl.AdministratorService;
-import br.com.renanrramos.easyshopping.service.impl.MailService;
 import br.com.renanrramos.easyshopping.service.impl.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -65,12 +63,6 @@ public class AdministratorController {
 	@Autowired
 	private EasyShoppingUtils easyShoppingUtils;
 
-	@Autowired
-	private JwtTokenUtil jwtTokenUtil;
-	
-	@Autowired
-	private MailService mailService;
-
 	private URI uri;
 
 	@ResponseBody
@@ -90,8 +82,6 @@ public class AdministratorController {
 
 		Administrator administratorCreated = administratorService.save(administrator);
 		if (administratorCreated.getId() != null) {
-			String token = jwtTokenUtil.generateToken(administratorCreated);
-			mailService.sendEmail(token, administratorCreated);
 			uri = uriBuilder.path("/admin/{id}").buildAndExpand(administratorCreated.getId()).encode().toUri();
 			return ResponseEntity.created(uri).body(AdministratorDTO.converterAdministratorToAdministratorDTO(administratorCreated));
 		}

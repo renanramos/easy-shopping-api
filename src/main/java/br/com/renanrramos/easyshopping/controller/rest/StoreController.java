@@ -7,12 +7,10 @@
 package br.com.renanrramos.easyshopping.controller.rest;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -42,7 +40,6 @@ import br.com.renanrramos.easyshopping.model.dto.StoreDTO;
 import br.com.renanrramos.easyshopping.model.form.StoreForm;
 import br.com.renanrramos.easyshopping.service.impl.CompanyService;
 import br.com.renanrramos.easyshopping.service.impl.StoreService;
-import br.com.renanrramos.easyshopping.service.impl.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -61,9 +58,6 @@ public class StoreController {
 	
 	@Autowired
 	private CompanyService companyService;
-
-	@Autowired
-	private UserService userService;
 
 	private URI uri;
 	
@@ -95,28 +89,6 @@ public class StoreController {
 	}
 
 	@ResponseBody
-	@GetMapping
-	@ApiOperation(value = "Get all stores")
-	public ResponseEntity<List<StoreDTO>> getStores(
-			@RequestParam(required = false) String name,
-			@RequestParam(required = false) Long companyId,
-			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber, 
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy,
-            HttpServletRequest request) {
-		Pageable page = new PageableFactory()
-				.withPage(pageNumber)
-				.withSize(pageSize)
-				.withSort(sortBy)
-				.buildPageable();
-		List<Store> stores = 
-				(name == null) ?
-				storeService.findAllPageable(page, companyId) :
-				storeService.findStoreByName(page, name);
-		return ResponseEntity.ok(StoreDTO.converterStoreListToStoreDTOList(stores));
-	}
-
-	@ResponseBody
 	@GetMapping("/company-stores")
 	@ApiOperation(value = "Get all stores of the logged in company")
 	public ResponseEntity<List<StoreDTO>> getCompanyOwnStores(
@@ -130,10 +102,12 @@ public class StoreController {
 				.withSort(sortBy)
 				.buildPageable();
 
-//		Long companyId = userService.getCurrentUserId();
-//		List<Store> stores = storeService.findStoreByCompanyIdOrName(page, companyId, name);
+		List<Store> stores = 
+				(name == null) ?
+				storeService.findAll(page) :
+				storeService.findStoreByName(page, name);
 
-		return ResponseEntity.ok(StoreDTO.converterStoreListToStoreDTOList(new ArrayList<>()));
+		return ResponseEntity.ok(StoreDTO.converterStoreListToStoreDTOList(stores));
 	}
 	
 	@ResponseBody

@@ -31,10 +31,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.renanrramos.easyshopping.config.util.EasyShoppingUtils;
 import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.exception.EasyShoppingException;
@@ -53,7 +51,6 @@ import br.com.renanrramos.easyshopping.service.impl.ProductImageService;
 import br.com.renanrramos.easyshopping.service.impl.ProductService;
 import br.com.renanrramos.easyshopping.service.impl.StoreService;
 import br.com.renanrramos.easyshopping.service.impl.SubcategoryService;
-import br.com.renanrramos.easyshopping.service.impl.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -84,13 +81,7 @@ public class ProductController {
 	private CompanyService companyService;
 
 	@Autowired
-	private UserService userService;
-
-	@Autowired
 	private ProductImageService productImageService;
-
-	@Autowired
-	private EasyShoppingUtils utils;
 
 	@ResponseBody
 	@PostMapping
@@ -171,7 +162,7 @@ public class ProductController {
             @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
             @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
 
-		Long companyId = userService.getCurrentUserId();
+		Long companyId = null;
 
 		page = new PageableFactory()
 				.withPage(pageNumber)
@@ -312,7 +303,6 @@ public class ProductController {
 	@ResponseBody
 	@PostMapping(path = "/images/{id}/upload", consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> uploadProductImage(@PathVariable("id")Long productId, @RequestBody ProductImageForm productImageForm, UriComponentsBuilder uriComponentsBuilder) throws EasyShoppingException, IOException {
-//		, MultipartFile file
 		Long productFormId = productImageForm.getProductId();
 
 		
@@ -334,10 +324,6 @@ public class ProductController {
 
 		ProductImage productImage = ProductImageForm.convertProductImageFormToProductImate(productImageForm);
 		productImage.setProduct(productOptional.get());
-
-//		byte[] picture = utils.compressImageBytes(file.getBytes());
-		
-//		productImage.setPicture(picture);
 		
 		productImage = productImageService.save(productImage);
 		if (productImage.getId() != null) {

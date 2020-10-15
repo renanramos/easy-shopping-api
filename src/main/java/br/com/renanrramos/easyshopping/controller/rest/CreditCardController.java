@@ -39,7 +39,6 @@ import br.com.renanrramos.easyshopping.model.dto.CreditCardDTO;
 import br.com.renanrramos.easyshopping.model.form.CreditCardForm;
 import br.com.renanrramos.easyshopping.service.impl.CreditCardService;
 import br.com.renanrramos.easyshopping.service.impl.CustomerService;
-import br.com.renanrramos.easyshopping.service.impl.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -58,9 +57,6 @@ public class CreditCardController {
 
 	@Autowired
 	private CustomerService customerService;
-
-	@Autowired
-	private UserService userService;
 	
 	private URI uri;
 
@@ -101,7 +97,7 @@ public class CreditCardController {
             @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
 
 		if (customerId == null) {
-			customerId = userService.getCurrentUserId();
+			customerId = 1L; //userService.getCurrentUserId();
 		}
 		
 		page = new PageableFactory()

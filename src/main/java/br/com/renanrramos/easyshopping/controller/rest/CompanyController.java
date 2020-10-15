@@ -32,7 +32,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.renanrramos.easyshopping.config.util.EasyShoppingUtils;
-import br.com.renanrramos.easyshopping.config.util.JwtTokenUtil;
 import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.enums.Profile;
@@ -42,7 +41,6 @@ import br.com.renanrramos.easyshopping.model.Company;
 import br.com.renanrramos.easyshopping.model.dto.CompanyDTO;
 import br.com.renanrramos.easyshopping.model.form.CompanyForm;
 import br.com.renanrramos.easyshopping.service.impl.CompanyService;
-import br.com.renanrramos.easyshopping.service.impl.MailService;
 import br.com.renanrramos.easyshopping.service.impl.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -65,12 +63,6 @@ public class CompanyController {
 
 	@Autowired
 	private EasyShoppingUtils easyShoppingUtils;
-
-	@Autowired
-	private JwtTokenUtil jwtTokenUtil;
-
-	@Autowired
-	private MailService mailService;
 
 	private URI uri;
 	
@@ -96,8 +88,6 @@ public class CompanyController {
 
 		Company companyCreated = companyService.save(company);
 		if (companyCreated.getId() != null) {
-			String token = jwtTokenUtil.generateToken(companyCreated);
-//			mailService.sendEmail(token, companyCreated);
 			uri = uriBuilder.path("/companies/{id}").buildAndExpand(companyCreated.getId()).encode().toUri();			
 			return ResponseEntity.created(uri).body(CompanyDTO.converterToCompanyDTO(companyCreated));
 		}
