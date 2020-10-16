@@ -38,8 +38,8 @@ public class Customer extends User{
 	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String cpf;
 
-	@OneToMany(targetEntity = Address.class, cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.EAGER, orphanRemoval = true)
-	private Set<Address> address = new HashSet<>();
+//	@OneToMany(targetEntity = Address.class, cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.EAGER, orphanRemoval = true)
+//	private Set<Address> address = new HashSet<>();
 
 	@OneToMany(targetEntity = CreditCard.class, cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.EAGER, orphanRemoval = true)
 	private Set<CreditCard> creditCards = new HashSet<>();
@@ -54,6 +54,6 @@ public class Customer extends User{
 
 	@Override
 	public String toString() {
-		return "Customer [cpf=" + cpf + ", address=" + address + ", name= " + getName() + "]";
+		return "Customer [cpf=" + cpf + ", name= " + getName() + "]";
 	}
 }
