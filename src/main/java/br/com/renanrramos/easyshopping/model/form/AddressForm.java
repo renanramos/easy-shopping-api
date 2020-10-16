@@ -35,19 +35,16 @@ public class AddressForm {
 
 	private String city;
 
-	private Long customerId;
-
 	public AddressForm() {
 		// Intentionally empty
 	}
 
-	public AddressForm(String streetName, String district, Long number, String cep, String state, Long customerId, String city) {
+	public AddressForm(String streetName, String district, Long number, String cep, String state, String city) {
 		this.streetName = streetName;
 		this.district = district;
 		this.number = number;
 		this.cep = cep;
 		this.state = state;
-		this.customerId = customerId;
 		this.city = city;
 	}
 
@@ -78,6 +75,6 @@ public class AddressForm {
 	@Override
 	public String toString() {
 		return "AddressForm [streetName=" + streetName + ", district=" + district + ", number=" + number + ", cep="
-				+ cep + ", state=" + state + ", city=" + city + ", customerId=" + customerId + "]";
+				+ cep + ", state=" + state + ", city=" + city + "]";
 	}
 }

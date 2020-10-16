@@ -23,6 +23,8 @@ import br.com.renanrramos.easyshopping.model.Address;
 public interface AddressRepository extends PagingAndSortingRepository<Address, Long> {
 
 	Page<Address> findAddressByStreetNameContaining(Pageable page, String streetName);
+
+	Page<Address> findAddressByCustomerId(Pageable page, String customerId);
 	
 	@Transactional
 	@Modifying

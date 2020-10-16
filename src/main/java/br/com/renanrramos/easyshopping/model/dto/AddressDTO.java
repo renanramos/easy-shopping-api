@@ -35,7 +35,7 @@ public class AddressDTO {
 
 	private String state;
 	
-	private Long customerId;
+	private String customerId;
 
 	private String city;
 
@@ -50,7 +50,7 @@ public class AddressDTO {
 		this.number = address.getNumber();
 		this.cep = address.getCep();
 		this.state = address.getState();
-		this.customerId = address.getCustomer().getId();
+		this.customerId = address.getCustomerId();
 		this.city = address.getCity();
 				
 	}

@@ -66,22 +66,10 @@ public class AddressController {
 	@PostMapping
 	@Transactional
 	@ApiOperation(value = "Save a new address")
-	@RolesAllowed("easy-shopping-user")
-	public ResponseEntity<AddressDTO> saveAddress(@Valid @RequestBody AddressForm addressForm, UriComponentsBuilder uriBuilder) {
-		
-		if (addressForm.getCustomerId() == null) {
-			throw new EntityNotFoundException(ExceptionMessagesConstants.CUSTOMER_ID_NOT_FOUND_ON_REQUEST);
-		}
-
-		Optional<Customer> customerOptional = customerService.findById(addressForm.getCustomerId());
-
-		if (!customerOptional.isPresent()) {
-			throw new EntityNotFoundException(ExceptionMessagesConstants.CUSTOMER_NOT_FOUND);
-		}
-
-		Customer customer = customerOptional.get();
+	@RolesAllowed({"CUSTOMER", "easy-shopping-user"})
+	public ResponseEntity<AddressDTO> saveAddress(@Valid @RequestBody AddressForm addressForm, UriComponentsBuilder uriBuilder, Principal principal) {
 		Address address = AddressForm.converterAddressFormToAddress(addressForm);
-		address.setCustomer(customer);
+		address.setCustomerId(principal.getName());		
 		address = addressService.save(address);
 		uri = uriBuilder.path("/addresses/{id}").buildAndExpand(address.getId()).encode().toUri();
 
@@ -106,7 +94,7 @@ public class AddressController {
 				.buildPageable();
 
 		List<Address> addresses = (streetName == null) ?
-				addressService.findAllPageable(page, customerId) :
+				addressService.findAllPageable(page, principal.getName()) :
 				addressService.findAddressByStreetName(page, streetName);
 		return ResponseEntity.ok(AddressDTO.convertAddressListToAddressDTOList(addresses));	
 	}
@@ -129,19 +117,7 @@ public class AddressController {
 	@Transactional
 	@ApiOperation(value = "Update an address")
 	@RolesAllowed("easy-shopping-user")
-	public ResponseEntity<AddressDTO> updateAddress(@PathVariable("id") Long addressId, @RequestBody AddressForm addressForm, UriComponentsBuilder uriBuilder) {
-		
-		if (addressForm.getCustomerId() == null) {
-			throw new EntityNotFoundException(ExceptionMessagesConstants.CUSTOMER_ID_NOT_FOUND_ON_REQUEST);
-		}
-
-		Optional<Customer> customerOptional = customerService.findById(addressForm.getCustomerId());
-
-		if (!customerOptional.isPresent()) {
-			throw new EntityNotFoundException(ExceptionMessagesConstants.CUSTOMER_NOT_FOUND);
-		}
-
-		Customer customer = customerOptional.get();
+	public ResponseEntity<AddressDTO> updateAddress(@PathVariable("id") Long addressId, @RequestBody AddressForm addressForm, UriComponentsBuilder uriBuilder, Principal principal) {
 
 		Optional<Address> currentAddress = addressService.findById(addressId);
 		
@@ -151,7 +127,7 @@ public class AddressController {
 
 		Address address = AddressForm.converterAddressFormUpdateToAddress(addressForm, currentAddress.get());
 		address.setId(addressId);
-		address.setCustomer(customer);
+		address.setCustomerId(principal.getName());
 		address = addressService.save(address);
 		uri = uriBuilder.path("/addresses/{id}").buildAndExpand(address.getId()).encode().toUri();
 

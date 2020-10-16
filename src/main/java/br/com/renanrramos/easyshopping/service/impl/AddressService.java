@@ -43,6 +43,16 @@ public class AddressService implements CommonService<Address> {
 					new ArrayList<>();
 	}
 
+	public List<Address> findAllPageable(Pageable page, String customerId) {
+		Page<Address> pagedResult = 
+				(customerId.isEmpty()) ?
+				addressRepository.findAll(page) :
+				addressRepository.findAddressByCustomerId(page, customerId);
+		return pagedResult.hasContent() ?
+				pagedResult.getContent() :
+					new ArrayList<>();
+	}	
+	
 	@Override
 	public Optional<Address> findById(Long addressId) {
 		return addressRepository.findById(addressId);

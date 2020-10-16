@@ -50,8 +50,8 @@ public class AddressBuilder {
 		return this;
 	}
 	
-	public AddressBuilder withCustomer(Customer customer) {
-		this.address.setCustomer(customer);
+	public AddressBuilder withCustomer(String customer) {
+		this.address.setCustomerId(customer);
 		return this;
 	}
 

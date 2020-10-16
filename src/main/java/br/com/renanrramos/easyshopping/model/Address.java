@@ -61,12 +61,12 @@ public class Address implements Serializable{
 	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String city;
 
-	private String userTokenId;
+	private String customerId;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "customer_id")
-	@Fetch(FetchMode.JOIN)
-	private Customer customer;
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name = "customer_id")
+//	@Fetch(FetchMode.JOIN)
+//	private Customer customer;
 	
 	public Address() {
 		// Intentionally empty
@@ -75,6 +75,6 @@ public class Address implements Serializable{
 	@Override
 	public String toString() {
 		return "Address [id=" + id + ", streetName=" + streetName + ", district=" + district + ", number=" + number
-				+ ", cep=" + cep + ", state=" + state + ", city=" + city + ", customer=" + customer + "]";
+				+ ", cep=" + cep + ", state=" + state + ", city=" + city + ", customer=" + customerId + "]";
 	}
 }
