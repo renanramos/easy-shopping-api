@@ -167,7 +167,7 @@ public class CustomerControllerTest {
 
 	private static Customer getCustomerInstance() {
 		Customer customer = new Customer();
-		customer.setAddress(new HashSet<>());
+//		customer.setAddress(new HashSet<>());
 		customer.setCpf("12345684522");
 		customer.setEmail("email@mail.com");
 		customer.setId(1L);

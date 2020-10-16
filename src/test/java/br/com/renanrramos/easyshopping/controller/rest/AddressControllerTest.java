@@ -102,7 +102,6 @@ public class AddressControllerTest {
 
 		Address address = getAddress();
 		AddressForm addressForm = new AddressForm();
-		addressForm.setCustomerId(1L);
 		
 		when(customerService.findById(1L)).thenReturn(customerOptional);
 		when(mockService.save(any(Address.class))).thenReturn(address);
@@ -121,7 +120,6 @@ public class AddressControllerTest {
 	public void shouldReturnNotFoundWhenHasNullCustomerId() throws JsonProcessingException, Exception {
 
 		AddressForm addressForm = new AddressForm();
-		addressForm.setCustomerId(null);
 
 		mockMvc.perform(post(BASE_URL)
 				.content(objecMapper.writeValueAsString(addressForm)));
@@ -187,7 +185,6 @@ public class AddressControllerTest {
 		Customer customer = getCustomer();
 
 		AddressForm addressForm = new AddressForm();
-		addressForm.setCustomerId(1L);
 		addressForm.setCep(address.getCep());
 		addressForm.setDistrict(address.getDistrict());
 		addressForm.setNumber(address.getNumber());
@@ -238,7 +235,7 @@ public class AddressControllerTest {
 		address.setNumber(123L);
 		address.setState("state");
 		address.setStreetName("streetName");
-		address.setCustomer(getCustomer());
+		address.setCustomerId("customerId");
 		return address;
 	}
 	
