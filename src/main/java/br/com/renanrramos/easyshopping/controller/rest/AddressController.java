@@ -36,11 +36,9 @@ import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.model.Address;
-import br.com.renanrramos.easyshopping.model.Customer;
 import br.com.renanrramos.easyshopping.model.dto.AddressDTO;
 import br.com.renanrramos.easyshopping.model.form.AddressForm;
 import br.com.renanrramos.easyshopping.service.impl.AddressService;
-import br.com.renanrramos.easyshopping.service.impl.CustomerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -56,9 +54,6 @@ public class AddressController {
 
 	@Autowired
 	private AddressService addressService;
-	
-	@Autowired
-	private CustomerService customerService;
 
 	private URI uri;
 	
