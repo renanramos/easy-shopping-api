@@ -33,14 +33,14 @@ public class CreditCardForm {
 
 	private Integer code;
 
-	private Long customerId;
+	private String customerId;
 
 	public CreditCardForm() {
 		// Intentionally empty
 	}
 
 	public CreditCardForm(String creditCardNumber, String ownerName, 
-			String validDate, Integer code, Long customerId) {
+			String validDate, Integer code, String customerId) {
 		this.creditCardNumber = creditCardNumber;
 		this.ownerName = ownerName;
 		this.validDate = validDate;
