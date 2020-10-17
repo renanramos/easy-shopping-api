@@ -6,13 +6,7 @@
  */
 package br.com.renanrramos.easyshopping.model;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.validation.constraints.NotBlank;
 
@@ -37,12 +31,6 @@ public class Customer extends User{
 	@EqualsAndHashCode.Include
 	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String cpf;
-
-//	@OneToMany(targetEntity = Address.class, cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.EAGER, orphanRemoval = true)
-//	private Set<Address> address = new HashSet<>();
-
-	@OneToMany(targetEntity = CreditCard.class, cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.EAGER, orphanRemoval = true)
-	private Set<CreditCard> creditCards = new HashSet<>();
 
 	public Customer() {
 		// Intentionally empty
