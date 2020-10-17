@@ -34,7 +34,7 @@ public class CreditCardDTO {
 
 	private Integer code;
 
-	private Long customerId;
+	private String customerId;
 
 	public CreditCardDTO() {
 		// Intentionally empty
@@ -46,7 +46,7 @@ public class CreditCardDTO {
 		this.ownerName = creditCard.getOwnerName();
 		this.validDate = creditCard.getValidDate();
 		this.code = creditCard.getCode();
-		this.customerId = creditCard.getCustomer().getId();
+		this.customerId = creditCard.getCustomerId();
 	}
 
 	public static CreditCardDTO converterCreditCardToCreditCardDTO(CreditCard creditCard) {
