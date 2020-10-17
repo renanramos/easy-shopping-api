@@ -10,17 +10,11 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -58,10 +52,7 @@ public class CreditCard implements Serializable{
 	@NotNull(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private Integer code;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "customer_id")
-	@Fetch(FetchMode.JOIN)
-	private Customer customer;
+	private String customerId;
 
 	public CreditCard() {
 		// Intentionally empty
@@ -70,7 +61,7 @@ public class CreditCard implements Serializable{
 	@Override
 	public String toString() {
 		return "CreditCard [creditCardNumber=" + creditCardNumber + ", ownerName=" + ownerName + ", validDate="
-				+ validDate + ", code=" + code + ", customer=" + customer + "]";
+				+ validDate + ", code=" + code + ", customer=" + customerId + "]";
 	}
 
 }
