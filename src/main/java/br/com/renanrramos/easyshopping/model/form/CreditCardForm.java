@@ -33,19 +33,16 @@ public class CreditCardForm {
 
 	private Integer code;
 
-	private String customerId;
-
 	public CreditCardForm() {
 		// Intentionally empty
 	}
 
 	public CreditCardForm(String creditCardNumber, String ownerName, 
-			String validDate, Integer code, String customerId) {
+			String validDate, Integer code) {
 		this.creditCardNumber = creditCardNumber;
 		this.ownerName = ownerName;
 		this.validDate = validDate;
 		this.code = code;
-		this.customerId = customerId;
 	}
 
 	public static CreditCard converterCreditCardFormToCreditCard(CreditCardForm creditCardForm) {
