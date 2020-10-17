@@ -22,7 +22,7 @@ import br.com.renanrramos.easyshopping.model.CreditCard;
  */
 public interface CreditCardRepositoy extends PagingAndSortingRepository<CreditCard, Long>{
 	
-	Page<CreditCard> findCreditCardByCustomerId(Pageable page, Long customerId);
+	Page<CreditCard> findCreditCardByCustomerId(Pageable page, String customerId);
 
 	@Transactional
 	@Modifying
