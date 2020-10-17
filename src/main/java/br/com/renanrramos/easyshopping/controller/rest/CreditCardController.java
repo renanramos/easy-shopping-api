@@ -7,6 +7,7 @@
 package br.com.renanrramos.easyshopping.controller.rest;
 
 import java.net.URI;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,11 +36,9 @@ import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.model.CreditCard;
-import br.com.renanrramos.easyshopping.model.Customer;
 import br.com.renanrramos.easyshopping.model.dto.CreditCardDTO;
 import br.com.renanrramos.easyshopping.model.form.CreditCardForm;
 import br.com.renanrramos.easyshopping.service.impl.CreditCardService;
-import br.com.renanrramos.easyshopping.service.impl.CustomerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -55,34 +54,18 @@ public class CreditCardController {
 
 	@Autowired
 	private CreditCardService creditCardService;
-
-	@Autowired
-	private CustomerService customerService;
 	
 	private URI uri;
-
-	private Pageable page;
 
 	@ResponseBody
 	@PostMapping
 	@Transactional
 	@ApiOperation(value = "Save a new Credit Card")
 	@RolesAllowed("easy-shopping-user")
-	public ResponseEntity<CreditCardDTO> saveCreditCard(@Valid @RequestBody CreditCardForm creditCardForm, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<CreditCardDTO> saveCreditCard(@Valid @RequestBody CreditCardForm creditCardForm, UriComponentsBuilder uriBuilder, Principal principal) {
 
-		if (creditCardForm.getCustomerId() == null) {
-			throw new EntityNotFoundException(ExceptionMessagesConstants.CUSTOMER_ID_NOT_FOUND_ON_REQUEST);
-		}
-
-		Optional<Customer> customerOptional = customerService.findById(creditCardForm.getCustomerId()); 
-
-		if (!customerOptional.isPresent()) {
-			throw new EntityNotFoundException(ExceptionMessagesConstants.CUSTOMER_NOT_FOUND);
-		}
-
-		Customer customer = customerOptional.get();
 		CreditCard creditCard = CreditCardForm.converterCreditCardFormToCreditCard(creditCardForm);
-		creditCard.setCustomer(customer);
+		creditCard.setCustomerId(principal.getName());
 		creditCard = creditCardService.save(creditCard);
 		uri = uriBuilder.path("/credit-cards/{id}").buildAndExpand(creditCard.getId()).encode().toUri();
 
@@ -94,21 +77,16 @@ public class CreditCardController {
 	@ApiOperation(value = "Get all credit cards")
 	@RolesAllowed("easy-shopping-user")
 	public ResponseEntity<List<CreditCardDTO>> getCreditCards(
-			@RequestParam(required =  false) Long customerId,
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber, 
             @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
-
-		if (customerId == null) {
-			customerId = 1L; //userService.getCurrentUserId();
-		}
-		
-		page = new PageableFactory()
+            @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy,
+            Principal principal) {
+		Pageable page = new PageableFactory()
 				.withPage(pageNumber)
 				.withSize(pageSize)
 				.withSort(sortBy)
 				.buildPageable();
-		List<CreditCard> creditCards = creditCardService.findAllPageable(page, customerId);
+		List<CreditCard> creditCards = creditCardService.findAllPageable(page, principal.getName());
 		return ResponseEntity.ok(CreditCardDTO.converterCreditCardListToCreditCardDTOList(creditCards));
 	}
 
@@ -131,19 +109,8 @@ public class CreditCardController {
 	@PatchMapping(path = "/{id}")
 	@ApiOperation(value = "Update a credit card")
 	@RolesAllowed("easy-shopping-user")
-	public ResponseEntity<CreditCardDTO> updateCreditCard(@PathVariable("id") Long creditCardId, @RequestBody CreditCardForm creditCardForm, UriComponentsBuilder uriBuilder) {
-		
-		if (creditCardForm.getCustomerId() == null) {
-			throw new EntityNotFoundException(ExceptionMessagesConstants.CUSTOMER_ID_NOT_FOUND_ON_REQUEST);
-		}
-
-		Optional<Customer> customerOptional = customerService.findById(creditCardForm.getCustomerId());
-
-		if (!customerOptional.isPresent()) {
-			throw new EntityNotFoundException(ExceptionMessagesConstants.CUSTOMER_NOT_FOUND);
-		}
-
-		Customer customer = customerOptional.get();
+	public ResponseEntity<CreditCardDTO> updateCreditCard(@PathVariable("id") Long creditCardId, @RequestBody CreditCardForm creditCardForm, UriComponentsBuilder uriBuilder,
+			Principal principal) {
 
 		Optional<CreditCard> currentCreditCard = creditCardService.findById(creditCardId);
 
@@ -153,7 +120,7 @@ public class CreditCardController {
 
 		CreditCard creditCard = CreditCardForm.converterCreditCardFormUpdateToCreditCard(creditCardForm, currentCreditCard.get());
 		creditCard.setId(creditCardId);
-		creditCard.setCustomer(customer);
+		creditCard.setCustomerId(principal.getName());
 		creditCard = creditCardService.save(creditCard);
 		uri = uriBuilder.path("/credit-cards/{id}").buildAndExpand(creditCard.getId()).encode().toUri();
 
