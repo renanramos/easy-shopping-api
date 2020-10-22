@@ -74,7 +74,7 @@ public class AddressController {
 	@ResponseBody
 	@GetMapping
 	@ApiOperation(value = "Get all addresses")
-	@RolesAllowed("easy-shopping-user")
+	@RolesAllowed({"CUSTOMER", "easy-shopping-user"})
 	public ResponseEntity<List<AddressDTO>> getAddresses(
 			@RequestParam(required = false) Long customerId,
 			@RequestParam(required = false) String streetName,
