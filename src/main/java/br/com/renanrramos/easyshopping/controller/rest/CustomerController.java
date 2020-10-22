@@ -32,16 +32,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.renanrramos.easyshopping.config.util.EasyShoppingUtils;
 import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
-import br.com.renanrramos.easyshopping.enums.Profile;
 import br.com.renanrramos.easyshopping.exception.EasyShoppingException;
 import br.com.renanrramos.easyshopping.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.model.Customer;
 import br.com.renanrramos.easyshopping.model.dto.CustomerDTO;
 import br.com.renanrramos.easyshopping.model.form.CustomerForm;
 import br.com.renanrramos.easyshopping.service.impl.CustomerService;
+import br.com.renanrramos.easyshopping.service.impl.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -57,9 +56,6 @@ public class CustomerController {
 	
 	@Autowired
 	private CustomerService customerService;
-
-	@Autowired
-	private EasyShoppingUtils easyShoppingUtils;
 
 	private URI uri;
 	
@@ -77,10 +73,6 @@ public class CustomerController {
 		if (customerByCpf.isPresent() && !customerByCpf.get().isEmpty()) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.CPF_ALREADY_EXIST);
 		}
-
-		String password = easyShoppingUtils.encodePassword(customer.getPassword());
-		customer.setPassword(password);
-		customer.setProfile(Profile.CUSTOMER);
 
 		Customer customerCreated = customerService.save(customer);
 		if (customerCreated.getId() != null) {
@@ -116,18 +108,6 @@ public class CustomerController {
 	@ApiOperation(value = "Get a customer by id")
 	@RolesAllowed({"ADMINISTRATOR", "CUSTOMER", "easy-shopping-user"})
 	public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable("id") Long customerId) {
-		Optional<Customer> customer = customerService.findById(customerId);
-		if (customer.isPresent()) {
-			return ResponseEntity.ok(CustomerDTO.converterToCustomerDTO(customer.get()));
-		}
-		return ResponseEntity.notFound().build();
-	}
-
-	@ResponseBody
-	@GetMapping(path = "/profile")
-	@ApiOperation(value = "Get a customer by id")
-	@RolesAllowed({"ADMINISTRATOR", "CUSTOMER", "easy-shopping-user"})
-	public ResponseEntity<CustomerDTO> getCustomerProfile(Principal principal) {
 		Optional<Customer> customer = customerService.findById(customerId);
 		if (customer.isPresent()) {
 			return ResponseEntity.ok(CustomerDTO.converterToCustomerDTO(customer.get()));
