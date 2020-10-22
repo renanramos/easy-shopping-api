@@ -65,9 +65,7 @@ public class User implements Serializable{
 	@Column(nullable = false)
 	private boolean isActive;
 
-	private String providerId;
-
-	private String imageUrl;
+	private String tokenId;
 
 	public User() {
 		// Intentionally empty
