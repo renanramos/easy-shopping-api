@@ -10,6 +10,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
+import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -83,6 +84,7 @@ public class AdministratorController {
 	@ResponseBody
 	@GetMapping
 	@ApiOperation(value = "Get all administrators")
+	@RolesAllowed("easy-shopping-admin")
 	public ResponseEntity<List<AdministratorDTO>> getAdministrators(
 			@RequestParam(required = false) String name,
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber, 
@@ -103,6 +105,7 @@ public class AdministratorController {
 	@ResponseBody
 	@GetMapping(path = "/{id}")
 	@ApiOperation(value = "Get an administrator by id")
+	@RolesAllowed("easy-shopping-admin")
 	public ResponseEntity<AdministratorDTO> getAdministratorById(@PathVariable("id") Long administratorId) {		
 		if (administratorId == null) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.INVALID_ID);
@@ -121,6 +124,7 @@ public class AdministratorController {
 	@PatchMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Update an administrator")
+	@RolesAllowed("easy-shopping-admin")
 	public ResponseEntity<AdministratorDTO> updateAdministrator(@PathVariable("id") Long administratorId, @RequestBody AdministratorForm administratorForm, UriComponentsBuilder uriBuilder) {
 		if (administratorId == null) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.INVALID_ID);
@@ -144,6 +148,7 @@ public class AdministratorController {
 	@DeleteMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Remove an administrator")
+	@RolesAllowed("easy-shopping-admin")
 	public ResponseEntity<AdministratorDTO> removeAdministrator(@PathVariable("id") Long administratorId) {
 
 		if (administratorId == null) {
