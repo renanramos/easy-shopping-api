@@ -7,6 +7,7 @@
 package br.com.renanrramos.easyshopping.controller.rest;
 
 import java.net.URI;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -113,8 +114,20 @@ public class CustomerController {
 	@ResponseBody
 	@GetMapping(path = "/{id}")
 	@ApiOperation(value = "Get a customer by id")
-	@RolesAllowed("ADMINISTRATOR")
+	@RolesAllowed({"ADMINISTRATOR", "CUSTOMER", "easy-shopping-user"})
 	public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable("id") Long customerId) {
+		Optional<Customer> customer = customerService.findById(customerId);
+		if (customer.isPresent()) {
+			return ResponseEntity.ok(CustomerDTO.converterToCustomerDTO(customer.get()));
+		}
+		return ResponseEntity.notFound().build();
+	}
+
+	@ResponseBody
+	@GetMapping(path = "/profile")
+	@ApiOperation(value = "Get a customer by id")
+	@RolesAllowed({"ADMINISTRATOR", "CUSTOMER", "easy-shopping-user"})
+	public ResponseEntity<CustomerDTO> getCustomerProfile(Principal principal) {
 		Optional<Customer> customer = customerService.findById(customerId);
 		if (customer.isPresent()) {
 			return ResponseEntity.ok(CustomerDTO.converterToCustomerDTO(customer.get()));
@@ -126,7 +139,7 @@ public class CustomerController {
 	@PatchMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Update a customer")
-	@RolesAllowed("CUSTOMER")
+	@RolesAllowed({"ADMINISTRATOR", "CUSTOMER", "easy-shopping-user"})
 	public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable("id") Long customerId, @RequestBody CustomerForm customerForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 
 		Optional<Customer> currentCustomer = customerService.findById(customerId);
@@ -153,7 +166,7 @@ public class CustomerController {
 	@DeleteMapping("/{id}")
 	@Transactional
 	@ApiOperation(value = "Remove a customer")
-	@RolesAllowed({"ADMINISTRATOR", "CUSTOMER"})
+	@RolesAllowed({"ADMINISTRATOR", "CUSTOMER", "easy-shopping-user"})
 	public ResponseEntity<CustomerDTO> removeCustomer(@PathVariable("id") Long customerId) {
 		Optional<Customer> customerToRemove = customerService.findById(customerId);
 		if (!customerToRemove.isPresent()) {
