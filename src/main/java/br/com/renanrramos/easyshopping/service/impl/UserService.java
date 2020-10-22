@@ -6,43 +6,61 @@
  */
 package br.com.renanrramos.easyshopping.service.impl;
 
-import java.security.Principal;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
-import org.keycloak.KeycloakPrincipal;
-import org.keycloak.KeycloakSecurityContext;
-import org.keycloak.representations.AccessToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import br.com.renanrramos.easyshopping.enums.Profile;
+import br.com.renanrramos.easyshopping.model.User;
+import br.com.renanrramos.easyshopping.repository.UserRepository;
+import br.com.renanrramos.easyshopping.service.CommonService;
 
 /**
  * @author renan.ramos
  *
  */
 @Service
-public class UserService {
+public class UserService implements CommonService<User>{
 
-	private Authentication auth;
-	
-	public String getCurrentUserId(Principal principal) {
-		@SuppressWarnings("unchecked")
-		KeycloakPrincipal<KeycloakSecurityContext> keycloakPrincipal = (KeycloakPrincipal<KeycloakSecurityContext>) principal;
-		AccessToken token = keycloakPrincipal.getKeycloakSecurityContext().getToken();
-		return token.getId();
+	@Autowired
+	private UserRepository userRepository;
+
+	@Override
+	public User save(User entity) {
+		// Not used
+		return null;
 	}
 
-	public String getCurrentUserRole() {
-		auth = SecurityContextHolder.getContext().getAuthentication();
+	@Override
+	public List<User> findAll(Pageable page) {
+		return userRepository.findAll(page).getContent();
+	}
 
-		if (auth.getAuthorities().isEmpty()) {
-			return "";
-		}
-		List<GrantedAuthority> authorities = auth.getAuthorities().stream().collect(Collectors.toList());
-		return Profile.transformRoleToProfile(authorities.get(0).getAuthority());
+	@Override
+	public Optional<User> findById(Long userId) {
+		return userRepository.findById(userId);
+	}
+
+	@Override
+	public User update(User entity) {
+		// Not used
+		return null;
+	}
+
+	@Override
+	public void remove(Long entityId) {
+		// Not used
+	}
+
+	@Override
+	public List<User> findAllPageable(Pageable page, Long id) {
+		// Not used
+		return null;
+	}
+
+	public Optional<User> findUserByTokenId(String tokenId) {
+		return userRepository.findUSerByTokenId(tokenId);
 	}
 }
