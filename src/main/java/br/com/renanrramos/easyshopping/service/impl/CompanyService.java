@@ -77,4 +77,8 @@ public class CompanyService implements CommonService<Company>{
 				pagedResult.getContent() :
 					new ArrayList<>();
 	}
+
+	public Optional<Company> findCompanyByTokenId(String tokenId) {
+		return companyRepository.findCompanyByTokenId(tokenId);
+	}
 }

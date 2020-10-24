@@ -36,11 +36,9 @@ import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.exception.EasyShoppingException;
 import br.com.renanrramos.easyshopping.factory.PageableFactory;
-import br.com.renanrramos.easyshopping.model.Company;
 import br.com.renanrramos.easyshopping.model.Store;
 import br.com.renanrramos.easyshopping.model.dto.StoreDTO;
 import br.com.renanrramos.easyshopping.model.form.StoreForm;
-import br.com.renanrramos.easyshopping.service.impl.CompanyService;
 import br.com.renanrramos.easyshopping.service.impl.StoreService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -57,9 +55,6 @@ public class StoreController {
 
 	@Autowired
 	private StoreService storeService;
-	
-	@Autowired
-	private CompanyService companyService;
 
 	private URI uri;
 	
@@ -67,25 +62,15 @@ public class StoreController {
 	@Transactional
 	@PostMapping
 	@ApiOperation(value = "Save a new store")
-	@RolesAllowed({"ADMINISTRATOR", "COMPANY", "easy-shopping-admin"})
-	public ResponseEntity<StoreDTO> saveStore(@Valid @RequestBody StoreForm storeForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
-		
-		if (storeForm.getCompanyId() == null) {
-			throw new EasyShoppingException(ExceptionMessagesConstants.COMPANY_ID_NOT_FOUND_ON_REQUEST);
-		}
+	@RolesAllowed({"easy-shopping-admin", "easy-shopping-user"})
+	public ResponseEntity<StoreDTO> saveStore(@Valid @RequestBody StoreForm storeForm, UriComponentsBuilder uriBuilder, Principal principal) throws EasyShoppingException {
 
 		if (storeService.isRegisteredNumberInvalid(storeForm.getRegisteredNumber())) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.CNPJ_ALREADY_EXIST);
 		}
 
-		Optional<Company> company = companyService.findById(storeForm.getCompanyId());
-		
-		if (!company.isPresent()) {
-			throw new EntityNotFoundException(ExceptionMessagesConstants.COMPANY_NOT_FOUND);
-		}
-
 		Store store = StoreForm.converterStoreFormToStore(storeForm);
-		store.setCompany(company.get());
+		store.setCompanyId(principal.getName());
 		store = storeService.save(store);
 		uri = uriBuilder.path("/stores/{id}").buildAndExpand(store.getId()).encode().toUri();
 		return ResponseEntity.created(uri).body(StoreDTO.converterStoreToStoreDTO(store));
@@ -130,21 +115,11 @@ public class StoreController {
 	@PatchMapping("/{id}")
 	@Transactional
 	@ApiOperation(value = "Update a store")
-	@RolesAllowed("easy-shopping-admin")
-	public ResponseEntity<StoreDTO> updateStore(@PathVariable("id") Long storeId, @RequestBody StoreForm storeForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
+	@RolesAllowed({"easy-shopping-admin", "easy-shopping-user"})
+	public ResponseEntity<StoreDTO> updateStore(@PathVariable("id") Long storeId, @RequestBody StoreForm storeForm, UriComponentsBuilder uriBuilder, Principal principal) throws EasyShoppingException {
 
 		if (storeId == null) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.STORE_ID_NOT_FOUND_ON_REQUEST);
-		}
-
-		if (storeForm.getCompanyId() == null) {
-			throw new EasyShoppingException(ExceptionMessagesConstants.COMPANY_ID_NOT_FOUND_ON_REQUEST);
-		}
-
-		Optional<Company> companyOptional = companyService.findById(storeForm.getCompanyId());
-
-		if (!companyOptional.isPresent()) {
-			throw new EasyShoppingException(ExceptionMessagesConstants.COMPANY_NOT_FOUND);
 		}
 
 		Optional<Store> currentStore = storeService.findById(storeId);
@@ -153,10 +128,8 @@ public class StoreController {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.STORE_NOT_FOUND);
 		}
 
-		Company company = companyOptional.get();
-
 		Store store = StoreForm.converterStoreFormUpdateToStore(storeForm, currentStore.get());
-		store.setCompany(company);
+		store.setCompanyId(principal.getName());
 		store.setId(storeId);
 		StoreDTO storeUpdatedDTO = StoreDTO.converterStoreToStoreDTO(storeService.save(store));
 		uri = uriBuilder.path("/stores/{id}").buildAndExpand(storeId).encode().toUri();
@@ -168,7 +141,7 @@ public class StoreController {
 	@DeleteMapping("/{id}")
 	@Transactional
 	@ApiOperation(value = "Remove a store")
-	@RolesAllowed({"ADMINISTRATOR", "COMPANY"})
+	@RolesAllowed({"easy-shopping-admin", "easy-shopping-user"})
 	public ResponseEntity<StoreDTO> deleteStore(@PathVariable("id") Long storeId) {
 		Optional<Store> storeOptional = storeService.findById(storeId);
 		if (!storeOptional.isPresent()) {
