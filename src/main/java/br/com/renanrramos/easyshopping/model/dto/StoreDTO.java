@@ -32,9 +32,7 @@ public class StoreDTO {
 	
 	private String corporateName;
 
-	private Long companyId;
-
-	private String companyName;
+	private String companyId;
 	
 	public StoreDTO() {
 		// Intentionally empty
@@ -45,8 +43,7 @@ public class StoreDTO {
 		this.name = store.getName();
 		this.registeredNumber = store.getRegisteredNumber();
 		this.corporateName = store.getCorporateName();
-		this.companyId = Optional.ofNullable(store.getCompany().getId()).orElse(null);
-		this.companyName = Optional.ofNullable(store.getCompany().getName()).orElse("");
+		this.companyId = Optional.ofNullable(store.getCompanyId()).orElse(null);
 	}
 
 	public static List<StoreDTO> converterStoreListToStoreDTOList(List<Store> stores) {

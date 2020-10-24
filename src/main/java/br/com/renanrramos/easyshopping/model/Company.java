@@ -7,9 +7,7 @@
 package br.com.renanrramos.easyshopping.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -42,9 +40,6 @@ public class Company extends User implements Serializable{
 
 	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String phone;
-
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "company", fetch = FetchType.LAZY)
-	private List<Store> stores = new ArrayList<>();
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "company", fetch = FetchType.LAZY)
 	private Set<Product> products = new HashSet<>();

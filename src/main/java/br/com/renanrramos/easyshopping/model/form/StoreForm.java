@@ -29,14 +29,14 @@ public class StoreForm {
 	
 	private String corporateName;
 	
-	private Long companyId;
+	private String companyId;
 
 	public StoreForm() {
 		// Intentionally empty
 	}
 	
 	public StoreForm(String name, String registeredNumber, String corporateName,
-			Long companyId) {
+			String companyId) {
 		this.name = name;
 		this.registeredNumber = registeredNumber;
 		this.corporateName = corporateName;

@@ -13,12 +13,9 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 
@@ -59,9 +56,7 @@ public class Store implements Serializable{
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "store")
 	private List<Product> products = new ArrayList<>();
 	
-	@ManyToOne(targetEntity = Company.class, fetch = FetchType.EAGER)
-	@JoinColumn(name = "company_id")
-	private Company company;
+	private String companyId;
 
 	public Store() {
 		// Intentionally empty
@@ -70,6 +65,6 @@ public class Store implements Serializable{
 	@Override
 	public String toString() {
 		return "Store [id=" + id + ", name=" + name + ", registeredNumber=" + registeredNumber + ", corporateName="
-				+ corporateName + ", products=" + products + ", company=" + company + "]";
+				+ corporateName + ", products=" + products + ", company=" + companyId + "]";
 	}
 }

@@ -7,7 +7,6 @@
 package br.com.renanrramos.easyshopping.controller.rest;
 
 import java.net.URI;
-import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,7 +39,6 @@ import br.com.renanrramos.easyshopping.model.Customer;
 import br.com.renanrramos.easyshopping.model.dto.CustomerDTO;
 import br.com.renanrramos.easyshopping.model.form.CustomerForm;
 import br.com.renanrramos.easyshopping.service.impl.CustomerService;
-import br.com.renanrramos.easyshopping.service.impl.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -86,7 +84,7 @@ public class CustomerController {
 	@ResponseBody
 	@GetMapping
 	@ApiOperation(value = "Get all customers")
-	@RolesAllowed("ADMINISTRATOR")
+	@RolesAllowed({"easy-shopping-admin", "easy-shopping-user"})
 	public ResponseEntity<List<CustomerDTO>> getCustomers(
 			@RequestParam(required = false) String name,
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber, 
@@ -106,7 +104,7 @@ public class CustomerController {
 	@ResponseBody
 	@GetMapping(path = "/{id}")
 	@ApiOperation(value = "Get a customer by id")
-	@RolesAllowed({"ADMINISTRATOR", "CUSTOMER", "easy-shopping-user"})
+	@RolesAllowed({"easy-shopping-admin", "easy-shopping-user"})
 	public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable("id") Long customerId) {
 		Optional<Customer> customer = customerService.findById(customerId);
 		if (customer.isPresent()) {
@@ -119,7 +117,7 @@ public class CustomerController {
 	@PatchMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Update a customer")
-	@RolesAllowed({"ADMINISTRATOR", "CUSTOMER", "easy-shopping-user"})
+	@RolesAllowed({"easy-shopping-admin", "easy-shopping-user"})
 	public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable("id") Long customerId, @RequestBody CustomerForm customerForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 
 		Optional<Customer> currentCustomer = customerService.findById(customerId);
@@ -146,7 +144,7 @@ public class CustomerController {
 	@DeleteMapping("/{id}")
 	@Transactional
 	@ApiOperation(value = "Remove a customer")
-	@RolesAllowed({"ADMINISTRATOR", "CUSTOMER", "easy-shopping-user"})
+	@RolesAllowed({"easy-shopping-admin", "easy-shopping-user"})
 	public ResponseEntity<CustomerDTO> removeCustomer(@PathVariable("id") Long customerId) {
 		Optional<Customer> customerToRemove = customerService.findById(customerId);
 		if (!customerToRemove.isPresent()) {
