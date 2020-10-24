@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.renanrramos.easyshopping.model.User;
-import br.com.renanrramos.easyshopping.model.dto.CustomerDTO;
 import br.com.renanrramos.easyshopping.model.dto.UserDTO;
 import br.com.renanrramos.easyshopping.service.impl.UserService;
 import io.swagger.annotations.Api;
