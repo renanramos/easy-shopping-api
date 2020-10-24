@@ -84,7 +84,7 @@ public class AdministratorController {
 	@ResponseBody
 	@GetMapping
 	@ApiOperation(value = "Get all administrators")
-	@RolesAllowed("easy-shopping-admin")
+	@RolesAllowed({"ADMINISTRATOR", "easy-shopping-admin"})
 	public ResponseEntity<List<AdministratorDTO>> getAdministrators(
 			@RequestParam(required = false) String name,
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber, 
