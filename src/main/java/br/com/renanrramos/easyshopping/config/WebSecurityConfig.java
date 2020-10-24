@@ -23,8 +23,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 
-import br.com.renanrramos.easyshopping.enums.Profile;
-
 /**
  * @author renan.ramos
  *
@@ -45,8 +43,6 @@ public class WebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter{
 	private static final String API_PRODUCT_CATEGORIES = "/api/product-categories";
 
 	private static final String API_SUBCATEGORIES = "/api/subcategories";
-
-	private static final String API_ADMIN = "/api/admin";
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -95,8 +91,6 @@ public class WebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter{
 				.antMatchers(HttpMethod.GET, API_SUBCATEGORIES).permitAll()
 				.antMatchers(HttpMethod.GET, API_SUBCATEGORIES + ID).permitAll()
 				.antMatchers(HttpMethod.GET, API_COMPANIES).permitAll()
-				.antMatchers(HttpMethod.GET, API_COMPANIES + ID).permitAll()
-				.antMatchers(API_ADMIN).hasRole(Profile.getProfileName(Profile.ADMINISTRATOR))
-				.antMatchers(API_ADMIN + ID).hasRole(Profile.getProfileName(Profile.ADMINISTRATOR));
+				.antMatchers(HttpMethod.GET, API_COMPANIES + ID).permitAll();
 	}
 }
