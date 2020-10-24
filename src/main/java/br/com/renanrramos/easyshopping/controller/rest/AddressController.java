@@ -61,7 +61,7 @@ public class AddressController {
 	@PostMapping
 	@Transactional
 	@ApiOperation(value = "Save a new address")
-	@RolesAllowed({"CUSTOMER", "easy-shopping-user"})
+	@RolesAllowed({"CUSTOMER", "easy-shopping-user", "app-customer"})
 	public ResponseEntity<AddressDTO> saveAddress(@Valid @RequestBody AddressForm addressForm, UriComponentsBuilder uriBuilder, Principal principal) {
 		Address address = AddressForm.converterAddressFormToAddress(addressForm);
 		address.setCustomerId(principal.getName());		
@@ -74,7 +74,7 @@ public class AddressController {
 	@ResponseBody
 	@GetMapping
 	@ApiOperation(value = "Get all addresses")
-	@RolesAllowed({"CUSTOMER", "easy-shopping-user"})
+	@RolesAllowed({"easy-shopping-admin", "easy-shopping-user"})
 	public ResponseEntity<List<AddressDTO>> getAddresses(
 			@RequestParam(required = false) Long customerId,
 			@RequestParam(required = false) String streetName,
@@ -97,7 +97,7 @@ public class AddressController {
 	@ResponseBody
 	@GetMapping(path = "/{id}")
 	@ApiOperation(value = "Get an address by id")
-	@RolesAllowed("easy-shopping-user")
+	@RolesAllowed({"easy-shopping-admin", "easy-shopping-user"})
 	public ResponseEntity<AddressDTO> getAddressById(@PathVariable("id") Long addressId) {
 		Optional<Address> addressOptional = addressService.findById(addressId);
 		if(!addressOptional.isPresent()) {
@@ -111,7 +111,7 @@ public class AddressController {
 	@PatchMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Update an address")
-	@RolesAllowed("easy-shopping-user")
+	@RolesAllowed({"easy-shopping-admin", "easy-shopping-user"})
 	public ResponseEntity<AddressDTO> updateAddress(@PathVariable("id") Long addressId, @RequestBody AddressForm addressForm, UriComponentsBuilder uriBuilder, Principal principal) {
 
 		Optional<Address> currentAddress = addressService.findById(addressId);
@@ -133,7 +133,7 @@ public class AddressController {
 	@DeleteMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Remove an address")
-	@RolesAllowed("easy-shopping-user")
+	@RolesAllowed({"easy-shopping-admin", "easy-shopping-user"})
 	public ResponseEntity<AddressDTO> removeAddress(@PathVariable("id") Long addressId) {
 		Optional<Address> addressOptional = addressService.findById(addressId);
 
