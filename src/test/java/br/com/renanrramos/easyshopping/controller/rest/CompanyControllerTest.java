@@ -44,7 +44,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.renanrramos.easyshopping.enums.Profile;
 import br.com.renanrramos.easyshopping.model.Company;
-import br.com.renanrramos.easyshopping.model.Store;
 import br.com.renanrramos.easyshopping.service.impl.CompanyService;
 
 /**
@@ -203,7 +202,6 @@ public class CompanyControllerTest {
 		company.setProfile(Profile.COMPANY);
 		company.setRegisteredNumber("1315adsd5");
 		company.setEmail("company@mail.com");
-		company.setStores(new ArrayList<Store>());
 		return company;
 	}
 }
