@@ -33,13 +33,13 @@ public class ProductForm {
 	
 	private Long storeId;
 
-	private Long companyId;
+	private String companyId;
 
 	public ProductForm() {
 		// Intentionally empty
 	}
 
-	public ProductForm(String name, String description, double price, Long productSubcategoryId, Long storeId, Long companyId) {
+	public ProductForm(String name, String description, double price, Long productSubcategoryId, Long storeId, String companyId) {
 		this.name = name;
 		this.description = description;
 		this.price = price;

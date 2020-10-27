@@ -61,10 +61,12 @@ public class Product implements Serializable{
 	@ManyToOne
 	@JoinColumn(name = "store_id")
 	private Store store;
+//
+//	@ManyToOne
+//	@JoinColumn(name = "company_id")
+//	private Company company;
 
-	@ManyToOne
-	@JoinColumn(name = "company_id")
-	private Company company;
+	private String companyId;
 
 	@OneToMany(targetEntity = ProductImage.class, cascade = CascadeType.ALL, mappedBy = "product", fetch = FetchType.EAGER)
 	private Set<ProductImage> images;  

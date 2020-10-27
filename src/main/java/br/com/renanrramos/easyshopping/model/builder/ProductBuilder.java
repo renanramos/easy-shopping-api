@@ -52,8 +52,8 @@ public class ProductBuilder {
 		return this;
 	}
 
-	public ProductBuilder withCompany(Company company) {
-		this.product.setCompany(company);
+	public ProductBuilder withCompany(String companyId) {
+		this.product.setCompanyId(companyId);
 		return this;
 	}
 	

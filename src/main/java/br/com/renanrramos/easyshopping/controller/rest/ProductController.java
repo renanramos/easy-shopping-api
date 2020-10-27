@@ -88,7 +88,7 @@ public class ProductController {
 	@PostMapping
 	@Transactional
 	@ApiOperation(value = "Save a new product")
-	@RolesAllowed("easy-shopping-admin")
+	@RolesAllowed("easy-shopping-user")
 	public ResponseEntity<ProductDTO> saveProduct(@Valid @RequestBody ProductForm productForm, UriComponentsBuilder uriComponentsBuilder) {
 
 		if (productForm.getProductSubcategoryId() == null) {
@@ -97,10 +97,6 @@ public class ProductController {
 
 		if (productForm.getStoreId() == null) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.STORE_ID_NOT_FOUND_ON_REQUEST);
-		}
-
-		if (productForm.getCompanyId() == null) {
-			throw new EntityNotFoundException(ExceptionMessagesConstants.COMPANY_ID_NOT_FOUND_ON_REQUEST);
 		}
 
 		Optional<Subcategory> productCategoryOptional = productCategoryService.findById(productForm.getProductSubcategoryId());
@@ -114,14 +110,6 @@ public class ProductController {
 		if (!storeOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.STORE_NOT_FOUND);
 		}
-
-		Optional<Company> companyOptional = companyService.findById(productForm.getCompanyId());
-
-		if (!companyOptional.isPresent()) {
-			throw new EntityNotFoundException(ExceptionMessagesConstants.COMPANY_NOT_FOUND);
-		}
-
-		Company company = companyOptional.get();
 		
 		Store store = storeOptional.get();
 		
@@ -130,7 +118,7 @@ public class ProductController {
 		Product product = ProductForm.converterProductFormToProduct(productForm);
 		product.setSubcategory(productCategory);
 		product.setStore(store);
-		product.setCompany(company);
+		product.setCompanyId(productForm.getCompanyId());
 
 		product = productService.save(product);
 		
@@ -208,7 +196,7 @@ public class ProductController {
 	@PatchMapping("/{id}")
 	@Transactional
 	@ApiOperation(value = "Update a product")
-	@RolesAllowed("easy-shopping-admin")
+	@RolesAllowed("easy-shopping-user")
 	public ResponseEntity<ProductDTO> updateProduct(@PathVariable("id") Long productId, @Valid @RequestBody ProductForm productForm,
 			UriComponentsBuilder uriBuilder) {
 
@@ -224,10 +212,6 @@ public class ProductController {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.STORE_ID_NOT_FOUND_ON_REQUEST);
 		}
 
-		if (productForm.getCompanyId() == null) {
-			throw new EntityNotFoundException(ExceptionMessagesConstants.COMPANY_ID_NOT_FOUND_ON_REQUEST);
-		}
-		
 		Optional<Product> currentProduct = productService.findById(productId);
 
 		if (!currentProduct.isPresent()) {
@@ -249,20 +233,12 @@ public class ProductController {
 		}
 
 		Store store = storeOptional.get();
-
-		Optional<Company> companyOptional = companyService.findById(productForm.getCompanyId());
-
-		if (!companyOptional.isPresent()) {
-			throw new EntityNotFoundException(ExceptionMessagesConstants.COMPANY_NOT_FOUND);
-		}
-
-		Company company = companyOptional.get();
 		
 		Product product = ProductForm.converterProductFormUpdateToProduct(productForm, currentProduct.get());
 		product.setSubcategory(productCategory);
 		product.setStore(store);
 		product.setId(productId);
-		product.setCompany(company);
+		product.setCompanyId(productForm.getCompanyId());
 		product = productService.save(product);
 		
 		uri = uriBuilder.path("/products/{id}").buildAndExpand(productId).encode().toUri();
@@ -273,7 +249,7 @@ public class ProductController {
 	@ResponseBody
 	@DeleteMapping(path = "/{id}")
 	@ApiOperation(value = "Remove a product")
-	@RolesAllowed("easy-shopping-admin")
+	@RolesAllowed("easy-shopping-user")
 	public ResponseEntity<ProductDTO> deleteProduct(@PathVariable("id") Long productId) {
 		Optional<Product> productOptional = productService.findById(productId);
 
@@ -286,7 +262,7 @@ public class ProductController {
 
 	@ResponseBody
 	@PostMapping(path = "/images/{id}/upload", consumes=MediaType.APPLICATION_JSON_VALUE)
-	@RolesAllowed("easy-shopping-admin")
+	@RolesAllowed("easy-shopping-user")
 	public ResponseEntity<?> uploadProductImage(@PathVariable("id")Long productId, @RequestBody ProductImageForm productImageForm, UriComponentsBuilder uriComponentsBuilder) throws EasyShoppingException, IOException {
 		Long productFormId = productImageForm.getProductId();
 
@@ -319,7 +295,7 @@ public class ProductController {
 
 	@ResponseBody
 	@GetMapping(path = "/images/{id}")
-	@RolesAllowed("easy-shopping-admin")
+	@RolesAllowed("easy-shopping-user")
 	public ResponseEntity<List<ProductImageDTO>> getProductImage(@PathVariable("id")Long productId) {
 		
 		Optional<Product> productOptional = productService.findById(productId);
