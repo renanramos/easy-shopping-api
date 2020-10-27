@@ -41,9 +41,6 @@ public class Company extends User implements Serializable{
 	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String phone;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "company", fetch = FetchType.LAZY)
-	private Set<Product> products = new HashSet<>();
-
 	public Company() {		
 		// Intentionally empty
 	}
