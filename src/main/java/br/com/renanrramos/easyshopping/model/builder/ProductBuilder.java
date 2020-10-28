@@ -6,7 +6,6 @@
  */
 package br.com.renanrramos.easyshopping.model.builder;
 
-import br.com.renanrramos.easyshopping.model.Company;
 import br.com.renanrramos.easyshopping.model.Product;
 import br.com.renanrramos.easyshopping.model.Store;
 import br.com.renanrramos.easyshopping.model.Subcategory;
