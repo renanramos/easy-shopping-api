@@ -38,7 +38,6 @@ import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.exception.EasyShoppingException;
 import br.com.renanrramos.easyshopping.factory.PageableFactory;
-import br.com.renanrramos.easyshopping.model.Company;
 import br.com.renanrramos.easyshopping.model.Product;
 import br.com.renanrramos.easyshopping.model.ProductImage;
 import br.com.renanrramos.easyshopping.model.Store;
@@ -47,7 +46,6 @@ import br.com.renanrramos.easyshopping.model.dto.ProductDTO;
 import br.com.renanrramos.easyshopping.model.dto.ProductImageDTO;
 import br.com.renanrramos.easyshopping.model.form.ProductForm;
 import br.com.renanrramos.easyshopping.model.form.ProductImageForm;
-import br.com.renanrramos.easyshopping.service.impl.CompanyService;
 import br.com.renanrramos.easyshopping.service.impl.ProductImageService;
 import br.com.renanrramos.easyshopping.service.impl.ProductService;
 import br.com.renanrramos.easyshopping.service.impl.StoreService;
@@ -77,9 +75,6 @@ public class ProductController {
 	
 	@Autowired
 	private StoreService storeService;
-
-	@Autowired
-	private CompanyService companyService;
 
 	@Autowired
 	private ProductImageService productImageService;
