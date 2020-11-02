@@ -62,7 +62,7 @@ public class CustomerController {
 	@PostMapping
 	@Transactional
 	@ApiOperation(value = "Save customer information")
-	@RolesAllowed({ "ADMINISTRATOR", "easy-shopping-user" })
+	@RolesAllowed({ "easy-shopping-admin", "easy-shopping-user" })
 	public ResponseEntity<CustomerDTO> saveCustomer(@Valid @RequestBody CustomerForm customerForm,
 			UriComponentsBuilder uriBuilder, Principal principal) throws EasyShoppingException {
 
@@ -122,9 +122,11 @@ public class CustomerController {
 	@Transactional
 	@ApiOperation(value = "Update a customer")
 	@RolesAllowed({"easy-shopping-admin", "easy-shopping-user"})
-	public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable("id") Long customerId, @RequestBody CustomerForm customerForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
+	public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable("id") String customerId,
+			@RequestBody CustomerForm customerForm, UriComponentsBuilder uriBuilder, Principal principal)
+					throws EasyShoppingException {
 
-		Optional<Customer> currentCustomer = customerService.findById(customerId);
+		Optional<Customer> currentCustomer = customerService.findCustomerByTokenId(customerId);
 
 		if (!currentCustomer.isPresent()) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.CUSTOMER_NOT_FOUND);
@@ -138,7 +140,8 @@ public class CustomerController {
 			throw new EasyShoppingException(ExceptionMessagesConstants.CPF_ALREADY_EXIST);
 		}
 
-		customerFormConverted.setId(customerId);
+		customerFormConverted.setId(currentCustomer.get().getId());
+		customerFormConverted.setTokenId(customerId);
 		CustomerDTO customerUpdatedDTO = CustomerDTO.converterToCustomerDTO(customerService.save(customerFormConverted));
 		uri = uriBuilder.path("/customers/{id}").buildAndExpand(customerId).encode().toUri();
 		return ResponseEntity.accepted().location(uri).body(customerUpdatedDTO);
