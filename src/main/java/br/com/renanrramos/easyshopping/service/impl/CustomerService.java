@@ -1,6 +1,6 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- * 
+ *
  * Creator: renan.ramos - 02/07/2020
  * ------------------------------------------------------------
  */
@@ -36,7 +36,7 @@ public class CustomerService implements CommonService<Customer>{
 
 	@Override
 	public List<Customer> findAllPageable(Pageable page, Long id) {
-		Page<Customer> pagedResult = customerRepository.findAll(page); 
+		Page<Customer> pagedResult = customerRepository.findAll(page);
 		return pagedResult.hasContent() ?
 				pagedResult.getContent() :
 					new ArrayList<>();
@@ -58,7 +58,7 @@ public class CustomerService implements CommonService<Customer>{
 	}
 
 	public Optional<List<Customer>> findCustomerByCpf(String cpf) {
-		List<Customer> customers = customerRepository.findCustomerByCpf(cpf); 
+		List<Customer> customers = customerRepository.findCustomerByCpf(cpf);
 		return  Optional.of(customers);
 	}
 
@@ -71,7 +71,10 @@ public class CustomerService implements CommonService<Customer>{
 		Page<Customer> pagedResult = customerRepository.getCustomerByNameCPFOrEmail(page, name);
 		return pagedResult.hasContent() ?
 				pagedResult.getContent() :
-				new ArrayList<>();
+					new ArrayList<>();
 	}
-	
+
+	public Optional<Customer> findCustomerByTokenId(String tokenId) {
+		return customerRepository.findCustomerByTokenId(tokenId);
+	}
 }

@@ -1,6 +1,6 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- * 
+ *
  * Creator: renan.ramos - 27/06/2020
  * ------------------------------------------------------------
  */
@@ -23,14 +23,16 @@ import lombok.Setter;
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class CustomerDTO {
-	
+
 	private Long id;
 
 	private String name;
-	
+
 	private String cpf;
-	
+
 	private String email;
+
+	private String tokenId;
 
 	private Profile profile;
 
@@ -39,20 +41,20 @@ public class CustomerDTO {
 	public CustomerDTO() {
 		// Intentionally empty
 	}
-	
+
 	public CustomerDTO(Customer customer) {
 		this.id = customer.getId();
 		this.name = customer.getName();
 		this.cpf = customer.getCpf();
 		this.email = customer.getEmail();
 		this.profile = customer.getProfile();
-		this.isActive = customer.isActive();
+		this.tokenId = customer.getTokenId();
 	}
 
 	public static List<CustomerDTO> converterCustomerListToCustomerDTOList(List<Customer> customer) {
-		return customer.stream().map(CustomerDTO::new).collect(Collectors.toList()); 
+		return customer.stream().map(CustomerDTO::new).collect(Collectors.toList());
 	}
-	
+
 	public static CustomerDTO converterToCustomerDTO(Customer customer) {
 		return new CustomerDTO(customer);
 	}

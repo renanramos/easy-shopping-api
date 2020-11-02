@@ -1,12 +1,13 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- * 
+ *
  * Creator: renan.ramos - 25/06/2020
  * ------------------------------------------------------------
  */
 package br.com.renanrramos.easyshopping.controller.rest;
 
 import java.net.URI;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,26 +52,29 @@ import io.swagger.annotations.ApiOperation;
 @Api(tags = "Customers")
 @CrossOrigin(origins = "*")
 public class CustomerController {
-	
+
 	@Autowired
 	private CustomerService customerService;
 
 	private URI uri;
-	
+
 	@ResponseBody
-	@PostMapping(path = "/register")
+	@PostMapping
 	@Transactional
-	@ApiOperation(value = "Save a new customer")
-	@RolesAllowed("ADMINISTRATOR")
-	public ResponseEntity<CustomerDTO> saveCustomer(@Valid @RequestBody CustomerForm customerForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
-		
+	@ApiOperation(value = "Save customer information")
+	@RolesAllowed({ "ADMINISTRATOR", "easy-shopping-user" })
+	public ResponseEntity<CustomerDTO> saveCustomer(@Valid @RequestBody CustomerForm customerForm,
+			UriComponentsBuilder uriBuilder, Principal principal) throws EasyShoppingException {
+
 		Customer customer = CustomerForm.converterCustomerFormToCustomer(customerForm);
 
-		Optional<List<Customer>> customerByCpf = customerService.findCustomerByCpf(customer.getCpf()); 
-		
+		Optional<List<Customer>> customerByCpf = customerService.findCustomerByCpf(customer.getCpf());
+
 		if (customerByCpf.isPresent() && !customerByCpf.get().isEmpty()) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.CPF_ALREADY_EXIST);
 		}
+
+		customer.setTokenId(principal.getName());
 
 		Customer customerCreated = customerService.save(customer);
 		if (customerCreated.getId() != null) {
@@ -80,37 +84,37 @@ public class CustomerController {
 
 		return ResponseEntity.badRequest().build();
 	}
-	
+
 	@ResponseBody
 	@GetMapping
 	@ApiOperation(value = "Get all customers")
 	@RolesAllowed({"easy-shopping-admin", "easy-shopping-user"})
 	public ResponseEntity<List<CustomerDTO>> getCustomers(
 			@RequestParam(required = false) String name,
-			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber, 
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber,
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
 		Pageable page = new PageableFactory()
 				.withPage(pageNumber)
 				.withSize(pageSize)
 				.withSort(sortBy)
 				.buildPageable();
-		List<Customer> customers = (name == null) ? 
+		List<Customer> customers = (name == null) ?
 				customerService.findAllPageable(page, null) :
-				customerService.findCustomerByName(page, name);
-		return ResponseEntity.ok(CustomerDTO.converterCustomerListToCustomerDTOList(customers));
+					customerService.findCustomerByName(page, name);
+				return ResponseEntity.ok(CustomerDTO.converterCustomerListToCustomerDTOList(customers));
 	}
-	
+
 	@ResponseBody
 	@GetMapping(path = "/{id}")
 	@ApiOperation(value = "Get a customer by id")
 	@RolesAllowed({"easy-shopping-admin", "easy-shopping-user"})
-	public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable("id") Long customerId) {
-		Optional<Customer> customer = customerService.findById(customerId);
+	public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable("id") String tokenId) {
+		Optional<Customer> customer = customerService.findCustomerByTokenId(tokenId);
 		if (customer.isPresent()) {
 			return ResponseEntity.ok(CustomerDTO.converterToCustomerDTO(customer.get()));
 		}
-		return ResponseEntity.notFound().build();
+		return ResponseEntity.ok(CustomerDTO.converterToCustomerDTO(new Customer()));
 	}
 
 	@ResponseBody
@@ -128,8 +132,8 @@ public class CustomerController {
 
 		Customer customerFormConverted = CustomerForm.converterCustomerFormUpdateToCustomer(customerForm, currentCustomer.get());
 
-		Optional<List<Customer>> customerByCpf = customerService.findCustomerByCpf(customerFormConverted.getCpf()); 
-		
+		Optional<List<Customer>> customerByCpf = customerService.findCustomerByCpf(customerFormConverted.getCpf());
+
 		if (customerByCpf.isPresent() && customerByCpf.get().size() > 1) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.CPF_ALREADY_EXIST);
 		}
