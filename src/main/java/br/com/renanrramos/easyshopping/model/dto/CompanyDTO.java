@@ -1,6 +1,6 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- * 
+ *
  * Creator: renan.ramos - 30/06/2020
  * ------------------------------------------------------------
  */
@@ -25,11 +25,11 @@ import lombok.Setter;
 public class CompanyDTO {
 
 	private Long id;
-	
+
 	private String name;
-	
+
 	private String registeredNumber;
-	
+
 	private String email;
 
 	private String phone;
@@ -38,10 +38,12 @@ public class CompanyDTO {
 
 	private boolean isActive;
 
+	private String tokenId;
+
 	public CompanyDTO() {
 		// Intentionally empty
 	}
-	
+
 	public CompanyDTO(Company company) {
 		this.id = company.getId();
 		this.name = company.getName();
@@ -49,12 +51,13 @@ public class CompanyDTO {
 		this.email = company.getEmail();
 		this.phone = company.getPhone();
 		this.profile = company.getProfile();
+		this.tokenId = company.getTokenId();
 	}
 
 	public static List<CompanyDTO> converterCompanyListToCompanyDTOList(List<Company> companies) {
 		return companies.stream().map(CompanyDTO::new).collect(Collectors.toList());
 	}
-	
+
 	public static CompanyDTO converterToCompanyDTO(Company company) {
 		return new CompanyDTO(company);
 	}

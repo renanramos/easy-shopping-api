@@ -23,11 +23,11 @@ import lombok.Setter;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class CompanyForm {
 
-	private String registeredNumber;
+	private String email;
 
 	private String name;
 
-	private String email;
+	private String registeredNumber;
 
 	private String phone;
 
@@ -35,17 +35,14 @@ public class CompanyForm {
 		// Intentionally empty
 	}
 
-	public CompanyForm(String name, String registeredNumber, String email, String phone) {
-		this.name = name;
+	public CompanyForm(String registeredNumber, String phone) {
 		this.registeredNumber = registeredNumber;
-		this.email = email;
 		this.phone = phone;
 	}
 
 	public static Company converterCompanyFormToCompany(CompanyForm companyForm) {
 		return CompanyBuilder.builder()
-				.withName(companyForm.getName())
-				.withEmail(companyForm.getEmail())
+				.withEmail(companyForm.getEmail()).withName(companyForm.getName())
 				.withPhone(companyForm.getPhone())
 				.withRegisteredNumber(companyForm.getRegisteredNumber())
 				.build();
@@ -62,7 +59,7 @@ public class CompanyForm {
 
 	@Override
 	public String toString() {
-		return "CompanyForm [registeredNumber=" + registeredNumber + ", name=" + name + ", email=" + email + ", phone="
+		return "CompanyForm [registeredNumber=" + registeredNumber + ", phone="
 				+ phone + "]";
 	}
 

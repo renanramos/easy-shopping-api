@@ -1,17 +1,17 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- * 
+ *
  * Creator: renan.ramos - 30/06/2020
  * ------------------------------------------------------------
  */
 package br.com.renanrramos.easyshopping.controller.rest;
 
 import java.net.URI;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
 import javax.annotation.security.RolesAllowed;
-import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -58,12 +58,14 @@ public class CompanyController {
 	private CompanyService companyService;
 
 	private URI uri;
-	
+
 	@ResponseBody
-	@PostMapping(path = "/register")
+	@PostMapping
 	@Transactional
-	@ApiOperation(value = "Save a new company")
-	public ResponseEntity<CompanyDTO> saveCompany(@Valid @RequestBody CompanyForm companyForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
+	@ApiOperation(value = "Save company information")
+	@RolesAllowed({ "easy-shopping-admin", "easy-shopping-user" })
+	public ResponseEntity<CompanyDTO> saveCompany(@Valid @RequestBody CompanyForm companyForm,
+			UriComponentsBuilder uriBuilder, Principal principal) throws EasyShoppingException {
 		Company company = CompanyForm.converterCompanyFormToCompany(companyForm);
 
 		if (companyService.isRegisteredNumberInvalid(company.getRegisteredNumber())) {
@@ -71,54 +73,56 @@ public class CompanyController {
 		}
 
 		company.setProfile(Profile.COMPANY);
+		company.setTokenId(principal.getName());
 
 		Company companyCreated = companyService.save(company);
 		if (companyCreated.getId() != null) {
-			uri = uriBuilder.path("/companies/{id}").buildAndExpand(companyCreated.getId()).encode().toUri();			
+			uri = uriBuilder.path("/companies/{id}").buildAndExpand(companyCreated.getId()).encode().toUri();
 			return ResponseEntity.created(uri).body(CompanyDTO.converterToCompanyDTO(companyCreated));
 		}
 
 		return ResponseEntity.badRequest().build();
 	}
-	
+
 	@ResponseBody
 	@GetMapping
 	@ApiOperation(value = "Get all companies")
 	public ResponseEntity<List<CompanyDTO>> getCompanies(
 			@RequestParam(required = false) String name,
-			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber, 
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
-			Pageable page = new PageableFactory()
-					.withPage(pageNumber)
-					.withSize(pageSize)
-					.withSort(sortBy)
-					.buildPageable();
-			List<CompanyDTO> listOfCompanyDTOs = (name == null) ?
-					CompanyDTO.converterCompanyListToCompanyDTOList(companyService.findAll(page)) :
-						CompanyDTO.converterCompanyListToCompanyDTOList(companyService.findCompanyByName(page, name));
-		
-		return ResponseEntity.ok(listOfCompanyDTOs);
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber,
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
+		Pageable page = new PageableFactory()
+				.withPage(pageNumber)
+				.withSize(pageSize)
+				.withSort(sortBy)
+				.buildPageable();
+		List<CompanyDTO> listOfCompanyDTOs = (name == null) ?
+				CompanyDTO.converterCompanyListToCompanyDTOList(companyService.findAll(page)) :
+					CompanyDTO.converterCompanyListToCompanyDTOList(companyService.findCompanyByName(page, name));
+
+				return ResponseEntity.ok(listOfCompanyDTOs);
 	}
 
 	@ResponseBody
 	@GetMapping(path = "/{id}")
 	@ApiOperation(value = "Get a company by id")
-	public ResponseEntity<CompanyDTO> getCompanyById(@PathVariable("id") Long companyId) {
-		Optional<Company> company = companyService.findById(companyId);
-		if (!company.isPresent()) {
-			throw new EntityExistsException(ExceptionMessagesConstants.COMPANY_NOT_FOUND);
+	public ResponseEntity<CompanyDTO> getCompanyById(@PathVariable("id") String companyId) {
+		Optional<Company> company = companyService.findCompanyByTokenId(companyId);
+		if (company.isPresent()) {
+			return ResponseEntity.ok(CompanyDTO.converterToCompanyDTO(company.get()));
 		}
-		return ResponseEntity.ok(CompanyDTO.converterToCompanyDTO(company.get()));
+		return ResponseEntity.ok(CompanyDTO.converterToCompanyDTO(new Company()));
 	}
-	
+
 	@ResponseBody
 	@PatchMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Update a company")
-	@RolesAllowed({"COMPANY", "ADMINISTRATOR"})
-	public ResponseEntity<CompanyDTO> updateCompany(@PathVariable("id") Long companyId, @Valid @RequestBody CompanyForm companyForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
-		Optional<Company> currentCompany = companyService.findById(companyId);
+	@RolesAllowed({ "easy-shopping-admin", "easy-shopping-user" })
+	public ResponseEntity<CompanyDTO> updateCompany(@PathVariable("id") String companyId,
+			@Valid @RequestBody CompanyForm companyForm, UriComponentsBuilder uriBuilder) {
+		Optional<Company> currentCompany = companyService.findCompanyByTokenId(companyId);
 
 		if(!currentCompany.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.ACCOUNT_NOT_FOUND);
@@ -126,7 +130,8 @@ public class CompanyController {
 
 		Company company = CompanyForm.converterCompanyFormUpdateToCompany(companyForm, currentCompany.get());
 
-		company.setId(companyId);
+		company.setId(currentCompany.get().getId());
+		company.setTokenId(companyId);
 		CompanyDTO updatedCompanyDTO = CompanyDTO.converterToCompanyDTO((companyService.save(company)));
 		uri = uriBuilder.path("/companies/{id}").buildAndExpand(company.getId()).encode().toUri();
 
