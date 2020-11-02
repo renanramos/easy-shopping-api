@@ -55,9 +55,6 @@ public class User implements Serializable{
 	@Enumerated(EnumType.STRING)
 	private Profile profile;
 
-	@Column(nullable = false)
-	private boolean isActive;
-
 	private String tokenId;
 
 	public User() {

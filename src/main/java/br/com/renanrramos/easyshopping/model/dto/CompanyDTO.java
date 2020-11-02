@@ -49,7 +49,6 @@ public class CompanyDTO {
 		this.email = company.getEmail();
 		this.phone = company.getPhone();
 		this.profile = company.getProfile();
-		this.isActive = company.isActive();
 	}
 
 	public static List<CompanyDTO> converterCompanyListToCompanyDTOList(List<Company> companies) {

@@ -43,7 +43,6 @@ public class AdministratorDTO {
 		this.name = administrator.getName();
 		this.email = administrator.getEmail();
 		this.profile = administrator.getProfile();
-		this.isActive = administrator.isActive();
 	}
 
 	public static AdministratorDTO converterAdministratorToAdministratorDTO(Administrator administrator) {
