@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.renanrramos.easyshopping.config.util.EasyShoppingUtils;
 import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.enums.Profile;
@@ -57,9 +56,6 @@ public class AdministratorController {
 	@Autowired
 	private AdministratorService administratorService;
 
-	@Autowired
-	private EasyShoppingUtils easyShoppingUtils;
-
 	private URI uri;
 
 	@ResponseBody
@@ -69,8 +65,6 @@ public class AdministratorController {
 	public ResponseEntity<AdministratorDTO> saveAdministrator(@Valid @RequestBody AdministratorForm administratorForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 		Administrator administrator = AdministratorForm.converterAdministratorFormToAdministrator(administratorForm);
 
-		String password = easyShoppingUtils.encodePassword(administrator.getPassword());
-		administrator.setPassword(password);
 		administrator.setProfile(Profile.ADMINISTRATOR);
 
 		Administrator administratorCreated = administratorService.save(administrator);

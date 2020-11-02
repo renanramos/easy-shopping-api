@@ -20,8 +20,6 @@ import javax.persistence.InheritanceType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import br.com.renanrramos.easyshopping.constants.messages.ValidationMessagesConstants;
 import br.com.renanrramos.easyshopping.enums.Profile;
 import io.swagger.annotations.ApiModelProperty;
@@ -56,11 +54,6 @@ public class User implements Serializable{
 	@ApiModelProperty(hidden = true)
 	@Enumerated(EnumType.STRING)
 	private Profile profile;
-
-	@JsonIgnore
-	@Column(length = 250)
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
-	private String password;
 
 	@Column(nullable = false)
 	private boolean isActive;

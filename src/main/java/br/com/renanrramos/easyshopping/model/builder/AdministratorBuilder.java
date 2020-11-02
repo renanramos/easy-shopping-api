@@ -25,11 +25,6 @@ public class AdministratorBuilder {
 		return new AdministratorBuilder();
 	}
 
-	public AdministratorBuilder withPassword(String password) {
-		this.administrator.setPassword(password);
-		return this;
-	}
-
 	public AdministratorBuilder withEmail(String email) {
 		this.administrator.setEmail(email);
 		return this;

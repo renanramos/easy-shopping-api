@@ -40,11 +40,6 @@ public class CustomerBuilder {
 		return this;
 	}
 
-	public CustomerBuilder withPassword(String password) {
-		this.customer.setPassword(password);
-		return this;
-	}
-
 	public Customer build() {
 		this.customer.setProfile(Profile.CUSTOMER);
 		return this.customer;

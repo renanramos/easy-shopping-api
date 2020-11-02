@@ -1,6 +1,6 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- * 
+ *
  * Creator: renan.ramos - 04/08/2020
  * ------------------------------------------------------------
  */
@@ -26,18 +26,15 @@ public class UserForm {
 
 	private String email;
 
-	private String password;
-
 	private Profile profile;
 
 	public UserForm() {
 		// Intentionally empty
 	}
 
-	public UserForm(String name, String email, String password, Profile profile) {
+	public UserForm(String name, String email, Profile profile) {
 		this.name = name;
 		this.email = email;
-		this.password = password;
 		this.profile = profile;
 	}
 
@@ -45,13 +42,12 @@ public class UserForm {
 		return UserBuilder.builder()
 				.withName(userForm.getName())
 				.withEmail(userForm.getEmail())
-				.withPassword(userForm.getPassword())
 				.withProfile(userForm.getProfile())
 				.build();
 	}
 
 	@Override
 	public String toString() {
-		return "UserForm [name=" + name + ", email=" + email + ", password=" + password + ", profile=" + profile + "]";
+		return "UserForm [name=" + name + ", email=" + email + ", profile=" + profile + "]";
 	}
 }

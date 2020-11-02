@@ -32,7 +32,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.renanrramos.easyshopping.config.util.EasyShoppingUtils;
 import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.enums.Profile;
@@ -58,9 +57,6 @@ public class CompanyController {
 	@Autowired
 	private CompanyService companyService;
 
-	@Autowired
-	private EasyShoppingUtils easyShoppingUtils;
-
 	private URI uri;
 	
 	@ResponseBody
@@ -74,9 +70,6 @@ public class CompanyController {
 			throw new EasyShoppingException(ExceptionMessagesConstants.CNPJ_ALREADY_EXIST);
 		}
 
-		String password = easyShoppingUtils.encodePassword(company.getPassword());
-
-		company.setPassword(password);
 		company.setProfile(Profile.COMPANY);
 
 		Company companyCreated = companyService.save(company);

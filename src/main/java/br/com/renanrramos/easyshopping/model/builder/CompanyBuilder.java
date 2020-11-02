@@ -44,11 +44,6 @@ public class CompanyBuilder {
 		this.company.setEmail(email);
 		return this;
 	}
-
-	public CompanyBuilder withPassword(String password) {
-		this.company.setPassword(password);
-		return this;
-	}
 		
 	public Company build() {
 		this.company.setProfile(Profile.COMPANY);

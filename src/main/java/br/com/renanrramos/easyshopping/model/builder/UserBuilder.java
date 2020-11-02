@@ -30,11 +30,6 @@ public class UserBuilder {
 		return this;
 	}
 
-	public UserBuilder withPassword(String password) {
-		this.user.setPassword(password);
-		return this;
-	}
-
 	public UserBuilder withName(String name) {
 		this.user.setName(name);
 		return this;

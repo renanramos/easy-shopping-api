@@ -28,9 +28,6 @@ public class AdministratorForm {
 	private String name;
 
 	private String email;
-
-	private String password;
-
 	@ApiModelProperty(hidden = true)
 	private Profile profile;
 
@@ -42,14 +39,12 @@ public class AdministratorForm {
 		this.name = name;
 		this.email = email;
 		this.profile = Profile.ADMINISTRATOR;
-		this.password = password;
 	}
 
 	public static Administrator converterAdministratorFormToAdministrator(AdministratorForm administrator) {
 		return AdministratorBuilder.builder()
 				.withName(administrator.getName())
 				.withEmail(administrator.getEmail())
-				.withPassword(administrator.getPassword())
 				.build();
 	}
 
@@ -57,7 +52,6 @@ public class AdministratorForm {
 		return AdministratorBuilder.builder()
 				.withName(Optional.ofNullable(administratorForm.getName()).orElse(administrator.getName()))
 				.withEmail(Optional.ofNullable(administratorForm.getEmail()).orElse(administrator.getEmail()))
-				.withPassword(Optional.ofNullable(administratorForm.getPassword()).orElse(administrator.getPassword()))
 				.build();
 	}
 

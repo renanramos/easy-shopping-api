@@ -1,6 +1,6 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- * 
+ *
  * Creator: renan.ramos - 24/06/2020
  * ------------------------------------------------------------
  */
@@ -35,7 +35,7 @@ public class Customer extends User{
 	public Customer() {
 		// Intentionally empty
 	}
-	
+
 	public Customer(String cpf) {
 		this.cpf = cpf;
 	}

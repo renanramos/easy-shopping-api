@@ -49,7 +49,6 @@ public class CustomerForm {
 
 	public static Customer converterCustomerFormToCustomer(CustomerForm customerForm) {
 		return CustomerBuilder.builder()
-				.withPassword(customerForm.getPassword())
 				.withCpf(customerForm.getCpf())
 				.withEmail(customerForm.getEmail())
 				.withName(customerForm.getName())
@@ -59,7 +58,6 @@ public class CustomerForm {
 	public static Customer converterCustomerFormUpdateToCustomer(CustomerForm customerForm, Customer currentCustomer) {
 		
 		return CustomerBuilder.builder()
-				.withPassword(Optional.ofNullable(customerForm.getPassword()).orElse(currentCustomer.getPassword()))
 				.withCpf(Optional.ofNullable(customerForm.getCpf()).orElse(currentCustomer.getCpf()))
 				.withEmail(Optional.ofNullable(customerForm.getEmail()).orElse(currentCustomer.getEmail()))
 				.withName(Optional.ofNullable(customerForm.getName()).orElse(currentCustomer.getName()))
