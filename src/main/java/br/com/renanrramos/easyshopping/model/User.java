@@ -1,6 +1,6 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- * 
+ *
  * Creator: renan.ramos - 24/06/2020
  * ------------------------------------------------------------
  */
@@ -33,7 +33,7 @@ import lombok.Setter;
 @Inheritance(strategy = InheritanceType.JOINED)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class User implements Serializable{
- 
+
 	private static final long serialVersionUID = -234475925678811197L;
 
 	@EqualsAndHashCode.Include
@@ -57,6 +57,8 @@ public class User implements Serializable{
 
 	private String tokenId;
 
+	private boolean isSync;
+
 	public User() {
 		// Intentionally empty
 	}
@@ -64,5 +66,5 @@ public class User implements Serializable{
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + "]";
-	}	
+	}
 }
