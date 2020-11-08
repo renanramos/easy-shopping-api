@@ -36,7 +36,7 @@ public class CustomerDTO {
 
 	private Profile profile;
 
-	private boolean isActive;
+	private boolean isSync;
 
 	public CustomerDTO() {
 		// Intentionally empty
@@ -49,6 +49,7 @@ public class CustomerDTO {
 		this.email = customer.getEmail();
 		this.profile = customer.getProfile();
 		this.tokenId = customer.getTokenId();
+		this.isSync = customer.isSync();
 	}
 
 	public static List<CustomerDTO> converterCustomerListToCustomerDTOList(List<Customer> customer) {

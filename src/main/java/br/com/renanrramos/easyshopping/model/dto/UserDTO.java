@@ -1,6 +1,6 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- * 
+ *
  * Creator: renan.ramos - 22/10/2020
  * ------------------------------------------------------------
  */
@@ -26,13 +26,16 @@ public class UserDTO {
 
 	private String email;
 
+	private boolean isSync;
+
 	public UserDTO() {
 		// Intentionally empty
 	}
-	
+
 	public UserDTO(User user) {
 		this.name = Optional.ofNullable(user.getName()).orElse("");
 		this.email = Optional.ofNullable(user.getEmail()).orElse("");
+		this.isSync = user.isSync();
 	}
 
 	public static UserDTO converterUserToUserDTO(User user) {

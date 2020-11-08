@@ -36,7 +36,7 @@ public class CompanyDTO {
 
 	private Profile profile;
 
-	private boolean isActive;
+	private boolean isSync;
 
 	private String tokenId;
 
@@ -52,6 +52,7 @@ public class CompanyDTO {
 		this.phone = company.getPhone();
 		this.profile = company.getProfile();
 		this.tokenId = company.getTokenId();
+		this.isSync = company.isSync();
 	}
 
 	public static List<CompanyDTO> converterCompanyListToCompanyDTOList(List<Company> companies) {
