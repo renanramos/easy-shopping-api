@@ -74,6 +74,7 @@ public class CompanyController {
 
 		company.setProfile(Profile.COMPANY);
 		company.setTokenId(principal.getName());
+		company.setSync(true);
 
 		Company companyCreated = companyService.save(company);
 		if (companyCreated.getId() != null) {
@@ -132,6 +133,7 @@ public class CompanyController {
 
 		company.setId(currentCompany.get().getId());
 		company.setTokenId(companyId);
+		company.setSync(true);
 		CompanyDTO updatedCompanyDTO = CompanyDTO.converterToCompanyDTO((companyService.save(company)));
 		uri = uriBuilder.path("/companies/{id}").buildAndExpand(company.getId()).encode().toUri();
 

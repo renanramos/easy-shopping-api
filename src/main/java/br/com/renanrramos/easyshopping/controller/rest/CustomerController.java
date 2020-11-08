@@ -75,6 +75,7 @@ public class CustomerController {
 		}
 
 		customer.setTokenId(principal.getName());
+		customer.setSync(true);
 
 		Customer customerCreated = customerService.save(customer);
 		if (customerCreated.getId() != null) {
@@ -142,6 +143,7 @@ public class CustomerController {
 
 		customerFormConverted.setId(currentCustomer.get().getId());
 		customerFormConverted.setTokenId(customerId);
+		customerFormConverted.setSync(true);
 		CustomerDTO customerUpdatedDTO = CustomerDTO.converterToCustomerDTO(customerService.save(customerFormConverted));
 		uri = uriBuilder.path("/customers/{id}").buildAndExpand(customerId).encode().toUri();
 		return ResponseEntity.accepted().location(uri).body(customerUpdatedDTO);
