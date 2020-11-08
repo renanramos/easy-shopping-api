@@ -1,6 +1,6 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- * 
+ *
  * Creator: renan.ramos - 04/08/2020
  * ------------------------------------------------------------
  */
@@ -20,10 +20,10 @@ import br.com.renanrramos.easyshopping.model.User;
  */
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>{
-	
+
 	Optional<User> findTopUserByEmail(String email);
-	
+
 	Optional<List<User>> findUserByEmail(String email);
 
-	Optional<User> findUSerByTokenId(String tokenId);
+	Optional<User> findUserByTokenId(String tokenId);
 }

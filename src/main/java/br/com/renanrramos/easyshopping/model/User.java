@@ -55,6 +55,7 @@ public class User implements Serializable{
 	@Enumerated(EnumType.STRING)
 	private Profile profile;
 
+	@Column(length = 250)
 	private String tokenId;
 
 	private boolean isSync;

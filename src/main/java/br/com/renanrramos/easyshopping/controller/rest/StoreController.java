@@ -1,6 +1,6 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- * 
+ *
  * Creator: renan.ramos - 02/07/2020
  * ------------------------------------------------------------
  */
@@ -57,7 +57,7 @@ public class StoreController {
 	private StoreService storeService;
 
 	private URI uri;
-	
+
 	@ResponseBody
 	@Transactional
 	@PostMapping
@@ -70,21 +70,21 @@ public class StoreController {
 		}
 
 		Store store = StoreForm.converterStoreFormToStore(storeForm);
-		store.setCompanyId(principal.getName());
+		store.setTokenId(principal.getName());
 		store = storeService.save(store);
 		uri = uriBuilder.path("/stores/{id}").buildAndExpand(store.getId()).encode().toUri();
 		return ResponseEntity.created(uri).body(StoreDTO.converterStoreToStoreDTO(store));
 	}
 
 	@ResponseBody
-	@GetMapping
+	@GetMapping("/company")
 	@ApiOperation(value = "Get all stores of the logged in company")
 	public ResponseEntity<List<StoreDTO>> getCompanyOwnStores(
 			@RequestParam(required = false) String name,
-			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber, 
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy,
-            Principal principal) {
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber,
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy,
+			Principal principal) {
 
 		Pageable page = new PageableFactory()
 				.withPage(pageNumber)
@@ -92,13 +92,32 @@ public class StoreController {
 				.withSort(sortBy)
 				.buildPageable();
 
-		List<Store> stores = 
-				(name == null) ?
-				storeService.findAll(page) :
-				storeService.findStoreByName(page, name);
-		return ResponseEntity.ok(StoreDTO.converterStoreListToStoreDTOList(stores));
+		List<Store> stores = (name == null) ?
+				storeService.findAllPageable(page, principal.getName())
+				: storeService.findStoreByName(page, name);
+				return ResponseEntity.ok(StoreDTO.converterStoreListToStoreDTOList(stores));
 	}
-	
+
+	@ResponseBody
+	@GetMapping
+	@ApiOperation(value = "Get all stores")
+	public ResponseEntity<List<StoreDTO>> getStores(
+			@RequestParam(required = false) String name,
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber,
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
+		Pageable page = new PageableFactory()
+				.withPage(pageNumber)
+				.withSize(pageSize)
+				.withSort(sortBy)
+				.buildPageable();
+
+		List<Store> stores = (name == null) ?
+				storeService.findAll(page) :
+					storeService.findStoreByName(page, name);
+				return ResponseEntity.ok(StoreDTO.converterStoreListToStoreDTOList(stores));
+	}
+
 	@ResponseBody
 	@GetMapping("/{id}")
 	@ApiOperation(value = "Get a store by id")
@@ -110,7 +129,7 @@ public class StoreController {
 		}
 		return ResponseEntity.notFound().build();
 	}
-	
+
 	@ResponseBody
 	@PatchMapping("/{id}")
 	@Transactional
@@ -129,7 +148,7 @@ public class StoreController {
 		}
 
 		Store store = StoreForm.converterStoreFormUpdateToStore(storeForm, currentStore.get());
-		store.setCompanyId(principal.getName());
+		store.setTokenId(principal.getName());
 		store.setId(storeId);
 		StoreDTO storeUpdatedDTO = StoreDTO.converterStoreToStoreDTO(storeService.save(store));
 		uri = uriBuilder.path("/stores/{id}").buildAndExpand(storeId).encode().toUri();
@@ -148,6 +167,6 @@ public class StoreController {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.STORE_NOT_FOUND);
 		}
 		storeService.remove(storeId);
-		return ResponseEntity.ok().build();			
+		return ResponseEntity.ok().build();
 	}
 }

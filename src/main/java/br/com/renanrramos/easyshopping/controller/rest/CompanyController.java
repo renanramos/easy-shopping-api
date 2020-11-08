@@ -93,16 +93,18 @@ public class CompanyController {
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber,
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
+
 		Pageable page = new PageableFactory()
 				.withPage(pageNumber)
 				.withSize(pageSize)
 				.withSort(sortBy)
 				.buildPageable();
+
 		List<CompanyDTO> listOfCompanyDTOs = (name == null) ?
 				CompanyDTO.converterCompanyListToCompanyDTOList(companyService.findAll(page)) :
 					CompanyDTO.converterCompanyListToCompanyDTOList(companyService.findCompanyByName(page, name));
 
-				return ResponseEntity.ok(listOfCompanyDTOs);
+		return ResponseEntity.ok(listOfCompanyDTOs);
 	}
 
 	@ResponseBody

@@ -1,6 +1,6 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- * 
+ *
  * Creator: renan.ramos - 26/06/2020
  * ------------------------------------------------------------
  */
@@ -24,7 +24,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@PrimaryKeyJoinColumn(name="id")
+@PrimaryKeyJoinColumn(name = "id")
 @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 public class Company extends User implements Serializable{
 
@@ -36,7 +36,7 @@ public class Company extends User implements Serializable{
 	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String phone;
 
-	public Company() {		
+	public Company() {
 		// Intentionally empty
 	}
 

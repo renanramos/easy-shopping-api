@@ -1,6 +1,6 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- * 
+ *
  * Creator: renan.ramos - 26/06/2020
  * ------------------------------------------------------------
  */
@@ -52,11 +52,11 @@ public class Store implements Serializable{
 	@Column(nullable = false, length = 250)
 	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String corporateName;
-	
+
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "store")
 	private List<Product> products = new ArrayList<>();
-	
-	private String companyId;
+
+	private String tokenId;
 
 	public Store() {
 		// Intentionally empty
@@ -65,6 +65,6 @@ public class Store implements Serializable{
 	@Override
 	public String toString() {
 		return "Store [id=" + id + ", name=" + name + ", registeredNumber=" + registeredNumber + ", corporateName="
-				+ corporateName + ", products=" + products + ", company=" + companyId + "]";
+				+ corporateName + ", products=" + products + "]";
 	}
 }

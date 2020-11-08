@@ -1,6 +1,6 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- * 
+ *
  * Creator: renan.ramos - 02/07/2020
  * ------------------------------------------------------------
  */
@@ -34,14 +34,14 @@ public class StoreService implements CommonService<Store>{
 		return storeRepository.save(store);
 	}
 
-	public List<Store> findAllPageable(Pageable page, Long companyId) {
-		Page<Store> pagedResult = 
+	public List<Store> findAllPageable(Pageable page, String companyId) {
+		Page<Store> pagedResult =
 				(companyId == null) ?
-				storeRepository.findAll(page) :
-					storeRepository.findStoreByCompanyId(page, companyId);
-		return pagedResult.hasContent() ?
-				pagedResult.getContent() :
-					new ArrayList<>();
+						storeRepository.findAll(page) :
+							storeRepository.findStoreByTokenId(page, companyId);
+						return pagedResult.hasContent() ?
+								pagedResult.getContent() :
+									new ArrayList<>();
 	}
 
 	@Override
@@ -68,24 +68,15 @@ public class StoreService implements CommonService<Store>{
 	}
 
 	public List<Store> findStoreByName(Pageable page, String name) {
-		Page<Store> pagedResult = 
+		Page<Store> pagedResult =
 				(name == null) ?
-				storeRepository.findAll(page) :
-				storeRepository.getStoreByNameCorporateNameRegisteredNumberOrCompanyName(page, name);
-		return pagedResult.hasContent() ?
-				pagedResult.getContent() :
-					new ArrayList<>();
+						storeRepository.findAll(page) :
+							storeRepository.getStoreByNameCorporateNameRegisteredNumberOrCompanyName(page, name);
+						return pagedResult.hasContent() ? pagedResult.getContent() : new ArrayList<>();
 	}
 
-	public List<Store> findStoreByCompanyIdOrName(Pageable page, String companyId, String name) {
-		Page<Store> pagedResult = storeRepository.getStoreWithNameRegisteredNumberCompany(page, name, companyId);
-		return pagedResult.hasContent() ?
-				pagedResult.getContent() :
-					new ArrayList<>();
-	}
-	
-	public List<Store> findStoreByCompanyId(Pageable page, Long companyId) {
-		Page<Store> pagedResult = storeRepository.findStoreByCompanyId(page, companyId);
+	public List<Store> findStoreByCompanyId(Pageable page, String companyId) {
+		Page<Store> pagedResult = storeRepository.findStoreByTokenId(page, companyId);
 		return pagedResult.hasContent() ?
 				pagedResult.getContent() :
 					new ArrayList<>();
@@ -93,5 +84,11 @@ public class StoreService implements CommonService<Store>{
 
 	public boolean isRegisteredNumberInvalid(String registeredNumber) {
 		return storeRepository.findTopStoreByRegisteredNumber(registeredNumber).isPresent();
+	}
+
+	@Deprecated
+	@Override
+	public List<Store> findAllPageable(Pageable page, Long id) {
+		return null;
 	}
 }

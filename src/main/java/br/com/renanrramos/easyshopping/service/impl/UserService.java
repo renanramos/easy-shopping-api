@@ -1,6 +1,6 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- * 
+ *
  * Creator: renan.ramos - 04/08/2020
  * ------------------------------------------------------------
  */
@@ -61,6 +61,6 @@ public class UserService implements CommonService<User>{
 	}
 
 	public Optional<User> findUserByTokenId(String tokenId) {
-		return userRepository.findUSerByTokenId(tokenId);
+		return userRepository.findUserByTokenId(tokenId);
 	}
 }

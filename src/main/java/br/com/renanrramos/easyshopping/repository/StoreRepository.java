@@ -1,6 +1,6 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- * 
+ *
  * Creator: renan.ramos - 27/06/2020
  * ------------------------------------------------------------
  */
@@ -23,13 +23,14 @@ import br.com.renanrramos.easyshopping.model.Store;
  */
 public interface StoreRepository extends PagingAndSortingRepository<Store, Long>{
 
-	Page<Store> findStoreByCompanyId(Pageable page, Long companyId);
+	Page<Store> findStoreByTokenId(Pageable page, String companyId);
 
 	@Query(EasyShoppingSqlConstants.GET_STORE_BY_NAME)
-	Page<Store> getStoreByNameCorporateNameRegisteredNumberOrCompanyName(Pageable page, @Param("name")String name);
+	Page<Store> getStoreByNameCorporateNameRegisteredNumberOrCompanyName(Pageable page, @Param("name") String name);
 
 	Optional<Store> findTopStoreByRegisteredNumber(String registeredNumber);
 
-	@Query(EasyShoppingSqlConstants.GET_STORE_WITH_COMPANY_ID) 
-	Page<Store> getStoreWithNameRegisteredNumberCompany(Pageable page, @Param("name")String name, @Param("tokenId")String tokenId);
+	@Query(EasyShoppingSqlConstants.GET_STORE_WITH_COMPANY_ID)
+	Page<Store> getStoreWithNameRegisteredNumberCompany(Pageable page, @Param("name") String name,
+			@Param("tokenId") String tokenId);
 }
