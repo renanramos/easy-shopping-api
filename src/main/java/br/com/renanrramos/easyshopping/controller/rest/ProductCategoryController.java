@@ -1,6 +1,6 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- * 
+ *
  * Creator: renan.ramos - 07/07/2020
  * ------------------------------------------------------------
  */
@@ -60,13 +60,13 @@ public class ProductCategoryController {
 	private ProductService productService;
 
 	private URI uri;
-	
+
 	@ResponseBody
 	@Transactional
 	@PostMapping
 	@ApiOperation(value = "Save a new product category")
 	@RolesAllowed("easy-shopping-admin")
-	public ResponseEntity<ProductCategoryDTO> saveProductCategory(@Valid @RequestBody ProductCategoryForm productCategoryForm, 
+	public ResponseEntity<ProductCategoryDTO> saveProductCategory(@Valid @RequestBody ProductCategoryForm productCategoryForm,
 			UriComponentsBuilder uriBuilder) {
 		ProductCategory productCategory = ProductCategoryForm.converterProductCategoryFormToProductCategory(productCategoryForm);
 		productCategory = productCategoryService.save(productCategory);
@@ -75,7 +75,7 @@ public class ProductCategoryController {
 			throw new InternalError(ExceptionMessagesConstants.INTERNAL_ERROR);
 		}
 
-		uri = uriBuilder.path("/productCategories/{id}").buildAndExpand(productCategory.getId()).encode().toUri();
+		uri = uriBuilder.path("/product-categories/{id}").buildAndExpand(productCategory.getId()).encode().toUri();
 		return ResponseEntity.created(uri)
 				.body(ProductCategoryDTO.converterProductCategoryToProductCategoryDTO(productCategory));
 	}
@@ -85,21 +85,21 @@ public class ProductCategoryController {
 	@ApiOperation(value = "Get all product categories")
 	public ResponseEntity<List<ProductCategoryDTO>> getProductCategories(
 			@RequestParam(required = false) String name,
-			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber, 
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber,
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
 		Pageable page = new PageableFactory()
 				.withPage(pageNumber)
 				.withSize(pageSize)
 				.withSort(sortBy)
 				.buildPageable();
-		List<ProductCategory> productCategories = 
+		List<ProductCategory> productCategories =
 				(name == null) ?
-				productCategoryService.findAllPageable(page, null) :
-				productCategoryService.findAllProductCategoriesByName(page, name);
-		return ResponseEntity.ok(ProductCategoryDTO.converterProductCategoryListToProductCategoryDTOList(productCategories));
+						productCategoryService.findAllPageable(page, null) :
+							productCategoryService.findAllProductCategoriesByName(page, name);
+						return ResponseEntity.ok(ProductCategoryDTO.converterProductCategoryListToProductCategoryDTOList(productCategories));
 	}
-	
+
 	@ResponseBody
 	@GetMapping(path = "/{id}")
 	@ApiOperation(value = "Get a product category by id")
@@ -111,13 +111,13 @@ public class ProductCategoryController {
 		}
 		return ResponseEntity.notFound().build();
 	}
-	
+
 	@ResponseBody
 	@PatchMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Update a product category")
 	@RolesAllowed("easy-shopping-admin")
-	public ResponseEntity<ProductCategoryDTO> updateProductCategory(@PathVariable("id") Long productCategoryId, 
+	public ResponseEntity<ProductCategoryDTO> updateProductCategory(@PathVariable("id") Long productCategoryId,
 			@RequestBody ProductCategoryForm productCategoryForm, UriComponentsBuilder uriBuilder) {
 		Optional<ProductCategory> currentProductCategory = productCategoryService.findById(productCategoryId);
 
@@ -128,11 +128,11 @@ public class ProductCategoryController {
 		ProductCategory productCategory = ProductCategoryForm.converterProductCategoryFormUpdateToProductCategory(productCategoryForm, currentProductCategory.get());
 		productCategory.setId(productCategoryId);
 		ProductCategoryDTO productCategoryDTO = ProductCategoryDTO.converterProductCategoryToProductCategoryDTO(productCategoryService.save(productCategory));
-		uri = uriBuilder.path("/productCategories/{id}").buildAndExpand(productCategoryDTO).encode().toUri();
+		uri = uriBuilder.path("/product-categories/{id}").buildAndExpand(productCategoryDTO).encode().toUri();
 
 		return ResponseEntity.accepted().location(uri).body(productCategoryDTO);
 	}
-	
+
 	@ResponseBody
 	@DeleteMapping(path = "/{id}")
 	@Transactional
@@ -144,7 +144,7 @@ public class ProductCategoryController {
 		if (!productCategoryOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_NOT_FOUND);
 		}
-		
+
 		if (productService.isThereAnyProductWithSubcategoryId(productCategoryId)) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.CANNOT_REMOVE_PRODUCT_CATEGORY_IN_USE);
 		}

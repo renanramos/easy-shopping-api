@@ -1,6 +1,6 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- * 
+ *
  * Creator: renan.ramos - 08/08/2020
  * ------------------------------------------------------------
  */
@@ -24,6 +24,8 @@ import javax.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.renanrramos.easyshopping.constants.messages.ValidationMessagesConstants;
 import io.swagger.annotations.ApiModelProperty;
@@ -55,6 +57,7 @@ public class Subcategory implements Serializable{
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "productCategory_id")
 	@Fetch(FetchMode.JOIN)
+	@JsonIgnore
 	private ProductCategory productCategory;
 
 	@OneToMany(cascade = CascadeType.ALL)
