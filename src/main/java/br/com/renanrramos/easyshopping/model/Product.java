@@ -1,6 +1,6 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- * 
+ *
  * Creator: renan.ramos - 26/06/2020
  * ------------------------------------------------------------
  */
@@ -53,11 +53,11 @@ public class Product implements Serializable{
 	private String description;
 
 	private double price;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "subcategory_id")
 	private Subcategory subcategory;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "store_id")
 	private Store store;
@@ -65,7 +65,9 @@ public class Product implements Serializable{
 	private String companyId;
 
 	@OneToMany(targetEntity = ProductImage.class, cascade = CascadeType.ALL, mappedBy = "product", fetch = FetchType.EAGER)
-	private Set<ProductImage> images;  
+	private Set<ProductImage> images;
+
+	private boolean isPublished;
 
 	public Product() {
 		// Intentionally empty

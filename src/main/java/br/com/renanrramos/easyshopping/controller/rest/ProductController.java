@@ -1,6 +1,6 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- * 
+ *
  * Creator: renan.ramos - 07/07/2020
  * ------------------------------------------------------------
  */
@@ -62,17 +62,17 @@ import io.swagger.annotations.ApiOperation;
 @Api(tags = "Products")
 @CrossOrigin(origins = "*")
 public class ProductController {
-	
+
 	private URI uri;
 
 	private Pageable page;
-	
+
 	@Autowired
 	private ProductService productService;
-	
+
 	@Autowired
 	private SubcategoryService productCategoryService;
-	
+
 	@Autowired
 	private StoreService storeService;
 
@@ -95,7 +95,7 @@ public class ProductController {
 		}
 
 		Optional<Subcategory> productCategoryOptional = productCategoryService.findById(productForm.getProductSubcategoryId());
-		
+
 		if (!productCategoryOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_NOT_FOUND);
 		}
@@ -105,20 +105,21 @@ public class ProductController {
 		if (!storeOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.STORE_NOT_FOUND);
 		}
-		
+
 		Store store = storeOptional.get();
-		
+
 		Subcategory productCategory = productCategoryOptional.get();
 
 		Product product = ProductForm.converterProductFormToProduct(productForm);
 		product.setSubcategory(productCategory);
 		product.setStore(store);
+		product.setPublished(false);
 		product.setCompanyId(productForm.getCompanyId());
 
 		product = productService.save(product);
-		
+
 		uri = uriComponentsBuilder.path("/products/{id}").buildAndExpand(product.getId()).encode().toUri();
-		
+
 		return ResponseEntity.created(uri).body(ProductDTO.convertProductToProductDTO(product));
 	}
 
@@ -126,56 +127,64 @@ public class ProductController {
 	@GetMapping
 	@ApiOperation(value = "Get all products")
 	public ResponseEntity<List<ProductDTO>> getAllProducts(
+			@RequestParam(name = "published", required = false) boolean onlyPublishedProducts,
 			@RequestParam(required = false) Long storeId,
-			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber, 
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber,
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
 		page = new PageableFactory()
 				.withPage(pageNumber)
 				.withSize(pageSize)
 				.withSort(sortBy)
 				.buildPageable();
 		List<Product> products = productService.findAllPageable(page, storeId);
-		return ResponseEntity.ok(ProductDTO.converterProductListToProductDTOList(products));		
+		return onlyPublishedProducts
+				? ResponseEntity.ok(ProductDTO.converterPublishedProductListToProductDTOList(products))
+						: ResponseEntity.ok(ProductDTO.converterProductListToProductDTOList(products));
 	}
 
 	@ResponseBody
 	@GetMapping(path = "/search")
 	@ApiOperation(value = "Search all products by product category")
 	public ResponseEntity<List<ProductDTO>> searchProductsByProductCategory(
+			@RequestParam(name = "published", required = false) boolean onlyPublishedProducts,
 			@RequestParam(required = false, name = "Product name") String name,
-			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber, 
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber,
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
 		page = new PageableFactory()
 				.withPage(pageNumber)
 				.withSize(pageSize)
 				.withSort(sortBy)
 				.buildPageable();
-		List<Product> products = 
-				(name != null) ?
+		List<Product> products = (name != null) ?
 				productService.searchProductByName(page, name) :
-				new ArrayList<>();
-		return ResponseEntity.ok(ProductDTO.converterProductListToProductDTOList(products));		
+					new ArrayList<>();
+				return onlyPublishedProducts
+						? ResponseEntity.ok(ProductDTO.converterPublishedProductListToProductDTOList(products))
+								: ResponseEntity.ok(ProductDTO.converterProductListToProductDTOList(products));
 	}
 
 	@ResponseBody
 	@GetMapping("/subcategory")
 	@ApiOperation(value = "Get all products")
 	public ResponseEntity<List<ProductDTO>> getAllProductsBySubcategory(
+			@RequestParam(name = "published", required = false) boolean onlyPublishedProducts,
 			@RequestParam(required = false) Long subcategoryId,
-			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber, 
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber,
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
 		page = new PageableFactory()
 				.withPage(pageNumber)
 				.withSize(pageSize)
 				.withSort(sortBy)
 				.buildPageable();
 		List<Product> products = productService.getProductsBySubcategoryId(page, subcategoryId);
-		return ResponseEntity.ok(ProductDTO.converterProductListToProductDTOList(products));		
+		return onlyPublishedProducts
+				? ResponseEntity.ok(ProductDTO.converterPublishedProductListToProductDTOList(products))
+						: ResponseEntity.ok(ProductDTO.converterProductListToProductDTOList(products));
 	}
-	
+
 	@ResponseBody
 	@GetMapping(path = "/{id}")
 	@ApiOperation(value = "Get a product by id")
@@ -186,7 +195,7 @@ public class ProductController {
 		}
 		return ResponseEntity.notFound().build();
 	}
-	
+
 	@ResponseBody
 	@PatchMapping("/{id}")
 	@Transactional
@@ -214,7 +223,7 @@ public class ProductController {
 		}
 
 		Optional<Subcategory> productCategoryOptional = productCategoryService.findById(productForm.getProductSubcategoryId());
-		
+
 		if (!productCategoryOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_NOT_FOUND);
 		}
@@ -222,25 +231,25 @@ public class ProductController {
 		Subcategory productCategory = productCategoryOptional.get();
 
 		Optional<Store> storeOptional = storeService.findById(productForm.getStoreId());
-		
+
 		if (!storeOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.STORE_NOT_FOUND);
 		}
 
 		Store store = storeOptional.get();
-		
+
 		Product product = ProductForm.converterProductFormUpdateToProduct(productForm, currentProduct.get());
 		product.setSubcategory(productCategory);
 		product.setStore(store);
 		product.setId(productId);
 		product.setCompanyId(productForm.getCompanyId());
 		product = productService.save(product);
-		
+
 		uri = uriBuilder.path("/products/{id}").buildAndExpand(productId).encode().toUri();
-		
+
 		return ResponseEntity.accepted().location(uri).body(ProductDTO.convertProductToProductDTO(product));
 	}
-	
+
 	@ResponseBody
 	@DeleteMapping(path = "/{id}")
 	@ApiOperation(value = "Remove a product")
@@ -279,7 +288,7 @@ public class ProductController {
 
 		ProductImage productImage = ProductImageForm.convertProductImageFormToProductImate(productImageForm);
 		productImage.setProduct(productOptional.get());
-		
+
 		productImage = productImageService.save(productImage);
 		if (productImage.getId() != null) {
 			uri = uriComponentsBuilder.path("/products/images/{id}").buildAndExpand(productImage.getProduct().getId()).encode().toUri();
@@ -292,9 +301,9 @@ public class ProductController {
 	@GetMapping(path = "/images/{id}")
 	@RolesAllowed("easy-shopping-user")
 	public ResponseEntity<List<ProductImageDTO>> getProductImage(@PathVariable("id")Long productId) {
-		
+
 		Optional<Product> productOptional = productService.findById(productId);
-		
+
 		if (!productOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_NOT_FOUND);
 		}
