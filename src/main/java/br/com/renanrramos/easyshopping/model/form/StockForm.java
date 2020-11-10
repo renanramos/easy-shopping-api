@@ -22,16 +22,14 @@ import lombok.Setter;
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class StockForm {
+
 	private String name;
 
 	private Long storeId;
 
-	private String storeName;
-
-	public StockForm(String name, Long storeId, String storeName) {
+	public StockForm(String name, Long storeId) {
 		this.name = name;
 		this.storeId = storeId;
-		this.storeName = storeName;
 	}
 
 	public static Stock converterStockFormToStock(StockForm stockForm) {
