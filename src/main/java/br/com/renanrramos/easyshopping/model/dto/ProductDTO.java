@@ -1,6 +1,6 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- * 
+ *
  * Creator: renan.ramos - 08/07/2020
  * ------------------------------------------------------------
  */
@@ -31,17 +31,17 @@ import lombok.Setter;
 public class ProductDTO {
 
 	private Long id;
-	
+
 	private String name;
-	
+
 	private String description;
-	
+
 	private double price;
 
 	private Long subcategoryId;
-	
+
 	private String subcategoryName;
-	
+
 	private Long storeId;
 
 	private Set<ProductImage> productImages;
@@ -67,7 +67,11 @@ public class ProductDTO {
 	public static List<ProductDTO> converterProductListToProductDTOList(List<Product> products) {
 		return products.stream().map(ProductDTO::new).collect(Collectors.toList());
 	}
-	
+
+	public static List<ProductDTO> converterPublishedProductListToProductDTOList(List<Product> products) {
+		return products.stream().filter(product -> product.isPublished()).map(ProductDTO::new)
+				.collect(Collectors.toList());
+	}
 	public static ProductDTO convertProductToProductDTO(Product product) {
 		return new ProductDTO(product);
 	}
