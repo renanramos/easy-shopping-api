@@ -109,6 +109,7 @@ public class StockController {
 	@ResponseBody
 	@GetMapping(path = "/{id}")
 	@ApiOperation(value = "Get stock by id")
+	@RolesAllowed("easy-shopping-user")
 	public ResponseEntity<StockDTO> getStockById(@PathVariable("id") Long stockId) throws EasyShoppingException {
 
 		Optional<Stock> stockOptional = stockService.findById(stockId);
