@@ -1,6 +1,6 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- * 
+ *
  * Creator: renan.ramos - 16/07/2020
  * ------------------------------------------------------------
  */
@@ -23,13 +23,15 @@ public class ExceptionMessagesConstants {
 	public static final String SUBCATEGORY_NOT_FOUND = "Subcategoria não localizada.";
 	public static final String USER_NOT_FOUND = "Usuário não localizado.";
 	public static final String ADMINISTRATOR_NOT_FOUND = "Administrador não localizado.";
-	
+	public static final String STOCK_NOT_FOUND = "o estoque informado não foi lcocalizado.";
+
 	public static final String INVALID_ID = "O id informado é inválido.";
 	public static final String CUSTOMER_ID_NOT_FOUND_ON_REQUEST = "Id do cliente é obrigatório.";
 	public static final String COMPANY_ID_NOT_FOUND_ON_REQUEST = "Id da empresa é obrigatório.";
 	public static final String PRODUCT_CATEGORY_ID_NOT_FOUND_ON_REQUEST = "Id da categoria do produto é obrigatório.";
 	public static final String PRODUCT_ID_NOT_FOUND_ON_REQUEST = "Id do produto é obrigatório.";
 	public static final String STORE_ID_NOT_FOUND_ON_REQUEST = "Id da loja é obrigatório.";
+	public static final String STOCK_ID_NOT_FOUND_ON_REQUEST = "Id do estoque é obrigatório.";
 
 	public static final String EMAIL_ALREADY_EXIST = "O email informado já é utilizado.";
 	public static final String CPF_ALREADY_EXIST = "O CPF informado já está cadastrado.";
