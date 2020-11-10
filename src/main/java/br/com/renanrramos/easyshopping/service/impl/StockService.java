@@ -61,7 +61,7 @@ public class StockService implements CommonService<Stock> {
 	}
 
 	public List<Stock> findStockByName(Pageable page, String name) {
-		Page<Stock> pagedResult = stockRepository.findStockByName(name);
+		Page<Stock> pagedResult = stockRepository.findStockByName(page, name);
 		return pagedResult.hasContent() ? pagedResult.getContent() : new ArrayList<>();
 	}
 }

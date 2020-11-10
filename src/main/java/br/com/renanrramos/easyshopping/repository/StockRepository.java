@@ -7,6 +7,7 @@
 package br.com.renanrramos.easyshopping.repository;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import br.com.renanrramos.easyshopping.model.Stock;
@@ -17,5 +18,5 @@ import br.com.renanrramos.easyshopping.model.Stock;
  */
 public interface StockRepository extends PagingAndSortingRepository<Stock, Long> {
 
-	Page<Stock> findStockByName(String name);
+	Page<Stock> findStockByName(Pageable page, String name);
 }
