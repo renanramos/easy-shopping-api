@@ -56,6 +56,9 @@ public class Store implements Serializable{
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "store")
 	private List<Product> products = new ArrayList<>();
 
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "store")
+	private List<Stock> stocks = new ArrayList<>();
+
 	private String tokenId;
 
 	public Store() {
@@ -65,6 +68,6 @@ public class Store implements Serializable{
 	@Override
 	public String toString() {
 		return "Store [id=" + id + ", name=" + name + ", registeredNumber=" + registeredNumber + ", corporateName="
-				+ corporateName + ", products=" + products + "]";
+				+ corporateName + ", products=" + products + ", stocks=" + stocks + "]";
 	}
 }
