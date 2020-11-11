@@ -7,6 +7,7 @@
 package br.com.renanrramos.easyshopping.model.dto;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import br.com.renanrramos.easyshopping.model.Stock;
@@ -23,6 +24,8 @@ import lombok.Setter;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class StockDTO {
 
+	private Long id;
+
 	private String name;
 
 	private Long storeId;
@@ -34,9 +37,10 @@ public class StockDTO {
 	}
 
 	public StockDTO(Stock stock) {
+		this.id = stock.getId();
 		this.name = stock.getName();
-		this.storeId = stock.getStore().getId();
-		this.storeName = stock.getStore().getName();
+		this.storeId = Optional.ofNullable(stock.getStore().getId()).orElse(null);
+		this.storeName = Optional.ofNullable(stock.getStore().getName()).orElse("");
 	}
 
 	public static List<StockDTO> converterStockListToStockDTOList(List<Stock> stocks) {
