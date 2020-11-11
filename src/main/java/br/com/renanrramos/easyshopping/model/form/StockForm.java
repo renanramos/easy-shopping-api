@@ -27,6 +27,10 @@ public class StockForm {
 
 	private Long storeId;
 
+	public StockForm() {
+		// Intentionally empty
+	}
+
 	public StockForm(String name, Long storeId) {
 		this.name = name;
 		this.storeId = storeId;
