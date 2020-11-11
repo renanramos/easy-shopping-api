@@ -40,6 +40,7 @@ import br.com.renanrramos.easyshopping.model.Stock;
 import br.com.renanrramos.easyshopping.model.Store;
 import br.com.renanrramos.easyshopping.model.dto.StockDTO;
 import br.com.renanrramos.easyshopping.model.form.StockForm;
+import br.com.renanrramos.easyshopping.service.impl.StockItemService;
 import br.com.renanrramos.easyshopping.service.impl.StockService;
 import br.com.renanrramos.easyshopping.service.impl.StoreService;
 import io.swagger.annotations.Api;
@@ -60,6 +61,9 @@ public class StockController {
 
 	@Autowired
 	private StoreService storeService;
+
+	@Autowired
+	private StockItemService itemsService;
 
 	private URI uri;
 
@@ -139,8 +143,21 @@ public class StockController {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.STOCK_NOT_FOUND);
 		}
 
+		Long storeId = stockForm.getStoreId();
+
+		if (storeId == null) {
+			throw new EasyShoppingException(ExceptionMessagesConstants.STORE_ID_NOT_FOUND_ON_REQUEST);
+		}
+
+		Optional<Store> storeOptional = storeService.findById(storeId);
+
+		if (!storeOptional.isPresent()) {
+			throw new EasyShoppingException(ExceptionMessagesConstants.STORE_NOT_FOUND);
+		}
+
 		Stock stock = StockForm.converterStockFormUpdateToStock(stockForm, currentStock.get());
 		stock.setId(stockId);
+		stock.setStore(storeOptional.get());
 		StockDTO stockUpdatedDTO = StockDTO.converterStockToStockDTO(stockService.save(stock));
 		uri = uriBuilder.path("/stocks/{id}").buildAndExpand(stockId).encode().toUri();
 
