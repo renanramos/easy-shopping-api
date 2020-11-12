@@ -35,6 +35,8 @@ public class StockItemDTO {
 
 	private String stockName;
 
+	private String productName;
+
 	public StockItemDTO() {
 		// Intentionally empty
 	}
@@ -46,6 +48,7 @@ public class StockItemDTO {
 		this.currentAmount = item.getCurrentAmount();
 		this.stockId = item.getStock().getId();
 		this.stockName = item.getStock().getName();
+		this.productName = item.getProductName();
 	}
 
 	public static List<StockItemDTO> converterStockItemListToStockItemDTOList(List<StockItem> items) {

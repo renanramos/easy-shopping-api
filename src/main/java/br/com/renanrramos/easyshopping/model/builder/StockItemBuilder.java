@@ -50,6 +50,11 @@ public class StockItemBuilder {
 		return this;
 	}
 
+	public StockItemBuilder withProductName(String productName) {
+		this.stockItem.setProductName(productName);
+		return this;
+	}
+
 	public StockItem build() {
 		return this.stockItem;
 	}

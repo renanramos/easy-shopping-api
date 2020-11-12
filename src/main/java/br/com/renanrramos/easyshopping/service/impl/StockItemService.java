@@ -60,4 +60,8 @@ public class StockItemService implements CommonService<StockItem> {
 		return new ArrayList<>();
 	}
 
+	public List<StockItem> findStockItemByStockId(Pageable page, Long stockId) {
+		Page<StockItem> pagedResult = itemRepository.findStockItemByStockId(page, stockId);
+		return pagedResult.hasContent() ? pagedResult.getContent() : new ArrayList<>();
+	}
 }

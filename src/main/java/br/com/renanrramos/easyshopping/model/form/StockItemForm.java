@@ -25,6 +25,8 @@ public class StockItemForm {
 
 	private Long productId;
 
+	private String productName;
+
 	private Double maxAmount;
 
 	private Double minAmount;
@@ -33,8 +35,14 @@ public class StockItemForm {
 
 	private Long stockId;
 
-	public StockItemForm(Long productId, Double maxAmount, Double minAmount, Double currentAmount, Long stockId) {
+	public StockItemForm() {
+		// Intentionally empty
+	}
+
+	public StockItemForm(Long productId, Double maxAmount, Double minAmount, Double currentAmount, Long stockId,
+			String productName) {
 		this.productId = productId;
+		this.productName = productName;
 		this.maxAmount = maxAmount;
 		this.minAmount = minAmount;
 		this.currentAmount = currentAmount;
@@ -55,6 +63,8 @@ public class StockItemForm {
 				.withMaxAmount(Optional.ofNullable(itemForm.getMaxAmount()).orElse(currentStockItem.getMaxAmount()))
 				.withMinAmount(Optional.ofNullable(itemForm.getMinAmount()).orElse(currentStockItem.getMinAmount()))
 				.withProductId(Optional.ofNullable(itemForm.getProductId()).orElse(currentStockItem.getProductId()))
+				.withProductName(
+						Optional.ofNullable(itemForm.getProductName()).orElse(currentStockItem.getProductName()))
 				.build();
 	}
 }

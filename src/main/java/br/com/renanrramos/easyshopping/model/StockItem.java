@@ -43,6 +43,8 @@ public class StockItem implements Serializable {
 
 	private Long productId;
 
+	private String productName;
+
 	private Double maxAmount;
 
 	private Double minAmount;

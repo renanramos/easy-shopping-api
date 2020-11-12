@@ -8,6 +8,7 @@ package br.com.renanrramos.easyshopping.controller.rest;
 
 import java.net.URI;
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 
 import javax.annotation.security.RolesAllowed;
@@ -15,6 +16,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,12 +25,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.exception.EasyShoppingException;
+import br.com.renanrramos.easyshopping.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.model.Product;
 import br.com.renanrramos.easyshopping.model.Stock;
 import br.com.renanrramos.easyshopping.model.StockItem;
@@ -159,10 +164,33 @@ public class StockItemController {
 		Optional<StockItem> itemOptional = itemService.findById(itemId);
 
 		if (!itemOptional.isPresent()) {
-			throw new EasyShoppingException(ExceptionMessagesConstants.STOCK_NOT_FOUND);
+			throw new EasyShoppingException(ExceptionMessagesConstants.STOCK_ITEM_NOT_FOUND);
 		}
 
 		return ResponseEntity.ok(StockItemDTO.converterStockItemToStockItemDTO(itemOptional.get()));
+	}
+
+	@ResponseBody
+	@GetMapping
+	@ApiOperation(value = "Get all stock items by stockId")
+	@RolesAllowed("easy-shopping-user")
+	public ResponseEntity<List<StockItemDTO>> getStockItems(@RequestParam(required = false) String name,
+			@RequestParam(required = false) Long stockId,
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber,
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy)
+					throws EasyShoppingException {
+		Pageable page = new PageableFactory().withPage(pageNumber).withSize(pageSize).withSort(sortBy).buildPageable();
+
+		Optional<Stock> stockOptional = stockService.findById(stockId);
+
+		if (!stockOptional.isPresent()) {
+			throw new EasyShoppingException(ExceptionMessagesConstants.STOCK_NOT_FOUND);
+		}
+
+		List<StockItem> items = itemService.findStockItemByStockId(page, stockId);
+
+		return ResponseEntity.ok(StockItemDTO.converterStockItemListToStockItemDTOList(items));
 	}
 
 	private boolean verifyInvalidStockAmountValues(StockItemForm itemForm) {
