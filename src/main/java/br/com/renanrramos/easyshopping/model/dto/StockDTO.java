@@ -32,6 +32,8 @@ public class StockDTO {
 
 	private String storeName;
 
+	private int totalItems;
+
 	public StockDTO() {
 		// Intentionally empty
 	}
@@ -41,6 +43,7 @@ public class StockDTO {
 		this.name = stock.getName();
 		this.storeId = Optional.ofNullable(stock.getStore().getId()).orElse(null);
 		this.storeName = Optional.ofNullable(stock.getStore().getName()).orElse("");
+		this.totalItems = stock.getItems().isEmpty() ? 0 : stock.getItems().size();
 	}
 
 	public static List<StockDTO> converterStockListToStockDTOList(List<Stock> stocks) {
