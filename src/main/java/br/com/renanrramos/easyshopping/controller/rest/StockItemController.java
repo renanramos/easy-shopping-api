@@ -150,6 +150,7 @@ public class StockItemController {
 
 		StockItem item = StockItemForm.converterStockItemFormUpdateToStockItem(itemForm, itemOptional.get());
 		item.setStock(stockOptional.get());
+		item.setId(itemId);
 		item = itemService.save(item);
 		uri = uriBuilder.path("/stock-items/{id}").buildAndExpand(item.getId()).encode().toUri();
 		return ResponseEntity.accepted().location(uri).body(StockItemDTO.converterStockItemToStockItemDTO(item));
