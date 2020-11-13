@@ -23,6 +23,8 @@ import lombok.Setter;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class StockItemDTO {
 
+	private Long id;
+
 	private Long productId;
 
 	private Double maxAmount;
@@ -42,6 +44,7 @@ public class StockItemDTO {
 	}
 
 	public StockItemDTO(StockItem item) {
+		this.id = item.getId();
 		this.productId = item.getProductId();
 		this.maxAmount = item.getMaxAmount();
 		this.minAmount = item.getMinAmount();
