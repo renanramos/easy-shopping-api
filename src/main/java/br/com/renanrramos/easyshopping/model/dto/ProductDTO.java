@@ -46,6 +46,8 @@ public class ProductDTO {
 
 	private Set<ProductImage> productImages;
 
+	private boolean isProductPublished;
+
 	@JsonIgnore
 	private EasyShoppingUtils utils = new EasyShoppingUtils();
 
@@ -62,6 +64,7 @@ public class ProductDTO {
 		this.storeId = product.getStore().getId();
 		this.subcategoryId = product.getSubcategory().getId();
 		this.productImages = Optional.ofNullable(product.getImages()).orElse(new HashSet<>());
+		this.isProductPublished = product.isPublished();
 	}
 
 	public static List<ProductDTO> converterProductListToProductDTOList(List<Product> products) {
