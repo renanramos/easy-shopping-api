@@ -1,6 +1,6 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- * 
+ *
  * Creator: renan.ramos - 03/07/2020
  * ------------------------------------------------------------
  */
@@ -24,13 +24,13 @@ import lombok.Setter;
 public class ProductForm {
 
 	private String name;
-	
+
 	private String description;
-	
+
 	private double price;
-	
+
 	private Long productSubcategoryId;
-	
+
 	private Long storeId;
 
 	private String companyId;
@@ -39,7 +39,8 @@ public class ProductForm {
 		// Intentionally empty
 	}
 
-	public ProductForm(String name, String description, double price, Long productSubcategoryId, Long storeId, String companyId) {
+	public ProductForm(String name, String description, double price, Long productSubcategoryId, Long storeId,
+			String companyId) {
 		this.name = name;
 		this.description = description;
 		this.price = price;
@@ -63,11 +64,11 @@ public class ProductForm {
 				.withPrice(Optional.ofNullable(productForm.getPrice()).orElse(product.getPrice()))
 				.build();
 	}
-	
+
 	@Override
 	public String toString() {
 		return "ProductForm [name=" + name + ", description=" + description + ", price=" + price
 				+ ", productSubcategoryId=" + productSubcategoryId + ", storeId=" + storeId + ", companyId=" + companyId
 				+ "]";
-	}	
+	}
 }

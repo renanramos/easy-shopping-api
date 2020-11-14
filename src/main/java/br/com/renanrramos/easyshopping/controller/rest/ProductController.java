@@ -251,6 +251,23 @@ public class ProductController {
 	}
 
 	@ResponseBody
+	@PatchMapping("/publish/{id}")
+	@Transactional
+	@ApiOperation(value = "Update a product")
+	@RolesAllowed("easy-shopping-user")
+	public ResponseEntity<ProductDTO> publishProduct(@PathVariable("id") Long productId,
+			UriComponentsBuilder uriBuilder) {
+
+		Optional<Product> productOptional = this.productService.findById(productId);
+
+		Product product = productOptional.get();
+		product.setPublished(true);
+		product = productService.save(product);
+		uri = uriBuilder.path("/products/{id}").buildAndExpand(productId).encode().toUri();
+		return ResponseEntity.accepted().location(uri).body(ProductDTO.convertProductToProductDTO(product));
+	}
+
+	@ResponseBody
 	@DeleteMapping(path = "/{id}")
 	@ApiOperation(value = "Remove a product")
 	@RolesAllowed("easy-shopping-user")
