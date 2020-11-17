@@ -59,13 +59,15 @@ public class CompanyController {
 
 	private URI uri;
 
+	private Principal principal;
+
 	@ResponseBody
 	@PostMapping
 	@Transactional
 	@ApiOperation(value = "Save company information")
 	@RolesAllowed({ "easy-shopping-admin", "easy-shopping-user" })
 	public ResponseEntity<CompanyDTO> saveCompany(@Valid @RequestBody CompanyForm companyForm,
-			UriComponentsBuilder uriBuilder, Principal principal) throws EasyShoppingException {
+			UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 		Company company = CompanyForm.converterCompanyFormToCompany(companyForm);
 
 		if (companyService.isRegisteredNumberInvalid(company.getRegisteredNumber())) {
@@ -104,7 +106,7 @@ public class CompanyController {
 				CompanyDTO.converterCompanyListToCompanyDTOList(companyService.findAll(page)) :
 					CompanyDTO.converterCompanyListToCompanyDTOList(companyService.findCompanyByName(page, name));
 
-		return ResponseEntity.ok(listOfCompanyDTOs);
+				return ResponseEntity.ok(listOfCompanyDTOs);
 	}
 
 	@ResponseBody
@@ -112,10 +114,10 @@ public class CompanyController {
 	@ApiOperation(value = "Get a company by id")
 	public ResponseEntity<CompanyDTO> getCompanyById(@PathVariable("id") String companyId) {
 		Optional<Company> company = companyService.findCompanyByTokenId(companyId);
-		if (company.isPresent()) {
-			return ResponseEntity.ok(CompanyDTO.converterToCompanyDTO(company.get()));
+		if (!company.isPresent()) {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.COMPANY_NOT_FOUND);
 		}
-		return ResponseEntity.ok(CompanyDTO.converterToCompanyDTO(new Company()));
+		return ResponseEntity.ok(CompanyDTO.converterToCompanyDTO(company.get()));
 	}
 
 	@ResponseBody
@@ -146,7 +148,7 @@ public class CompanyController {
 	@DeleteMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Remove a company")
-	@RolesAllowed({"COMPANY", "ADMINISTRATOR"})
+	@RolesAllowed({ "COMPANY", "ADMINISTRATOR", "easy-shopping-user" })
 	public ResponseEntity<CompanyDTO> removeCompany(@PathVariable("id") Long companyId) {
 		Optional<Company> companyOptional = companyService.findById(companyId);
 

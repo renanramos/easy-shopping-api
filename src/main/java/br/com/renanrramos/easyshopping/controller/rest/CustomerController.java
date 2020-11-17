@@ -58,13 +58,15 @@ public class CustomerController {
 
 	private URI uri;
 
+	private Principal principal;
+
 	@ResponseBody
 	@PostMapping
 	@Transactional
 	@ApiOperation(value = "Save customer information")
 	@RolesAllowed({ "easy-shopping-admin", "easy-shopping-user" })
 	public ResponseEntity<CustomerDTO> saveCustomer(@Valid @RequestBody CustomerForm customerForm,
-			UriComponentsBuilder uriBuilder, Principal principal) throws EasyShoppingException {
+			UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 
 		Customer customer = CustomerForm.converterCustomerFormToCustomer(customerForm);
 

@@ -1,6 +1,6 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- * 
+ *
  * Creator: renan.ramos - 12/07/2020
  * ------------------------------------------------------------
  */
@@ -56,21 +56,24 @@ public class AddressController {
 	private AddressService addressService;
 
 	private URI uri;
-	
+
+	private Principal principal;
+
 	@ResponseBody
 	@PostMapping
 	@Transactional
 	@ApiOperation(value = "Save a new address")
 	@RolesAllowed({"CUSTOMER", "easy-shopping-user", "app-customer"})
-	public ResponseEntity<AddressDTO> saveAddress(@Valid @RequestBody AddressForm addressForm, UriComponentsBuilder uriBuilder, Principal principal) {
+	public ResponseEntity<AddressDTO> saveAddress(@Valid @RequestBody AddressForm addressForm,
+			UriComponentsBuilder uriBuilder) {
 		Address address = AddressForm.converterAddressFormToAddress(addressForm);
-		address.setCustomerId(principal.getName());		
+		address.setCustomerId(principal.getName());
 		address = addressService.save(address);
 		uri = uriBuilder.path("/addresses/{id}").buildAndExpand(address.getId()).encode().toUri();
 
 		return ResponseEntity.created(uri).body(AddressDTO.convertAddressToAddressDTO(address));
 	}
-	
+
 	@ResponseBody
 	@GetMapping
 	@ApiOperation(value = "Get all addresses")
@@ -78,10 +81,9 @@ public class AddressController {
 	public ResponseEntity<List<AddressDTO>> getAddresses(
 			@RequestParam(required = false) Long customerId,
 			@RequestParam(required = false) String streetName,
-			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber, 
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy,
-            Principal principal) {
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber,
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
 		Pageable page = new PageableFactory()
 				.withPage(pageNumber)
 				.withSize(pageSize)
@@ -90,10 +92,10 @@ public class AddressController {
 
 		List<Address> addresses = (streetName == null) ?
 				addressService.findAllPageable(page, principal.getName()) :
-				addressService.findAddressByStreetName(page, streetName);
-		return ResponseEntity.ok(AddressDTO.convertAddressListToAddressDTOList(addresses));	
+					addressService.findAddressByStreetName(page, streetName);
+				return ResponseEntity.ok(AddressDTO.convertAddressListToAddressDTOList(addresses));
 	}
-	
+
 	@ResponseBody
 	@GetMapping(path = "/{id}")
 	@ApiOperation(value = "Get an address by id")
@@ -105,17 +107,18 @@ public class AddressController {
 		}
 		return ResponseEntity.ok(AddressDTO.convertAddressToAddressDTO(addressOptional.get()));
 	}
-	
-	
+
+
 	@ResponseBody
 	@PatchMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Update an address")
 	@RolesAllowed({"easy-shopping-admin", "easy-shopping-user"})
-	public ResponseEntity<AddressDTO> updateAddress(@PathVariable("id") Long addressId, @RequestBody AddressForm addressForm, UriComponentsBuilder uriBuilder, Principal principal) {
+	public ResponseEntity<AddressDTO> updateAddress(@PathVariable("id") Long addressId,
+			@RequestBody AddressForm addressForm, UriComponentsBuilder uriBuilder) {
 
 		Optional<Address> currentAddress = addressService.findById(addressId);
-		
+
 		if (!currentAddress.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.ADDRESS_NOT_FOUND);
 		}
@@ -128,7 +131,7 @@ public class AddressController {
 
 		return ResponseEntity.accepted().location(uri).body(AddressDTO.convertAddressToAddressDTO(address));
 	}
-	
+
 	@ResponseBody
 	@DeleteMapping(path = "/{id}")
 	@Transactional
