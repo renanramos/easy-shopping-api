@@ -52,7 +52,7 @@ public class StockItemForm {
 	public static StockItem converterStockItemFormToStockItem(StockItemForm itemForm) {
 		return StockItemBuilder.builder().withCurrentAmount(itemForm.getCurrentAmount())
 				.withMaxAmount(itemForm.getMaxAmount()).withMinAmount(itemForm.getMinAmount())
-				.withProductId(itemForm.getProductId()).build();
+				.withProductId(itemForm.getProductId()).withProductName(itemForm.getProductName()).build();
 	}
 
 	public static StockItem converterStockItemFormUpdateToStockItem(StockItemForm itemForm,
