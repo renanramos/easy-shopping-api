@@ -59,6 +59,7 @@ public class ExceptionMessagesConstants {
 	public static final String WRONG_PRODUCT_ID = "Produto informado não é igual ao que está no parâmetro.";
 	public static final String INVALID_FILE = "Arquivo inválido ou nulo.";
 	public static final String PRODUCT_IMAGE_NOT_FOUND = "Imagem não localizada";
+	public static final String PRODUCT_ALREADY_IN_STOCK = "O produto informado já está incluso no estoque.";
 
 	private ExceptionMessagesConstants() {
 		// Intentionally empty
