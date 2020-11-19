@@ -64,4 +64,8 @@ public class StockItemService implements CommonService<StockItem> {
 		Page<StockItem> pagedResult = itemRepository.findStockItemByStockId(page, stockId);
 		return pagedResult.hasContent() ? pagedResult.getContent() : new ArrayList<>();
 	}
+
+	public boolean hasStockItemProductId(Long productId) {
+		return itemRepository.findTopStockItemByProductId(productId).isPresent();
+	}
 }
