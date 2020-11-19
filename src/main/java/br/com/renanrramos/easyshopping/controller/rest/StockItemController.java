@@ -79,6 +79,10 @@ public class StockItemController {
 			throw new EasyShoppingException(ExceptionMessagesConstants.PRODUCT_ID_NOT_FOUND_ON_REQUEST);
 		}
 
+		if (itemService.hasStockItemProductId(productId)) {
+			throw new EasyShoppingException(ExceptionMessagesConstants.PRODUCT_ALREADY_IN_STOCK);
+		}
+
 		Optional<Product> productOptional = productService.findById(productId);
 
 		if (!productOptional.isPresent()) {
