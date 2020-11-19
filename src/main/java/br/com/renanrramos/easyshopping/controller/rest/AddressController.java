@@ -57,15 +57,13 @@ public class AddressController {
 
 	private URI uri;
 
-	private Principal principal;
-
 	@ResponseBody
 	@PostMapping
 	@Transactional
 	@ApiOperation(value = "Save a new address")
 	@RolesAllowed({"CUSTOMER", "easy-shopping-user", "app-customer"})
 	public ResponseEntity<AddressDTO> saveAddress(@Valid @RequestBody AddressForm addressForm,
-			UriComponentsBuilder uriBuilder) {
+			UriComponentsBuilder uriBuilder, Principal principal) {
 		Address address = AddressForm.converterAddressFormToAddress(addressForm);
 		address.setCustomerId(principal.getName());
 		address = addressService.save(address);
@@ -83,7 +81,7 @@ public class AddressController {
 			@RequestParam(required = false) String streetName,
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber,
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
-			@RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy, Principal principal) {
 		Pageable page = new PageableFactory()
 				.withPage(pageNumber)
 				.withSize(pageSize)
@@ -115,7 +113,7 @@ public class AddressController {
 	@ApiOperation(value = "Update an address")
 	@RolesAllowed({"easy-shopping-admin", "easy-shopping-user"})
 	public ResponseEntity<AddressDTO> updateAddress(@PathVariable("id") Long addressId,
-			@RequestBody AddressForm addressForm, UriComponentsBuilder uriBuilder) {
+			@RequestBody AddressForm addressForm, UriComponentsBuilder uriBuilder, Principal principal) {
 
 		Optional<Address> currentAddress = addressService.findById(addressId);
 
