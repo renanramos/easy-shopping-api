@@ -9,7 +9,6 @@ package br.com.renanrramos.easyshopping.controller.rest;
 import java.io.IOException;
 import java.net.URI;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -158,8 +157,9 @@ public class ProductController {
 				.withSize(pageSize)
 				.withSort(sortBy)
 				.buildPageable();
-		List<Product> products = productService.searchProductByName(page, name, principal.getName());
-		new ArrayList<>();
+		List<Product> products = (name == null || principal == null) ? productService.findAll(page)
+				: productService.searchProductByName(page, name, principal.getName());
+
 		return onlyPublishedProducts
 				? ResponseEntity.ok(ProductDTO.converterPublishedProductListToProductDTOList(products))
 						: ResponseEntity.ok(ProductDTO.converterProductListToProductDTOList(products));
