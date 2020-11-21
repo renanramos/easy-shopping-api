@@ -92,10 +92,8 @@ public class StoreController {
 				.withSort(sortBy)
 				.buildPageable();
 
-		List<Store> stores = (name == null) ?
-				storeService.findAllPageable(page, principal.getName())
-				: storeService.findStoreByName(page, name);
-				return ResponseEntity.ok(StoreDTO.converterStoreListToStoreDTOList(stores));
+		List<Store> stores = storeService.findAllPageable(page, principal.getName(), name);
+		return ResponseEntity.ok(StoreDTO.converterStoreListToStoreDTOList(stores));
 	}
 
 	@ResponseBody
