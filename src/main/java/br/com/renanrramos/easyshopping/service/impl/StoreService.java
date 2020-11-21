@@ -34,11 +34,13 @@ public class StoreService implements CommonService<Store>{
 		return storeRepository.save(store);
 	}
 
-	public List<Store> findAllPageable(Pageable page, String companyId) {
+	public List<Store> findAllPageable(Pageable page, String companyId, String name) {
+		System.out.println(companyId);
 		Page<Store> pagedResult =
 				(companyId == null) ?
 						storeRepository.findAll(page) :
-							storeRepository.findStoreByTokenId(page, companyId);
+							storeRepository.findStoreByTokenId(page, companyId, name);
+		System.out.println(pagedResult.hasContent());
 						return pagedResult.hasContent() ?
 								pagedResult.getContent() :
 									new ArrayList<>();
@@ -75,8 +77,8 @@ public class StoreService implements CommonService<Store>{
 						return pagedResult.hasContent() ? pagedResult.getContent() : new ArrayList<>();
 	}
 
-	public List<Store> findStoreByCompanyId(Pageable page, String companyId) {
-		Page<Store> pagedResult = storeRepository.findStoreByTokenId(page, companyId);
+	public List<Store> findStoreByCompanyId(Pageable page, String companyId, String name) {
+		Page<Store> pagedResult = storeRepository.findStoreByTokenId(page, companyId, name);
 		return pagedResult.hasContent() ?
 				pagedResult.getContent() :
 					new ArrayList<>();
