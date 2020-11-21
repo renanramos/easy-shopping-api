@@ -1,6 +1,6 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- * 
+ *
  * Creator: renan.ramos - 08/08/2020
  * ------------------------------------------------------------
  */
@@ -39,6 +39,7 @@ import br.com.renanrramos.easyshopping.model.Subcategory;
 import br.com.renanrramos.easyshopping.model.dto.SubcategoryDTO;
 import br.com.renanrramos.easyshopping.model.form.SubcategoryForm;
 import br.com.renanrramos.easyshopping.service.impl.ProductCategoryService;
+import br.com.renanrramos.easyshopping.service.impl.ProductService;
 import br.com.renanrramos.easyshopping.service.impl.SubcategoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -58,6 +59,9 @@ public class SubcategoryController {
 
 	@Autowired
 	private ProductCategoryService productCategoryService;
+
+	@Autowired
+	private ProductService productService;
 
 	private URI uri;
 
@@ -93,9 +97,9 @@ public class SubcategoryController {
 	public ResponseEntity<List<SubcategoryDTO>> getSubcategories(
 			@RequestParam(required = false) String name,
 			@RequestParam(required = false) Long productCategoryId,
-			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber, 
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber,
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
 		Pageable page = new PageableFactory()
 				.withPage(pageNumber)
 				.withSize(pageSize)
@@ -103,9 +107,9 @@ public class SubcategoryController {
 				.buildPageable();
 		List<Subcategory> subcategories =
 				(name == null) ?
-				subcategoryService.findAllPageable(page, productCategoryId) :
-				subcategoryService.findSubcategoryByName(page, name);
-		return ResponseEntity.ok(SubcategoryDTO.convertSubcategoryListToSubcategoryDTOList(subcategories));
+						subcategoryService.findAllPageable(page, productCategoryId) :
+							subcategoryService.findSubcategoryByName(page, name);
+						return ResponseEntity.ok(SubcategoryDTO.convertSubcategoryListToSubcategoryDTOList(subcategories));
 	}
 
 	@ResponseBody
@@ -114,7 +118,7 @@ public class SubcategoryController {
 	public ResponseEntity<SubcategoryDTO> getSubcategoriesBydId(@PathVariable("id") Long subcategoryId) {
 		Optional<Subcategory> subcategoryOptional = subcategoryService.findById(subcategoryId);
 		if (subcategoryOptional.isPresent()) {
-			return ResponseEntity.ok(SubcategoryDTO.convertSubcategoryToSubcategoryDTO(subcategoryOptional.get()));			
+			return ResponseEntity.ok(SubcategoryDTO.convertSubcategoryToSubcategoryDTO(subcategoryOptional.get()));
 		}
 		return ResponseEntity.notFound().build();
 	}
@@ -149,7 +153,7 @@ public class SubcategoryController {
 		subcategory.setId(subcategoryId);
 		subcategory.setProductCategory(productCategory);
 		subcategory = subcategoryService.save(subcategory);
-		
+
 		uri = uriBuilder.path("/subcategories/{id}").buildAndExpand(subcategory.getId()).encode().toUri();
 
 		return ResponseEntity.accepted().location(uri).body(SubcategoryDTO.convertSubcategoryToSubcategoryDTO(subcategory));
@@ -165,6 +169,10 @@ public class SubcategoryController {
 
 		if (!subcategoryOptional.isPresent()) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.SUBCATEGORY_NOT_FOUND);
+		}
+
+		if (productService.isThereAnyProductWithSubcategoryId(subcategoryId)) {
+			throw new EasyShoppingException(ExceptionMessagesConstants.CANNOT_REMOVE_PRODUCT_CATEGORY_IN_USE);
 		}
 
 		subcategoryService.remove(subcategoryId);
