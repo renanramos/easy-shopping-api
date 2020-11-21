@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import br.com.renanrramos.easyshopping.constants.sql.EasyShoppingSqlConstants;
 import br.com.renanrramos.easyshopping.model.StockItem;
 
 /**
@@ -21,9 +22,13 @@ import br.com.renanrramos.easyshopping.model.StockItem;
  *
  */
 public interface StockItemRepository extends PagingAndSortingRepository<StockItem, Long> {
+
 	Page<StockItem> findStockItemByStockId(Pageable page, Long stockId);
 
-	@Query("SELECT si FROM StockItem si LEFT JOIN Product p ON si.productId = p.id")
+	@Query(EasyShoppingSqlConstants.GET_STOCK_ITEM_BY_PRODUCT_NAME)
+	Page<StockItem> findStockItemByStockIdAndName(Pageable page, Long stockId, String name);
+
+	@Query(EasyShoppingSqlConstants.GET_STOCK_ITEM_LEFT_JOIN_PRODUCT)
 	List<StockItem> getStockItemWithProductInfo();
 
 	Optional<StockItem> findTopStockItemByProductId(Long productId);
