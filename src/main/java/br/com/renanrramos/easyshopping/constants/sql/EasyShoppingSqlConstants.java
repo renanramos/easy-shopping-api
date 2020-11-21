@@ -34,6 +34,10 @@ public class EasyShoppingSqlConstants {
 
 	public static final String GET_STOCK_ITEM_BY_PRODUCT_NAME = "SELECT si FROM StockItem si LEFT JOIN Stock s ON s.id = si.stock.id LEFT JOIN Product p ON p.id = si.productId WHERE p.name LIKE %:name% AND s.id = :stockId";
 
+	public static final String GET_PRODUCT_BY_NAME = "SELECT p FROM Product p WHERE p.name LIKE %:name%";
+
+	public static final String GET_PRODUCT_BY_NAME_AND_COMPANY_ID = "Select p FROM Product p LEFT JOIN Subcategory s ON s.id = p.subcategory.id WHERE s.name LIKE %:name% OR p.name LIKE %:name% AND p.companyId = :tokenId";
+
 	private EasyShoppingSqlConstants() {
 		// Intentionally empty
 	}
