@@ -84,7 +84,8 @@ public class ProductController {
 	@Transactional
 	@ApiOperation(value = "Save a new product")
 	@RolesAllowed("easy-shopping-user")
-	public ResponseEntity<ProductDTO> saveProduct(@Valid @RequestBody ProductForm productForm, UriComponentsBuilder uriComponentsBuilder) {
+	public ResponseEntity<ProductDTO> saveProduct(@Valid @RequestBody ProductForm productForm,
+			UriComponentsBuilder uriComponentsBuilder, Principal principal) {
 
 		if (productForm.getProductSubcategoryId() == null) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_ID_NOT_FOUND_ON_REQUEST);
@@ -114,7 +115,7 @@ public class ProductController {
 		product.setSubcategory(productCategory);
 		product.setStore(store);
 		product.setPublished(false);
-		product.setCompanyId(productForm.getCompanyId());
+		product.setCompanyId(principal.getName());
 
 		product = productService.save(product);
 

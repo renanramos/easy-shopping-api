@@ -82,10 +82,10 @@ public class ProductService implements CommonService<Product>{
 		if (principal != null) {
 			System.out.println(principal.getName() + "  82  " + name);
 			pagedResult = name == null ? productRepository.findAll(page)
-					: productRepository.findProductByCompanyIdAndNameContaining(page, principal.getName(), name);
+					: productRepository.getProductByCompanyIdAndName(page, principal.getName(), name);
 		} else {
 			pagedResult = name == null ? productRepository.findAll(page)
-					: productRepository.findProductByNameContaining(page, name);
+					: productRepository.getProductByName(page, name);
 		}
 
 		return pagedResult.hasContent() ?
