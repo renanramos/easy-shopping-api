@@ -157,8 +157,7 @@ public class ProductController {
 				.withSize(pageSize)
 				.withSort(sortBy)
 				.buildPageable();
-		List<Product> products = (name == null || principal == null) ? productService.findAll(page)
-				: productService.searchProductByName(page, name, principal.getName());
+		List<Product> products = productService.searchProductByName(page, name, principal);
 
 		return onlyPublishedProducts
 				? ResponseEntity.ok(ProductDTO.converterPublishedProductListToProductDTOList(products))

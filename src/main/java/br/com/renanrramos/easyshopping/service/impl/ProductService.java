@@ -6,6 +6,7 @@
  */
 package br.com.renanrramos.easyshopping.service.impl;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -75,16 +76,16 @@ public class ProductService implements CommonService<Product>{
 		productRepository.deleteById(productId);
 	}
 
-	public List<Product> searchProductByName(Pageable page, String name, String companyId) {
+	public List<Product> searchProductByName(Pageable page, String name, Principal principal) {
 		Page<Product> pagedResult = null;
 
-		if (companyId != null) {
-			System.out.println(companyId + "  82  " + name);
+		if (principal != null) {
+			System.out.println(principal.getName() + "  82  " + name);
+			pagedResult = name == null ? productRepository.findAll(page)
+					: productRepository.findProductByCompanyIdAndNameContaining(page, principal.getName(), name);
+		} else {
 			pagedResult = name == null ? productRepository.findAll(page)
 					: productRepository.findProductByNameContaining(page, name);
-		} else {
-			pagedResult = name == null ? productRepository.findProductByCompanyId(page, companyId)
-					: productRepository.findProductByCompanyIdAndNameContaining(page, companyId, name);
 		}
 
 		return pagedResult.hasContent() ?
