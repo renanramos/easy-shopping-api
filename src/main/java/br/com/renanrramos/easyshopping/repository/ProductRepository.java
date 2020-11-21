@@ -1,6 +1,6 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- * 
+ *
  * Creator: renan.ramos - 27/06/2020
  * ------------------------------------------------------------
  */
@@ -22,7 +22,9 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, L
 
 	Page<Product> findProductByNameContaining(Pageable page, String name);
 
-	Page<Product> findProductByCompanyId(Pageable page, Long companyId);
+	Page<Product> findProductByCompanyId(Pageable page, String companyId);
 
 	Page<Product> findProductBySubcategoryId(Pageable page, Long subcategoryId);
+
+	Page<Product> findProductByCompanyIdAndNameContaining(Pageable page, String companyId, String name);
 }

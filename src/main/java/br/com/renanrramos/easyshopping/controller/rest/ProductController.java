@@ -8,6 +8,7 @@ package br.com.renanrramos.easyshopping.controller.rest;
 
 import java.io.IOException;
 import java.net.URI;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -148,21 +149,20 @@ public class ProductController {
 	@ApiOperation(value = "Search all products by product category")
 	public ResponseEntity<List<ProductDTO>> searchProductsByProductCategory(
 			@RequestParam(name = "published", required = false) boolean onlyPublishedProducts,
-			@RequestParam(required = false, name = "Product name") String name,
+			@RequestParam(required = false) String name,
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber,
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
-			@RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy, Principal principal) {
 		page = new PageableFactory()
 				.withPage(pageNumber)
 				.withSize(pageSize)
 				.withSort(sortBy)
 				.buildPageable();
-		List<Product> products = (name != null) ?
-				productService.searchProductByName(page, name) :
-					new ArrayList<>();
-				return onlyPublishedProducts
-						? ResponseEntity.ok(ProductDTO.converterPublishedProductListToProductDTOList(products))
-								: ResponseEntity.ok(ProductDTO.converterProductListToProductDTOList(products));
+		List<Product> products = productService.searchProductByName(page, name, principal.getName());
+		new ArrayList<>();
+		return onlyPublishedProducts
+				? ResponseEntity.ok(ProductDTO.converterPublishedProductListToProductDTOList(products))
+						: ResponseEntity.ok(ProductDTO.converterProductListToProductDTOList(products));
 	}
 
 	@ResponseBody

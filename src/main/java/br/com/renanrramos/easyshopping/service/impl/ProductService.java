@@ -1,6 +1,6 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- * 
+ *
  * Creator: renan.ramos - 08/07/2020
  * ------------------------------------------------------------
  */
@@ -39,22 +39,22 @@ public class ProductService implements CommonService<Product>{
 
 	@Override
 	public List<Product> findAllPageable(Pageable page, Long storeId) {
-		Page<Product> pagedResult = 
+		Page<Product> pagedResult =
 				(storeId == null) ?
-				productRepository.findAll(page) :
-				productRepository.findProductByStoreId(page, storeId);
-		return pagedResult.hasContent() ?
-				pagedResult.getContent() :
-					new ArrayList<>();
+						productRepository.findAll(page) :
+							productRepository.findProductByStoreId(page, storeId);
+						return pagedResult.hasContent() ?
+								pagedResult.getContent() :
+									new ArrayList<>();
 	}
 
-	public List<Product> findCompanyOwnProducts(Pageable page, Long companyId) {
+	public List<Product> findCompanyOwnProducts(Pageable page, String companyId) {
 		Page<Product> pagedResult = productRepository.findProductByCompanyId(page, companyId);
 		return pagedResult.hasContent() ?
 				pagedResult.getContent() :
 					new ArrayList<>();
 	}
-	
+
 	@Override
 	public List<Product> findAll(Pageable page) {
 		return new ArrayList<>();
@@ -75,8 +75,18 @@ public class ProductService implements CommonService<Product>{
 		productRepository.deleteById(productId);
 	}
 
-	public List<Product> searchProductByName(Pageable page, String name) {
-		Page<Product> pagedResult = productRepository.findProductByNameContaining(page, name);
+	public List<Product> searchProductByName(Pageable page, String name, String companyId) {
+		Page<Product> pagedResult = null;
+
+		if (companyId != null) {
+			System.out.println(companyId + "  82  " + name);
+			pagedResult = name == null ? productRepository.findAll(page)
+					: productRepository.findProductByNameContaining(page, name);
+		} else {
+			pagedResult = name == null ? productRepository.findProductByCompanyId(page, companyId)
+					: productRepository.findProductByCompanyIdAndNameContaining(page, companyId, name);
+		}
+
 		return pagedResult.hasContent() ?
 				pagedResult.getContent() :
 					new ArrayList<>();
@@ -87,10 +97,10 @@ public class ProductService implements CommonService<Product>{
 	}
 
 	public List<Product> getProductsBySubcategoryId(Pageable page, Long subcategoryId) {
-		Page<Product> pagedResult = 
-						productRepository.findProductBySubcategoryId(page, subcategoryId);
+		Page<Product> pagedResult =
+				productRepository.findProductBySubcategoryId(page, subcategoryId);
 		return pagedResult.hasContent() ?
 				pagedResult.getContent() :
-				new ArrayList<>();		
+					new ArrayList<>();
 	}
 }
