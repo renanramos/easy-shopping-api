@@ -26,6 +26,8 @@ public class EasyShoppingSqlConstants {
 
 	public static final String GET_STORE_BY_COMPANY_ID = "SELECT s FROM Store s LEFT JOIN User u ON u.tokenId = s.tokenId WHERE s.tokenId = :tokenId";
 
+	public static final String GET_STOCKS_BY_NAME = "SELECT s FROM Stock s LEFT JOIN Store store ON store.id = s.store.id WHERE s.name LIKE %:name% OR store.name LIKE %:name%";
+
 	private EasyShoppingSqlConstants() {
 		// Intentionally empty
 	}
