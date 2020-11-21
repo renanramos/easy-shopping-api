@@ -193,7 +193,7 @@ public class StockItemController {
 			throw new EasyShoppingException(ExceptionMessagesConstants.STOCK_NOT_FOUND);
 		}
 
-		List<StockItem> items = itemService.findStockItemByStockId(page, stockId);
+		List<StockItem> items = itemService.findStockItemByStockId(page, stockId, name);
 
 		return ResponseEntity.ok(StockItemDTO.converterStockItemListToStockItemDTOList(items));
 	}
