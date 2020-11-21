@@ -8,8 +8,10 @@ package br.com.renanrramos.easyshopping.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import br.com.renanrramos.easyshopping.constants.sql.EasyShoppingSqlConstants;
 import br.com.renanrramos.easyshopping.model.Stock;
 
 /**
@@ -18,5 +20,6 @@ import br.com.renanrramos.easyshopping.model.Stock;
  */
 public interface StockRepository extends PagingAndSortingRepository<Stock, Long> {
 
+	@Query(EasyShoppingSqlConstants.GET_STOCKS_BY_NAME)
 	Page<Stock> findStockByName(Pageable page, String name);
 }
