@@ -12,9 +12,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import br.com.renanrramos.easyshopping.config.util.EasyShoppingUtils;
 import br.com.renanrramos.easyshopping.model.Product;
 import br.com.renanrramos.easyshopping.model.ProductImage;
 import lombok.EqualsAndHashCode;
@@ -47,9 +44,6 @@ public class ProductDTO {
 	private Set<ProductImage> productImages;
 
 	private boolean isProductPublished;
-
-	@JsonIgnore
-	private EasyShoppingUtils utils = new EasyShoppingUtils();
 
 	public ProductDTO() {
 		// Intentionally empty
