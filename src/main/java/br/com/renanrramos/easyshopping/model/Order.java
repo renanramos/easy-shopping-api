@@ -40,6 +40,8 @@ public class Order implements Serializable {
 	@ApiModelProperty(hidden = true)
 	private Long id;
 
+	private String orderNumber;
+
 	private String customerId;
 
 	@OneToMany(targetEntity = OrderItem.class, cascade = CascadeType.ALL, mappedBy = "order", fetch = FetchType.EAGER)
