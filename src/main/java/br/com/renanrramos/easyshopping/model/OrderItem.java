@@ -53,7 +53,7 @@ public class OrderItem implements Serializable {
 
 	private Double amount;
 
-	private Double unitValue;
+	private Double price;
 
 	private Double total;
 
@@ -61,4 +61,9 @@ public class OrderItem implements Serializable {
 		// Intentionally empty
 	}
 
+	@Override
+	public String toString() {
+		return "OrderItem [id=" + id + ", order=" + order + ", productId=" + productId + ", amount=" + amount
+				+ ", price=" + price + ", total=" + total + "]";
+	}
 }
