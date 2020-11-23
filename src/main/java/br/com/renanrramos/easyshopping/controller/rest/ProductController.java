@@ -202,7 +202,7 @@ public class ProductController {
 	@ApiOperation(value = "Update a product")
 	@RolesAllowed("easy-shopping-user")
 	public ResponseEntity<ProductDTO> updateProduct(@PathVariable("id") Long productId, @Valid @RequestBody ProductForm productForm,
-			UriComponentsBuilder uriBuilder) {
+			UriComponentsBuilder uriBuilder, Principal principal) {
 
 		if (productId == null) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_ID_NOT_FOUND_ON_REQUEST);
@@ -242,7 +242,7 @@ public class ProductController {
 		product.setSubcategory(productCategory);
 		product.setStore(store);
 		product.setId(productId);
-		product.setCompanyId(productForm.getCompanyId());
+		product.setCompanyId(principal.getName());
 		product = productService.save(product);
 
 		uri = uriBuilder.path("/products/{id}").buildAndExpand(productId).encode().toUri();
