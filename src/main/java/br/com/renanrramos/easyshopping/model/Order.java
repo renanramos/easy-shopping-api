@@ -17,6 +17,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;
@@ -31,6 +32,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Table(name = "`order`")
 public class Order implements Serializable {
 
 	private static final long serialVersionUID = -6015194357896415019L;
@@ -44,7 +46,7 @@ public class Order implements Serializable {
 
 	private String customerId;
 
-	@OneToMany(targetEntity = OrderItem.class, cascade = CascadeType.ALL, mappedBy = "order", fetch = FetchType.EAGER)
+	@OneToMany(targetEntity = OrderItem.class, cascade = CascadeType.ALL, mappedBy = "order", fetch = FetchType.LAZY)
 	private List<OrderItem> items = new ArrayList<>();
 
 	public Order() {
