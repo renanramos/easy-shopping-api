@@ -10,6 +10,7 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -18,7 +19,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -45,6 +45,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.renanrramos.easyshopping.enums.Profile;
 import br.com.renanrramos.easyshopping.model.Customer;
+import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
 import br.com.renanrramos.easyshopping.service.impl.CustomerService;
 /**
  * Test for {@link CustomerController}
@@ -65,11 +66,11 @@ public class CustomerControllerTest {
 	@MockBean
 	private CustomerService customerService;
 
-	@Mock
-	private Pageable page;
+	@MockBean
+	private AuthenticationServiceImpl mockAuthentication;
 
 	@Mock
-	private Principal principal;
+	private Pageable page;
 
 	private Long customerId = 1L;
 
@@ -90,7 +91,7 @@ public class CustomerControllerTest {
 		Customer customer = getCustomerInstance();
 		when(customerService.save(any(Customer.class))).thenReturn(customer);
 		when(customerService.findCustomerByCpf(anyString())).thenReturn(Optional.empty());
-		when(principal.getName()).thenReturn("customerId");
+		when(mockAuthentication.getName()).thenReturn("customerId");
 		mockMvc.perform(post(BASE_URL)
 				.content(objectMapper.writeValueAsString(customer))
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
@@ -100,6 +101,16 @@ public class CustomerControllerTest {
 		verify(customerService, times(1)).save(any(Customer.class));
 	}
 
+	@Test(expected = Exception.class)
+	public void saveCustomer_whenCPFAlreadyExist_shouldThrowException() throws JsonProcessingException, Exception {
+		List<Customer> customers = new ArrayList<>();
+		customers.add(getCustomerInstance());
+		Optional<List<Customer>> customerCPFFound = Optional.of(customers);
+		when(customerService.findCustomerByCpf(anyString())).thenReturn(customerCPFFound);
+		mockMvc.perform(post(BASE_URL).content(objectMapper.writeValueAsString(any(Customer.class)))
+				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON));
+		verify(customerService, never()).save(any(Customer.class));
+	}
 	@Test
 	public void shouldReturnBadRequestWhenTryingCreateCustomer() throws JsonProcessingException, Exception {
 		Customer customer = new Customer();

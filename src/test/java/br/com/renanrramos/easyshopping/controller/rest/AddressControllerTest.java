@@ -8,6 +8,7 @@ package br.com.renanrramos.easyshopping.controller.rest;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
@@ -22,7 +23,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -50,6 +50,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import br.com.renanrramos.easyshopping.model.Address;
 import br.com.renanrramos.easyshopping.model.form.AddressForm;
 import br.com.renanrramos.easyshopping.service.impl.AddressService;
+import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
 import br.com.renanrramos.easyshopping.service.impl.CustomerService;
 
 /**
@@ -75,11 +76,11 @@ public class AddressControllerTest {
 	@MockBean
 	private CustomerService customerService;
 
-	@Mock
-	private Pageable page;
+	@MockBean
+	private AuthenticationServiceImpl mockAuthentication;
 
 	@Mock
-	private Principal mockPrincipal;
+	private Pageable page;
 
 	private MockMvc mockMvc;
 
@@ -94,7 +95,7 @@ public class AddressControllerTest {
 		MockitoAnnotations.initMocks(this);
 		mockMvc = MockMvcBuilders.standaloneSetup(addressController).build();
 
-		when(mockPrincipal.getName()).thenReturn("customerId");
+		when(mockAuthentication.getName()).thenReturn("customerId");
 	}
 
 	@Test
@@ -207,6 +208,16 @@ public class AddressControllerTest {
 		verify(addressService, times(1)).save(any(Address.class));
 	}
 
+	@Test(expected = Exception.class)
+	public void updateAddress_withInvalidAddressId_shouldThrowException()
+			throws JsonProcessingException, Exception {
+		Address addressForm = getAddress();
+
+		when(addressService.findById(1L)).thenReturn(Optional.empty());
+		mockMvc.perform(patch(BASE_URL + "/1").content(objecMapper.writeValueAsString(addressForm))
+				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON));
+	}
+
 	@Test
 	public void shouldReturnNotFoundWhenCustomerIsInvalid() throws JsonProcessingException, Exception {
 
@@ -228,6 +239,14 @@ public class AddressControllerTest {
 		.andExpect(status().isOk());
 
 		verify(addressService, times(1)).remove(1L);
+	}
+
+	@Test(expected = Exception.class)
+	public void removeAddress_withInvalidAddressId_shouldThrowException() throws Exception {
+		when(addressService.findById(1L)).thenReturn(Optional.empty());
+
+		mockMvc.perform(delete(BASE_URL + "/1"));
+		verify(addressService, never()).remove(anyLong());
 	}
 
 	private static Address getAddress() {

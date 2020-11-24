@@ -11,6 +11,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -21,7 +22,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -48,6 +48,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.renanrramos.easyshopping.enums.Profile;
 import br.com.renanrramos.easyshopping.model.Company;
+import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
 import br.com.renanrramos.easyshopping.service.impl.CompanyService;
 
 /**
@@ -69,11 +70,11 @@ public class CompanyControllerTest {
 	@MockBean
 	private CompanyService companyService;
 
-	@Mock
-	private Pageable page;
+	@MockBean
+	private AuthenticationServiceImpl mockAuthentication;
 
 	@Mock
-	private Principal mockPrincipal;
+	private Pageable page;
 
 	private Long companyId = 1L;
 
@@ -106,18 +107,17 @@ public class CompanyControllerTest {
 		verify(companyService, times(1)).save(any(Company.class));
 	}
 
-
-	public void shouldReturnBadRequestWhenTryingCreateCompany() throws JsonProcessingException, Exception {
+	@Test(expected = Exception.class)
+	public void saveCompany_withInvalidRegisteredNumber_shouldThrowException()
+			throws JsonProcessingException, Exception {
 		Company company = new Company();
-		when(companyService.save(any(Company.class))).thenReturn(company);
+		when(companyService.isRegisteredNumberInvalid(anyString())).thenReturn(false);
 
 		mockMvc.perform(post(BASE_URL)
 				.content(objecMapper.writeValueAsString(company))
-				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
-		.andExpect(status().isBadRequest());
+				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON));
 
-		verify(companyService, times(1)).save(any(Company.class));
-
+		verify(companyService, never()).save(any(Company.class));
 	}
 
 	@Test
@@ -172,9 +172,7 @@ public class CompanyControllerTest {
 
 	@Test(expected = Exception.class)
 	public void shoudReturnNotFoundWithAnInvalidCompanyTokenId() throws Exception {
-		new Company();
-
-		when(companyService.findCompanyByTokenId(anyString())).thenReturn(null);
+		when(companyService.findCompanyByTokenId(anyString())).thenReturn(Optional.empty());
 
 		mockMvc.perform(get(BASE_URL + "/" + companyId))
 		.andExpect(status().isNotFound());
@@ -196,6 +194,18 @@ public class CompanyControllerTest {
 		.andExpect(jsonPath("$.id", is(1)));
 	}
 
+	@Test(expected = Exception.class)
+	public void updateCompany_withInvalidCompanyTokenId_shouldThrowException()
+			throws JsonProcessingException, Exception {
+
+		when(companyService.findCompanyByTokenId(anyString())).thenReturn(Optional.empty());
+
+		mockMvc.perform(patch(BASE_URL + "/" + companyId).content(objecMapper.writeValueAsString(any(Company.class)))
+				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON));
+
+		verify(companyService, never()).save(any(Company.class));
+	}
+
 	@Test
 	public void shouldDeleteCompany() throws Exception {
 		Company company = getCompanyInstance();
@@ -207,6 +217,15 @@ public class CompanyControllerTest {
 		.andExpect(status().isOk());
 
 		verify(companyService, times(1)).remove(companyId);
+	}
+
+	@Test(expected = Exception.class)
+	public void removeCompany_withInvalidCompanyId_shoulThrowExcpeption() throws Exception {
+		when(companyService.findById(anyLong())).thenReturn(Optional.empty());
+
+		mockMvc.perform(delete(BASE_URL + "/" + companyId));
+
+		verify(companyService, never()).remove(anyLong());
 	}
 
 	private static Company getCompanyInstance() {
