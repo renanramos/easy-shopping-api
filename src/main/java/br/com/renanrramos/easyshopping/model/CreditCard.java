@@ -1,6 +1,6 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- * 
+ *
  * Creator: renan.ramos - 01/08/2020
  * ------------------------------------------------------------
  */
@@ -46,7 +46,7 @@ public class CreditCard implements Serializable{
 	private String ownerName;
 
 	@NotNull(message = ValidationMessagesConstants.EMPTY_FIELD)
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDate validDate;
 
 	@NotNull(message = ValidationMessagesConstants.EMPTY_FIELD)

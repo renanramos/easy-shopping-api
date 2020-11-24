@@ -1,6 +1,6 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- * 
+ *
  * Creator: renan.ramos - 08/08/2020
  * ------------------------------------------------------------
  */
@@ -21,7 +21,7 @@ public class SubcategoryBuilder {
 		this.subcategory = new Subcategory();
 	}
 
-	public SubcategoryBuilder builder() {
+	public static SubcategoryBuilder builder() {
 		return new SubcategoryBuilder();
 	}
 

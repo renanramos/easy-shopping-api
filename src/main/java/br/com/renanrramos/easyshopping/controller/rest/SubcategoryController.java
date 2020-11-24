@@ -106,7 +106,7 @@ public class SubcategoryController {
 				.withSort(sortBy)
 				.buildPageable();
 		List<Subcategory> subcategories =
-				(name == null) ?
+				(name == null || name.isEmpty()) ?
 						subcategoryService.findAllPageable(page, productCategoryId) :
 							subcategoryService.findSubcategoryByName(page, name);
 						return ResponseEntity.ok(SubcategoryDTO.convertSubcategoryListToSubcategoryDTOList(subcategories));

@@ -85,6 +85,7 @@ public class AddressController {
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber,
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
+
 		Pageable page = new PageableFactory()
 				.withPage(pageNumber)
 				.withSize(pageSize)

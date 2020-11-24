@@ -1,6 +1,6 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- * 
+ *
  * Creator: renan.ramos - 01/08/2020
  * ------------------------------------------------------------
  */
@@ -24,6 +24,11 @@ public class CreditCardBuilder {
 
 	public static CreditCardBuilder builder() {
 		return new CreditCardBuilder();
+	}
+
+	public CreditCardBuilder withId(Long id) {
+		this.creditCard.setId(id);
+		return this;
 	}
 
 	public CreditCardBuilder withCreditCardNumber(String creditCardNumber) {
