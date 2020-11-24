@@ -39,6 +39,7 @@ import br.com.renanrramos.easyshopping.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.model.Customer;
 import br.com.renanrramos.easyshopping.model.dto.CustomerDTO;
 import br.com.renanrramos.easyshopping.model.form.CustomerForm;
+import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
 import br.com.renanrramos.easyshopping.service.impl.CustomerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -58,7 +59,8 @@ public class CustomerController {
 
 	private URI uri;
 
-	private Principal principal;
+	@Autowired
+	private AuthenticationServiceImpl authenticationServiceImpl;
 
 	@ResponseBody
 	@PostMapping
@@ -76,7 +78,7 @@ public class CustomerController {
 			throw new EasyShoppingException(ExceptionMessagesConstants.CPF_ALREADY_EXIST);
 		}
 
-		customer.setTokenId(principal.getName());
+		customer.setTokenId(authenticationServiceImpl.getName());
 		customer.setSync(true);
 
 		Customer customerCreated = customerService.save(customer);

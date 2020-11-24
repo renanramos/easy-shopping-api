@@ -6,7 +6,6 @@
  */
 package br.com.renanrramos.easyshopping.controller.rest;
 
-import java.security.Principal;
 import java.util.Optional;
 
 import javax.annotation.security.RolesAllowed;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.renanrramos.easyshopping.model.User;
 import br.com.renanrramos.easyshopping.model.dto.UserDTO;
+import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
 import br.com.renanrramos.easyshopping.service.impl.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -38,13 +38,16 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
+	@Autowired
+	private AuthenticationServiceImpl authenticationServiceImpl;
+
 	@ResponseBody
 	@GetMapping(path = "/profile")
 	@ApiOperation(value = "Get user profile info")
 	@RolesAllowed({"ADMINISTRATOR", "CUSTOMER", "easy-shopping-user"})
-	public ResponseEntity<UserDTO> getCustomerProfile(Principal principal) {
+	public ResponseEntity<UserDTO> getCustomerProfile() {
 
-		Optional<User> user = userService.findUserByTokenId(principal.getName());
+		Optional<User> user = userService.findUserByTokenId(authenticationServiceImpl.getName());
 		if (user.isPresent()) {
 			return ResponseEntity.ok(UserDTO.converterUserToUserDTO(user.get()));
 		}

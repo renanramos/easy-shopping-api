@@ -7,7 +7,6 @@
 package br.com.renanrramos.easyshopping.controller.rest;
 
 import java.net.URI;
-import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,7 +70,7 @@ public class StockItemController {
 	@ApiOperation(value = "Save a new stock item")
 	@RolesAllowed("easy-shopping-user")
 	public ResponseEntity<StockItemDTO> saveStockItem(@Valid @RequestBody StockItemForm itemForm,
-			UriComponentsBuilder uriBuilder, Principal principal) throws EasyShoppingException {
+			UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 
 		Long productId = itemForm.getProductId();
 
@@ -116,7 +115,7 @@ public class StockItemController {
 	@ApiOperation(value = "Update a stock item")
 	@RolesAllowed("easy-shopping-user")
 	public ResponseEntity<StockItemDTO> updateStockItem(@PathVariable("id") Long itemId,
-			@RequestBody StockItemForm itemForm, UriComponentsBuilder uriBuilder, Principal principal)
+			@RequestBody StockItemForm itemForm, UriComponentsBuilder uriBuilder)
 					throws EasyShoppingException {
 		Long productId = itemForm.getProductId();
 

@@ -1,13 +1,12 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- * 
+ *
  * Creator: renan.ramos - 01/08/2020
  * ------------------------------------------------------------
  */
 package br.com.renanrramos.easyshopping.controller.rest;
 
 import java.net.URI;
-import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,6 +37,7 @@ import br.com.renanrramos.easyshopping.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.model.CreditCard;
 import br.com.renanrramos.easyshopping.model.dto.CreditCardDTO;
 import br.com.renanrramos.easyshopping.model.form.CreditCardForm;
+import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
 import br.com.renanrramos.easyshopping.service.impl.CreditCardService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -54,7 +54,10 @@ public class CreditCardController {
 
 	@Autowired
 	private CreditCardService creditCardService;
-	
+
+	@Autowired
+	private AuthenticationServiceImpl authenticationServiceImpl;
+
 	private URI uri;
 
 	@ResponseBody
@@ -62,10 +65,11 @@ public class CreditCardController {
 	@Transactional
 	@ApiOperation(value = "Save a new Credit Card")
 	@RolesAllowed({"easy-shopping-admin", "easy-shopping-user"})
-	public ResponseEntity<CreditCardDTO> saveCreditCard(@Valid @RequestBody CreditCardForm creditCardForm, UriComponentsBuilder uriBuilder, Principal principal) {
+	public ResponseEntity<CreditCardDTO> saveCreditCard(@Valid @RequestBody CreditCardForm creditCardForm,
+			UriComponentsBuilder uriBuilder) {
 
 		CreditCard creditCard = CreditCardForm.converterCreditCardFormToCreditCard(creditCardForm);
-		creditCard.setCustomerId(principal.getName());
+		creditCard.setCustomerId(authenticationServiceImpl.getName());
 		creditCard = creditCardService.save(creditCard);
 		uri = uriBuilder.path("/credit-cards/{id}").buildAndExpand(creditCard.getId()).encode().toUri();
 
@@ -77,16 +81,16 @@ public class CreditCardController {
 	@ApiOperation(value = "Get all credit cards")
 	@RolesAllowed({"easy-shopping-admin", "easy-shopping-user"})
 	public ResponseEntity<List<CreditCardDTO>> getCreditCards(
-			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber, 
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy,
-            Principal principal) {
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber,
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
 		Pageable page = new PageableFactory()
 				.withPage(pageNumber)
 				.withSize(pageSize)
 				.withSort(sortBy)
 				.buildPageable();
-		List<CreditCard> creditCards = creditCardService.findAllPageable(page, principal.getName());
+		List<CreditCard> creditCards = creditCardService.findAllPageable(page,
+				authenticationServiceImpl.getName());
 		return ResponseEntity.ok(CreditCardDTO.converterCreditCardListToCreditCardDTOList(creditCards));
 	}
 
@@ -109,8 +113,8 @@ public class CreditCardController {
 	@PatchMapping(path = "/{id}")
 	@ApiOperation(value = "Update a credit card")
 	@RolesAllowed({"easy-shopping-admin", "easy-shopping-user"})
-	public ResponseEntity<CreditCardDTO> updateCreditCard(@PathVariable("id") Long creditCardId, @RequestBody CreditCardForm creditCardForm, UriComponentsBuilder uriBuilder,
-			Principal principal) {
+	public ResponseEntity<CreditCardDTO> updateCreditCard(@PathVariable("id") Long creditCardId,
+			@RequestBody CreditCardForm creditCardForm, UriComponentsBuilder uriBuilder) {
 
 		Optional<CreditCard> currentCreditCard = creditCardService.findById(creditCardId);
 
@@ -120,7 +124,7 @@ public class CreditCardController {
 
 		CreditCard creditCard = CreditCardForm.converterCreditCardFormUpdateToCreditCard(creditCardForm, currentCreditCard.get());
 		creditCard.setId(creditCardId);
-		creditCard.setCustomerId(principal.getName());
+		creditCard.setCustomerId(authenticationServiceImpl.getName());
 		creditCard = creditCardService.save(creditCard);
 		uri = uriBuilder.path("/credit-cards/{id}").buildAndExpand(creditCard.getId()).encode().toUri();
 

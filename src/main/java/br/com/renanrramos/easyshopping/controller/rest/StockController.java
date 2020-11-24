@@ -7,7 +7,6 @@
 package br.com.renanrramos.easyshopping.controller.rest;
 
 import java.net.URI;
-import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,6 +39,7 @@ import br.com.renanrramos.easyshopping.model.Stock;
 import br.com.renanrramos.easyshopping.model.Store;
 import br.com.renanrramos.easyshopping.model.dto.StockDTO;
 import br.com.renanrramos.easyshopping.model.form.StockForm;
+import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
 import br.com.renanrramos.easyshopping.service.impl.StockItemService;
 import br.com.renanrramos.easyshopping.service.impl.StockService;
 import br.com.renanrramos.easyshopping.service.impl.StoreService;
@@ -67,12 +67,15 @@ public class StockController {
 
 	private URI uri;
 
+	@Autowired
+	private AuthenticationServiceImpl authenticationServiceImpl;
+
 	@PostMapping
 	@Transactional
 	@ApiOperation(value = "Save a new stock")
 	@RolesAllowed("easy-shopping-user")
-	public ResponseEntity<StockDTO> saveStock(@Valid @RequestBody StockForm stockForm, UriComponentsBuilder uriBuilder,
-			Principal principal) throws EasyShoppingException {
+	public ResponseEntity<StockDTO> saveStock(@Valid @RequestBody StockForm stockForm, UriComponentsBuilder uriBuilder)
+			throws EasyShoppingException {
 
 		Long storeId = stockForm.getStoreId();
 
@@ -102,7 +105,7 @@ public class StockController {
 	public ResponseEntity<List<StockDTO>> getStocks(@RequestParam(required = false) String name,
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber,
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
-			@RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy, Principal principal) {
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
 
 		Pageable page = new PageableFactory().withPage(pageNumber).withSize(pageSize).withSort(sortBy).buildPageable();
 
@@ -131,7 +134,7 @@ public class StockController {
 	@ApiOperation(value = "Update a stock")
 	@RolesAllowed("easy-shopping-user")
 	public ResponseEntity<StockDTO> updateStock(@PathVariable("id") Long stockId, @RequestBody StockForm stockForm,
-			UriComponentsBuilder uriBuilder, Principal principal) throws EasyShoppingException {
+			UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 
 		if (stockId == null) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.STOCK_ID_NOT_FOUND_ON_REQUEST);

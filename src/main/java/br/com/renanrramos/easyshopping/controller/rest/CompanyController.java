@@ -7,7 +7,6 @@
 package br.com.renanrramos.easyshopping.controller.rest;
 
 import java.net.URI;
-import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,6 +39,7 @@ import br.com.renanrramos.easyshopping.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.model.Company;
 import br.com.renanrramos.easyshopping.model.dto.CompanyDTO;
 import br.com.renanrramos.easyshopping.model.form.CompanyForm;
+import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
 import br.com.renanrramos.easyshopping.service.impl.CompanyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -59,7 +59,8 @@ public class CompanyController {
 
 	private URI uri;
 
-	private Principal principal;
+	@Autowired
+	private AuthenticationServiceImpl authenticationServiceImpl;
 
 	@ResponseBody
 	@PostMapping
@@ -75,7 +76,7 @@ public class CompanyController {
 		}
 
 		company.setProfile(Profile.COMPANY);
-		company.setTokenId(principal.getName());
+		company.setTokenId(authenticationServiceImpl.getName());
 		company.setSync(true);
 
 		Company companyCreated = companyService.save(company);

@@ -7,7 +7,6 @@
 package br.com.renanrramos.easyshopping.controller.rest;
 
 import java.net.URI;
-import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,6 +38,7 @@ import br.com.renanrramos.easyshopping.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.model.Store;
 import br.com.renanrramos.easyshopping.model.dto.StoreDTO;
 import br.com.renanrramos.easyshopping.model.form.StoreForm;
+import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
 import br.com.renanrramos.easyshopping.service.impl.StoreService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -56,6 +56,9 @@ public class StoreController {
 	@Autowired
 	private StoreService storeService;
 
+	@Autowired
+	private AuthenticationServiceImpl authenticationServiceImpl;
+
 	private URI uri;
 
 	@ResponseBody
@@ -63,14 +66,15 @@ public class StoreController {
 	@PostMapping
 	@ApiOperation(value = "Save a new store")
 	@RolesAllowed({"easy-shopping-admin", "easy-shopping-user"})
-	public ResponseEntity<StoreDTO> saveStore(@Valid @RequestBody StoreForm storeForm, UriComponentsBuilder uriBuilder, Principal principal) throws EasyShoppingException {
+	public ResponseEntity<StoreDTO> saveStore(@Valid @RequestBody StoreForm storeForm, UriComponentsBuilder uriBuilder)
+			throws EasyShoppingException {
 
 		if (storeService.isRegisteredNumberInvalid(storeForm.getRegisteredNumber())) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.CNPJ_ALREADY_EXIST);
 		}
 
 		Store store = StoreForm.converterStoreFormToStore(storeForm);
-		store.setTokenId(principal.getName());
+		store.setTokenId(authenticationServiceImpl.getName());
 		store = storeService.save(store);
 		uri = uriBuilder.path("/stores/{id}").buildAndExpand(store.getId()).encode().toUri();
 		return ResponseEntity.created(uri).body(StoreDTO.converterStoreToStoreDTO(store));
@@ -83,8 +87,7 @@ public class StoreController {
 			@RequestParam(required = false) String name,
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber,
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
-			@RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy,
-			Principal principal) {
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
 
 		Pageable page = new PageableFactory()
 				.withPage(pageNumber)
@@ -92,7 +95,7 @@ public class StoreController {
 				.withSort(sortBy)
 				.buildPageable();
 
-		List<Store> stores = storeService.findAllPageable(page, principal.getName(), name);
+		List<Store> stores = storeService.findAllPageable(page, authenticationServiceImpl.getName(), name);
 		return ResponseEntity.ok(StoreDTO.converterStoreListToStoreDTOList(stores));
 	}
 
@@ -133,7 +136,8 @@ public class StoreController {
 	@Transactional
 	@ApiOperation(value = "Update a store")
 	@RolesAllowed({"easy-shopping-admin", "easy-shopping-user"})
-	public ResponseEntity<StoreDTO> updateStore(@PathVariable("id") Long storeId, @RequestBody StoreForm storeForm, UriComponentsBuilder uriBuilder, Principal principal) throws EasyShoppingException {
+	public ResponseEntity<StoreDTO> updateStore(@PathVariable("id") Long storeId, @RequestBody StoreForm storeForm,
+			UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 
 		if (storeId == null) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.STORE_ID_NOT_FOUND_ON_REQUEST);
@@ -146,7 +150,7 @@ public class StoreController {
 		}
 
 		Store store = StoreForm.converterStoreFormUpdateToStore(storeForm, currentStore.get());
-		store.setTokenId(principal.getName());
+		store.setTokenId(authenticationServiceImpl.getName());
 		store.setId(storeId);
 		StoreDTO storeUpdatedDTO = StoreDTO.converterStoreToStoreDTO(storeService.save(store));
 		uri = uriBuilder.path("/stores/{id}").buildAndExpand(storeId).encode().toUri();

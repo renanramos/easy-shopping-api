@@ -7,7 +7,6 @@
 package br.com.renanrramos.easyshopping.controller.rest;
 
 import java.net.URI;
-import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,6 +38,7 @@ import br.com.renanrramos.easyshopping.model.Address;
 import br.com.renanrramos.easyshopping.model.dto.AddressDTO;
 import br.com.renanrramos.easyshopping.model.form.AddressForm;
 import br.com.renanrramos.easyshopping.service.impl.AddressService;
+import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -57,15 +57,18 @@ public class AddressController {
 
 	private URI uri;
 
+	@Autowired
+	private AuthenticationServiceImpl authenticationServiceImpl;
+
 	@ResponseBody
 	@PostMapping
 	@Transactional
 	@ApiOperation(value = "Save a new address")
 	@RolesAllowed({"CUSTOMER", "easy-shopping-user", "app-customer"})
 	public ResponseEntity<AddressDTO> saveAddress(@Valid @RequestBody AddressForm addressForm,
-			UriComponentsBuilder uriBuilder, Principal principal) {
+			UriComponentsBuilder uriBuilder) {
 		Address address = AddressForm.converterAddressFormToAddress(addressForm);
-		address.setCustomerId(principal.getName());
+		address.setCustomerId(authenticationServiceImpl.getName());
 		address = addressService.save(address);
 		uri = uriBuilder.path("/addresses/{id}").buildAndExpand(address.getId()).encode().toUri();
 
@@ -81,7 +84,7 @@ public class AddressController {
 			@RequestParam(required = false) String streetName,
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber,
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
-			@RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy, Principal principal) {
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
 		Pageable page = new PageableFactory()
 				.withPage(pageNumber)
 				.withSize(pageSize)
@@ -89,7 +92,7 @@ public class AddressController {
 				.buildPageable();
 
 		List<Address> addresses = (streetName == null) ?
-				addressService.findAllPageable(page, principal.getName()) :
+				addressService.findAllPageable(page, authenticationServiceImpl.getName()) :
 					addressService.findAddressByStreetName(page, streetName);
 				return ResponseEntity.ok(AddressDTO.convertAddressListToAddressDTOList(addresses));
 	}
@@ -113,7 +116,7 @@ public class AddressController {
 	@ApiOperation(value = "Update an address")
 	@RolesAllowed({"easy-shopping-admin", "easy-shopping-user"})
 	public ResponseEntity<AddressDTO> updateAddress(@PathVariable("id") Long addressId,
-			@RequestBody AddressForm addressForm, UriComponentsBuilder uriBuilder, Principal principal) {
+			@RequestBody AddressForm addressForm, UriComponentsBuilder uriBuilder) {
 
 		Optional<Address> currentAddress = addressService.findById(addressId);
 
@@ -123,7 +126,7 @@ public class AddressController {
 
 		Address address = AddressForm.converterAddressFormUpdateToAddress(addressForm, currentAddress.get());
 		address.setId(addressId);
-		address.setCustomerId(principal.getName());
+		address.setCustomerId(authenticationServiceImpl.getName());
 		address = addressService.save(address);
 		uri = uriBuilder.path("/addresses/{id}").buildAndExpand(address.getId()).encode().toUri();
 

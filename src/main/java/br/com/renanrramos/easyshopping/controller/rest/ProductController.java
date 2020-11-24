@@ -8,7 +8,6 @@ package br.com.renanrramos.easyshopping.controller.rest;
 
 import java.io.IOException;
 import java.net.URI;
-import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,6 +45,7 @@ import br.com.renanrramos.easyshopping.model.dto.ProductDTO;
 import br.com.renanrramos.easyshopping.model.dto.ProductImageDTO;
 import br.com.renanrramos.easyshopping.model.form.ProductForm;
 import br.com.renanrramos.easyshopping.model.form.ProductImageForm;
+import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
 import br.com.renanrramos.easyshopping.service.impl.ProductImageService;
 import br.com.renanrramos.easyshopping.service.impl.ProductService;
 import br.com.renanrramos.easyshopping.service.impl.StoreService;
@@ -79,13 +79,16 @@ public class ProductController {
 	@Autowired
 	private ProductImageService productImageService;
 
+	@Autowired
+	private AuthenticationServiceImpl authenticationServiceImpl;
+
 	@ResponseBody
 	@PostMapping
 	@Transactional
 	@ApiOperation(value = "Save a new product")
 	@RolesAllowed("easy-shopping-user")
 	public ResponseEntity<ProductDTO> saveProduct(@Valid @RequestBody ProductForm productForm,
-			UriComponentsBuilder uriComponentsBuilder, Principal principal) {
+			UriComponentsBuilder uriComponentsBuilder) {
 
 		if (productForm.getProductSubcategoryId() == null) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_ID_NOT_FOUND_ON_REQUEST);
@@ -115,7 +118,7 @@ public class ProductController {
 		product.setSubcategory(productCategory);
 		product.setStore(store);
 		product.setPublished(false);
-		product.setCompanyId(principal.getName());
+		product.setCompanyId(authenticationServiceImpl.getName());
 
 		product = productService.save(product);
 
@@ -152,13 +155,14 @@ public class ProductController {
 			@RequestParam(required = false) String name,
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber,
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
-			@RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy, Principal principal) {
+			@RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
 		page = new PageableFactory()
 				.withPage(pageNumber)
 				.withSize(pageSize)
 				.withSort(sortBy)
 				.buildPageable();
-		List<Product> products = productService.searchProductByName(page, name, principal);
+		List<Product> products = productService.searchProductByName(page, name,
+				authenticationServiceImpl.getAuthentication());
 
 		return onlyPublishedProducts
 				? ResponseEntity.ok(ProductDTO.converterPublishedProductListToProductDTOList(products))
@@ -202,7 +206,7 @@ public class ProductController {
 	@ApiOperation(value = "Update a product")
 	@RolesAllowed("easy-shopping-user")
 	public ResponseEntity<ProductDTO> updateProduct(@PathVariable("id") Long productId, @Valid @RequestBody ProductForm productForm,
-			UriComponentsBuilder uriBuilder, Principal principal) {
+			UriComponentsBuilder uriBuilder) {
 
 		if (productId == null) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_ID_NOT_FOUND_ON_REQUEST);
@@ -242,7 +246,7 @@ public class ProductController {
 		product.setSubcategory(productCategory);
 		product.setStore(store);
 		product.setId(productId);
-		product.setCompanyId(principal.getName());
+		product.setCompanyId(authenticationServiceImpl.getName());
 		product = productService.save(product);
 
 		uri = uriBuilder.path("/products/{id}").buildAndExpand(productId).encode().toUri();
