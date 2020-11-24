@@ -6,7 +6,6 @@
  */
 package br.com.renanrramos.easyshopping.service.impl;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +15,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import br.com.renanrramos.easyshopping.model.Product;
@@ -76,13 +76,13 @@ public class ProductService implements CommonService<Product>{
 		productRepository.deleteById(productId);
 	}
 
-	public List<Product> searchProductByName(Pageable page, String name, Principal principal) {
+	public List<Product> searchProductByName(Pageable page, String name, Authentication authentication) {
 		Page<Product> pagedResult = null;
 
-		if (principal != null) {
-			System.out.println(principal.getName() + "  82  " + name);
+		if (authentication != null) {
+			System.out.println(authentication.getName() + "  82  " + name);
 			pagedResult = name == null ? productRepository.findAll(page)
-					: productRepository.getProductByCompanyIdAndName(page, principal.getName(), name);
+					: productRepository.getProductByCompanyIdAndName(page, authentication.getName(), name);
 		} else {
 			pagedResult = name == null ? productRepository.findAll(page)
 					: productRepository.getProductByName(page, name);
