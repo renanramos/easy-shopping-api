@@ -28,6 +28,11 @@ public class StockBuilder {
 		return new StockBuilder();
 	}
 
+	public StockBuilder withId(Long id) {
+		this.stock.setId(id);
+		return this;
+	}
+
 	public StockBuilder withName(String name) {
 		this.stock.setName(name);
 		return this;
