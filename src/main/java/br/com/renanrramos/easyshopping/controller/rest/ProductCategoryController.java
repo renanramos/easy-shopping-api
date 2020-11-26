@@ -94,10 +94,11 @@ public class ProductCategoryController {
 				.withSort(sortBy)
 				.buildPageable();
 		List<ProductCategory> productCategories =
-				(name == null) ?
+				(name == null || name.isEmpty()) ?
 						productCategoryService.findAllPageable(page, null) :
 							productCategoryService.findAllProductCategoriesByName(page, name);
-						return ResponseEntity.ok(ProductCategoryDTO.converterProductCategoryListToProductCategoryDTOList(productCategories));
+						return ResponseEntity
+								.ok(ProductCategoryDTO.converterProductCategoryListToProductCategoryDTOList(productCategories));
 	}
 
 	@ResponseBody
@@ -127,7 +128,8 @@ public class ProductCategoryController {
 
 		ProductCategory productCategory = ProductCategoryForm.converterProductCategoryFormUpdateToProductCategory(productCategoryForm, currentProductCategory.get());
 		productCategory.setId(productCategoryId);
-		ProductCategoryDTO productCategoryDTO = ProductCategoryDTO.converterProductCategoryToProductCategoryDTO(productCategoryService.save(productCategory));
+		ProductCategoryDTO productCategoryDTO = ProductCategoryDTO
+				.converterProductCategoryToProductCategoryDTO(productCategoryService.update(productCategory));
 		uri = uriBuilder.path("/product-categories/{id}").buildAndExpand(productCategoryDTO).encode().toUri();
 
 		return ResponseEntity.accepted().location(uri).body(productCategoryDTO);
