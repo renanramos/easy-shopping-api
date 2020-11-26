@@ -21,7 +21,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -79,8 +78,6 @@ public class CreditCardControllerTest {
 	private MockMvc mockMvc;
 
 	private ObjectMapper objecMapper = new ObjectMapper();
-
-	private DateTimeFormatter dateTimeFormatter;
 
 	@Before
 	public void before() {
@@ -201,10 +198,7 @@ public class CreditCardControllerTest {
 		creditCard.setCode(123);
 		creditCard.setCreditCardNumber("1234 1234 1234 1234");
 		creditCard.setOwnerName("OWNER NAME");
-
-		dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		creditCard.setValidDate("2031-01-02");
 		return creditCard;
 	}
-
 }
