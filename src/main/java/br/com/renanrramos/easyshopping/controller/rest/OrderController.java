@@ -8,14 +8,26 @@ package br.com.renanrramos.easyshopping.controller.rest;
 
 import java.net.URI;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import javax.transaction.Transactional;
+import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import br.com.renanrramos.easyshopping.model.Order;
+import br.com.renanrramos.easyshopping.model.dto.OrderDTO;
+import br.com.renanrramos.easyshopping.model.form.OrderForm;
 import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
 import br.com.renanrramos.easyshopping.service.impl.OrderService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * @author renan.ramos
@@ -35,4 +47,16 @@ public class OrderController {
 
 	private URI uri;
 
+	@ResponseBody
+	@PostMapping
+	@Transactional
+	@ApiOperation(value = "Save a new order")
+	public ResponseEntity<OrderDTO> saveOrder(@Valid @RequestBody OrderForm orderForm,
+			UriComponentsBuilder uriBuilder) {
+		Order order = OrderForm.converterOrderFormToOrder(orderForm);
+		order.setCustomerId(authenticationServiceImpl.getName());
+		order = orderService.save(order);
+		uri = uriBuilder.path("/orders/{id}").buildAndExpand(order.getId()).encode().toUri();
+		return ResponseEntity.created(uri).body(OrderDTO.converterOrderToOrderDTO(order));
+	}
 }
