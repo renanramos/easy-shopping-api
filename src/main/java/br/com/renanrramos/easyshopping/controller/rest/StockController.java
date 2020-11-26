@@ -39,8 +39,6 @@ import br.com.renanrramos.easyshopping.model.Stock;
 import br.com.renanrramos.easyshopping.model.Store;
 import br.com.renanrramos.easyshopping.model.dto.StockDTO;
 import br.com.renanrramos.easyshopping.model.form.StockForm;
-import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
-import br.com.renanrramos.easyshopping.service.impl.StockItemService;
 import br.com.renanrramos.easyshopping.service.impl.StockService;
 import br.com.renanrramos.easyshopping.service.impl.StoreService;
 import io.swagger.annotations.Api;
@@ -62,13 +60,7 @@ public class StockController {
 	@Autowired
 	private StoreService storeService;
 
-	@Autowired
-	private StockItemService itemsService;
-
 	private URI uri;
-
-	@Autowired
-	private AuthenticationServiceImpl authenticationServiceImpl;
 
 	@PostMapping
 	@Transactional
@@ -161,7 +153,7 @@ public class StockController {
 		Stock stock = StockForm.converterStockFormUpdateToStock(stockForm, currentStock.get());
 		stock.setId(stockId);
 		stock.setStore(storeOptional.get());
-		StockDTO stockUpdatedDTO = StockDTO.converterStockToStockDTO(stockService.save(stock));
+		StockDTO stockUpdatedDTO = StockDTO.converterStockToStockDTO(stockService.update(stock));
 		uri = uriBuilder.path("/stocks/{id}").buildAndExpand(stockId).encode().toUri();
 
 		return ResponseEntity.accepted().location(uri).body(stockUpdatedDTO);
@@ -172,7 +164,7 @@ public class StockController {
 	@Transactional
 	@ApiOperation(value = "Remove a stock")
 	@RolesAllowed("easy-shopping-user")
-	public ResponseEntity<StockDTO> deleteStock(@PathVariable("id") Long stockId) {
+	public ResponseEntity<StockDTO> removeStock(@PathVariable("id") Long stockId) {
 		Optional<Stock> stockOptional = stockService.findById(stockId);
 		if (!stockOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.STOCK_NOT_FOUND);
