@@ -113,7 +113,7 @@ public class StoreController {
 				.withSort(sortBy)
 				.buildPageable();
 
-		List<Store> stores = (name == null) ?
+		List<Store> stores = (name == null || name.isEmpty()) ?
 				storeService.findAll(page) :
 					storeService.findStoreByName(page, name);
 				return ResponseEntity.ok(StoreDTO.converterStoreListToStoreDTOList(stores));
@@ -152,7 +152,7 @@ public class StoreController {
 		Store store = StoreForm.converterStoreFormUpdateToStore(storeForm, currentStore.get());
 		store.setTokenId(authenticationServiceImpl.getName());
 		store.setId(storeId);
-		StoreDTO storeUpdatedDTO = StoreDTO.converterStoreToStoreDTO(storeService.save(store));
+		StoreDTO storeUpdatedDTO = StoreDTO.converterStoreToStoreDTO(storeService.update(store));
 		uri = uriBuilder.path("/stores/{id}").buildAndExpand(storeId).encode().toUri();
 
 		return ResponseEntity.accepted().location(uri).body(storeUpdatedDTO);
@@ -163,7 +163,7 @@ public class StoreController {
 	@Transactional
 	@ApiOperation(value = "Remove a store")
 	@RolesAllowed({"easy-shopping-admin", "easy-shopping-user"})
-	public ResponseEntity<StoreDTO> deleteStore(@PathVariable("id") Long storeId) {
+	public ResponseEntity<StoreDTO> removeStore(@PathVariable("id") Long storeId) {
 		Optional<Store> storeOptional = storeService.findById(storeId);
 		if (!storeOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.STORE_NOT_FOUND);
