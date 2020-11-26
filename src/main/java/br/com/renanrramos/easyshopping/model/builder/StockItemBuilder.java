@@ -25,6 +25,11 @@ public class StockItemBuilder {
 		return new StockItemBuilder();
 	}
 
+	public StockItemBuilder withId(Long id) {
+		this.stockItem.setId(id);
+		return this;
+	}
+
 	public StockItemBuilder withStock(Stock stock) {
 		this.stockItem.setStock(stock);
 		return this;
