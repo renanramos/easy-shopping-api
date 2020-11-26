@@ -78,7 +78,7 @@ public class StockItemController {
 			throw new EasyShoppingException(ExceptionMessagesConstants.PRODUCT_ID_NOT_FOUND_ON_REQUEST);
 		}
 
-		if (itemService.hasStockItemProductId(productId)) {
+		if (itemService.hasStockItemByProductId(productId)) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.PRODUCT_ALREADY_IN_STOCK);
 		}
 
@@ -105,6 +105,9 @@ public class StockItemController {
 		StockItem item = StockItemForm.converterStockItemFormToStockItem(itemForm);
 		item.setStock(stockOptional.get());
 		item = itemService.save(item);
+		item.setProductId(productOptional.get().getId());
+		item.setProductName(productOptional.get().getName());
+		item.setStock(stockOptional.get());
 		uri = uriBuilder.path("/stock-items/{id}").buildAndExpand(item.getId()).encode().toUri();
 		return ResponseEntity.created(uri).body(StockItemDTO.converterStockItemToStockItemDTO(item));
 	}
@@ -151,10 +154,12 @@ public class StockItemController {
 			throw new EasyShoppingException(ExceptionMessagesConstants.STOCK_ITEM_NOT_FOUND);
 		}
 
-		StockItem item = StockItemForm.converterStockItemFormUpdateToStockItem(itemForm, itemOptional.get());
+		StockItem item = StockItemForm.converterStockItemFormToStockItem(itemForm);
 		item.setStock(stockOptional.get());
-		item.setId(itemId);
 		item = itemService.save(item);
+		item.setProductId(productOptional.get().getId());
+		item.setProductName(productOptional.get().getName());
+		item.setStock(stockOptional.get());
 		uri = uriBuilder.path("/stock-items/{id}").buildAndExpand(item.getId()).encode().toUri();
 		return ResponseEntity.accepted().location(uri).body(StockItemDTO.converterStockItemToStockItemDTO(item));
 	}
