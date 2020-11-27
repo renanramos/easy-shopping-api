@@ -51,7 +51,7 @@ public class OrderItem implements Serializable {
 
 	private Long productId;
 
-	private Double amount;
+	private Integer amount;
 
 	private Double price;
 
