@@ -46,7 +46,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.com.renanrramos.easyshopping.enums.Profile;
 import br.com.renanrramos.easyshopping.model.Company;
 import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
 import br.com.renanrramos.easyshopping.service.impl.CompanyService;
@@ -82,18 +81,19 @@ public class CompanyControllerTest {
 
 	private ObjectMapper objecMapper = new ObjectMapper();
 
+	private Company company = new Company();
+
 	@Before
 	public void before() {
 		MockitoAnnotations.initMocks(this);
 		mockMvc = MockMvcBuilders
 				.standaloneSetup(companyController)
 				.build();
+		company = EasyShoppingUtil.getCompanyInstance();
 	}
 
 	@Test
 	public void shouldCreateNewCompany() throws JsonProcessingException, Exception {
-		Company company = getCompanyInstance();
-
 		when(companyService.save(any(Company.class))).thenReturn(company);
 
 		mockMvc.perform(post(BASE_URL)
@@ -110,8 +110,7 @@ public class CompanyControllerTest {
 	@Test(expected = Exception.class)
 	public void saveCompany_withInvalidRegisteredNumber_shouldThrowException()
 			throws JsonProcessingException, Exception {
-		Company company = new Company();
-		when(companyService.isRegisteredNumberInvalid(anyString())).thenReturn(false);
+		when(companyService.isRegisteredNumberInvalid(anyString())).thenReturn(true);
 
 		mockMvc.perform(post(BASE_URL)
 				.content(objecMapper.writeValueAsString(company))
@@ -121,11 +120,21 @@ public class CompanyControllerTest {
 	}
 
 	@Test
+	public void saveCompany_whenCompanyNotCreated_shouldReturnBadRequest() throws JsonProcessingException, Exception {
+		when(companyService.save(any(Company.class))).thenReturn(new Company());
+
+		mockMvc.perform(post(BASE_URL).content(objecMapper.writeValueAsString(company)).header(HttpHeaders.CONTENT_TYPE,
+				MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+
+		verify(companyService, times(1)).save(any(Company.class));
+	}
+
+	@Test
 	public void shouldReturnListOfCompanies() throws Exception {
 		List<Company> companies = new ArrayList<Company>();
-		companies.add(getCompanyInstance());
-		companies.add(getCompanyInstance());
-		companies.add(getCompanyInstance());
+		companies.add(company);
+		companies.add(company);
+		companies.add(company);
 
 		when(companyService.findAll(eq(page))).thenReturn(companies);
 
@@ -160,7 +169,7 @@ public class CompanyControllerTest {
 
 	@Test
 	public void shouldReturnCompanyById() throws Exception {
-		when(companyService.findCompanyByTokenId(anyString())).thenReturn(Optional.of(getCompanyInstance()));
+		when(companyService.findCompanyByTokenId(anyString())).thenReturn(Optional.of(company));
 
 		mockMvc.perform(get(BASE_URL + "/" + companyId))
 		.andExpect(status().isOk())
@@ -182,8 +191,6 @@ public class CompanyControllerTest {
 
 	@Test
 	public void shouldUpdateCompany() throws Exception {
-		Company company = getCompanyInstance();
-
 		when(companyService.findCompanyByTokenId(anyString())).thenReturn(Optional.of(company));
 		when(companyService.save(any(Company.class))).thenReturn(company);
 
@@ -200,7 +207,7 @@ public class CompanyControllerTest {
 
 		when(companyService.findCompanyByTokenId(anyString())).thenReturn(Optional.empty());
 
-		mockMvc.perform(patch(BASE_URL + "/" + companyId).content(objecMapper.writeValueAsString(any(Company.class)))
+		mockMvc.perform(patch(BASE_URL + "/" + companyId).content(objecMapper.writeValueAsString(company))
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON));
 
 		verify(companyService, never()).save(any(Company.class));
@@ -208,7 +215,6 @@ public class CompanyControllerTest {
 
 	@Test
 	public void shouldDeleteCompany() throws Exception {
-		Company company = getCompanyInstance();
 		company.setId(companyId);
 
 		when(companyService.findById(anyLong())).thenReturn(Optional.of(company));
@@ -226,16 +232,5 @@ public class CompanyControllerTest {
 		mockMvc.perform(delete(BASE_URL + "/" + companyId));
 
 		verify(companyService, never()).remove(anyLong());
-	}
-
-	private static Company getCompanyInstance() {
-		Company company = new Company();
-		company.setId(1L);
-		company.setName("Teste");
-		company.setPhone("13213321");
-		company.setProfile(Profile.COMPANY);
-		company.setRegisteredNumber("1315adsd5");
-		company.setEmail("company@mail.com");
-		return company;
 	}
 }

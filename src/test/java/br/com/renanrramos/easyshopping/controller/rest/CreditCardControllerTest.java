@@ -46,7 +46,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.renanrramos.easyshopping.model.CreditCard;
-import br.com.renanrramos.easyshopping.model.builder.CreditCardBuilder;
 import br.com.renanrramos.easyshopping.model.form.CreditCardForm;
 import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
 import br.com.renanrramos.easyshopping.service.impl.CreditCardService;
@@ -79,20 +78,24 @@ public class CreditCardControllerTest {
 
 	private ObjectMapper objecMapper = new ObjectMapper();
 
+	private CreditCard creditCard;
+
+	private CreditCardForm creditCardForm;
+
 	@Before
 	public void before() {
 		MockitoAnnotations.initMocks(this);
 		mockMvc = MockMvcBuilders.standaloneSetup(creditCardController).build();
 
 		when(mockAuthentication.getName()).thenReturn("customerId");
+		creditCard = EasyShoppingUtil.getCreditCardInstance(1L);
+		creditCardForm = EasyShoppingUtil.getCreditCardForm();
 	}
 
 	@Test
 	public void saveCreditCard_withValidCreditCard_shouldSaveSuccessfully() throws JsonProcessingException, Exception {
-		CreditCard creditCard = CreditCardForm.converterCreditCardFormToCreditCard(getCreditCardForm());
-		creditCard.setId(1L);
 		when(creditCardService.save(any(CreditCard.class))).thenReturn(creditCard);
-		mockMvc.perform(post(BASE_URL).content(objecMapper.writeValueAsString(getCreditCardForm()))
+		mockMvc.perform(post(BASE_URL).content(objecMapper.writeValueAsString(creditCardForm))
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)).andExpect(status().isCreated())
 		.andExpect(jsonPath("$.id", is(1))).andExpect(jsonPath("$.ownerName", is("OWNER NAME")))
 		.andExpect(jsonPath("$.creditCardNumber", is("1234 1234 1234 1234")));
@@ -103,9 +106,9 @@ public class CreditCardControllerTest {
 	@Test
 	public void getCreditCards_withValidParameters_shouldReturnAListOFCreditCards() throws Exception {
 		List<CreditCard> creditCards = new ArrayList<>();
-		creditCards.add(getCreditCardInstance(1L));
-		creditCards.add(getCreditCardInstance(2L));
-		creditCards.add(getCreditCardInstance(3L));
+		creditCards.add(creditCard);
+		creditCards.add(creditCard);
+		creditCards.add(creditCard);
 
 		when(creditCardService.findAllPageable(any(Pageable.class), anyString())).thenReturn(creditCards);
 
@@ -116,8 +119,6 @@ public class CreditCardControllerTest {
 
 	@Test
 	public void getCreditCardById_withValidCreditCardId_shouldReturnCreditCard() throws Exception {
-		CreditCard creditCard = getCreditCardInstance(1L);
-
 		when(creditCardService.findById(anyLong())).thenReturn(Optional.of(creditCard));
 
 		mockMvc.perform(get(BASE_URL + "/" + creditCard.getId())).andExpect(status().isOk())
@@ -129,8 +130,6 @@ public class CreditCardControllerTest {
 
 	@Test(expected = Exception.class)
 	public void getCreditCardById_withInvalidCreditCardId_shouldThrowExceptio() throws Exception {
-		CreditCard creditCard = getCreditCardInstance(1L);
-
 		when(creditCardService.findById(anyLong())).thenReturn(Optional.empty());
 
 		mockMvc.perform(get(BASE_URL + "/" + creditCard.getId())).andExpect(status().isOk())
@@ -142,13 +141,10 @@ public class CreditCardControllerTest {
 	@Test
 	public void updateCreditCard_withValidParameters_shouldUpdatesuccessfully()
 			throws JsonProcessingException, Exception {
-		CreditCard creditCard = CreditCardForm.converterCreditCardFormToCreditCard(getCreditCardForm());
-		creditCard.setId(1L);
-
 		when(creditCardService.findById(anyLong())).thenReturn(Optional.of(creditCard));
 		when(creditCardService.save(any(CreditCard.class))).thenReturn(creditCard);
 
-		mockMvc.perform(patch(BASE_URL + "/1").content(objecMapper.writeValueAsString(getCreditCardForm()))
+		mockMvc.perform(patch(BASE_URL + "/1").content(objecMapper.writeValueAsString(creditCardForm))
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)).andExpect(status().isAccepted())
 		.andExpect(jsonPath("$.id", is(1))).andExpect(jsonPath("$.ownerName", is("OWNER NAME")))
 		.andExpect(jsonPath("$.creditCardNumber", is("1234 1234 1234 1234")));
@@ -162,7 +158,7 @@ public class CreditCardControllerTest {
 
 		when(creditCardService.findById(anyLong())).thenReturn(Optional.empty());
 
-		mockMvc.perform(patch(BASE_URL + "/1").content(objecMapper.writeValueAsString(getCreditCardForm()))
+		mockMvc.perform(patch(BASE_URL + "/1").content(objecMapper.writeValueAsString(creditCardForm))
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON));
 
 		verify(creditCardService, times(1)).save(any(CreditCard.class));
@@ -171,7 +167,7 @@ public class CreditCardControllerTest {
 	@Test
 	public void removeCreditCard_withValidCreditCardId_shouldRemoveSuccessfully() throws Exception {
 
-		when(creditCardService.findById(anyLong())).thenReturn(Optional.of(getCreditCardInstance(1L)));
+		when(creditCardService.findById(anyLong())).thenReturn(Optional.of(creditCard));
 
 		mockMvc.perform(delete(BASE_URL + "/1")).andExpect(status().isOk());
 
@@ -186,19 +182,5 @@ public class CreditCardControllerTest {
 		mockMvc.perform(delete(BASE_URL + "/1"));
 
 		verify(creditCardService, never()).remove(anyLong());
-	}
-
-	public CreditCard getCreditCardInstance(Long id) {
-		return CreditCardBuilder.builder().withId(id).withCode(123).withCreditCardNumber("1234 1234 1234 1234")
-				.withOwnerName("OWNER NAME").build();
-	}
-
-	private CreditCardForm getCreditCardForm() {
-		CreditCardForm creditCard = new CreditCardForm();
-		creditCard.setCode(123);
-		creditCard.setCreditCardNumber("1234 1234 1234 1234");
-		creditCard.setOwnerName("OWNER NAME");
-		creditCard.setValidDate("2031-01-02");
-		return creditCard;
 	}
 }

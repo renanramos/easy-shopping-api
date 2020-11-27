@@ -90,18 +90,20 @@ public class AddressControllerTest {
 
 	private Long addressId;
 
+	private Address address = new Address();
+
 	@Before
 	public void before() {
 		MockitoAnnotations.initMocks(this);
 		mockMvc = MockMvcBuilders.standaloneSetup(addressController).build();
 
 		when(mockAuthentication.getName()).thenReturn("customerId");
+
+		address = EasyShoppingUtil.getAddress();
 	}
 
 	@Test
 	public void shouldCreateNewAddressSuccessfully() throws JsonProcessingException, Exception {
-
-		Address address = getAddress();
 		when(addressService.save(any(Address.class))).thenReturn(address);
 
 		mockMvc.perform(post(BASE_URL)
@@ -116,11 +118,8 @@ public class AddressControllerTest {
 
 	@Test
 	public void shouldReturnNotFoundWhenHasNullCustomerId() throws JsonProcessingException, Exception {
-
-		AddressForm addressForm = new AddressForm();
-
 		mockMvc.perform(post(BASE_URL)
-				.content(objecMapper.writeValueAsString(addressForm)));
+				.content(objecMapper.writeValueAsString(address)));
 
 		verify(addressService, never()).save(any(Address.class));
 	}
@@ -128,9 +127,9 @@ public class AddressControllerTest {
 	@Test
 	public void shouldReturnAListOfAddresses() throws Exception {
 		List<Address> addresses = new ArrayList<Address>();
-		addresses.add(getAddress());
-		addresses.add(getAddress());
-		addresses.add(getAddress());
+		addresses.add(address);
+		addresses.add(address);
+		addresses.add(address);
 
 		when(addressService.findAllPageable(eq(page), anyString())).thenReturn(addresses);
 
@@ -165,8 +164,6 @@ public class AddressControllerTest {
 
 	@Test
 	public void shouldReturnAddressById() throws Exception {
-		Address address = getAddress();
-
 		when(addressService.findById(1L)).thenReturn(Optional.of(address));
 
 		mockMvc.perform(get(BASE_URL + "/1"))
@@ -179,16 +176,12 @@ public class AddressControllerTest {
 
 	@Test(expected = Exception.class)
 	public void shouldReturnNotFoundWhenAddressIdIsInvalid() throws Exception {
-		Address address = getAddress();
-
 		when(addressService.findById(2L)).thenReturn(Optional.of(address));
 		mockMvc.perform(get(BASE_URL + "/1"));
 	}
 
 	@Test
 	public void shouldUpateAddressSuccessfully() throws JsonProcessingException, Exception {
-		Address address = getAddress();
-
 		AddressForm addressForm = new AddressForm();
 		addressForm.setCep(address.getCep());
 		addressForm.setDistrict(address.getDistrict());
@@ -211,16 +204,13 @@ public class AddressControllerTest {
 	@Test(expected = Exception.class)
 	public void updateAddress_withInvalidAddressId_shouldThrowException()
 			throws JsonProcessingException, Exception {
-		Address addressForm = getAddress();
-
 		when(addressService.findById(1L)).thenReturn(Optional.empty());
-		mockMvc.perform(patch(BASE_URL + "/1").content(objecMapper.writeValueAsString(addressForm))
+		mockMvc.perform(patch(BASE_URL + "/1").content(objecMapper.writeValueAsString(address))
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON));
 	}
 
 	@Test
 	public void shouldReturnNotFoundWhenCustomerIsInvalid() throws JsonProcessingException, Exception {
-
 		mockMvc.perform(put(BASE_URL + "/1")
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON));
 
@@ -230,7 +220,6 @@ public class AddressControllerTest {
 
 	@Test
 	public void shouldDeleteAddress() throws Exception {
-		Address address = new Address();
 		address.setId(1L);
 
 		when(addressService.findById(1L)).thenReturn(Optional.of(address));
@@ -247,17 +236,5 @@ public class AddressControllerTest {
 
 		mockMvc.perform(delete(BASE_URL + "/1"));
 		verify(addressService, never()).remove(anyLong());
-	}
-
-	private static Address getAddress() {
-		Address address = new Address();
-		address.setId(1L);
-		address.setCep("cep");
-		address.setDistrict("district");
-		address.setNumber(123L);
-		address.setState("state");
-		address.setStreetName("streetName");
-		address.setCustomerId("customerId");
-		return address;
 	}
 }
