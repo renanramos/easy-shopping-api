@@ -25,6 +25,7 @@ public class ExceptionMessagesConstants {
 	public static final String ADMINISTRATOR_NOT_FOUND = "Administrador não localizado.";
 	public static final String STOCK_NOT_FOUND = "o estoque informado não foi lcocalizado.";
 	public static final String STOCK_ITEM_NOT_FOUND = "Item do estoque informado não foi lcocalizado.";
+	public static final String ORDER_NOT_FOUND = "Pedido não localizado";
 
 	public static final String INVALID_ID = "O id informado é inválido.";
 	public static final String CUSTOMER_ID_NOT_FOUND_ON_REQUEST = "Id do cliente é obrigatório.";
@@ -34,6 +35,7 @@ public class ExceptionMessagesConstants {
 	public static final String STORE_ID_NOT_FOUND_ON_REQUEST = "Id da loja é obrigatório.";
 	public static final String STOCK_ID_NOT_FOUND_ON_REQUEST = "Id do estoque é obrigatório.";
 	public static final String STOCK_ITEM_ID_NOT_FOUND_ON_REQUEST = "Id do item do estoque é obrigatório.";
+	public static final String ORDER_ID_NOT_FOUND_ON_REQUEST = "Id do pedido é obrigatório";
 
 	public static final String EMAIL_ALREADY_EXIST = "O email informado já é utilizado.";
 	public static final String CPF_ALREADY_EXIST = "O CPF informado já está cadastrado.";
