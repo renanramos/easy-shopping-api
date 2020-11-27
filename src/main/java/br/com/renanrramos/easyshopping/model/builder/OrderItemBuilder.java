@@ -35,7 +35,7 @@ public class OrderItemBuilder {
 		return this;
 	}
 
-	public OrderItemBuilder withAmount(Double amount) {
+	public OrderItemBuilder withAmount(Integer amount) {
 		this.orderItem.setAmount(amount);
 		return this;
 	}
