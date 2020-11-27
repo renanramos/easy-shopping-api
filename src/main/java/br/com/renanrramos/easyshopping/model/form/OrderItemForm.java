@@ -27,7 +27,7 @@ public class OrderItemForm {
 
 	private Long productId;
 
-	private Double amount;
+	private Integer amount;
 
 	private Double price;
 
@@ -37,7 +37,7 @@ public class OrderItemForm {
 		// Intentionally empty
 	}
 
-	public OrderItemForm(Long orderId, Long productId, Double amount, Double price, Double total) {
+	public OrderItemForm(Long orderId, Long productId, Integer amount, Double price, Double total) {
 		this.orderId = orderId;
 		this.productId = productId;
 		this.amount = amount;
