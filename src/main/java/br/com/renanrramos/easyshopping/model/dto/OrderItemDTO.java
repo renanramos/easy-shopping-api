@@ -30,7 +30,7 @@ public class OrderItemDTO {
 
 	private Long productId;
 
-	private Double amount;
+	private Integer amount;
 
 	private Double price;
 
