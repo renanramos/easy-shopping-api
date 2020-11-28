@@ -46,6 +46,8 @@ public class Order implements Serializable {
 
 	private String customerId;
 
+	private boolean finished;
+
 	@OneToMany(targetEntity = OrderItem.class, cascade = CascadeType.ALL, mappedBy = "order", fetch = FetchType.LAZY)
 	private List<OrderItem> items = new ArrayList<>();
 
