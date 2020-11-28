@@ -7,13 +7,17 @@
 package br.com.renanrramos.easyshopping.controller.rest;
 
 import java.net.URI;
+import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.model.Order;
 import br.com.renanrramos.easyshopping.model.dto.OrderDTO;
 import br.com.renanrramos.easyshopping.model.form.OrderForm;
@@ -58,5 +63,25 @@ public class OrderController {
 		order = orderService.save(order);
 		uri = uriBuilder.path("/orders/{id}").buildAndExpand(order.getId()).encode().toUri();
 		return ResponseEntity.created(uri).body(OrderDTO.converterOrderToOrderDTO(order));
+	}
+
+	@ResponseBody
+	@PatchMapping(path = "/{id}")
+	@Transactional
+	@ApiOperation(value = "Update order")
+	public ResponseEntity<OrderDTO> updateOrder(@Valid @RequestBody OrderForm orderForm,
+			@PathVariable("id") Long orderId, UriComponentsBuilder uriBuilder) {
+
+		Optional<Order> orderOptional = orderService.findById(orderId);
+
+		if (!orderOptional.isPresent()) {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.ORDER_NOT_FOUND);
+		}
+
+		Order order = orderOptional.get();
+		order.setFinished(true);
+		order.setId(orderId);
+		order = orderService.update(order);
+		return ResponseEntity.accepted().body(OrderDTO.converterOrderToOrderDTO(order));
 	}
 }
