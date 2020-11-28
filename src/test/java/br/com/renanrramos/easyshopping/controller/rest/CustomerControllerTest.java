@@ -96,7 +96,7 @@ public class CustomerControllerTest {
 				.content(objectMapper.writeValueAsString(customer))
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
 		.andExpect(status().isCreated())
-		.andExpect(jsonPath("$.name", is("name")));
+				.andExpect(jsonPath("$.name", is("name")));
 
 		verify(customerService, times(1)).save(any(Customer.class));
 	}
