@@ -38,6 +38,10 @@ public class EasyShoppingSqlConstants {
 
 	public static final String GET_PRODUCT_BY_NAME_AND_COMPANY_ID = "Select p FROM Product p LEFT JOIN Subcategory s ON s.id = p.subcategory.id WHERE s.name LIKE %:name% OR p.name LIKE %:name% AND p.companyId = :tokenId";
 
+	public static final String GET_CUSTOMER_ORDERS = "SELECT o FROM Order o WHERE o.customerId = :customerId";
+
+	public static final String GET_ORDER_ITEMS_BY_ORDER_ID = "SELECT i FROM OrderItem i LEFT JOIN Order o ON i.order.id = o.id WHERE o.id = :orderId";
+
 	private EasyShoppingSqlConstants() {
 		// Intentionally empty
 	}
