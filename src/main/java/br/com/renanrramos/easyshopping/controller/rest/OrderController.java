@@ -7,8 +7,11 @@
 package br.com.renanrramos.easyshopping.controller.rest;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -16,6 +19,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -56,6 +60,7 @@ public class OrderController {
 	@PostMapping
 	@Transactional
 	@ApiOperation(value = "Save a new order")
+	@RolesAllowed("easy-shopping-user")
 	public ResponseEntity<OrderDTO> saveOrder(@Valid @RequestBody OrderForm orderForm,
 			UriComponentsBuilder uriBuilder) {
 		Order order = OrderForm.converterOrderFormToOrder(orderForm);
@@ -69,6 +74,7 @@ public class OrderController {
 	@PatchMapping(path = "/{id}")
 	@Transactional
 	@ApiOperation(value = "Update order")
+	@RolesAllowed({ "CUSTOMER", "easy-shopping-user", "app-customer" })
 	public ResponseEntity<OrderDTO> updateOrder(@Valid @RequestBody OrderForm orderForm,
 			@PathVariable("id") Long orderId, UriComponentsBuilder uriBuilder) {
 
@@ -83,5 +89,17 @@ public class OrderController {
 		order.setId(orderId);
 		order = orderService.update(order);
 		return ResponseEntity.accepted().body(OrderDTO.converterOrderToOrderDTO(order));
+	}
+
+	@ResponseBody
+	@GetMapping
+	@ApiOperation(value = "Get orders")
+	@RolesAllowed({ "easy-shopping-user" })
+	public ResponseEntity<List<OrderDTO>> getOrders() {
+
+		List<Order> orders = orderService.findCustomerOrders(authenticationServiceImpl.getName());
+
+		return ResponseEntity.ok(OrderDTO.converterOrderListToOrderDTOList(
+				orders.stream().filter(order -> !order.isFinished()).collect(Collectors.toList())));
 	}
 }
