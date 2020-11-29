@@ -7,8 +7,10 @@
 package br.com.renanrramos.easyshopping.controller.rest;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
+import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -16,6 +18,8 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -61,6 +65,7 @@ public class OrderItemController {
 	@PostMapping
 	@Transactional
 	@ApiOperation(value = "Save a new order")
+	@RolesAllowed("easy-shopping-user")
 	public ResponseEntity<OrderItemDTO> saveOrderItem(@Valid @RequestBody OrderItemForm orderItemForm,
 			UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 
@@ -92,7 +97,17 @@ public class OrderItemController {
 		orderItem.setOrder(orderOptional.get());
 
 		orderItem = orderItemService.save(orderItem);
-		uri = uriBuilder.path("/orders/{id}").buildAndExpand(orderItem.getId()).encode().toUri();
+		uri = uriBuilder.path("/order-items/{id}").buildAndExpand(orderItem.getId()).encode().toUri();
 		return ResponseEntity.created(uri).body(OrderItemDTO.converterOrderItemToOrderItemDTO(orderItem));
+	}
+
+	@ResponseBody
+	@GetMapping(path = "/{id}")
+	@ApiOperation(value = "Get order items")
+	@RolesAllowed({ "easy-shopping-user" })
+	public ResponseEntity<List<OrderItemDTO>> getOrderItemsByOrderId(@PathVariable("id") Long orderId) {
+		List<OrderItemDTO> orderItemsDTO = OrderItemDTO
+				.converterOrderItemListToOrderItemDTOList(orderItemService.findOrderItemByOrderId(orderId));
+		return ResponseEntity.ok(orderItemsDTO);
 	}
 }
