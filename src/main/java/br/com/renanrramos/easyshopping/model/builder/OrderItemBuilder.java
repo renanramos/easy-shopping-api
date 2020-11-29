@@ -50,6 +50,11 @@ public class OrderItemBuilder {
 		return this;
 	}
 
+	public OrderItemBuilder withProductName(String productName) {
+		this.orderItem.setProductName(productName);
+		return this;
+	}
+
 	public OrderItem build() {
 		return this.orderItem;
 	}

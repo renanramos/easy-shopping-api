@@ -9,7 +9,6 @@ package br.com.renanrramos.easyshopping.model.dto;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import br.com.renanrramos.easyshopping.model.Order;
 import br.com.renanrramos.easyshopping.model.OrderItem;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -26,7 +25,7 @@ public class OrderItemDTO {
 
 	private Long id;
 
-	private Order order;
+	private Long orderId;
 
 	private Long productId;
 
@@ -36,14 +35,17 @@ public class OrderItemDTO {
 
 	private Double total;
 
+	private String productName;
+
 	public OrderItemDTO() {
 		// Intentionally empty
 	}
 
 	public OrderItemDTO(OrderItem orderItem) {
 		this.id = orderItem.getId();
-		this.order = orderItem.getOrder();
+		this.orderId = orderItem.getOrder().getId();
 		this.productId = orderItem.getProductId();
+		this.productName = orderItem.getProductName();
 		this.amount = orderItem.getAmount();
 		this.price = orderItem.getPrice();
 		this.total = orderItem.getTotal();
@@ -59,7 +61,7 @@ public class OrderItemDTO {
 
 	@Override
 	public String toString() {
-		return "OrderItemDTO [id=" + id + ", order=" + order + ", productId=" + productId + ", amount=" + amount
+		return "OrderItemDTO [id=" + id + ", orderId=" + orderId + ", productId=" + productId + ", amount=" + amount
 				+ ", price=" + price + ", total=" + total + "]";
 	}
 }

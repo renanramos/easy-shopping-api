@@ -6,13 +6,10 @@
  */
 package br.com.renanrramos.easyshopping.model.dto;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import br.com.renanrramos.easyshopping.model.Order;
-import br.com.renanrramos.easyshopping.model.OrderItem;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,7 +28,7 @@ public class OrderDTO {
 
 	private String customerId;
 
-	private List<OrderItem> items;
+	private boolean isFindished;
 
 	public OrderDTO() {
 		// Intentionally empty
@@ -41,7 +38,7 @@ public class OrderDTO {
 		this.id = order.getId();
 		this.orderNumber = order.getOrderNumber();
 		this.customerId = order.getCustomerId();
-		this.items = Optional.ofNullable(order.getItems()).orElse(new ArrayList<>());
+		this.isFindished = order.isFinished();
 	}
 
 	public static List<OrderDTO> converterOrderListToOrderDTOList(List<Order> orders) {
@@ -54,7 +51,6 @@ public class OrderDTO {
 
 	@Override
 	public String toString() {
-		return "OrderDTO [id=" + id + ", orderNumber=" + orderNumber + ", customerId=" + customerId + ", items=" + items
-				+ "]";
+		return "OrderDTO [id=" + id + ", orderNumber=" + orderNumber + ", customerId=" + customerId + "]";
 	}
 }
