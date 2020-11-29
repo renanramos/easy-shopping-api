@@ -60,4 +60,8 @@ public class OrderItemService implements CommonService<OrderItem> {
 		return null;
 	}
 
+	public List<OrderItem> findOrderItemByOrderId(Long orderId) {
+		return orderItemRepository.getOrderItemByOrderId(orderId);
+
+	}
 }
