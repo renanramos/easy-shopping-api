@@ -1,6 +1,6 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- * 
+ *
  * Creator: renan.ramos - 11/08/2020
  * ------------------------------------------------------------
  */
@@ -71,26 +71,26 @@ public class WebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception {
 		super.configure(http);
 		http
-			.csrf().disable()
-			.authorizeRequests()
-				.antMatchers(
-						"/",
-						"/v2/api-docs",
-	                    "/configuration/ui",
-	                    "/swagger-resources/**",
-	                    "/configuration/**",
-	                    "/swagger-ui.html",
-	                    "/webjars/**").permitAll()
-				.antMatchers(HttpMethod.GET, API_PRODUCTS).permitAll()
-				.antMatchers(HttpMethod.GET, API_PRODUCTS + ID).permitAll()
-				.antMatchers(HttpMethod.GET, API_PRODUCTS + "/search").permitAll()
-				.antMatchers(HttpMethod.GET, API_STORES).permitAll()
-				.antMatchers(HttpMethod.GET, API_STORES + ID).permitAll()
-				.antMatchers(HttpMethod.GET, API_PRODUCT_CATEGORIES).permitAll()
-				.antMatchers(HttpMethod.GET, API_PRODUCT_CATEGORIES + ID).permitAll()
-				.antMatchers(HttpMethod.GET, API_SUBCATEGORIES).permitAll()
-				.antMatchers(HttpMethod.GET, API_SUBCATEGORIES + ID).permitAll()
-				.antMatchers(HttpMethod.GET, API_COMPANIES).permitAll()
-				.antMatchers(HttpMethod.GET, API_COMPANIES + ID).permitAll();
+		.csrf().disable()
+		.authorizeRequests()
+		.antMatchers(
+				"/",
+				"/v2/api-docs",
+				"/configuration/ui",
+				"/swagger-resources/**",
+				"/configuration/**",
+				"/swagger-ui.html",
+				"/webjars/**").permitAll()
+		.antMatchers(HttpMethod.GET, API_PRODUCTS).permitAll()
+		.antMatchers(HttpMethod.GET, API_PRODUCTS + ID).permitAll()
+		.antMatchers(HttpMethod.GET, API_PRODUCTS + "/search").permitAll()
+		.antMatchers(HttpMethod.GET, API_STORES).permitAll()
+		.antMatchers(HttpMethod.GET, API_STORES + ID).permitAll()
+		.antMatchers(HttpMethod.GET, API_PRODUCT_CATEGORIES).permitAll()
+		.antMatchers(HttpMethod.GET, API_PRODUCT_CATEGORIES + ID).permitAll()
+		.antMatchers(HttpMethod.GET, API_SUBCATEGORIES).permitAll()
+		.antMatchers(HttpMethod.GET, API_SUBCATEGORIES + ID).permitAll()
+		.antMatchers(HttpMethod.GET, API_COMPANIES).permitAll()
+		.antMatchers(HttpMethod.GET, API_COMPANIES + ID).permitAll();
 	}
 }

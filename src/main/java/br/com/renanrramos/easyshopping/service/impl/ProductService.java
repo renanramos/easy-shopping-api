@@ -77,16 +77,8 @@ public class ProductService implements CommonService<Product>{
 	}
 
 	public List<Product> searchProductByName(Pageable page, String name, Authentication authentication) {
-		Page<Product> pagedResult = null;
-
-		if (authentication != null) {
-			System.out.println(authentication.getName() + "  82  " + name);
-			pagedResult = name == null ? productRepository.findAll(page)
-					: productRepository.getProductByCompanyIdAndName(page, authentication.getName(), name);
-		} else {
-			pagedResult = name == null ? productRepository.findAll(page)
-					: productRepository.getProductByName(page, name);
-		}
+		Page<Product> pagedResult = (name == null) ? productRepository.findAll(page)
+				: productRepository.getProductByName(page, name);
 
 		return pagedResult.hasContent() ?
 				pagedResult.getContent() :
