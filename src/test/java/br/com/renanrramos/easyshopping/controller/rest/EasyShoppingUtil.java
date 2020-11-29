@@ -69,7 +69,7 @@ public class EasyShoppingUtil {
 	}
 
 	public static OrderItemForm getOrderItemFormInstance() {
-		return new OrderItemForm(1L, 1L, 2, 3.0, 6.0);
+		return new OrderItemForm(1L, 1L, 2, 3.0, 6.0, "productName");
 	}
 
 	public static Order getOrderInstance() {
