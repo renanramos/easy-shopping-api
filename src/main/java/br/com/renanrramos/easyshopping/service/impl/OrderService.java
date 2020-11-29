@@ -60,4 +60,7 @@ public class OrderService implements CommonService<Order> {
 		return null;
 	}
 
+	public List<Order> findCustomerOrders(String customerid) {
+		return orderRepository.getCustomerOrders(customerid);
+	}
 }
