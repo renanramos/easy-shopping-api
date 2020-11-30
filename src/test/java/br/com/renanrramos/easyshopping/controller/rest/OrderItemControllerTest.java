@@ -89,6 +89,7 @@ public class OrderItemControllerTest {
 	public void saveOrderItem_withValidParameters_shouldCreateSuccessfully() throws JsonProcessingException, Exception {
 
 		OrderItem orderItemResponse = OrderItemForm.converterOrderItemFormToOrderItem(orderItemForm);
+		orderItemResponse.setId(1L);
 
 		when(orderService.findById(anyLong())).thenReturn(Optional.of(order));
 		when(productService.findById(anyLong())).thenReturn(Optional.of(product));
