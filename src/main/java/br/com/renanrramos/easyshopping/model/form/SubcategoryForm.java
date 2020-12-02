@@ -1,6 +1,6 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- * 
+ *
  * Creator: renan.ramos - 08/08/2020
  * ------------------------------------------------------------
  */
@@ -37,14 +37,14 @@ public class SubcategoryForm {
 	}
 
 	public static Subcategory convertSubcategoryFormToSubcategory(SubcategoryForm subcategoryForm) {
-		return new SubcategoryBuilder()
+		return SubcategoryBuilder
 				.builder()
 				.withName(subcategoryForm.getName())
 				.build();
 	}
 
 	public static Subcategory convertSubcategoryFormUpdateToSubcategory(SubcategoryForm subcategoryForm, Subcategory currentSubcategory) {
-		return new SubcategoryBuilder()
+		return SubcategoryBuilder
 				.builder()
 				.withName(Optional.ofNullable(subcategoryForm.getName()).orElse(currentSubcategory.getName()))
 				.build();
