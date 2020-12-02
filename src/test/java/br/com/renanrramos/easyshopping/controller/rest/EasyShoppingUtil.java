@@ -13,10 +13,12 @@ import br.com.renanrramos.easyshopping.model.CreditCard;
 import br.com.renanrramos.easyshopping.model.Order;
 import br.com.renanrramos.easyshopping.model.OrderItem;
 import br.com.renanrramos.easyshopping.model.Product;
+import br.com.renanrramos.easyshopping.model.Purchase;
 import br.com.renanrramos.easyshopping.model.builder.CreditCardBuilder;
 import br.com.renanrramos.easyshopping.model.builder.OrderBuilder;
 import br.com.renanrramos.easyshopping.model.builder.OrderItemBuilder;
 import br.com.renanrramos.easyshopping.model.builder.ProductBuilder;
+import br.com.renanrramos.easyshopping.model.builder.PurchaseBuilder;
 import br.com.renanrramos.easyshopping.model.form.CreditCardForm;
 import br.com.renanrramos.easyshopping.model.form.OrderItemForm;
 
@@ -26,7 +28,7 @@ import br.com.renanrramos.easyshopping.model.form.OrderItemForm;
  */
 public class EasyShoppingUtil {
 
-	public static Address getAddress() {
+	public static Address getAddressInstance() {
 		Address address = new Address();
 		address.setId(1L);
 		address.setCep("cep");
@@ -79,5 +81,11 @@ public class EasyShoppingUtil {
 	public static Product getProductInstance() {
 		return ProductBuilder.builder().withCompany("companyId").withDescription("description").withId(1L)
 				.withName("productName").withPrice(20.0).build();
+	}
+
+	public static Purchase getPurchaseInstance(Long id) {
+		return PurchaseBuilder.builder().withId(id).withAddress(getAddressInstance())
+				.withCreditCard(getCreditCardInstance(1L))
+				.withCustomerId("customerId").withOrder(getOrderInstance()).build();
 	}
 }

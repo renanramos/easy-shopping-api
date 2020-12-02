@@ -99,7 +99,7 @@ public class AddressControllerTest {
 
 		when(mockAuthentication.getName()).thenReturn("customerId");
 
-		address = EasyShoppingUtil.getAddress();
+		address = EasyShoppingUtil.getAddressInstance();
 	}
 
 	@Test
