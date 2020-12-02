@@ -36,6 +36,8 @@ public class ExceptionMessagesConstants {
 	public static final String STOCK_ID_NOT_FOUND_ON_REQUEST = "Id do estoque é obrigatório.";
 	public static final String STOCK_ITEM_ID_NOT_FOUND_ON_REQUEST = "Id do item do estoque é obrigatório.";
 	public static final String ORDER_ID_NOT_FOUND_ON_REQUEST = "Id do pedido é obrigatório";
+	public static final String ADDRESS_ID_NOT_FOUND_ON_REQUEST = "Id do endereço é obrigatório";
+	public static final String CREDIT_CARD_ID_NOT_FOUND_ON_REQUEST = "Id do cartão de crédito é obrigatório";
 
 	public static final String EMAIL_ALREADY_EXIST = "O email informado já é utilizado.";
 	public static final String CPF_ALREADY_EXIST = "O CPF informado já está cadastrado.";
