@@ -10,9 +10,12 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -53,6 +56,10 @@ public class CreditCard implements Serializable{
 	private Integer code;
 
 	private String customerId;
+
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "purchase_id")
+	private Purchase purchase;
 
 	public CreditCard() {
 		// Intentionally empty
