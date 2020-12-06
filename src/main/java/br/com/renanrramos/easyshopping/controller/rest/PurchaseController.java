@@ -30,6 +30,7 @@ import br.com.renanrramos.easyshopping.model.Address;
 import br.com.renanrramos.easyshopping.model.CreditCard;
 import br.com.renanrramos.easyshopping.model.Order;
 import br.com.renanrramos.easyshopping.model.Purchase;
+import br.com.renanrramos.easyshopping.model.StockItem;
 import br.com.renanrramos.easyshopping.model.dto.PurchaseDTO;
 import br.com.renanrramos.easyshopping.model.form.PurchaseForm;
 import br.com.renanrramos.easyshopping.service.impl.AddressService;
@@ -37,6 +38,7 @@ import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
 import br.com.renanrramos.easyshopping.service.impl.CreditCardService;
 import br.com.renanrramos.easyshopping.service.impl.OrderService;
 import br.com.renanrramos.easyshopping.service.impl.PurchaseService;
+import br.com.renanrramos.easyshopping.service.impl.StockItemService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -55,6 +57,9 @@ public class PurchaseController {
 
 	@Autowired
 	private OrderService orderService;
+
+	@Autowired
+	private StockItemService stockItemService;
 
 	@Autowired
 	private AddressService addressService;
@@ -115,7 +120,20 @@ public class PurchaseController {
 
 		Order order = orderOptional.get();
 		order.setFinished(true);
+		order.setPurchase(purchase);
 		orderService.update(order);
+
+		order.getItems().stream().forEach(item -> {
+			StockItem stockItem = stockItemService.findStockItemByProductId(item.getProductId())
+					.orElse(new StockItem());
+			if (stockItem.getId() != null) {
+				Integer amount = item.getAmount();
+				Integer currentAmount = stockItem.getCurrentAmount();
+				stockItem.setCurrentAmount(currentAmount - amount);
+				stockItem = stockItemService.update(stockItem);
+				System.out.println(stockItem.toString());
+			}
+		});
 
 		uri = uriBuilder.path("/purchases/{id}").buildAndExpand(purchase.getId()).encode().toUri();
 		return ResponseEntity.created(uri).body(PurchaseDTO.convertPurchaseToPurchaseDTO(purchase));
