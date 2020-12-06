@@ -28,7 +28,7 @@ public class OrderDTO {
 
 	private String customerId;
 
-	private boolean isFindished;
+	private boolean isFinished;
 
 	public OrderDTO() {
 		// Intentionally empty
@@ -38,7 +38,7 @@ public class OrderDTO {
 		this.id = order.getId();
 		this.orderNumber = order.getOrderNumber();
 		this.customerId = order.getCustomerId();
-		this.isFindished = order.isFinished();
+		this.isFinished = order.isFinished();
 	}
 
 	public static List<OrderDTO> converterOrderListToOrderDTOList(List<Order> orders) {
