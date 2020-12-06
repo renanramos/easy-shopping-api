@@ -9,7 +9,6 @@ package br.com.renanrramos.easyshopping.controller.rest;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityNotFoundException;
@@ -99,7 +98,6 @@ public class OrderController {
 
 		List<Order> orders = orderService.findCustomerOrders(authenticationServiceImpl.getName());
 
-		return ResponseEntity.ok(OrderDTO.converterOrderListToOrderDTOList(
-				orders.stream().filter(order -> !order.isFinished()).collect(Collectors.toList())));
+		return ResponseEntity.ok(OrderDTO.converterOrderListToOrderDTOList(orders));
 	}
 }
