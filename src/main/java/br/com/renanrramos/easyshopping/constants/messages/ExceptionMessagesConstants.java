@@ -64,6 +64,7 @@ public class ExceptionMessagesConstants {
 	public static final String INVALID_FILE = "Arquivo inválido ou nulo.";
 	public static final String PRODUCT_IMAGE_NOT_FOUND = "Imagem não localizada";
 	public static final String PRODUCT_ALREADY_IN_STOCK = "O produto informado já está incluso no estoque.";
+	public static final String PRODUCT_IS_NOT_IN_STOCK = "O produto não está alocado em nenhum estoque.";
 
 	private ExceptionMessagesConstants() {
 		// Intentionally empty
