@@ -10,9 +10,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import br.com.renanrramos.easyshopping.model.Address;
-import br.com.renanrramos.easyshopping.model.CreditCard;
-import br.com.renanrramos.easyshopping.model.Order;
 import br.com.renanrramos.easyshopping.model.Purchase;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -31,11 +28,11 @@ public class PurchaseDTO {
 
 	private String customerId;
 
-	private Order order;
+	private Long orderId;
 
-	private Address address;
+	private Long addressId;
 
-	private CreditCard creditCard;
+	private Long creditCardId;
 
 	private LocalDateTime date;
 
@@ -46,9 +43,9 @@ public class PurchaseDTO {
 	public PurchaseDTO(Purchase purchase) {
 		this.id = purchase.getId();
 		this.customerId = purchase.getCustomerId();
-		this.order = purchase.getOrder();
-		this.address = purchase.getAddress();
-		this.creditCard = purchase.getCreditCard();
+		this.orderId = purchase.getOrder().getId();
+		this.addressId = purchase.getAddress().getId();
+		this.creditCardId = purchase.getCreditCard().getId();
 		this.date = purchase.getDate();
 	}
 
@@ -62,7 +59,7 @@ public class PurchaseDTO {
 
 	@Override
 	public String toString() {
-		return "PurchaseDTO [id=" + id + ", customerId=" + customerId + ", order=" + order + ", address=" + address
-				+ ", creditCard=" + creditCard + ", date=" + date + "]";
+		return "PurchaseDTO [id=" + id + ", customerId=" + customerId + ", order=" + orderId + ", address=" + addressId
+				+ ", creditCard=" + creditCardId + ", date=" + date + "]";
 	}
 }
