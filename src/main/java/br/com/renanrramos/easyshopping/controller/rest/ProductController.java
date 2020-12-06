@@ -48,6 +48,7 @@ import br.com.renanrramos.easyshopping.model.form.ProductImageForm;
 import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
 import br.com.renanrramos.easyshopping.service.impl.ProductImageService;
 import br.com.renanrramos.easyshopping.service.impl.ProductService;
+import br.com.renanrramos.easyshopping.service.impl.StockItemService;
 import br.com.renanrramos.easyshopping.service.impl.StoreService;
 import br.com.renanrramos.easyshopping.service.impl.SubcategoryService;
 import io.swagger.annotations.Api;
@@ -78,6 +79,9 @@ public class ProductController {
 
 	@Autowired
 	private ProductImageService productImageService;
+
+	@Autowired
+	private StockItemService stockItemService;
 
 	@Autowired
 	private AuthenticationServiceImpl authenticationServiceImpl;
@@ -260,11 +264,16 @@ public class ProductController {
 	@ApiOperation(value = "Update a product")
 	@RolesAllowed("easy-shopping-user")
 	public ResponseEntity<ProductDTO> publishProduct(@PathVariable("id") Long productId,
-			UriComponentsBuilder uriBuilder) {
+			UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 
-		Optional<Product> productOptional = this.productService.findById(productId);
+		if (!stockItemService.hasStockItemByProductId(productId)) {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_IS_NOT_IN_STOCK);
+		}
+
+		Optional<Product> productOptional = productService.findById(productId);
 
 		Product product = productOptional.get();
+
 		product.setPublished(true);
 		product = productService.save(product);
 		uri = uriBuilder.path("/products/{id}").buildAndExpand(productId).encode().toUri();
