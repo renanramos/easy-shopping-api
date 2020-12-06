@@ -272,11 +272,11 @@ public class StockItemControllerTest {
 	}
 
 	private StockItemForm getStockItemForm(Long productId, Long stockId) {
-		return new StockItemForm(productId, 20.0, 5.0, 10.0, stockId, "productName");
+		return new StockItemForm(productId, 20.0, 5.0, 10, stockId, "productName");
 	}
 
 	private StockItem getStockItemInstance() {
-		return StockItemBuilder.builder().withId(1L).withCurrentAmount(10.0).withMaxAmount(20.0).withMinAmount(5.0)
+		return StockItemBuilder.builder().withId(1L).withCurrentAmount(10).withMaxAmount(20.0).withMinAmount(5.0)
 				.withProductName("productName").build();
 	}
 
