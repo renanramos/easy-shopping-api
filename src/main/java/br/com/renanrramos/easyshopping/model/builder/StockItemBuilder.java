@@ -50,7 +50,7 @@ public class StockItemBuilder {
 		return this;
 	}
 
-	public StockItemBuilder withCurrentAmount(Double currentAmount) {
+	public StockItemBuilder withCurrentAmount(Integer currentAmount) {
 		this.stockItem.setCurrentAmount(currentAmount);
 		return this;
 	}

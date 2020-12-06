@@ -31,7 +31,7 @@ public class StockItemForm {
 
 	private Double minAmount;
 
-	private Double currentAmount;
+	private Integer currentAmount;
 
 	private Long stockId;
 
@@ -39,7 +39,7 @@ public class StockItemForm {
 		// Intentionally empty
 	}
 
-	public StockItemForm(Long productId, Double maxAmount, Double minAmount, Double currentAmount, Long stockId,
+	public StockItemForm(Long productId, Double maxAmount, Double minAmount, Integer currentAmount, Long stockId,
 			String productName) {
 		this.productId = productId;
 		this.productName = productName;

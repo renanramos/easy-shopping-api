@@ -49,7 +49,7 @@ public class StockItem implements Serializable {
 
 	private Double minAmount;
 
-	private Double currentAmount;
+	private Integer currentAmount;
 
 	@Override
 	public String toString() {

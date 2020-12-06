@@ -31,7 +31,7 @@ public class StockItemDTO {
 
 	private Double minAmount;
 
-	private Double currentAmount;
+	private Integer currentAmount;
 
 	private Long stockId;
 
