@@ -17,6 +17,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,10 +33,12 @@ import br.com.renanrramos.easyshopping.model.Order;
 import br.com.renanrramos.easyshopping.model.Purchase;
 import br.com.renanrramos.easyshopping.model.StockItem;
 import br.com.renanrramos.easyshopping.model.dto.PurchaseDTO;
+import br.com.renanrramos.easyshopping.model.dto.PurchaseStatisticDTO;
 import br.com.renanrramos.easyshopping.model.form.PurchaseForm;
 import br.com.renanrramos.easyshopping.service.impl.AddressService;
 import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
 import br.com.renanrramos.easyshopping.service.impl.CreditCardService;
+import br.com.renanrramos.easyshopping.service.impl.OrderItemService;
 import br.com.renanrramos.easyshopping.service.impl.OrderService;
 import br.com.renanrramos.easyshopping.service.impl.PurchaseService;
 import br.com.renanrramos.easyshopping.service.impl.StockItemService;
@@ -57,6 +60,9 @@ public class PurchaseController {
 
 	@Autowired
 	private OrderService orderService;
+
+	@Autowired
+	private OrderItemService orderItemService;
 
 	@Autowired
 	private StockItemService stockItemService;
@@ -137,5 +143,14 @@ public class PurchaseController {
 
 		uri = uriBuilder.path("/purchases/{id}").buildAndExpand(purchase.getId()).encode().toUri();
 		return ResponseEntity.created(uri).body(PurchaseDTO.convertPurchaseToPurchaseDTO(purchase));
+	}
+
+
+	@ResponseBody
+	@GetMapping(path = "/statistics")
+	@ApiOperation(value = "Get purchase statistics")
+	@RolesAllowed({ "easy-shopping-admin", "easy-shopping-user" })
+	public ResponseEntity<?> orderItemStatistic() {
+		return ResponseEntity.ok(PurchaseStatisticDTO.converterOrderItemToOrderItemStatisticDTO(orderItemService.orderItemStatistic()));
 	}
 }
