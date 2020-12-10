@@ -13,6 +13,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 import br.com.renanrramos.easyshopping.constants.sql.EasyShoppingSqlConstants;
 import br.com.renanrramos.easyshopping.model.OrderItem;
+import br.com.renanrramos.easyshopping.model.PurchaseStatistic;
 
 /**
  * @author renan.ramos
@@ -22,4 +23,7 @@ public interface OrderItemRepository extends PagingAndSortingRepository<OrderIte
 
 	@Query(EasyShoppingSqlConstants.GET_ORDER_ITEMS_BY_ORDER_ID)
 	List<OrderItem> getOrderItemByOrderId(Long orderId);
+
+	@Query(EasyShoppingSqlConstants.GET_ORDER_ITEM_STATISTIC)
+	List<OrderItem> getOrderItemStatistic();
 }
