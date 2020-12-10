@@ -156,6 +156,7 @@ public class StockItemController {
 
 		StockItem item = StockItemForm.converterStockItemFormToStockItem(itemForm);
 		item.setStock(stockOptional.get());
+		item.setId(itemId);
 		item = itemService.save(item);
 		item.setProductId(productOptional.get().getId());
 		item.setProductName(productOptional.get().getName());
