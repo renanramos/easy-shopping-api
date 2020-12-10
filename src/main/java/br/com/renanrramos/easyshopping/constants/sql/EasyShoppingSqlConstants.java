@@ -42,6 +42,8 @@ public class EasyShoppingSqlConstants {
 
 	public static final String GET_ORDER_ITEMS_BY_ORDER_ID = "SELECT i FROM OrderItem i LEFT JOIN Order o ON i.order.id = o.id WHERE o.id = :orderId";
 
+	public static final String GET_ORDER_ITEM_STATISTIC = "SELECT i FROM OrderItem i LEFT JOIN Order o ON i.order.id = o.id LEFT JOIN Purchase p ON o.purchase.id = p.id";
+
 	private EasyShoppingSqlConstants() {
 		// Intentionally empty
 	}
