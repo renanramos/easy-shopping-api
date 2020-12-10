@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.renanrramos.easyshopping.model.OrderItem;
+import br.com.renanrramos.easyshopping.model.PurchaseStatistic;
 import br.com.renanrramos.easyshopping.repository.OrderItemRepository;
 import br.com.renanrramos.easyshopping.service.CommonService;
 
@@ -62,6 +63,9 @@ public class OrderItemService implements CommonService<OrderItem> {
 
 	public List<OrderItem> findOrderItemByOrderId(Long orderId) {
 		return orderItemRepository.getOrderItemByOrderId(orderId);
+	}
 
+	public List<OrderItem> orderItemStatistic() {
+		return orderItemRepository.getOrderItemStatistic();
 	}
 }
