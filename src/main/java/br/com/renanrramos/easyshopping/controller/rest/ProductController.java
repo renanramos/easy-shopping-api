@@ -316,11 +316,17 @@ public class ProductController {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.INVALID_FILE);
 		}
 
+		Product product = productOptional.get();
+		product.setPublished(false);
+		
 		ProductImage productImage = ProductImageForm.convertProductImageFormToProductImate(productImageForm);
-		productImage.setProduct(productOptional.get());
+		productImage.setProduct(product);
 
 		productImage = productImageService.save(productImage);
 		if (productImage.getId() != null) {
+			
+			productService.update(product);
+			
 			uri = uriComponentsBuilder.path("/products/images/{id}").buildAndExpand(productImage.getProduct().getId()).encode().toUri();
 			return ResponseEntity.created(uri).build();
 		}
