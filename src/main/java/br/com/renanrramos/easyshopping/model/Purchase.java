@@ -56,7 +56,7 @@ public class Purchase implements Serializable {
 	private CreditCard creditCard;
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-	private LocalDateTime date;
+	private LocalDateTime purchaseDate;
 
 	public Purchase() {
 		// Intentionally empty
@@ -65,6 +65,6 @@ public class Purchase implements Serializable {
 	@Override
 	public String toString() {
 		return "Purchase [id=" + id + ", customerId=" + customerId + ", order=" + order + ", address=" + address
-				+ ", creditCard=" + creditCard + ", date=" + date + "]";
+				+ ", creditCard=" + creditCard + ", date=" + purchaseDate + "]";
 	}
 }

@@ -121,7 +121,7 @@ public class PurchaseController {
 		purchase.setAddress(addressOptional.get());
 		purchase.setCreditCard(creditCardOptional.get());
 		purchase.setCustomerId(authenticationServiceImpl.getName());
-		purchase.setDate(LocalDateTime.now());
+		purchase.setPurchaseDate(LocalDateTime.now());
 		purchase = purchaseService.save(purchase);
 
 		Order order = orderOptional.get();

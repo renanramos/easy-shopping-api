@@ -46,7 +46,7 @@ public class PurchaseDTO {
 		this.orderId = purchase.getOrder().getId();
 		this.addressId = purchase.getAddress().getId();
 		this.creditCardId = purchase.getCreditCard().getId();
-		this.date = purchase.getDate();
+		this.date = purchase.getPurchaseDate();
 	}
 
 	public static List<PurchaseDTO> convertPurchaseListToPurchaseDTOList(List<Purchase> purchases) {
