@@ -8,6 +8,7 @@ package br.com.renanrramos.easyshopping.controller.rest;
 
 import java.net.URI;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import javax.annotation.security.RolesAllowed;
@@ -30,6 +31,7 @@ import br.com.renanrramos.easyshopping.exception.EasyShoppingException;
 import br.com.renanrramos.easyshopping.model.Address;
 import br.com.renanrramos.easyshopping.model.CreditCard;
 import br.com.renanrramos.easyshopping.model.Order;
+import br.com.renanrramos.easyshopping.model.OrderItem;
 import br.com.renanrramos.easyshopping.model.Purchase;
 import br.com.renanrramos.easyshopping.model.StockItem;
 import br.com.renanrramos.easyshopping.model.dto.PurchaseDTO;
@@ -151,6 +153,7 @@ public class PurchaseController {
 	@ApiOperation(value = "Get purchase statistics")
 	@RolesAllowed({ "easy-shopping-admin", "easy-shopping-user" })
 	public ResponseEntity<?> orderItemStatistic() {
-		return ResponseEntity.ok(PurchaseStatisticDTO.converterOrderItemToOrderItemStatisticDTO(orderItemService.orderItemStatistic()));
+		List<OrderItem> list = orderItemService.orderItemStatistic();
+		return ResponseEntity.ok(PurchaseStatisticDTO.converterOrderItemToOrderItemStatisticDTO(list));
 	}
 }
