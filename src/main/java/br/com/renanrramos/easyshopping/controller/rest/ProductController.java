@@ -347,4 +347,18 @@ public class ProductController {
 		List<ProductImage> productImages = productImageService.findProductImageByProductId(page, productId);
 		return ResponseEntity.ok(ProductImageDTO.converterProducImageListToProductImageDTOList(productImages));
 	}
+
+	@ResponseBody
+	@DeleteMapping("/images/{id}")
+	@Transactional
+	@ApiOperation(value = "Remove a product image")
+	@RolesAllowed("easy-shopping-user")
+	public ResponseEntity<ProductImageDTO> removeProductImage(@PathVariable("id") Long productId) {
+		Optional<ProductImage> productImage = productImageService.getImageByProductId(productId);
+		if (!productImage.isPresent()) {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_IMAGE_NOT_FOUND);
+		}
+		productImageService.remove(productImage.get().getId());
+		return ResponseEntity.ok().build();
+	}
 }
