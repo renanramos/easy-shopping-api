@@ -51,7 +51,7 @@ public class ProductImageService implements CommonService<ProductImage>{
 
 	@Override
 	public void remove(Long productImageId) {
-		productImageRepository.deleteById(productImageId);
+		productImageRepository.removeById(productImageId);
 	}
 
 	@Override
@@ -64,5 +64,9 @@ public class ProductImageService implements CommonService<ProductImage>{
 		return result.hasContent() ?
 				result.getContent() :
 					new ArrayList<>();
+	}
+
+	public Optional<ProductImage> getImageByProductId(Long productId) {
+		return productImageRepository.findTopProductImageByProductId(productId);
 	}
 }
