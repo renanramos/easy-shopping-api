@@ -354,11 +354,24 @@ public class ProductController {
 	@ApiOperation(value = "Remove a product image")
 	@RolesAllowed("easy-shopping-user")
 	public ResponseEntity<ProductImageDTO> removeProductImage(@PathVariable("id") Long productId) {
+		
+		Optional<Product> productOptional = productService.findById(productId);
+
+		if (!productOptional.isPresent()) {
+			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_NOT_FOUND);
+		}
+
+		Product product = productOptional.get();
+
 		Optional<ProductImage> productImage = productImageService.getImageByProductId(productId);
 		if (!productImage.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_IMAGE_NOT_FOUND);
 		}
 		productImageService.remove(productImage.get().getId());
+		
+		product.setPublished(false);
+		productService.update(product);
+
 		return ResponseEntity.ok().build();
 	}
 }
