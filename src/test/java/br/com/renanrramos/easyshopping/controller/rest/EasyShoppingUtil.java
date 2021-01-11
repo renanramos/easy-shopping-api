@@ -10,17 +10,25 @@ import br.com.renanrramos.easyshopping.enums.Profile;
 import br.com.renanrramos.easyshopping.model.Address;
 import br.com.renanrramos.easyshopping.model.Company;
 import br.com.renanrramos.easyshopping.model.CreditCard;
+import br.com.renanrramos.easyshopping.model.Customer;
 import br.com.renanrramos.easyshopping.model.Order;
 import br.com.renanrramos.easyshopping.model.OrderItem;
 import br.com.renanrramos.easyshopping.model.Product;
 import br.com.renanrramos.easyshopping.model.Purchase;
+import br.com.renanrramos.easyshopping.model.Stock;
+import br.com.renanrramos.easyshopping.model.StockItem;
+import br.com.renanrramos.easyshopping.model.Store;
 import br.com.renanrramos.easyshopping.model.builder.CreditCardBuilder;
 import br.com.renanrramos.easyshopping.model.builder.OrderBuilder;
 import br.com.renanrramos.easyshopping.model.builder.OrderItemBuilder;
 import br.com.renanrramos.easyshopping.model.builder.ProductBuilder;
 import br.com.renanrramos.easyshopping.model.builder.PurchaseBuilder;
+import br.com.renanrramos.easyshopping.model.builder.StockBuilder;
+import br.com.renanrramos.easyshopping.model.builder.StockItemBuilder;
+import br.com.renanrramos.easyshopping.model.builder.StoreBuilder;
 import br.com.renanrramos.easyshopping.model.form.CreditCardForm;
 import br.com.renanrramos.easyshopping.model.form.OrderItemForm;
+import br.com.renanrramos.easyshopping.model.form.StockItemForm;
 
 /**
  * @author renan.ramos
@@ -38,6 +46,17 @@ public class EasyShoppingUtil {
 		address.setStreetName("streetName");
 		address.setCustomerId("customerId");
 		return address;
+	}
+
+	
+	public static Customer getCustomerInstance() {
+		Customer customer = new Customer();
+		customer.setCpf("12345684522");
+		customer.setEmail("email@mail.com");
+		customer.setId(1L);
+		customer.setName("name");
+		customer.setProfile(Profile.CUSTOMER);
+		return customer;
 	}
 
 	public static Company getCompanyInstance() {
@@ -87,5 +106,23 @@ public class EasyShoppingUtil {
 		return PurchaseBuilder.builder().withId(id).withAddress(getAddressInstance())
 				.withCreditCard(getCreditCardInstance(1L))
 				.withCustomerId("customerId").withOrder(getOrderInstance()).build();
+	}
+
+	public static Store getStoreInstance(Long id) {
+		return StoreBuilder.builder().withId(id).withCorporateName("corporateName").withName("name")
+				.withRegisteredNumber("registeredNumber").build();
+	}
+
+	public static Stock getStockInstance(Long id) {
+		return StockBuilder.builder().withId(id).withName("stockName").build();
+	}
+
+	public static StockItemForm getStockItemForm(Long productId, Long stockId) {
+		return new StockItemForm(productId, 20.0, 5.0, 10, stockId, "productName");
+	}
+
+	public static StockItem getStockItemInstance() {
+		return StockItemBuilder.builder().withId(1L).withCurrentAmount(10).withMaxAmount(20.0).withMinAmount(5.0)
+				.withProductName("productName").build();
 	}
 }
