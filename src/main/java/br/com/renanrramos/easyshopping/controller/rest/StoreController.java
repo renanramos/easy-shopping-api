@@ -139,10 +139,6 @@ public class StoreController {
 	public ResponseEntity<StoreDTO> updateStore(@PathVariable("id") Long storeId, @RequestBody StoreForm storeForm,
 			UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 
-		if (storeId == null) {
-			throw new EasyShoppingException(ExceptionMessagesConstants.STORE_ID_NOT_FOUND_ON_REQUEST);
-		}
-
 		Optional<Store> currentStore = storeService.findById(storeId);
 
 		if (!currentStore.isPresent()) {
