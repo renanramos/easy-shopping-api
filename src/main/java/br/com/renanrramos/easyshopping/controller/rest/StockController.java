@@ -128,10 +128,6 @@ public class StockController {
 	public ResponseEntity<StockDTO> updateStock(@PathVariable("id") Long stockId, @RequestBody StockForm stockForm,
 			UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 
-		if (stockId == null) {
-			throw new EasyShoppingException(ExceptionMessagesConstants.STOCK_ID_NOT_FOUND_ON_REQUEST);
-		}
-
 		Optional<Stock> currentStock = stockService.findById(stockId);
 
 		if (!currentStock.isPresent()) {
