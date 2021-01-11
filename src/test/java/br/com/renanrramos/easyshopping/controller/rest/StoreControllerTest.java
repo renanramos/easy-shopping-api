@@ -90,7 +90,7 @@ public class StoreControllerTest {
 
 		when(storeService.isRegisteredNumberInvalid(anyString())).thenReturn(false);
 		when(authenticationServiceImpl.getName()).thenReturn("tokenId");
-		when(storeService.save(any(Store.class))).thenReturn(getStoreInstance(1L));
+		when(storeService.save(any(Store.class))).thenReturn(EasyShoppingUtil.getStoreInstance(1L));
 
 		mockMvc.perform(post(BASE_URL).content(objecMapper.writeValueAsString(getStoreForm()))
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON));
@@ -115,9 +115,9 @@ public class StoreControllerTest {
 	@Test
 	public void getStores_withValidParameters_shouldReturnListOfStores() throws Exception {
 		List<Store> stores = new ArrayList<>();
-		stores.add(getStoreInstance(1L));
-		stores.add(getStoreInstance(3L));
-		stores.add(getStoreInstance(2L));
+		stores.add(EasyShoppingUtil.getStoreInstance(1L));
+		stores.add(EasyShoppingUtil.getStoreInstance(3L));
+		stores.add(EasyShoppingUtil.getStoreInstance(2L));
 
 		when(storeService.findAll(any(Pageable.class))).thenReturn(stores);
 
@@ -125,13 +125,28 @@ public class StoreControllerTest {
 
 		verify(storeService, times(1)).findAll(any(Pageable.class));
 	}
+	
+	@Test
+	public void getStores_withEmptyNameParameter_shouldReturnListOfStores() throws Exception {
+		List<Store> stores = new ArrayList<>();
+		stores.add(EasyShoppingUtil.getStoreInstance(1L));
+		stores.add(EasyShoppingUtil.getStoreInstance(3L));
+		stores.add(EasyShoppingUtil.getStoreInstance(2L));
+
+		when(storeService.findAll(any(Pageable.class))).thenReturn(stores);
+
+		mockMvc.perform(get(BASE_URL).param("name", ""))
+			.andExpect(status().isOk());
+
+		verify(storeService, times(1)).findAll(any(Pageable.class));
+	}
 
 	@Test
 	public void getStores_withNameParameter_shouldReturnListOfStores() throws Exception {
 		List<Store> stores = new ArrayList<>();
-		stores.add(getStoreInstance(1L));
-		stores.add(getStoreInstance(3L));
-		stores.add(getStoreInstance(2L));
+		stores.add(EasyShoppingUtil.getStoreInstance(1L));
+		stores.add(EasyShoppingUtil.getStoreInstance(3L));
+		stores.add(EasyShoppingUtil.getStoreInstance(2L));
 
 		when(storeService.findStoreByName(any(Pageable.class), anyString())).thenReturn(stores);
 
@@ -143,9 +158,9 @@ public class StoreControllerTest {
 	@Test
 	public void getCompanyOwnStores_withNameParameter_shouldReturnListOfStores() throws Exception {
 		List<Store> stores = new ArrayList<>();
-		stores.add(getStoreInstance(1L));
-		stores.add(getStoreInstance(3L));
-		stores.add(getStoreInstance(2L));
+		stores.add(EasyShoppingUtil.getStoreInstance(1L));
+		stores.add(EasyShoppingUtil.getStoreInstance(3L));
+		stores.add(EasyShoppingUtil.getStoreInstance(2L));
 
 		when(storeService.findAllPageable(any(Pageable.class), anyString(), anyString())).thenReturn(stores);
 		when(authenticationServiceImpl.getName()).thenReturn("tokenId");
@@ -158,7 +173,7 @@ public class StoreControllerTest {
 	@Test
 	public void getStoreById_withValidStoreId_shouldReturnListOfStores() throws Exception {
 
-		when(storeService.findById(anyLong())).thenReturn(Optional.of(getStoreInstance(1L)));
+		when(storeService.findById(anyLong())).thenReturn(Optional.of(EasyShoppingUtil.getStoreInstance(1L)));
 
 		mockMvc.perform(get(BASE_URL + "/1")).andExpect(status().isOk()).andExpect(jsonPath("$.id", is(1)))
 		.andExpect(jsonPath("$.name", is("name"))).andExpect(jsonPath("$.corporateName", is("corporateName")))
@@ -179,9 +194,9 @@ public class StoreControllerTest {
 
 	@Test
 	public void updateStore_withValidParameters_shouldUpdateSuccessfully() throws JsonProcessingException, Exception {
-		when(storeService.findById(anyLong())).thenReturn(Optional.of(getStoreInstance(1L)));
+		when(storeService.findById(anyLong())).thenReturn(Optional.of(EasyShoppingUtil.getStoreInstance(1L)));
 		when(authenticationServiceImpl.getName()).thenReturn("tokenId");
-		when(storeService.update(any(Store.class))).thenReturn(getStoreInstance(1L));
+		when(storeService.update(any(Store.class))).thenReturn(EasyShoppingUtil.getStoreInstance(1L));
 
 		mockMvc.perform(patch(BASE_URL + "/1").content(objecMapper.writeValueAsString(getStoreForm()))
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)).andExpect(status().isAccepted())
@@ -205,7 +220,7 @@ public class StoreControllerTest {
 
 	@Test
 	public void removeStore_withValidStoreId_shouldRemoveSuccessfully() throws Exception {
-		when(storeService.findById(anyLong())).thenReturn(Optional.of(getStoreInstance(1L)));
+		when(storeService.findById(anyLong())).thenReturn(Optional.of(EasyShoppingUtil.getStoreInstance(1L)));
 
 		mockMvc.perform(delete(BASE_URL + "/1")).andExpect(status().isOk());
 		verify(storeService, times(1)).findById(anyLong());
@@ -219,11 +234,6 @@ public class StoreControllerTest {
 		mockMvc.perform(delete(BASE_URL + "/1"));
 		verify(storeService, times(1)).findById(anyLong());
 		verify(storeService, never()).remove(anyLong());
-	}
-
-	private Store getStoreInstance(Long id) {
-		return StoreBuilder.builder().withId(id).withCorporateName("corporateName").withName("name")
-				.withRegisteredNumber("registeredNumber").build();
 	}
 
 	private StoreForm getStoreForm() {

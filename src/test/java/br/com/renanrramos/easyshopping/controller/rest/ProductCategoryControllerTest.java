@@ -117,7 +117,21 @@ public class ProductCategoryControllerTest {
 	}
 
 	@Test
-	public void getProductCategories_withoutNameParameter_shouldReturnListOfProductCategories() throws Exception {
+	public void getProductCategories_withEmptyNameParameter_shouldReturnListOfProductCategories() throws Exception {
+		List<ProductCategory> productCategories = new ArrayList<>();
+		productCategories.add(getProductCategoryInstance(1L));
+		productCategories.add(getProductCategoryInstance(2L));
+		productCategories.add(getProductCategoryInstance(3L));
+
+		when(productCategoryService.findAllPageable(any(Pageable.class), anyLong())).thenReturn(productCategories);
+
+		mockMvc.perform(get(BASE_URL).param("name", "")).andExpect(status().isOk());
+
+		verify(productCategoryService, times(1)).findAllPageable(any(Pageable.class), any());
+	}
+
+	@Test
+	public void getProductCategories_withNullNameParameter_shouldReturnListOfProductCategories() throws Exception {
 		List<ProductCategory> productCategories = new ArrayList<>();
 		productCategories.add(getProductCategoryInstance(1L));
 		productCategories.add(getProductCategoryInstance(2L));

@@ -9,6 +9,7 @@ package br.com.renanrramos.easyshopping.controller.rest;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -16,10 +17,13 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -78,17 +82,20 @@ public class CustomerControllerTest {
 
 	private ObjectMapper objectMapper = new ObjectMapper();
 
+	private Customer customer;
+
 	@Before
 	public void before() {
 		MockitoAnnotations.initMocks(this);
 		mockMvc = MockMvcBuilders
 				.standaloneSetup(customerController)
 				.build();
+
+		customer = EasyShoppingUtil.getCustomerInstance();
 	}
 
 	@Test
 	public void shouldCreateCustomerSuccessfully() throws JsonProcessingException, Exception {
-		Customer customer = getCustomerInstance();
 		when(customerService.save(any(Customer.class))).thenReturn(customer);
 		when(customerService.findCustomerByCpf(anyString())).thenReturn(Optional.empty());
 		when(mockAuthentication.getName()).thenReturn("customerId");
@@ -103,11 +110,9 @@ public class CustomerControllerTest {
 
 	@Test(expected = Exception.class)
 	public void saveCustomer_whenCPFAlreadyExist_shouldThrowException() throws JsonProcessingException, Exception {
-		List<Customer> customers = new ArrayList<>();
-		customers.add(getCustomerInstance());
-		Optional<List<Customer>> customerCPFFound = Optional.of(customers);
+		Optional<List<Customer>> customerCPFFound = Optional.of(Arrays.asList(customer));
 		when(customerService.findCustomerByCpf(anyString())).thenReturn(customerCPFFound);
-		mockMvc.perform(post(BASE_URL).content(objectMapper.writeValueAsString(any(Customer.class)))
+		mockMvc.perform(post(BASE_URL).content(objectMapper.writeValueAsString(customer))
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON));
 		verify(customerService, never()).save(any(Customer.class));
 	}
@@ -127,11 +132,7 @@ public class CustomerControllerTest {
 
 	@Test
 	public void shouldReturnListOfCustomers() throws JsonProcessingException, Exception {
-		List<Customer> customers = new ArrayList<Customer>();
-		customers.add(getCustomerInstance());
-		customers.add(getCustomerInstance());
-		customers.add(getCustomerInstance());
-
+		List<Customer> customers = Arrays.asList(customer, customer, customer);
 		when(customerService.findAllPageable(eq(page), any())).thenReturn(customers);
 
 		mockMvc.perform(get(BASE_URL)
@@ -143,7 +144,22 @@ public class CustomerControllerTest {
 	}
 
 	@Test
-	public void shouldReturnEmtpyListOfCustomrers() throws JsonProcessingException, Exception {
+	public void getCustomers_withEmptyNameParameter_shouldReturnListOfCustomers() throws JsonProcessingException, Exception {
+		List<Customer> customers = Arrays.asList(customer, customer, customer);
+		when(customerService.findAllPageable(eq(page), any())).thenReturn(Arrays.asList(customer, customer, customer));
+
+		mockMvc.perform(get(BASE_URL)
+				.param("name", "")
+				.content(objectMapper.writeValueAsString(customers))
+				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
+		.andExpect(status().isOk());
+
+		verify(customerService, times(1)).findAllPageable(any(Pageable.class), any());
+		verify(customerService, never()).findCustomerByName(any(Pageable.class), any());
+	}
+
+	@Test
+	public void shouldReturnEmtpyListOfCustomers() throws JsonProcessingException, Exception {
 		List<Customer> customers = new ArrayList<Customer>();
 
 		when(customerService.findAllPageable(eq(page), any())).thenReturn(customers);
@@ -155,13 +171,23 @@ public class CustomerControllerTest {
 	}
 
 	@Test
-	public void shouldReturnCustomerById() throws Exception {
-		when(customerService.findCustomerByTokenId(anyString())).thenReturn(Optional.of(getCustomerInstance()));
+	public void getCustomerById_withValidCustomerId_shouldReturnCustomerById() throws Exception {
+		when(customerService.findCustomerByTokenId(anyString())).thenReturn(Optional.of(customer));
 
 		mockMvc.perform(get(BASE_URL + "/" + customerId))
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.id", is(1)))
 		.andExpect(jsonPath("$.name", is("name")));
+
+		verify(customerService, times(1)).findCustomerByTokenId(anyString());
+	}
+
+	@Test
+	public void getCustomerById_withInvalidCustomerId_shouldReturnCustomerById() throws Exception {
+		when(customerService.findCustomerByTokenId(anyString())).thenReturn(Optional.empty());
+
+		mockMvc.perform(get(BASE_URL + "/" + customerId))
+		.andExpect(status().isNotFound());
 
 		verify(customerService, times(1)).findCustomerByTokenId(anyString());
 	}
@@ -177,13 +203,68 @@ public class CustomerControllerTest {
 		verify(customerService, times(1)).findById(customerId);
 	}
 
-	private static Customer getCustomerInstance() {
-		Customer customer = new Customer();
-		customer.setCpf("12345684522");
-		customer.setEmail("email@mail.com");
-		customer.setId(1L);
-		customer.setName("name");
-		customer.setProfile(Profile.CUSTOMER);
-		return customer;
+	@Test
+	public void updateCustomer_withValidParameters_shouldUpdateSuccessfully() throws JsonProcessingException, Exception {
+		Customer customer = EasyShoppingUtil.getCustomerInstance();
+		when(customerService.findCustomerByTokenId(anyString())).thenReturn(Optional.of(customer));
+		when(customerService.update(any(Customer.class))).thenReturn(customer);
+		when(customerService.findCustomerByCpf(anyString())).thenReturn(Optional.of(Arrays.asList(customer)));
+		when(mockAuthentication.getName()).thenReturn("customerId");
+		
+		mockMvc.perform(patch(BASE_URL + "/1")
+				.content(objectMapper.writeValueAsString(customer))
+				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
+		.andExpect(status().isAccepted())
+				.andExpect(jsonPath("$.name", is("name")));
+
+		verify(customerService, times(1)).update(any(Customer.class));
+	}
+
+	@Test(expected = Exception.class)
+	public void updateCustomer_whenCustomerNotFound_shouldUpdateSuccessfully() throws JsonProcessingException, Exception {
+		Customer customer = EasyShoppingUtil.getCustomerInstance();
+		when(customerService.findCustomerByTokenId(anyString())).thenReturn(Optional.empty());
+		
+		mockMvc.perform(patch(BASE_URL + "/1")
+				.content(objectMapper.writeValueAsString(customer))
+				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON));
+
+		verify(customerService, times(1)).findCustomerByTokenId(anyString());
+		verify(customerService, never()).update(any(Customer.class));
+	}
+
+	@Test(expected = Exception.class)
+	public void updateCustomer_whenCustomerCPFAlreadyExist_shouldUpdateSuccessfully() throws JsonProcessingException, Exception {
+		when(customerService.findCustomerByTokenId(anyString())).thenReturn(Optional.of(customer));
+		when(customerService.findCustomerByCpf(anyString())).thenReturn(Optional.of(Arrays.asList(customer, customer)));
+		
+		mockMvc.perform(patch(BASE_URL + "/1")
+				.content(objectMapper.writeValueAsString(customer))
+				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON));
+
+		verify(customerService, times(1)).findCustomerByTokenId(anyString());
+		verify(customerService, times(1)).findCustomerByCpf(anyString());
+		verify(customerService, never()).update(any(Customer.class));
+	}
+
+	@Test
+	public void removeCustomer_withValidCustomer_shouldRemoveSuccessfully() throws Exception {
+		when(customerService.findById(anyLong())).thenReturn(Optional.of(customer));
+
+		mockMvc.perform(delete(BASE_URL + "/1"))
+			.andExpect(status().isOk());
+
+		verify(customerService, times(1)).findById(anyLong());
+		verify(customerService, times(1)).remove(anyLong());
+	}
+
+	@Test(expected = Exception.class)
+	public void removeCustomer_withInvalidCustomerId_shouldThowException() throws Exception {
+		when(customerService.findById(anyLong())).thenReturn(Optional.empty());
+
+		mockMvc.perform(delete(BASE_URL + "/1"));
+
+		verify(customerService, times(1)).findById(anyLong());
+		verify(customerService, never()).remove(anyLong());
 	}
 }

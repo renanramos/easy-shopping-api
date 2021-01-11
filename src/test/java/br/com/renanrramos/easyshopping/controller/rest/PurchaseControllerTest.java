@@ -14,9 +14,11 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 import org.junit.Before;
@@ -42,13 +44,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import br.com.renanrramos.easyshopping.model.Address;
 import br.com.renanrramos.easyshopping.model.CreditCard;
 import br.com.renanrramos.easyshopping.model.Order;
+import br.com.renanrramos.easyshopping.model.OrderItem;
 import br.com.renanrramos.easyshopping.model.Purchase;
+import br.com.renanrramos.easyshopping.model.StockItem;
 import br.com.renanrramos.easyshopping.model.form.PurchaseForm;
 import br.com.renanrramos.easyshopping.service.impl.AddressService;
 import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
 import br.com.renanrramos.easyshopping.service.impl.CreditCardService;
+import br.com.renanrramos.easyshopping.service.impl.OrderItemService;
 import br.com.renanrramos.easyshopping.service.impl.OrderService;
 import br.com.renanrramos.easyshopping.service.impl.PurchaseService;
+import br.com.renanrramos.easyshopping.service.impl.StockItemService;
 
 /**
  * @author renan.ramos
@@ -76,6 +82,12 @@ public class PurchaseControllerTest {
 
 	@MockBean
 	private CreditCardService creditCardService;
+
+	@MockBean
+	private OrderItemService orderItemService;
+
+	@MockBean
+	private StockItemService stockItemService;
 
 	@MockBean
 	private AuthenticationServiceImpl authenticationServiceImpl;
@@ -115,9 +127,9 @@ public class PurchaseControllerTest {
 
 	@Test (expected = Exception.class)
 	public void savePurchase_whenOrderNotFound_shouldThrowException() throws JsonProcessingException, Exception {
-		when(orderService.findById(anyLong())).thenReturn(Optional.of(order));
+		when(orderService.findById(anyLong())).thenReturn(Optional.empty());
 
-		mockMvc.perform(post(BASE_URL).content(objecMapper.writeValueAsString(purchase))
+		mockMvc.perform(post(BASE_URL).content(objecMapper.writeValueAsString(new PurchaseForm("customerId", 1L, 1L, 1L)))
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON));
 
 		verify(orderService, times(1)).findById(anyLong());
@@ -203,5 +215,40 @@ public class PurchaseControllerTest {
 		verify(addressService, times(1)).findById(anyLong());
 		verify(creditCardService, times(1)).findById(anyLong());
 		verify(purchaseService, times(1)).save(any(Purchase.class));
+	}
+
+	@Test
+	public void savePurchase_withOrderItems_shouldCreateSuccessfully() throws JsonProcessingException, Exception {
+		OrderItem orderItem = EasyShoppingUtil.getOrderItemInstance();
+		orderItem.setId(1L);
+		
+		order.setItems(Arrays.asList(orderItem));
+
+		when(orderService.findById(anyLong())).thenReturn(Optional.of(order));
+		when(addressService.findById(anyLong())).thenReturn(Optional.of(address));
+		when(creditCardService.findById(anyLong())).thenReturn(Optional.of(creditCard));
+		when(purchaseService.save(any(Purchase.class))).thenReturn(purchase);
+		when(stockItemService.findStockItemByProductId(anyLong())).thenReturn(Optional.of(EasyShoppingUtil.getStockItemInstance()));
+		when(stockItemService.update(any(StockItem.class))).thenReturn(EasyShoppingUtil.getStockItemInstance());
+
+		mockMvc.perform(
+				post(BASE_URL).content(objecMapper.writeValueAsString(new PurchaseForm("customerId", 1L, 1L, 1L)))
+				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
+		.andExpect(status().isCreated())
+		.andExpect(jsonPath("$.id", is(1))).andExpect(jsonPath("$.customerId", is("customerId")));
+
+		verify(orderService, times(1)).findById(anyLong());
+		verify(addressService, times(1)).findById(anyLong());
+		verify(creditCardService, times(1)).findById(anyLong());
+		verify(purchaseService, times(1)).save(any(Purchase.class));
+	}
+
+	@Test
+	public void orderItemStatistic() throws Exception {
+		when(orderItemService.orderItemStatistic()).thenReturn(Arrays.asList(EasyShoppingUtil.getOrderItemInstance()));
+
+		mockMvc.perform(get(BASE_URL + "/statistics"));
+
+		verify(orderItemService, times(1)).orderItemStatistic();
 	}
 }

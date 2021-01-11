@@ -13,7 +13,12 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.Before;
@@ -90,6 +95,8 @@ public class OrderItemControllerTest {
 
 		OrderItem orderItemResponse = OrderItemForm.converterOrderItemFormToOrderItem(orderItemForm);
 		orderItemResponse.setId(1L);
+		order.setId(1L);
+		orderItemResponse.setOrder(order);
 
 		when(orderService.findById(anyLong())).thenReturn(Optional.of(order));
 		when(productService.findById(anyLong())).thenReturn(Optional.of(product));
@@ -149,5 +156,17 @@ public class OrderItemControllerTest {
 		verify(orderService, times(1)).findById(anyLong());
 		verify(productService, times(1)).findById(anyLong());
 		verify(orderItemService, never()).save(any(OrderItem.class));
+	}
+
+	@Test
+	public void getOrderItemsByOrderId_withOrderId_shouldReturnOrderItem() throws Exception {
+		when(orderItemService.findOrderItemByOrderId(anyLong()))
+			.thenReturn(Arrays.asList(EasyShoppingUtil.getOrderItemInstance()));
+
+		mockMvc.perform(get(BASE_URL + "/1"))
+			.andExpect(status().isOk());
+
+		verify(orderItemService, times(1)).findOrderItemByOrderId(anyLong());
+		
 	}
 }

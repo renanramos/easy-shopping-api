@@ -9,15 +9,18 @@ package br.com.renanrramos.easyshopping.controller.rest;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 import org.junit.Before;
@@ -113,5 +116,19 @@ public class OrderControllerTest {
 
 		verify(orderService, times(1)).findById(anyLong());
 		verify(orderService, never()).update(any(Order.class));
+	}
+
+	@Test
+	public void getOrders_withCustomerTokenId_shouldReturnListOfOrdersSuccessfully() throws Exception {
+		
+		when(authenticationServiceImpl.getName()).thenReturn("customerTokenId");
+		when(orderService.findCustomerOrders(anyString()))
+			.thenReturn(Arrays.asList(EasyShoppingUtil.getOrderInstance()));
+
+		mockMvc.perform(get(BASE_URL))
+		.andExpect(status().isOk());
+
+		verify(authenticationServiceImpl, times(1)).getName();
+		verify(orderService, times(1)).findCustomerOrders(anyString());
 	}
 }
