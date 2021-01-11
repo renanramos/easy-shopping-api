@@ -139,7 +139,6 @@ public class PurchaseController {
 				Integer currentAmount = stockItem.getCurrentAmount();
 				stockItem.setCurrentAmount(currentAmount - amount);
 				stockItem = stockItemService.update(stockItem);
-				System.out.println(stockItem.toString());
 			}
 		});
 
