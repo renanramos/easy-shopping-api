@@ -74,7 +74,7 @@ public class CustomerController {
 
 		Optional<List<Customer>> customerByCpf = customerService.findCustomerByCpf(customer.getCpf());
 
-		if (customerByCpf.isPresent() && !customerByCpf.get().isEmpty()) {
+		if (customerByCpf.isPresent()) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.CPF_ALREADY_EXIST);
 		}
 
@@ -104,7 +104,7 @@ public class CustomerController {
 				.withSize(pageSize)
 				.withSort(sortBy)
 				.buildPageable();
-		List<Customer> customers = (name == null) ?
+		List<Customer> customers = (name == null || name.isEmpty()) ?
 				customerService.findAllPageable(page, null) :
 					customerService.findCustomerByName(page, name);
 				return ResponseEntity.ok(CustomerDTO.converterCustomerListToCustomerDTOList(customers));
@@ -119,7 +119,7 @@ public class CustomerController {
 		if (customer.isPresent()) {
 			return ResponseEntity.ok(CustomerDTO.converterToCustomerDTO(customer.get()));
 		}
-		return ResponseEntity.ok(CustomerDTO.converterToCustomerDTO(new Customer()));
+		return ResponseEntity.notFound().build();
 	}
 
 	@ResponseBody
@@ -148,7 +148,7 @@ public class CustomerController {
 		customerFormConverted.setId(currentCustomer.get().getId());
 		customerFormConverted.setTokenId(customerId);
 		customerFormConverted.setSync(true);
-		CustomerDTO customerUpdatedDTO = CustomerDTO.converterToCustomerDTO(customerService.save(customerFormConverted));
+		CustomerDTO customerUpdatedDTO = CustomerDTO.converterToCustomerDTO(customerService.update(customerFormConverted));
 		uri = uriBuilder.path("/customers/{id}").buildAndExpand(customerId).encode().toUri();
 		return ResponseEntity.accepted().location(uri).body(customerUpdatedDTO);
 	}
