@@ -100,7 +100,9 @@ public class StockItemController {
 			throw new EasyShoppingException(ExceptionMessagesConstants.STOCK_NOT_FOUND);
 		}
 
-		verifyInvalidStockAmountValues(itemForm);
+		if (verifyInvalidStockAmountValues(itemForm)) {
+			throw new EasyShoppingException(ExceptionMessagesConstants.INVALID_FIELDS_TITLE);
+		}
 
 		StockItem item = StockItemForm.converterStockItemFormToStockItem(itemForm);
 		item.setStock(stockOptional.get());
