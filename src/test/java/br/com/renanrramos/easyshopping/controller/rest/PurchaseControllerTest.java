@@ -47,6 +47,7 @@ import br.com.renanrramos.easyshopping.model.Order;
 import br.com.renanrramos.easyshopping.model.OrderItem;
 import br.com.renanrramos.easyshopping.model.Purchase;
 import br.com.renanrramos.easyshopping.model.StockItem;
+import br.com.renanrramos.easyshopping.model.builder.StockItemBuilder;
 import br.com.renanrramos.easyshopping.model.form.PurchaseForm;
 import br.com.renanrramos.easyshopping.service.impl.AddressService;
 import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
@@ -229,6 +230,32 @@ public class PurchaseControllerTest {
 		when(creditCardService.findById(anyLong())).thenReturn(Optional.of(creditCard));
 		when(purchaseService.save(any(Purchase.class))).thenReturn(purchase);
 		when(stockItemService.findStockItemByProductId(anyLong())).thenReturn(Optional.of(EasyShoppingUtil.getStockItemInstance()));
+		when(stockItemService.update(any(StockItem.class))).thenReturn(EasyShoppingUtil.getStockItemInstance());
+
+		mockMvc.perform(
+				post(BASE_URL).content(objecMapper.writeValueAsString(new PurchaseForm("customerId", 1L, 1L, 1L)))
+				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
+		.andExpect(status().isCreated())
+		.andExpect(jsonPath("$.id", is(1))).andExpect(jsonPath("$.customerId", is("customerId")));
+
+		verify(orderService, times(1)).findById(anyLong());
+		verify(addressService, times(1)).findById(anyLong());
+		verify(creditCardService, times(1)).findById(anyLong());
+		verify(purchaseService, times(1)).save(any(Purchase.class));
+	}
+
+	@Test
+	public void savePurchase_whenOrderItemWithNullIdValue_shouldCreateSuccessfully() throws JsonProcessingException, Exception {
+		OrderItem orderItem = EasyShoppingUtil.getOrderItemInstance();
+		orderItem.setId(1L);
+
+		order.setItems(Arrays.asList(orderItem));
+
+		when(orderService.findById(anyLong())).thenReturn(Optional.of(order));
+		when(addressService.findById(anyLong())).thenReturn(Optional.of(address));
+		when(creditCardService.findById(anyLong())).thenReturn(Optional.of(creditCard));
+		when(purchaseService.save(any(Purchase.class))).thenReturn(purchase);
+		when(stockItemService.findStockItemByProductId(anyLong())).thenReturn(Optional.of(StockItemBuilder.builder().withId(null).build()));
 		when(stockItemService.update(any(StockItem.class))).thenReturn(EasyShoppingUtil.getStockItemInstance());
 
 		mockMvc.perform(
