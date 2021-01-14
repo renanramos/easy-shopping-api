@@ -261,7 +261,7 @@ public class ProductController {
 	@ResponseBody
 	@PatchMapping("/publish/{id}")
 	@Transactional
-	@ApiOperation(value = "Update a product")
+	@ApiOperation(value = "Publish a product")
 	@RolesAllowed("easy-shopping-user")
 	public ResponseEntity<ProductDTO> publishProduct(@PathVariable("id") Long productId,
 			UriComponentsBuilder uriBuilder) throws EasyShoppingException {
@@ -296,6 +296,7 @@ public class ProductController {
 
 	@ResponseBody
 	@PostMapping(path = "/images/{id}/upload", consumes=MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Add image to a product")
 	@RolesAllowed("easy-shopping-user")
 	public ResponseEntity<?> uploadProductImage(@PathVariable("id")Long productId, @RequestBody ProductImageForm productImageForm, UriComponentsBuilder uriComponentsBuilder) throws EasyShoppingException, IOException {
 		Long productFormId = productImageForm.getProductId();
@@ -335,6 +336,7 @@ public class ProductController {
 
 	@ResponseBody
 	@GetMapping(path = "/images/{id}")
+	@ApiOperation(value = "Get product image by product id")
 	@RolesAllowed("easy-shopping-user")
 	public ResponseEntity<List<ProductImageDTO>> getProductImage(@PathVariable("id")Long productId) {
 
