@@ -170,6 +170,19 @@ public class SubcategoryControllerTest {
 	}
 
 	@Test
+	public void getSubcategories_withNullNameParameter_shouldReturnListOfSubcatgories( ) throws Exception {
+		List<Subcategory> subcategories = new ArrayList<>();
+		subcategories.add(getSubcategoryInstance());
+		subcategories.add(getSubcategoryInstance());
+
+		when(subcategoryService.findAllPageable(eq(page), anyLong())).thenReturn(subcategories);
+		mockMvc.perform(get(BASE_URL).param("productCategoryId", "1"))
+		.andExpect(status().isOk());
+
+		verify(subcategoryService, times(1)).findAllPageable(any(Pageable.class), anyLong());
+	}
+
+	@Test
 	public void getSubcategoriesBydId_withValidSubcategoryId_shoulReturnSubcategory() throws Exception {
 		Subcategory subcategory = getSubcategoryInstance();
 		subcategory.setId(1L);
@@ -182,7 +195,7 @@ public class SubcategoryControllerTest {
 	}
 
 	@Test
-	public void getSubcategoriesBydId_withInalidSubcategoryId_shoulReturnNotFound() throws Exception {
+	public void getSubcategoriesBydId_withInvalidSubcategoryId_shoulReturnNotFound() throws Exception {
 
 		when(subcategoryService.findById(anyLong())).thenReturn(Optional.empty());
 
