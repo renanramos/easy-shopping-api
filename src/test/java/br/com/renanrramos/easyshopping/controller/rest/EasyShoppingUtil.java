@@ -18,6 +18,7 @@ import br.com.renanrramos.easyshopping.model.Purchase;
 import br.com.renanrramos.easyshopping.model.Stock;
 import br.com.renanrramos.easyshopping.model.StockItem;
 import br.com.renanrramos.easyshopping.model.Store;
+import br.com.renanrramos.easyshopping.model.User;
 import br.com.renanrramos.easyshopping.model.builder.CreditCardBuilder;
 import br.com.renanrramos.easyshopping.model.builder.OrderBuilder;
 import br.com.renanrramos.easyshopping.model.builder.OrderItemBuilder;
@@ -124,5 +125,16 @@ public class EasyShoppingUtil {
 	public static StockItem getStockItemInstance() {
 		return StockItemBuilder.builder().withId(1L).withCurrentAmount(10).withMaxAmount(20.0).withMinAmount(5.0)
 				.withProductName("productName").build();
+	}
+
+	public static User getUserInstance() {
+		User user = new User();
+		user.setEmail("user@mail.com");
+		user.setId(1L);
+		user.setName("user");
+		user.setProfile(Profile.ADMINISTRATOR);
+		user.setSync(true);
+		user.setTokenId("tokenId");
+		return user;
 	}
 }
