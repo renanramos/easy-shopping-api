@@ -64,7 +64,7 @@ public class OrderItemController {
 	@ResponseBody
 	@PostMapping
 	@Transactional
-	@ApiOperation(value = "Save a new order")
+	@ApiOperation(value = "Save a new order item")
 	@RolesAllowed("easy-shopping-user")
 	public ResponseEntity<OrderItemDTO> saveOrderItem(@Valid @RequestBody OrderItemForm orderItemForm,
 			UriComponentsBuilder uriBuilder) throws EasyShoppingException {
