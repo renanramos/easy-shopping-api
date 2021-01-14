@@ -159,6 +159,21 @@ public class CustomerControllerTest {
 	}
 
 	@Test
+	public void getCustomers_withValidNameParameter_shouldReturnListOfCustomers() throws JsonProcessingException, Exception {
+		List<Customer> customers = Arrays.asList(customer, customer, customer);
+		when(customerService.findCustomerByName(eq(page), any())).thenReturn(Arrays.asList(customer, customer, customer));
+
+		mockMvc.perform(get(BASE_URL)
+				.param("name", "customer")
+				.content(objectMapper.writeValueAsString(customers))
+				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
+		.andExpect(status().isOk());
+
+		verify(customerService, never()).findAllPageable(any(Pageable.class), any());
+		verify(customerService, times(1)).findCustomerByName(any(Pageable.class), any());
+	}
+
+	@Test
 	public void shouldReturnEmtpyListOfCustomers() throws JsonProcessingException, Exception {
 		List<Customer> customers = new ArrayList<Customer>();
 
