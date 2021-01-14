@@ -117,6 +117,69 @@ public class StockItemControllerTest {
 	}
 
 	@Test(expected = Exception.class)
+	public void saveStockItem_whenMinAmountIsNull_shouldThrowException() throws JsonProcessingException, Exception {
+		Stock stock = EasyShoppingUtil.getStockInstance(1L);
+		stock.setStore(EasyShoppingUtil.getStoreInstance(1L));
+		StockItem  stockItem = EasyShoppingUtil.getStockItemInstance();
+		stockItem.setStock(stock);
+		when(itemService.hasStockItemByProductId(anyLong())).thenReturn(false);
+		when(productService.findById(anyLong())).thenReturn(Optional.of(EasyShoppingUtil.getProductInstance()));
+		when(stockService.findById(anyLong())).thenReturn(Optional.of(stock));
+
+		mockMvc.perform(post(BASE_URL).content(objecMapper.writeValueAsString(new StockItemForm(1L, 20.0, null, 10, 1L, "productName")))
+				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)).andExpect(jsonPath("$.id", is(1)))
+		.andExpect(jsonPath("$.productName", is("productName")))
+		.andExpect(jsonPath("$.currentAmount", is(10)));
+
+		verify(itemService, times(1)).hasStockItemByProductId(anyLong());
+		verify(productService, times(1)).findById(anyLong());
+		verify(stockService, times(1)).findById(anyLong());
+		verify(itemService, never()).save(any(StockItem.class));
+	}
+
+	@Test(expected = Exception.class)
+	public void saveStockItem_whenMinAmountIsLessThanZero_shouldThrowException() throws JsonProcessingException, Exception {
+		Stock stock = EasyShoppingUtil.getStockInstance(1L);
+		stock.setStore(EasyShoppingUtil.getStoreInstance(1L));
+		StockItem  stockItem = EasyShoppingUtil.getStockItemInstance();
+		stockItem.setStock(stock);
+		when(itemService.hasStockItemByProductId(anyLong())).thenReturn(false);
+		when(productService.findById(anyLong())).thenReturn(Optional.of(EasyShoppingUtil.getProductInstance()));
+		when(stockService.findById(anyLong())).thenReturn(Optional.of(stock));
+
+		mockMvc.perform(post(BASE_URL).content(objecMapper.writeValueAsString(new StockItemForm(1L, 20.0, -2.0, 10, 1L, "productName")))
+				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)).andExpect(jsonPath("$.id", is(1)))
+		.andExpect(jsonPath("$.productName", is("productName")))
+		.andExpect(jsonPath("$.currentAmount", is(10)));
+
+		verify(itemService, times(1)).hasStockItemByProductId(anyLong());
+		verify(productService, times(1)).findById(anyLong());
+		verify(stockService, times(1)).findById(anyLong());
+		verify(itemService, never()).save(any(StockItem.class));
+	}
+
+	@Test(expected = Exception.class)
+	public void saveStockItem_whenMinAmountIsGreaterThanMaxAmount_shouldThrowException() throws JsonProcessingException, Exception {
+		Stock stock = EasyShoppingUtil.getStockInstance(1L);
+		stock.setStore(EasyShoppingUtil.getStoreInstance(1L));
+		StockItem  stockItem = EasyShoppingUtil.getStockItemInstance();
+		stockItem.setStock(stock);
+		when(itemService.hasStockItemByProductId(anyLong())).thenReturn(false);
+		when(productService.findById(anyLong())).thenReturn(Optional.of(EasyShoppingUtil.getProductInstance()));
+		when(stockService.findById(anyLong())).thenReturn(Optional.of(stock));
+
+		mockMvc.perform(post(BASE_URL).content(objecMapper.writeValueAsString(new StockItemForm(1L, 2.0, 25.0, 10, 1L, "productName")))
+				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)).andExpect(jsonPath("$.id", is(1)))
+		.andExpect(jsonPath("$.productName", is("productName")))
+		.andExpect(jsonPath("$.currentAmount", is(10)));
+
+		verify(itemService, times(1)).hasStockItemByProductId(anyLong());
+		verify(productService, times(1)).findById(anyLong());
+		verify(stockService, times(1)).findById(anyLong());
+		verify(itemService, never()).save(any(StockItem.class));
+	}
+
+	@Test(expected = Exception.class)
 	public void saveStockItem_withoutProductId_shouldThrowException() throws JsonProcessingException, Exception {
 
 		mockMvc.perform(post(BASE_URL).content(objecMapper.writeValueAsString(EasyShoppingUtil.getStockItemForm(null, 1L)))
@@ -215,6 +278,33 @@ public class StockItemControllerTest {
 	}
 
 	@Test(expected = Exception.class)
+	public void updateStockItem_withInvalidItemIdParameter_shouldThrowException()
+			throws JsonProcessingException, Exception {
+
+		StockItem stockItem = EasyShoppingUtil.getStockItemInstance();
+		Store store = EasyShoppingUtil.getStoreInstance(1L);
+		Stock stock = EasyShoppingUtil.getStockInstance(1L);
+
+		stock.setStore(store);
+		stockItem.setStock(stock);
+
+		when(itemService.hasStockItemByProductId(anyLong())).thenReturn(false);
+		when(productService.findById(anyLong())).thenReturn(Optional.of(EasyShoppingUtil.getProductInstance()));
+		when(stockService.findById(anyLong())).thenReturn(Optional.of(stock));
+		when(itemService.findById(anyLong())).thenReturn(Optional.empty());
+
+		mockMvc.perform(patch(BASE_URL + "/1").content(objecMapper.writeValueAsString(EasyShoppingUtil.getStockItemForm(1L, 1L)))
+				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)).andExpect(jsonPath("$.id", is(1)))
+		.andExpect(jsonPath("$.productName", is("productName")))
+		.andExpect(jsonPath("$.currentAmount", is(10)));
+
+		verify(productService, times(1)).findById(anyLong());
+		verify(stockService, times(1)).findById(anyLong());
+		verify(itemService, times(1)).findById(anyLong());
+		verify(itemService, never()).save(any(StockItem.class));
+	}
+
+	@Test(expected = Exception.class)
 	public void updateStockItem_withoutProductId_shouldThrowException() throws JsonProcessingException, Exception {
 
 		mockMvc.perform(patch(BASE_URL + "/1").content(objecMapper.writeValueAsString(EasyShoppingUtil.getStockItemForm(null, 1L)))
@@ -295,14 +385,11 @@ public class StockItemControllerTest {
 		stock.setStore(store);
 		stockItem.setStock(stock);
 
-		stockItem.setMinAmount(10.0);
-		stockItem.setMaxAmount(5.0);
-
 		when(itemService.hasStockItemByProductId(anyLong())).thenReturn(false);
 		when(productService.findById(anyLong())).thenReturn(Optional.of(EasyShoppingUtil.getProductInstance()));
 		when(stockService.findById(anyLong())).thenReturn(Optional.of(stock));
 
-		mockMvc.perform(patch(BASE_URL + "/1").content(objecMapper.writeValueAsString(EasyShoppingUtil.getStockItemForm(1L, 1L)))
+		mockMvc.perform(patch(BASE_URL + "/1").content(objecMapper.writeValueAsString(new StockItemForm(1L, 2.0, 25.0, 10, 1L, "productName")))
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)).andExpect(jsonPath("$.id", is(1)))
 		.andExpect(jsonPath("$.productName", is("productName")))
 		.andExpect(jsonPath("$.currentAmount", is(10.0)));
@@ -324,14 +411,37 @@ public class StockItemControllerTest {
 		stock.setStore(store);
 		stockItem.setStock(stock);
 
-		stockItem.setMinAmount(null);
-		stockItem.setMaxAmount(5.0);
+		when(itemService.hasStockItemByProductId(anyLong())).thenReturn(false);
+		when(productService.findById(anyLong())).thenReturn(Optional.of(EasyShoppingUtil.getProductInstance()));
+		when(stockService.findById(anyLong())).thenReturn(Optional.of(stock));
+
+		mockMvc.perform(patch(BASE_URL + "/1").content(objecMapper.writeValueAsString(new StockItemForm(1L, 2.0, null, 10, 1L, "productName")))
+				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)).andExpect(jsonPath("$.id", is(1)))
+		.andExpect(jsonPath("$.productName", is("productName")))
+		.andExpect(jsonPath("$.currentAmount", is(10.0)));
+
+		verify(productService, times(1)).findById(anyLong());
+		verify(stockService, times(1)).findById(anyLong());
+		verify(itemService, never()).findById(anyLong());
+		verify(itemService, never()).save(any(StockItem.class));
+	}
+
+	@Test(expected = Exception.class)
+	public void updateStockItem_whenMinAmountIsLessThanZero_shouldThrowException()
+			throws JsonProcessingException, Exception {
+
+		StockItem stockItem = EasyShoppingUtil.getStockItemInstance();
+		Store store = EasyShoppingUtil.getStoreInstance(1L);
+		Stock stock = EasyShoppingUtil.getStockInstance(1L);
+
+		stock.setStore(store);
+		stockItem.setStock(stock);
 
 		when(itemService.hasStockItemByProductId(anyLong())).thenReturn(false);
 		when(productService.findById(anyLong())).thenReturn(Optional.of(EasyShoppingUtil.getProductInstance()));
 		when(stockService.findById(anyLong())).thenReturn(Optional.of(stock));
 
-		mockMvc.perform(patch(BASE_URL + "/1").content(objecMapper.writeValueAsString(EasyShoppingUtil.getStockItemForm(1L, 1L)))
+		mockMvc.perform(patch(BASE_URL + "/1").content(objecMapper.writeValueAsString(new StockItemForm(1L, 2.0, -1.0, 10, 1L, "productName")))
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)).andExpect(jsonPath("$.id", is(1)))
 		.andExpect(jsonPath("$.productName", is("productName")))
 		.andExpect(jsonPath("$.currentAmount", is(10.0)));
