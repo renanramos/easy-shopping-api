@@ -73,8 +73,7 @@ public class CustomerController {
 		Customer customer = CustomerForm.converterCustomerFormToCustomer(customerForm);
 
 		Optional<List<Customer>> customerByCpf = customerService.findCustomerByCpf(customer.getCpf());
-
-		if (customerByCpf.isPresent()) {
+		if (customerByCpf.isPresent() && customerByCpf.get().size() > 1) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.CPF_ALREADY_EXIST);
 		}
 
