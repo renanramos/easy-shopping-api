@@ -15,6 +15,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import br.com.renanrramos.easyshopping.interfaceadapter.mapper.CompanyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -82,7 +83,7 @@ public class CompanyController {
 		Company companyCreated = companyService.save(company);
 		if (companyCreated.getId() != null) {
 			uri = uriBuilder.path("/companies/{id}").buildAndExpand(companyCreated.getId()).encode().toUri();
-			return ResponseEntity.created(uri).body(CompanyDTO.converterToCompanyDTO(companyCreated));
+			return ResponseEntity.created(uri).body(CompanyMapper.INSTANCE.mapCompanyToCompanyDTO(companyCreated));
 		}
 
 		return ResponseEntity.badRequest().build();
@@ -104,8 +105,8 @@ public class CompanyController {
 				.buildPageable();
 
 		List<CompanyDTO> listOfCompanyDTOs = (name == null) ?
-				CompanyDTO.converterCompanyListToCompanyDTOList(companyService.findAll(page)) :
-					CompanyDTO.converterCompanyListToCompanyDTOList(companyService.findCompanyByName(page, name));
+				CompanyMapper.INSTANCE.mapCompanyListToCompanyDTOList(companyService.findAll(page)) :
+				CompanyMapper.INSTANCE.mapCompanyListToCompanyDTOList(companyService.findCompanyByName(page, name));
 
 				return ResponseEntity.ok(listOfCompanyDTOs);
 	}
@@ -118,7 +119,7 @@ public class CompanyController {
 		if (!company.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.COMPANY_NOT_FOUND);
 		}
-		return ResponseEntity.ok(CompanyDTO.converterToCompanyDTO(company.get()));
+		return ResponseEntity.ok(CompanyMapper.INSTANCE.mapCompanyToCompanyDTO(company.get()));
 	}
 
 	@ResponseBody
@@ -139,7 +140,7 @@ public class CompanyController {
 		company.setId(currentCompany.get().getId());
 		company.setTokenId(companyId);
 		company.setSync(true);
-		CompanyDTO updatedCompanyDTO = CompanyDTO.converterToCompanyDTO((companyService.save(company)));
+		CompanyDTO updatedCompanyDTO = CompanyMapper.INSTANCE.mapCompanyToCompanyDTO((companyService.save(company)));
 		uri = uriBuilder.path("/companies/{id}").buildAndExpand(company.getId()).encode().toUri();
 
 		return ResponseEntity.accepted().location(uri).body(updatedCompanyDTO);

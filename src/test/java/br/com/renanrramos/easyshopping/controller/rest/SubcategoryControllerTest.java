@@ -195,7 +195,7 @@ public class SubcategoryControllerTest {
 	}
 
 	@Test
-	public void getSubcategoriesBydId_withInvalidSubcategoryId_shoulReturnNotFound() throws Exception {
+	public void getSubcategoriesBydId_withInvalidSubcategoryId_shouldReturnNotFound() throws Exception {
 
 		when(subcategoryService.findById(anyLong())).thenReturn(Optional.empty());
 

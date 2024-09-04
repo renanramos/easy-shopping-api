@@ -6,20 +6,16 @@
  */
 package br.com.renanrramos.easyshopping.model.dto;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import br.com.renanrramos.easyshopping.model.Address;
+import lombok.Data;
+import lombok.ToString;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * @author renan.ramos
  *
  */
-@Getter
-@Setter
+@Data
+@ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class AddressDTO {
 
@@ -38,34 +34,4 @@ public class AddressDTO {
 	private String customerId;
 
 	private String city;
-
-	public AddressDTO() {
-		// Intentionally empty
-	}
-	
-	public AddressDTO(Address address) {
-		this.id = address.getId();
-		this.streetName = address.getStreetName();
-		this.district = address.getDistrict();
-		this.number = address.getNumber();
-		this.cep = address.getCep();
-		this.state = address.getState();
-		this.customerId = address.getCustomerId();
-		this.city = address.getCity();
-				
-	}
-
-	public static List<AddressDTO> convertAddressListToAddressDTOList(List<Address> addresses) {
-		return addresses.stream().map(AddressDTO::new).collect(Collectors.toList());
-	}
-	
-	public static AddressDTO convertAddressToAddressDTO(Address address) {
-		return new AddressDTO(address);
-	}
-
-	@Override
-	public String toString() {
-		return "AddressDTO [id=" + id + ", streetName=" + streetName + ", district=" + district + ", number=" + number
-				+ ", cep=" + cep + ", state=" + state + ", customerId=" + customerId + ", city=" + city + "]";
-	}
 }

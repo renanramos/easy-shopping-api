@@ -16,6 +16,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import br.com.renanrramos.easyshopping.interfaceadapter.mapper.CustomerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -84,7 +85,7 @@ public class CustomerController {
 		Customer customerCreated = customerService.save(customer);
 		if (customerCreated.getId() != null) {
 			uri = uriBuilder.path("/customers/{id}").buildAndExpand(customerCreated.getId()).encode().toUri();
-			return ResponseEntity.created(uri).body(CustomerDTO.converterToCustomerDTO(customer));
+			return ResponseEntity.created(uri).body(CustomerMapper.INSTANCE.mapCustomerToCustomerDTO(customer));
 		}
 
 		return ResponseEntity.badRequest().build();
@@ -107,7 +108,7 @@ public class CustomerController {
 		List<Customer> customers = (name == null || name.isEmpty()) ?
 				customerService.findAllPageable(page, null) :
 					customerService.findCustomerByName(page, name);
-				return ResponseEntity.ok(CustomerDTO.converterCustomerListToCustomerDTOList(customers));
+				return ResponseEntity.ok(CustomerMapper.INSTANCE.mapCustomerListToCustomerDTOList(customers));
 	}
 
 	@ResponseBody
@@ -116,11 +117,10 @@ public class CustomerController {
 	@RolesAllowed({"easy-shopping-admin", "easy-shopping-user"})
 	public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable("id") String tokenId) {
 		Optional<Customer> customer = customerService.findCustomerByTokenId(tokenId);
-		if (customer.isPresent()) {
-			return ResponseEntity.ok(CustomerDTO.converterToCustomerDTO(customer.get()));
-		}
-		return ResponseEntity.notFound().build();
-	}
+        return customer.map(value -> ResponseEntity
+						.ok(CustomerMapper.INSTANCE.mapCustomerToCustomerDTO(value)))
+						 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
 	@ResponseBody
 	@PatchMapping(path = "/{id}")
@@ -148,7 +148,7 @@ public class CustomerController {
 		customerFormConverted.setId(currentCustomer.get().getId());
 		customerFormConverted.setTokenId(customerId);
 		customerFormConverted.setSync(true);
-		CustomerDTO customerUpdatedDTO = CustomerDTO.converterToCustomerDTO(customerService.update(customerFormConverted));
+		CustomerDTO customerUpdatedDTO = CustomerMapper.INSTANCE.mapCustomerToCustomerDTO(customerService.update(customerFormConverted));
 		uri = uriBuilder.path("/customers/{id}").buildAndExpand(customerId).encode().toUri();
 		return ResponseEntity.accepted().location(uri).body(customerUpdatedDTO);
 	}

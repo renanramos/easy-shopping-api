@@ -15,6 +15,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import br.com.renanrramos.easyshopping.interfaceadapter.mapper.AdministratorMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -70,7 +71,7 @@ public class AdministratorController {
 		Administrator administratorCreated = administratorService.save(administrator);
 		if (administratorCreated.getId() != null) {
 			uri = uriBuilder.path("/admin/{id}").buildAndExpand(administratorCreated.getId()).encode().toUri();
-			return ResponseEntity.created(uri).body(AdministratorDTO.converterAdministratorToAdministratorDTO(administratorCreated));
+			return ResponseEntity.created(uri).body(AdministratorMapper.INSTANCE.mapAdministratorToAdministratorDTO(administratorCreated));
 		}
 		return ResponseEntity.noContent().build();
 	}
@@ -93,7 +94,7 @@ public class AdministratorController {
 				(name == null) ?
 						administratorService.findAllPageable(page, null) :
 						administratorService.searchAdministratorByName(name);
-		return ResponseEntity.ok(AdministratorDTO.converterAdministratorListToAdministratorDTO(administrators)); 
+		return ResponseEntity.ok(AdministratorMapper.INSTANCE.mapAdministratorListToAdministratorDTOList(administrators));
 	}
 	
 	@ResponseBody
@@ -111,7 +112,7 @@ public class AdministratorController {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.ADMINISTRATOR_NOT_FOUND);
 		}
 
-		return ResponseEntity.ok(AdministratorDTO.converterAdministratorToAdministratorDTO(administratorOptional.get()));
+		return ResponseEntity.ok(AdministratorMapper.INSTANCE.mapAdministratorToAdministratorDTO(administratorOptional.get()));
 	}
 	
 	@ResponseBody
@@ -132,7 +133,7 @@ public class AdministratorController {
 		
 		Administrator administrator = AdministratorForm.converterAdministratorFormUpdateToAmdinistrator(administratorForm, administratorOptional.get());
 		administrator.setId(administratorId);
-		AdministratorDTO administratorUpdated = AdministratorDTO.converterAdministratorToAdministratorDTO(administratorService.save(administrator));
+		AdministratorDTO administratorUpdated = AdministratorMapper.INSTANCE.mapAdministratorToAdministratorDTO(administratorService.save(administrator));
 		uri = uriBuilder.path("/admin/{id}").buildAndExpand(administrator.getId()).encode().toUri();
 
 		return ResponseEntity.accepted().location(uri).body(administratorUpdated);

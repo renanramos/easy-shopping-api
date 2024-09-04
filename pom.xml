@@ -34,6 +34,7 @@
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 		<junit-platform.version>5.3.1</junit-platform.version>
 		<keycloak.version>11.0.2</keycloak.version>
+		<org.mapstruct.version>1.6.0</org.mapstruct.version>
 	</properties>
 
 	<dependencies>
@@ -147,6 +148,19 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.instancio</groupId>
+			<artifactId>instancio-junit</artifactId>
+			<version>5.0.1</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>${org.mapstruct.version}</version>
+		</dependency>
+
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
@@ -186,6 +200,27 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven-compiler-plugin.version}</version>
+				<configuration>
+					<annotationProcessorPaths>
+						<path>
+							<artifactId>lombok</artifactId>
+							<groupId>org.projectlombok</groupId>
+							<version>${lombok.version}</version>
+						</path>
+						<path>
+							<artifactId>mapstruct-processor</artifactId>
+							<groupId>org.mapstruct</groupId>
+							<version>${org.mapstruct.version}</version>
+						</path>
+					</annotationProcessorPaths>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

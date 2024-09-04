@@ -15,6 +15,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import br.com.renanrramos.easyshopping.interfaceadapter.mapper.CreditCardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -73,7 +74,7 @@ public class CreditCardController {
 		creditCard = creditCardService.save(creditCard);
 		uri = uriBuilder.path("/credit-cards/{id}").buildAndExpand(creditCard.getId()).encode().toUri();
 
-		return ResponseEntity.created(uri).body(CreditCardDTO.converterCreditCardToCreditCardDTO(creditCard));
+		return ResponseEntity.created(uri).body(CreditCardMapper.INSTANCE.mapCreditCardToCreditCardDTO(creditCard));
 	}
 
 	@ResponseBody
@@ -91,7 +92,7 @@ public class CreditCardController {
 				.buildPageable();
 		List<CreditCard> creditCards = creditCardService.findAllPageable(page,
 				authenticationServiceImpl.getName());
-		return ResponseEntity.ok(CreditCardDTO.converterCreditCardListToCreditCardDTOList(creditCards));
+		return ResponseEntity.ok(CreditCardMapper.INSTANCE.mapCreditCardListToCreditCardDTOList(creditCards));
 	}
 
 	@ResponseBody
@@ -106,7 +107,7 @@ public class CreditCardController {
 		}
 
 		CreditCard creditCard = creditCardOptional.get();
-		return ResponseEntity.ok(CreditCardDTO.converterCreditCardToCreditCardDTO(creditCard));
+		return ResponseEntity.ok(CreditCardMapper.INSTANCE.mapCreditCardToCreditCardDTO(creditCard));
 	}
 
 	@ResponseBody
@@ -122,13 +123,15 @@ public class CreditCardController {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.CREDIT_CARD_NOT_FOUND);
 		}
 
-		CreditCard creditCard = CreditCardForm.converterCreditCardFormUpdateToCreditCard(creditCardForm, currentCreditCard.get());
+		CreditCard creditCard = CreditCardForm.converterCreditCardFormUpdateToCreditCard(creditCardForm,
+				currentCreditCard.get());
 		creditCard.setId(creditCardId);
 		creditCard.setCustomerId(authenticationServiceImpl.getName());
 		creditCard = creditCardService.save(creditCard);
 		uri = uriBuilder.path("/credit-cards/{id}").buildAndExpand(creditCard.getId()).encode().toUri();
 
-		return ResponseEntity.accepted().location(uri).body(CreditCardDTO.converterCreditCardToCreditCardDTO(creditCard));
+		return ResponseEntity.accepted().location(uri).body(CreditCardMapper.INSTANCE
+				.mapCreditCardToCreditCardDTO(creditCard));
 	}
 
 	@ResponseBody

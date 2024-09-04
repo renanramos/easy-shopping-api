@@ -6,21 +6,17 @@
  */
 package br.com.renanrramos.easyshopping.model.dto;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import br.com.renanrramos.easyshopping.enums.Profile;
-import br.com.renanrramos.easyshopping.model.Company;
+import lombok.Data;
+import lombok.ToString;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * @author renan.ramos
  *
  */
-@Getter
-@Setter
+@Data
+@ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class CompanyDTO {
 
@@ -42,32 +38,5 @@ public class CompanyDTO {
 
 	public CompanyDTO() {
 		// Intentionally empty
-	}
-
-	public CompanyDTO(Company company) {
-		this.id = company.getId();
-		this.name = company.getName();
-		this.registeredNumber = company.getRegisteredNumber();
-		this.email = company.getEmail();
-		this.phone = company.getPhone();
-		this.profile = company.getProfile();
-		this.tokenId = company.getTokenId();
-		this.isSync = company.isSync();
-	}
-
-	public static List<CompanyDTO> converterCompanyListToCompanyDTOList(List<Company> companies) {
-		return companies.stream().map(CompanyDTO::new).collect(Collectors.toList());
-	}
-
-	public static CompanyDTO converterToCompanyDTO(Company company) {
-		return new CompanyDTO(company);
-	}
-
-	@Override
-	public String toString() {
-		return "CompanyDTO [id=" + id + ", name=" + name + ", registeredNumber=" + registeredNumber + ", email=" + email
-				+ ", phone=" + phone + ", profile=" + profile + ", getId()=" + getId() + ", getName()=" + getName()
-				+ ", getRegisteredNumber()=" + getRegisteredNumber() + ", getEmail()=" + getEmail() + ", getPhone()="
-				+ getPhone() + ", getProfile()=" + getProfile() + "]";
 	}
 }

@@ -15,6 +15,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import br.com.renanrramos.easyshopping.interfaceadapter.mapper.AddressMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -72,7 +73,7 @@ public class AddressController {
 		address = addressService.save(address);
 		uri = uriBuilder.path("/addresses/{id}").buildAndExpand(address.getId()).encode().toUri();
 
-		return ResponseEntity.created(uri).body(AddressDTO.convertAddressToAddressDTO(address));
+		return ResponseEntity.created(uri).body(AddressMapper.INSTANCE.mapAddressToAddressDTO(address));
 	}
 
 	@ResponseBody
@@ -95,7 +96,7 @@ public class AddressController {
 		List<Address> addresses = (streetName == null) ?
 				addressService.findAllPageable(page, authenticationServiceImpl.getName()) :
 					addressService.findAddressByStreetName(page, streetName);
-				return ResponseEntity.ok(AddressDTO.convertAddressListToAddressDTOList(addresses));
+				return ResponseEntity.ok(AddressMapper.INSTANCE.mapAddressListTOAddressDTOList(addresses));
 	}
 
 	@ResponseBody
@@ -107,7 +108,7 @@ public class AddressController {
 		if(!addressOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.ADDRESS_NOT_FOUND);
 		}
-		return ResponseEntity.ok(AddressDTO.convertAddressToAddressDTO(addressOptional.get()));
+		return ResponseEntity.ok(AddressMapper.INSTANCE.mapAddressToAddressDTO(addressOptional.get()));
 	}
 
 
@@ -131,7 +132,7 @@ public class AddressController {
 		address = addressService.save(address);
 		uri = uriBuilder.path("/addresses/{id}").buildAndExpand(address.getId()).encode().toUri();
 
-		return ResponseEntity.accepted().location(uri).body(AddressDTO.convertAddressToAddressDTO(address));
+		return ResponseEntity.accepted().location(uri).body(AddressMapper.INSTANCE.mapAddressToAddressDTO(address));
 	}
 
 	@ResponseBody

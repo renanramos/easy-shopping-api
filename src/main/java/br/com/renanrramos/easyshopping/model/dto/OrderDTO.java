@@ -6,20 +6,16 @@
  */
 package br.com.renanrramos.easyshopping.model.dto;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import br.com.renanrramos.easyshopping.model.Order;
+import lombok.Data;
+import lombok.ToString;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * @author renan.ramos
  *
  */
-@Getter
-@Setter
+@Data
+@ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class OrderDTO {
 	private Long id;
@@ -32,25 +28,5 @@ public class OrderDTO {
 
 	public OrderDTO() {
 		// Intentionally empty
-	}
-
-	public OrderDTO(Order order) {
-		this.id = order.getId();
-		this.orderNumber = order.getOrderNumber();
-		this.customerId = order.getCustomerId();
-		this.isFinished = order.isFinished();
-	}
-
-	public static List<OrderDTO> converterOrderListToOrderDTOList(List<Order> orders) {
-		return orders.stream().map(OrderDTO::new).collect(Collectors.toList());
-	}
-
-	public static OrderDTO converterOrderToOrderDTO(Order order) {
-		return new OrderDTO(order);
-	}
-
-	@Override
-	public String toString() {
-		return "OrderDTO [id=" + id + ", orderNumber=" + orderNumber + ", customerId=" + customerId + "]";
 	}
 }

@@ -15,6 +15,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import br.com.renanrramos.easyshopping.interfaceadapter.mapper.OrderMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -66,7 +67,7 @@ public class OrderController {
 		order.setCustomerId(authenticationServiceImpl.getName());
 		order = orderService.save(order);
 		uri = uriBuilder.path("/orders/{id}").buildAndExpand(order.getId()).encode().toUri();
-		return ResponseEntity.created(uri).body(OrderDTO.converterOrderToOrderDTO(order));
+		return ResponseEntity.created(uri).body(OrderMapper.INSTANCE.mapOrderToOrderDTO(order));
 	}
 
 	@ResponseBody
@@ -87,7 +88,7 @@ public class OrderController {
 		order.setFinished(true);
 		order.setId(orderId);
 		order = orderService.update(order);
-		return ResponseEntity.accepted().body(OrderDTO.converterOrderToOrderDTO(order));
+		return ResponseEntity.accepted().body(OrderMapper.INSTANCE.mapOrderToOrderDTO(order));
 	}
 
 	@ResponseBody
@@ -98,6 +99,6 @@ public class OrderController {
 
 		List<Order> orders = orderService.findCustomerOrders(authenticationServiceImpl.getName());
 
-		return ResponseEntity.ok(OrderDTO.converterOrderListToOrderDTOList(orders));
+		return ResponseEntity.ok(OrderMapper.INSTANCE.mapOrderListToOrderDTOList(orders));
 	}
 }
