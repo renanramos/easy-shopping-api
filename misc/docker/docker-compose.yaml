@@ -1,0 +1,53 @@
+version: '3'
+
+services:
+   database:
+     image: mysql:8.0.39-debian
+     container_name: mysql_db
+     restart: always
+     environment:
+       MYSQL_ROOT_PASSWORD: root
+       MYSQL_DATABASE: easy-shopping
+       MYSQL_USER: user
+       MYSQL_PASSWORD: pass
+     ports:
+       - "3306:3306"
+     volumes:
+       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+   keycloak:
+     image: quay.io/keycloak/keycloak:21.1.0
+     container_name: keycloak
+     environment:
+       - KEYCLOAK_USER=user@mail.com
+       - KEYCLOAK_PASSWORD=user_password
+       - KEYCLOAK_ADMIN=admin@mail.com
+       - KEYCLOAK_ADMIN_PASSWORD=admin_password
+       - KC_HEALTH_ENABLED=true
+       - KC_METRICS_ENABLED=true
+     ports:
+       - "8083:8080"
+     command:
+       - start-dev
+       - --import-realm
+     volumes:
+       - ./realms:/opt/keycloak/data/import
+     networks:
+       - keycloak_network
+
+volumes:
+ keycloak_data:
+
+networks:
+ keycloak_network:
+       driver: bridge
+
+#  database:
+#    image: 'postgres:latest'
+#    ports:
+#      - 5432:5432
+#    environment:
+#      POSTGRES_USER: root
+#      POSTGRES_PASSWORD: root
+#      POSTGRES_DB: easy-shopping
+#    volumes:
+#      - ./init.sql:/docker-entrypoint-initdb.d/init.sql

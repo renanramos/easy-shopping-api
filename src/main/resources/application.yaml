@@ -1,0 +1,51 @@
+easy:
+  verification: ''
+jwt:
+  secret: ''
+keycloak:
+  auth-server-url: ''
+  enabled: true
+  public-client: true
+  realm: easy-shopping
+  realm-key: ${REALM_KEY:null}
+  resource: easy-shopping
+  use-resource-role-mappings: true
+server:
+  port: 8081
+spring:
+  banner:
+    charset: UTF-8
+    location: classpath:banner.txt
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: pass
+    platform: mysql
+    url: jdbc:mysql://localhost:3306/easy-shopping?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false
+    username: user
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          time_zone: UTC
+        show_sql: true
+    show-sql: false
+  mail:
+    host: smtp.gmail.com
+    password: ''
+    port: 25
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    protocol: smtp
+    username: ''
