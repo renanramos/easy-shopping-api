@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import br.com.renanrramos.easyshopping.infra.rest.CompanyController;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,9 +47,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.com.renanrramos.easyshopping.model.Company;
-import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
-import br.com.renanrramos.easyshopping.service.impl.CompanyService;
+import br.com.renanrramos.easyshopping.core.model.Company;
+import br.com.renanrramos.easyshopping.interfaceadapter.repository.service.impl.AuthenticationServiceImpl;
+import br.com.renanrramos.easyshopping.interfaceadapter.repository.service.impl.CompanyService;
 
 /**
  * Test for {@link CompanyController}

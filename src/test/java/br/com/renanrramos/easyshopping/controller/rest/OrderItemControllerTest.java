@@ -16,11 +16,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
+import br.com.renanrramos.easyshopping.infra.rest.OrderItemController;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,13 +38,13 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.com.renanrramos.easyshopping.model.Order;
-import br.com.renanrramos.easyshopping.model.OrderItem;
-import br.com.renanrramos.easyshopping.model.Product;
-import br.com.renanrramos.easyshopping.model.form.OrderItemForm;
-import br.com.renanrramos.easyshopping.service.impl.OrderItemService;
-import br.com.renanrramos.easyshopping.service.impl.OrderService;
-import br.com.renanrramos.easyshopping.service.impl.ProductService;
+import br.com.renanrramos.easyshopping.core.model.Order;
+import br.com.renanrramos.easyshopping.core.model.OrderItem;
+import br.com.renanrramos.easyshopping.core.model.Product;
+import br.com.renanrramos.easyshopping.core.model.form.OrderItemForm;
+import br.com.renanrramos.easyshopping.interfaceadapter.repository.service.impl.OrderItemService;
+import br.com.renanrramos.easyshopping.interfaceadapter.repository.service.impl.OrderService;
+import br.com.renanrramos.easyshopping.interfaceadapter.repository.service.impl.ProductService;
 
 /**
  * @author renan.ramos

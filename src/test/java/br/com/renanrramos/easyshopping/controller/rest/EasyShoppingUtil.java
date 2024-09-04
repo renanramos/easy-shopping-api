@@ -6,30 +6,30 @@
  */
 package br.com.renanrramos.easyshopping.controller.rest;
 
-import br.com.renanrramos.easyshopping.enums.Profile;
-import br.com.renanrramos.easyshopping.model.Address;
-import br.com.renanrramos.easyshopping.model.Company;
-import br.com.renanrramos.easyshopping.model.CreditCard;
-import br.com.renanrramos.easyshopping.model.Customer;
-import br.com.renanrramos.easyshopping.model.Order;
-import br.com.renanrramos.easyshopping.model.OrderItem;
-import br.com.renanrramos.easyshopping.model.Product;
-import br.com.renanrramos.easyshopping.model.Purchase;
-import br.com.renanrramos.easyshopping.model.Stock;
-import br.com.renanrramos.easyshopping.model.StockItem;
-import br.com.renanrramos.easyshopping.model.Store;
-import br.com.renanrramos.easyshopping.model.User;
-import br.com.renanrramos.easyshopping.model.builder.CreditCardBuilder;
-import br.com.renanrramos.easyshopping.model.builder.OrderBuilder;
-import br.com.renanrramos.easyshopping.model.builder.OrderItemBuilder;
-import br.com.renanrramos.easyshopping.model.builder.ProductBuilder;
-import br.com.renanrramos.easyshopping.model.builder.PurchaseBuilder;
-import br.com.renanrramos.easyshopping.model.builder.StockBuilder;
-import br.com.renanrramos.easyshopping.model.builder.StockItemBuilder;
-import br.com.renanrramos.easyshopping.model.builder.StoreBuilder;
-import br.com.renanrramos.easyshopping.model.form.CreditCardForm;
-import br.com.renanrramos.easyshopping.model.form.OrderItemForm;
-import br.com.renanrramos.easyshopping.model.form.StockItemForm;
+import br.com.renanrramos.easyshopping.core.enums.Profile;
+import br.com.renanrramos.easyshopping.core.model.Address;
+import br.com.renanrramos.easyshopping.core.model.Company;
+import br.com.renanrramos.easyshopping.core.model.CreditCard;
+import br.com.renanrramos.easyshopping.core.model.Customer;
+import br.com.renanrramos.easyshopping.core.model.Order;
+import br.com.renanrramos.easyshopping.core.model.OrderItem;
+import br.com.renanrramos.easyshopping.core.model.Product;
+import br.com.renanrramos.easyshopping.core.model.Purchase;
+import br.com.renanrramos.easyshopping.core.model.Stock;
+import br.com.renanrramos.easyshopping.core.model.StockItem;
+import br.com.renanrramos.easyshopping.core.model.Store;
+import br.com.renanrramos.easyshopping.core.model.User;
+import br.com.renanrramos.easyshopping.core.model.builder.CreditCardBuilder;
+import br.com.renanrramos.easyshopping.core.model.builder.OrderBuilder;
+import br.com.renanrramos.easyshopping.core.model.builder.OrderItemBuilder;
+import br.com.renanrramos.easyshopping.core.model.builder.ProductBuilder;
+import br.com.renanrramos.easyshopping.core.model.builder.PurchaseBuilder;
+import br.com.renanrramos.easyshopping.core.model.builder.StockBuilder;
+import br.com.renanrramos.easyshopping.core.model.builder.StockItemBuilder;
+import br.com.renanrramos.easyshopping.core.model.builder.StoreBuilder;
+import br.com.renanrramos.easyshopping.core.model.form.CreditCardForm;
+import br.com.renanrramos.easyshopping.core.model.form.OrderItemForm;
+import br.com.renanrramos.easyshopping.core.model.form.StockItemForm;
 
 /**
  * @author renan.ramos

@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.Arrays;
 import java.util.Optional;
 
-import org.hamcrest.core.IsNot;
+import br.com.renanrramos.easyshopping.infra.rest.StockItemController;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,17 +45,13 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.com.renanrramos.easyshopping.model.Product;
-import br.com.renanrramos.easyshopping.model.Stock;
-import br.com.renanrramos.easyshopping.model.StockItem;
-import br.com.renanrramos.easyshopping.model.Store;
-import br.com.renanrramos.easyshopping.model.builder.ProductBuilder;
-import br.com.renanrramos.easyshopping.model.builder.StockBuilder;
-import br.com.renanrramos.easyshopping.model.builder.StockItemBuilder;
-import br.com.renanrramos.easyshopping.model.form.StockItemForm;
-import br.com.renanrramos.easyshopping.service.impl.ProductService;
-import br.com.renanrramos.easyshopping.service.impl.StockItemService;
-import br.com.renanrramos.easyshopping.service.impl.StockService;
+import br.com.renanrramos.easyshopping.core.model.Stock;
+import br.com.renanrramos.easyshopping.core.model.StockItem;
+import br.com.renanrramos.easyshopping.core.model.Store;
+import br.com.renanrramos.easyshopping.core.model.form.StockItemForm;
+import br.com.renanrramos.easyshopping.interfaceadapter.repository.service.impl.ProductService;
+import br.com.renanrramos.easyshopping.interfaceadapter.repository.service.impl.StockItemService;
+import br.com.renanrramos.easyshopping.interfaceadapter.repository.service.impl.StockService;
 
 /**
  * @author renan.ramos

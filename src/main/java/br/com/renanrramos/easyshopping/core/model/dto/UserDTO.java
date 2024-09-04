@@ -1,0 +1,44 @@
+/**------------------------------------------------------------
+ * Project: easy-shopping
+ *
+ * Creator: renan.ramos - 22/10/2020
+ * ------------------------------------------------------------
+ */
+package br.com.renanrramos.easyshopping.core.model.dto;
+
+import java.util.Optional;
+
+import br.com.renanrramos.easyshopping.core.model.User;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+
+/**
+ * @author renan.ramos
+ *
+ */
+@Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+public class UserDTO {
+
+	private String name;
+
+	private String email;
+
+	private boolean isSync;
+
+	public UserDTO() {
+		// Intentionally empty
+	}
+
+	public UserDTO(User user) {
+		this.name = Optional.ofNullable(user.getName()).orElse("");
+		this.email = Optional.ofNullable(user.getEmail()).orElse("");
+		this.isSync = user.isSync();
+	}
+
+	public static UserDTO converterUserToUserDTO(User user) {
+		return new UserDTO(user);
+	}
+}

@@ -4,12 +4,12 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.never;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Optional;
 
+import br.com.renanrramos.easyshopping.infra.rest.UserController;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,8 +23,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
-import br.com.renanrramos.easyshopping.service.impl.UserService;
+import br.com.renanrramos.easyshopping.interfaceadapter.repository.service.impl.AuthenticationServiceImpl;
+import br.com.renanrramos.easyshopping.interfaceadapter.repository.service.impl.UserService;
 
 /**
  * 

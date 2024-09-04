@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import br.com.renanrramos.easyshopping.infra.rest.StoreController;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,11 +46,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.com.renanrramos.easyshopping.model.Store;
-import br.com.renanrramos.easyshopping.model.builder.StoreBuilder;
-import br.com.renanrramos.easyshopping.model.form.StoreForm;
-import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
-import br.com.renanrramos.easyshopping.service.impl.StoreService;
+import br.com.renanrramos.easyshopping.core.model.Store;
+import br.com.renanrramos.easyshopping.core.model.form.StoreForm;
+import br.com.renanrramos.easyshopping.interfaceadapter.repository.service.impl.AuthenticationServiceImpl;
+import br.com.renanrramos.easyshopping.interfaceadapter.repository.service.impl.StoreService;
 
 /**
  * @author renan.ramos

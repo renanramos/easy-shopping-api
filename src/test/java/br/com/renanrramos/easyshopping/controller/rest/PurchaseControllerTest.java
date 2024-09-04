@@ -21,6 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.Arrays;
 import java.util.Optional;
 
+import br.com.renanrramos.easyshopping.infra.rest.PurchaseController;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,21 +42,21 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.com.renanrramos.easyshopping.model.Address;
-import br.com.renanrramos.easyshopping.model.CreditCard;
-import br.com.renanrramos.easyshopping.model.Order;
-import br.com.renanrramos.easyshopping.model.OrderItem;
-import br.com.renanrramos.easyshopping.model.Purchase;
-import br.com.renanrramos.easyshopping.model.StockItem;
-import br.com.renanrramos.easyshopping.model.builder.StockItemBuilder;
-import br.com.renanrramos.easyshopping.model.form.PurchaseForm;
-import br.com.renanrramos.easyshopping.service.impl.AddressService;
-import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
-import br.com.renanrramos.easyshopping.service.impl.CreditCardService;
-import br.com.renanrramos.easyshopping.service.impl.OrderItemService;
-import br.com.renanrramos.easyshopping.service.impl.OrderService;
-import br.com.renanrramos.easyshopping.service.impl.PurchaseService;
-import br.com.renanrramos.easyshopping.service.impl.StockItemService;
+import br.com.renanrramos.easyshopping.core.model.Address;
+import br.com.renanrramos.easyshopping.core.model.CreditCard;
+import br.com.renanrramos.easyshopping.core.model.Order;
+import br.com.renanrramos.easyshopping.core.model.OrderItem;
+import br.com.renanrramos.easyshopping.core.model.Purchase;
+import br.com.renanrramos.easyshopping.core.model.StockItem;
+import br.com.renanrramos.easyshopping.core.model.builder.StockItemBuilder;
+import br.com.renanrramos.easyshopping.core.model.form.PurchaseForm;
+import br.com.renanrramos.easyshopping.interfaceadapter.repository.service.impl.AddressService;
+import br.com.renanrramos.easyshopping.interfaceadapter.repository.service.impl.AuthenticationServiceImpl;
+import br.com.renanrramos.easyshopping.interfaceadapter.repository.service.impl.CreditCardService;
+import br.com.renanrramos.easyshopping.interfaceadapter.repository.service.impl.OrderItemService;
+import br.com.renanrramos.easyshopping.interfaceadapter.repository.service.impl.OrderService;
+import br.com.renanrramos.easyshopping.interfaceadapter.repository.service.impl.PurchaseService;
+import br.com.renanrramos.easyshopping.interfaceadapter.repository.service.impl.StockItemService;
 
 /**
  * @author renan.ramos

@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import br.com.renanrramos.easyshopping.infra.rest.AddressController;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,11 +48,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.com.renanrramos.easyshopping.model.Address;
-import br.com.renanrramos.easyshopping.model.form.AddressForm;
-import br.com.renanrramos.easyshopping.service.impl.AddressService;
-import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
-import br.com.renanrramos.easyshopping.service.impl.CustomerService;
+import br.com.renanrramos.easyshopping.core.model.Address;
+import br.com.renanrramos.easyshopping.core.model.form.AddressForm;
+import br.com.renanrramos.easyshopping.interfaceadapter.repository.service.impl.AddressService;
+import br.com.renanrramos.easyshopping.interfaceadapter.repository.service.impl.AuthenticationServiceImpl;
+import br.com.renanrramos.easyshopping.interfaceadapter.repository.service.impl.CustomerService;
 
 /**
  *
