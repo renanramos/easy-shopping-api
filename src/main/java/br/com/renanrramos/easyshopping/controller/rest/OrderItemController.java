@@ -15,6 +15,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import br.com.renanrramos.easyshopping.interfaceadapter.mapper.OrderItemMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -98,7 +99,7 @@ public class OrderItemController {
 
 		orderItem = orderItemService.save(orderItem);
 		uri = uriBuilder.path("/order-items/{id}").buildAndExpand(orderItem.getId()).encode().toUri();
-		return ResponseEntity.created(uri).body(OrderItemDTO.converterOrderItemToOrderItemDTO(orderItem));
+		return ResponseEntity.created(uri).body(OrderItemMapper.INSTANCE.mapOrderItemToOrderItemDTO(orderItem));
 	}
 
 	@ResponseBody
@@ -106,8 +107,8 @@ public class OrderItemController {
 	@ApiOperation(value = "Get order items")
 	@RolesAllowed({ "easy-shopping-user" })
 	public ResponseEntity<List<OrderItemDTO>> getOrderItemsByOrderId(@PathVariable("id") Long orderId) {
-		List<OrderItemDTO> orderItemsDTO = OrderItemDTO
-				.converterOrderItemListToOrderItemDTOList(orderItemService.findOrderItemByOrderId(orderId));
+		List<OrderItemDTO> orderItemsDTO = OrderItemMapper.INSTANCE
+				.mapOrderItemListToOrderItemDTOList(orderItemService.findOrderItemByOrderId(orderId));
 		return ResponseEntity.ok(orderItemsDTO);
 	}
 }

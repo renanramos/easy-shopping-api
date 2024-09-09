@@ -2,14 +2,12 @@ package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
 import br.com.renanrramos.easyshopping.model.Administrator;
 import br.com.renanrramos.easyshopping.model.dto.AdministratorDTO;
-import org.apache.tomcat.jni.Address;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class AdministratorMapperTest {
 

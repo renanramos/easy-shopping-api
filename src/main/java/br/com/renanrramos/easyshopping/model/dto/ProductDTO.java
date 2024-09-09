@@ -14,16 +14,17 @@ import java.util.stream.Collectors;
 
 import br.com.renanrramos.easyshopping.model.Product;
 import br.com.renanrramos.easyshopping.model.ProductImage;
+
+import lombok.Data;
+import lombok.ToString;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * @author renan.ramos
  *
  */
-@Getter
-@Setter
+@Data
+@ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class ProductDTO {
 
@@ -61,22 +62,22 @@ public class ProductDTO {
 		this.isProductPublished = product.isPublished();
 	}
 
-	public static List<ProductDTO> converterProductListToProductDTOList(List<Product> products) {
-		return products.stream().map(ProductDTO::new).collect(Collectors.toList());
-	}
-
-	public static List<ProductDTO> converterPublishedProductListToProductDTOList(List<Product> products) {
-		return products.stream().filter(product -> product.isPublished()).map(ProductDTO::new)
-				.collect(Collectors.toList());
-	}
-	public static ProductDTO convertProductToProductDTO(Product product) {
-		return new ProductDTO(product);
-	}
-
-	@Override
-	public String toString() {
-		return "ProductDTO [id=" + id + ", name=" + name + ", description=" + description + ", price=" + price
-				+ ", productCategoryId=" + subcategoryId + ", subcategoryName=" + subcategoryName
-				+ ", storeId=" + storeId + "]";
-	}
+//	public static List<ProductDTO> converterProductListToProductDTOList(List<Product> products) {
+//		return products.stream().map(ProductDTO::new).collect(Collectors.toList());
+//	}
+//
+//	public static List<ProductDTO> converterPublishedProductListToProductDTOList(List<Product> products) {
+//		return products.stream().filter(product -> product.isPublished()).map(ProductDTO::new)
+//				.collect(Collectors.toList());
+//	}
+//	public static ProductDTO convertProductToProductDTO(Product product) {
+//		return new ProductDTO(product);
+//	}
+//
+//	@Override
+//	public String toString() {
+//		return "ProductDTO [id=" + id + ", name=" + name + ", description=" + description + ", price=" + price
+//				+ ", productCategoryId=" + subcategoryId + ", subcategoryName=" + subcategoryName
+//				+ ", storeId=" + storeId + "]";
+//	}
 }

@@ -16,6 +16,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import br.com.renanrramos.easyshopping.interfaceadapter.mapper.ProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
@@ -128,7 +129,7 @@ public class ProductController {
 
 		uri = uriComponentsBuilder.path("/products/{id}").buildAndExpand(product.getId()).encode().toUri();
 
-		return ResponseEntity.created(uri).body(ProductDTO.convertProductToProductDTO(product));
+		return ResponseEntity.created(uri).body(ProductMapper.INSTANCE.mapProductToProductDTO(product));
 	}
 
 	@ResponseBody
@@ -147,8 +148,8 @@ public class ProductController {
 				.buildPageable();
 		List<Product> products = productService.findAllPageable(page, storeId);
 		return onlyPublishedProducts
-				? ResponseEntity.ok(ProductDTO.converterPublishedProductListToProductDTOList(products))
-						: ResponseEntity.ok(ProductDTO.converterProductListToProductDTOList(products));
+				? ResponseEntity.ok(ProductMapper.INSTANCE.mapPublishedProductListToProductDTOList(products))
+						: ResponseEntity.ok(ProductMapper.INSTANCE.mapProductListToProductDTOList(products));
 	}
 
 	@ResponseBody
@@ -169,8 +170,8 @@ public class ProductController {
 				authenticationServiceImpl.getAuthentication());
 
 		return onlyPublishedProducts
-				? ResponseEntity.ok(ProductDTO.converterPublishedProductListToProductDTOList(products))
-						: ResponseEntity.ok(ProductDTO.converterProductListToProductDTOList(products));
+				? ResponseEntity.ok(ProductMapper.INSTANCE.mapPublishedProductListToProductDTOList(products))
+				: ResponseEntity.ok(ProductMapper.INSTANCE.mapProductListToProductDTOList(products));
 	}
 
 	@ResponseBody
@@ -189,8 +190,8 @@ public class ProductController {
 				.buildPageable();
 		List<Product> products = productService.getProductsBySubcategoryId(page, subcategoryId);
 		return onlyPublishedProducts
-				? ResponseEntity.ok(ProductDTO.converterPublishedProductListToProductDTOList(products))
-						: ResponseEntity.ok(ProductDTO.converterProductListToProductDTOList(products));
+				? ResponseEntity.ok(ProductMapper.INSTANCE.mapPublishedProductListToProductDTOList(products))
+				: ResponseEntity.ok(ProductMapper.INSTANCE.mapProductListToProductDTOList(products));
 	}
 
 	@ResponseBody
@@ -198,11 +199,10 @@ public class ProductController {
 	@ApiOperation(value = "Get a product by id")
 	public ResponseEntity<ProductDTO> getProductById(@PathVariable("id") Long productId) {
 		Optional<Product> productOptional = productService.findById(productId);
-		if(productOptional.isPresent()) {
-			return ResponseEntity.ok(ProductDTO.convertProductToProductDTO(productOptional.get()));
-		}
-		return ResponseEntity.notFound().build();
-	}
+        return productOptional.map(product ->
+				ResponseEntity.ok(ProductMapper.INSTANCE.mapProductToProductDTO(product)))
+				.orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
 	@ResponseBody
 	@PatchMapping("/{id}")
@@ -255,7 +255,9 @@ public class ProductController {
 
 		uri = uriBuilder.path("/products/{id}").buildAndExpand(productId).encode().toUri();
 
-		return ResponseEntity.accepted().location(uri).body(ProductDTO.convertProductToProductDTO(product));
+		return ResponseEntity.accepted()
+				.location(uri)
+				.body(ProductMapper.INSTANCE.mapProductToProductDTO(product));
 	}
 
 	@ResponseBody
@@ -277,7 +279,7 @@ public class ProductController {
 		product.setPublished(true);
 		product = productService.save(product);
 		uri = uriBuilder.path("/products/{id}").buildAndExpand(productId).encode().toUri();
-		return ResponseEntity.accepted().location(uri).body(ProductDTO.convertProductToProductDTO(product));
+		return ResponseEntity.accepted().location(uri).body(ProductMapper.INSTANCE.mapProductToProductDTO(product));
 	}
 
 	@ResponseBody

@@ -15,6 +15,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import br.com.renanrramos.easyshopping.interfaceadapter.mapper.ProductCategoryMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -77,7 +78,7 @@ public class ProductCategoryController {
 
 		uri = uriBuilder.path("/product-categories/{id}").buildAndExpand(productCategory.getId()).encode().toUri();
 		return ResponseEntity.created(uri)
-				.body(ProductCategoryDTO.converterProductCategoryToProductCategoryDTO(productCategory));
+				.body(ProductCategoryMapper.INSTANCE.mapProductCategoryToProductCategoryDTO(productCategory));
 	}
 
 	@ResponseBody
@@ -98,7 +99,8 @@ public class ProductCategoryController {
 						productCategoryService.findAllPageable(page, null) :
 							productCategoryService.findAllProductCategoriesByName(page, name);
 						return ResponseEntity
-								.ok(ProductCategoryDTO.converterProductCategoryListToProductCategoryDTOList(productCategories));
+								.ok(ProductCategoryMapper.INSTANCE
+										.mapProductCategoryListToProductCategoryDTOList(productCategories));
 	}
 
 	@ResponseBody
@@ -108,7 +110,8 @@ public class ProductCategoryController {
 		Optional<ProductCategory> productCategoryOptional = productCategoryService.findById(productCategoryId);
 		if (productCategoryOptional.isPresent()) {
 			ProductCategory productCategory = productCategoryOptional.get();
-			return ResponseEntity.ok(ProductCategoryDTO.converterProductCategoryToProductCategoryDTO(productCategory));
+			return ResponseEntity.ok(ProductCategoryMapper.INSTANCE
+					.mapProductCategoryToProductCategoryDTO(productCategory));
 		}
 		return ResponseEntity.notFound().build();
 	}
@@ -126,10 +129,11 @@ public class ProductCategoryController {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_NOT_FOUND);
 		}
 
-		ProductCategory productCategory = ProductCategoryForm.converterProductCategoryFormUpdateToProductCategory(productCategoryForm, currentProductCategory.get());
+		ProductCategory productCategory = ProductCategoryForm
+				.converterProductCategoryFormUpdateToProductCategory(productCategoryForm, currentProductCategory.get());
 		productCategory.setId(productCategoryId);
-		ProductCategoryDTO productCategoryDTO = ProductCategoryDTO
-				.converterProductCategoryToProductCategoryDTO(productCategoryService.update(productCategory));
+		ProductCategoryDTO productCategoryDTO = ProductCategoryMapper.INSTANCE
+						.mapProductCategoryToProductCategoryDTO(productCategoryService.update(productCategory));
 		uri = uriBuilder.path("/product-categories/{id}").buildAndExpand(productCategoryDTO).encode().toUri();
 
 		return ResponseEntity.accepted().location(uri).body(productCategoryDTO);
@@ -140,7 +144,8 @@ public class ProductCategoryController {
 	@Transactional
 	@ApiOperation(value = "Remove a product category")
 	@RolesAllowed("easy-shopping-admin")
-	public ResponseEntity<ProductCategoryDTO> removeProductCategory(@PathVariable("id") Long productCategoryId) throws EasyShoppingException {
+	public ResponseEntity<ProductCategoryDTO> removeProductCategory(@PathVariable("id") Long productCategoryId)
+			throws EasyShoppingException {
 		Optional<ProductCategory> productCategoryOptional = productCategoryService.findById(productCategoryId);
 
 		if (!productCategoryOptional.isPresent()) {
