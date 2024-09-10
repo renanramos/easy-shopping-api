@@ -15,6 +15,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import br.com.renanrramos.easyshopping.interfaceadapter.mapper.StoreMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -77,7 +78,7 @@ public class StoreController {
 		store.setTokenId(authenticationServiceImpl.getName());
 		store = storeService.save(store);
 		uri = uriBuilder.path("/stores/{id}").buildAndExpand(store.getId()).encode().toUri();
-		return ResponseEntity.created(uri).body(StoreDTO.converterStoreToStoreDTO(store));
+		return ResponseEntity.created(uri).body(StoreMapper.INSTANCE.mapStoreToStoreDTO(store));
 	}
 
 	@ResponseBody
@@ -96,7 +97,7 @@ public class StoreController {
 				.buildPageable();
 
 		List<Store> stores = storeService.findAllPageable(page, authenticationServiceImpl.getName(), name);
-		return ResponseEntity.ok(StoreDTO.converterStoreListToStoreDTOList(stores));
+		return ResponseEntity.ok(StoreMapper.INSTANCE.mapStoreListToStoreDTOList(stores));
 	}
 
 	@ResponseBody
@@ -116,7 +117,7 @@ public class StoreController {
 		List<Store> stores = (name == null || name.isEmpty()) ?
 				storeService.findAll(page) :
 					storeService.findStoreByName(page, name);
-				return ResponseEntity.ok(StoreDTO.converterStoreListToStoreDTOList(stores));
+				return ResponseEntity.ok(StoreMapper.INSTANCE.mapStoreListToStoreDTOList(stores));
 	}
 
 	@ResponseBody
@@ -125,7 +126,7 @@ public class StoreController {
 	public ResponseEntity<StoreDTO> getStoreById(@PathVariable("id") Long storeId) {
 		Optional<Store> storeOptional = storeService.findById(storeId);
 		if (storeOptional.isPresent()) {
-			StoreDTO storeDto = StoreDTO.converterStoreToStoreDTO(storeOptional.get());
+			StoreDTO storeDto = StoreMapper.INSTANCE.mapStoreToStoreDTO(storeOptional.get());
 			return ResponseEntity.ok(storeDto);
 		}
 		return ResponseEntity.notFound().build();
@@ -148,7 +149,7 @@ public class StoreController {
 		Store store = StoreForm.converterStoreFormUpdateToStore(storeForm, currentStore.get());
 		store.setTokenId(authenticationServiceImpl.getName());
 		store.setId(storeId);
-		StoreDTO storeUpdatedDTO = StoreDTO.converterStoreToStoreDTO(storeService.update(store));
+		StoreDTO storeUpdatedDTO = StoreMapper.INSTANCE.mapStoreToStoreDTO(storeService.update(store));
 		uri = uriBuilder.path("/stores/{id}").buildAndExpand(storeId).encode().toUri();
 
 		return ResponseEntity.accepted().location(uri).body(storeUpdatedDTO);

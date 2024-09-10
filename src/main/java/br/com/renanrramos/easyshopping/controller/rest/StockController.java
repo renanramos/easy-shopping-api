@@ -15,6 +15,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import br.com.renanrramos.easyshopping.interfaceadapter.mapper.StockMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -87,7 +88,7 @@ public class StockController {
 		stock = stockService.save(stock);
 
 		uri = uriBuilder.path("/stock/{id}").buildAndExpand(stock.getId()).encode().toUri();
-		return ResponseEntity.created(uri).body(StockDTO.converterStockToStockDTO(stock));
+		return ResponseEntity.created(uri).body(StockMapper.INSTANCE.mapStockToStockDTO(stock));
 	}
 
 	@ResponseBody
@@ -102,7 +103,7 @@ public class StockController {
 		Pageable page = new PageableFactory().withPage(pageNumber).withSize(pageSize).withSort(sortBy).buildPageable();
 
 		List<Stock> stocks = (name == null) ? stockService.findAll(page) : stockService.findStockByName(page, name);
-		return ResponseEntity.ok(StockDTO.converterStockListToStockDTOList(stocks));
+		return ResponseEntity.ok(StockMapper.INSTANCE.mapStockListToStockDTOList(stocks));
 	}
 
 	@ResponseBody
@@ -117,7 +118,7 @@ public class StockController {
 			throw new EasyShoppingException(ExceptionMessagesConstants.STOCK_NOT_FOUND);
 		}
 
-		return ResponseEntity.ok(StockDTO.converterStockToStockDTO(stockOptional.get()));
+		return ResponseEntity.ok(StockMapper.INSTANCE.mapStockToStockDTO(stockOptional.get()));
 	}
 
 	@ResponseBody
@@ -149,7 +150,7 @@ public class StockController {
 		Stock stock = StockForm.converterStockFormUpdateToStock(stockForm, currentStock.get());
 		stock.setId(stockId);
 		stock.setStore(storeOptional.get());
-		StockDTO stockUpdatedDTO = StockDTO.converterStockToStockDTO(stockService.update(stock));
+		StockDTO stockUpdatedDTO = StockMapper.INSTANCE.mapStockToStockDTO(stockService.update(stock));
 		uri = uriBuilder.path("/stocks/{id}").buildAndExpand(stockId).encode().toUri();
 
 		return ResponseEntity.accepted().location(uri).body(stockUpdatedDTO);

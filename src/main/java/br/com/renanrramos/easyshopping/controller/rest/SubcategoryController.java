@@ -14,6 +14,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import br.com.renanrramos.easyshopping.interfaceadapter.mapper.SubcategoryMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -88,7 +89,7 @@ public class SubcategoryController {
 		subcategory = subcategoryService.save(subcategory);
 		uri = uriBuilder.path("/subcategories/{id}").buildAndExpand(subcategory.getId()).encode().toUri();
 
-		return ResponseEntity.created(uri).body(SubcategoryDTO.convertSubcategoryToSubcategoryDTO(subcategory));
+		return ResponseEntity.created(uri).body(SubcategoryMapper.INSTANCE.mapSubcategoryToSubcategoryDTO(subcategory));
 	}
 
 	@ResponseBody
@@ -109,7 +110,8 @@ public class SubcategoryController {
 				(name == null || name.isEmpty()) ?
 						subcategoryService.findAllPageable(page, productCategoryId) :
 							subcategoryService.findSubcategoryByName(page, name);
-						return ResponseEntity.ok(SubcategoryDTO.convertSubcategoryListToSubcategoryDTOList(subcategories));
+						return ResponseEntity.ok(SubcategoryMapper.INSTANCE
+								.mapSubcategoryListToSubcategoryDTOList(subcategories));
 	}
 
 	@ResponseBody
@@ -117,11 +119,10 @@ public class SubcategoryController {
 	@ApiOperation(value = "Get subcategory by id")
 	public ResponseEntity<SubcategoryDTO> getSubcategoriesBydId(@PathVariable("id") Long subcategoryId) {
 		Optional<Subcategory> subcategoryOptional = subcategoryService.findById(subcategoryId);
-		if (subcategoryOptional.isPresent()) {
-			return ResponseEntity.ok(SubcategoryDTO.convertSubcategoryToSubcategoryDTO(subcategoryOptional.get()));
-		}
-		return ResponseEntity.notFound().build();
-	}
+        return subcategoryOptional.map(subcategory ->
+				ResponseEntity.ok(SubcategoryMapper.INSTANCE.mapSubcategoryToSubcategoryDTO(subcategory)))
+				.orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
 	@ResponseBody
 	@PatchMapping(path = "/{id}")
@@ -156,7 +157,7 @@ public class SubcategoryController {
 
 		uri = uriBuilder.path("/subcategories/{id}").buildAndExpand(subcategory.getId()).encode().toUri();
 
-		return ResponseEntity.accepted().location(uri).body(SubcategoryDTO.convertSubcategoryToSubcategoryDTO(subcategory));
+		return ResponseEntity.accepted().location(uri).body(SubcategoryMapper.INSTANCE.mapSubcategoryToSubcategoryDTO(subcategory));
 	}
 
 	@ResponseBody

@@ -15,6 +15,8 @@ import javax.annotation.security.RolesAllowed;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import br.com.renanrramos.easyshopping.interfaceadapter.mapper.PurchaseMapper;
+import br.com.renanrramos.easyshopping.interfaceadapter.mapper.PurchaseStatisticMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -143,7 +145,7 @@ public class PurchaseController {
 		});
 
 		uri = uriBuilder.path("/purchases/{id}").buildAndExpand(purchase.getId()).encode().toUri();
-		return ResponseEntity.created(uri).body(PurchaseDTO.convertPurchaseToPurchaseDTO(purchase));
+		return ResponseEntity.created(uri).body(PurchaseMapper.INSTANCE.mapPurchaseToPurchaseDTO(purchase));
 	}
 
 
@@ -153,6 +155,6 @@ public class PurchaseController {
 	@RolesAllowed({ "easy-shopping-admin", "easy-shopping-user" })
 	public ResponseEntity<?> orderItemStatistic() {
 		List<OrderItem> list = orderItemService.orderItemStatistic();
-		return ResponseEntity.ok(PurchaseStatisticDTO.converterOrderItemToOrderItemStatisticDTO(list));
+		return ResponseEntity.ok(PurchaseStatisticMapper.INSTANCE.mapOrderItemListToPurchaseStatisticDTOList(list));
 	}
 }

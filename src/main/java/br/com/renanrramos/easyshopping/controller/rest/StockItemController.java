@@ -14,6 +14,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import br.com.renanrramos.easyshopping.interfaceadapter.mapper.StockItemMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -111,7 +112,7 @@ public class StockItemController {
 		item.setProductName(productOptional.get().getName());
 		item.setStock(stockOptional.get());
 		uri = uriBuilder.path("/stock-items/{id}").buildAndExpand(item.getId()).encode().toUri();
-		return ResponseEntity.created(uri).body(StockItemDTO.converterStockItemToStockItemDTO(item));
+		return ResponseEntity.created(uri).body(StockItemMapper.INSTANCE.mapStockItemToStockItemDTO(item));
 	}
 
 	@ResponseBody
@@ -164,7 +165,7 @@ public class StockItemController {
 		item.setProductName(productOptional.get().getName());
 		item.setStock(stockOptional.get());
 		uri = uriBuilder.path("/stock-items/{id}").buildAndExpand(item.getId()).encode().toUri();
-		return ResponseEntity.accepted().location(uri).body(StockItemDTO.converterStockItemToStockItemDTO(item));
+		return ResponseEntity.accepted().location(uri).body(StockItemMapper.INSTANCE.mapStockItemToStockItemDTO(item));
 	}
 
 	@ResponseBody
@@ -179,7 +180,7 @@ public class StockItemController {
 			throw new EasyShoppingException(ExceptionMessagesConstants.STOCK_ITEM_NOT_FOUND);
 		}
 
-		return ResponseEntity.ok(StockItemDTO.converterStockItemToStockItemDTO(itemOptional.get()));
+		return ResponseEntity.ok(StockItemMapper.INSTANCE.mapStockItemToStockItemDTO(itemOptional.get()));
 	}
 
 	@ResponseBody
@@ -202,7 +203,7 @@ public class StockItemController {
 
 		List<StockItem> items = itemService.findStockItemByStockId(page, stockId, name);
 
-		return ResponseEntity.ok(StockItemDTO.converterStockItemListToStockItemDTOList(items));
+		return ResponseEntity.ok(StockItemMapper.INSTANCE.mapStockItemListToStockItemDTOList(items));
 	}
 
 	private boolean verifyInvalidStockAmountValues(StockItemForm itemForm) {

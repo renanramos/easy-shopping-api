@@ -6,20 +6,16 @@
  */
 package br.com.renanrramos.easyshopping.model.dto;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import br.com.renanrramos.easyshopping.model.StockItem;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.ToString;
 
 /**
  * @author renan.ramos
  *
  */
-@Getter
-@Setter
+@Data
+@ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class StockItemDTO {
 
@@ -43,25 +39,5 @@ public class StockItemDTO {
 
 	public StockItemDTO() {
 		// Intentionally empty
-	}
-
-	public StockItemDTO(StockItem item) {
-		this.id = item.getId();
-		this.productId = item.getProductId();
-		this.maxAmount = item.getMaxAmount();
-		this.minAmount = item.getMinAmount();
-		this.currentAmount = item.getCurrentAmount();
-		this.stockId = item.getStock().getId();
-		this.stockName = item.getStock().getName();
-		this.productName = item.getProductName();
-		this.storeId = item.getStock().getStore().getId();
-	}
-
-	public static List<StockItemDTO> converterStockItemListToStockItemDTOList(List<StockItem> items) {
-		return items.stream().map(StockItemDTO::new).collect(Collectors.toList());
-	}
-
-	public static StockItemDTO converterStockItemToStockItemDTO(StockItem item) {
-		return new StockItemDTO(item);
 	}
 }

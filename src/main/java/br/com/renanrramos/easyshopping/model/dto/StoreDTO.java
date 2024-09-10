@@ -6,20 +6,16 @@
  */
 package br.com.renanrramos.easyshopping.model.dto;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import br.com.renanrramos.easyshopping.model.Store;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.ToString;
 
 /**
  * @author renan.ramos
  *
  */
-@Getter
-@Setter
+@Data
+@ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class StoreDTO {
 
@@ -37,21 +33,5 @@ public class StoreDTO {
 
 	public StoreDTO() {
 		// Intentionally empty
-	}
-
-	public StoreDTO(Store store) {
-		this.id = store.getId();
-		this.name = store.getName();
-		this.registeredNumber = store.getRegisteredNumber();
-		this.corporateName = store.getCorporateName();
-	}
-
-	public static List<StoreDTO> converterStoreListToStoreDTOList(List<Store> stores) {
-		return stores.stream().map(StoreDTO::new).collect(Collectors.toList());
-
-	}
-
-	public static StoreDTO converterStoreToStoreDTO(Store store) {
-		return new StoreDTO(store);
 	}
 }
