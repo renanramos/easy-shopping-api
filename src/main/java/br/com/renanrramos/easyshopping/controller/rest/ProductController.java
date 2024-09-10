@@ -16,6 +16,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import br.com.renanrramos.easyshopping.interfaceadapter.mapper.ProductImageMapper;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.ProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -349,7 +350,7 @@ public class ProductController {
 		}
 
 		List<ProductImage> productImages = productImageService.findProductImageByProductId(page, productId);
-		return ResponseEntity.ok(ProductImageDTO.converterProducImageListToProductImageDTOList(productImages));
+		return ResponseEntity.ok(ProductImageMapper.INSTANCE.mapProductImageListToProductImageDTOList(productImages));
 	}
 
 	@ResponseBody
