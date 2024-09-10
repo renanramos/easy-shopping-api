@@ -2,12 +2,14 @@ package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
 import br.com.renanrramos.easyshopping.model.Address;
 import br.com.renanrramos.easyshopping.model.dto.AddressDTO;
+import br.com.renanrramos.easyshopping.model.form.AddressForm;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.instancio.Select.field;
 
 class AddressMapperTest {
 
@@ -30,6 +32,46 @@ class AddressMapperTest {
         final List<AddressDTO> addressDTOS = AddressMapper.INSTANCE.mapAddressListTOAddressDTOList(addressList);
 
         assertAddressDTOList(addressDTOS, addressList);
+    }
+
+    @Test
+    void mapAddressFormToAddress_withAddressForm_shouldMapToAddress() {
+        final AddressForm addressForm = Instancio.of(AddressForm.class).create();
+
+        final Address address = AddressMapper.INSTANCE.mapAddressFormToAddress(addressForm);
+
+        assertAddress(address, addressForm);
+    }
+
+    @Test
+    void mapAddressFormToUpdateAddress_whenAddressFormUpdateOperation_shouldMapToAddressOnlyDifferentFields() {
+        // Arrange
+        final AddressForm addressFormUpdate = Instancio.of(AddressForm.class)
+                .create();
+        final Address address = AddressMapper.INSTANCE.mapAddressFormToAddress(addressFormUpdate);
+        addressFormUpdate.setCep("37536152");
+        addressFormUpdate.setNumber(387L);
+
+        // Act
+        AddressMapper.INSTANCE
+                .mapAddressFormToUpdateAddress(address, addressFormUpdate);
+
+        // Assert
+        assertThat(address).isNotNull();
+        assertThat(address.getState()).isEqualTo(addressFormUpdate.getState());
+        assertThat(address.getCep()).isEqualTo(addressFormUpdate.getCep());
+        assertThat(address.getNumber()).isEqualTo(addressFormUpdate.getNumber());
+    }
+
+    private void assertAddress(final Address address, final AddressForm addressForm) {
+        assertThat(address).isNotNull();
+        assertThat(address.getCity()).isEqualTo(addressForm.getCity());
+        assertThat(address.getState()).isEqualTo(addressForm.getState());
+        assertThat(address.getNumber()).isEqualTo(addressForm.getNumber());
+        assertThat(address.getDistrict()).isEqualTo(addressForm.getDistrict());
+        assertThat(address.getCep()).isEqualTo(addressForm.getCep());
+        assertThat(address.getStreetName()).isEqualTo(addressForm.getStreetName());
+        assertThat(address.getState()).isEqualTo(addressForm.getState());
     }
 
     private void assertAddressDTOList(final List<AddressDTO> addressDTOS, final List<Address> addressList) {

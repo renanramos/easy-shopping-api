@@ -68,7 +68,7 @@ public class AddressController {
 	@RolesAllowed({"CUSTOMER", "easy-shopping-user", "app-customer"})
 	public ResponseEntity<AddressDTO> saveAddress(@Valid @RequestBody AddressForm addressForm,
 			UriComponentsBuilder uriBuilder) {
-		Address address = AddressForm.converterAddressFormToAddress(addressForm);
+		Address address = AddressMapper.INSTANCE.mapAddressFormToAddress(addressForm);
 		address.setCustomerId(authenticationServiceImpl.getName());
 		address = addressService.save(address);
 		uri = uriBuilder.path("/addresses/{id}").buildAndExpand(address.getId()).encode().toUri();
@@ -126,7 +126,9 @@ public class AddressController {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.ADDRESS_NOT_FOUND);
 		}
 
-		Address address = AddressForm.converterAddressFormUpdateToAddress(addressForm, currentAddress.get());
+		Address address = currentAddress.get();
+
+		AddressMapper.INSTANCE.mapAddressFormToUpdateAddress(currentAddress.get(), addressForm);
 		address.setId(addressId);
 		address.setCustomerId(authenticationServiceImpl.getName());
 		address = addressService.save(address);
