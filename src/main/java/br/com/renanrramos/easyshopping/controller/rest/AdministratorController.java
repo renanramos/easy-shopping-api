@@ -64,7 +64,7 @@ public class AdministratorController {
 	@Transactional
 	@ApiOperation(value = "Save a new administrator")
 	public ResponseEntity<AdministratorDTO> saveAdministrator(@Valid @RequestBody AdministratorForm administratorForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
-		Administrator administrator = AdministratorForm.converterAdministratorFormToAdministrator(administratorForm);
+		Administrator administrator = AdministratorMapper.INSTANCE.mapAdministratorFormToAdministrator(administratorForm);
 
 		administrator.setProfile(Profile.ADMINISTRATOR);
 
@@ -130,8 +130,8 @@ public class AdministratorController {
 		if (!administratorOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.ACCOUNT_NOT_FOUND);
 		}
-		
-		Administrator administrator = AdministratorForm.converterAdministratorFormUpdateToAmdinistrator(administratorForm, administratorOptional.get());
+		Administrator administrator = administratorOptional.get();
+		AdministratorMapper.INSTANCE.mapAdministratorFormToUpdateAdministrator(administrator, administratorForm);
 		administrator.setId(administratorId);
 		AdministratorDTO administratorUpdated = AdministratorMapper.INSTANCE.mapAdministratorToAdministratorDTO(administratorService.save(administrator));
 		uri = uriBuilder.path("/admin/{id}").buildAndExpand(administrator.getId()).encode().toUri();

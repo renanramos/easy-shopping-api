@@ -2,15 +2,15 @@ package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
 import br.com.renanrramos.easyshopping.model.Administrator;
 import br.com.renanrramos.easyshopping.model.dto.AdministratorDTO;
-import org.mapstruct.Mapper;
-import org.mapstruct.Named;
-import org.mapstruct.ReportingPolicy;
+import br.com.renanrramos.easyshopping.model.form.AdministratorForm;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface AdministratorMapper {
 
     AdministratorMapper INSTANCE = Mappers.getMapper(AdministratorMapper.class);
@@ -24,4 +24,12 @@ public interface AdministratorMapper {
                 .stream().map(AdministratorMapper.INSTANCE::mapAdministratorToAdministratorDTO)
                 .collect(Collectors.toList());
     }
+
+    @Named("mapAdministratorFormToAdministrator")
+    @Mapping(target = "profile", constant = "ADMINISTRATOR")
+    Administrator mapAdministratorFormToAdministrator(final AdministratorForm administratorForm);
+
+    @Named("mapAdministratorFormToUpdateAdministrator")
+    void mapAdministratorFormToUpdateAdministrator(@MappingTarget Administrator administrator,
+                                                   final AdministratorForm administratorFormUpdate);
 }
