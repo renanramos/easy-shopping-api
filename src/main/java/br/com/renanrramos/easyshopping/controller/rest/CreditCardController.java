@@ -69,7 +69,7 @@ public class CreditCardController {
 	public ResponseEntity<CreditCardDTO> saveCreditCard(@Valid @RequestBody CreditCardForm creditCardForm,
 			UriComponentsBuilder uriBuilder) {
 
-		CreditCard creditCard = CreditCardForm.converterCreditCardFormToCreditCard(creditCardForm);
+		CreditCard creditCard = CreditCardMapper.INSTANCE.mapCreditCardFormToCreditCard(creditCardForm);
 		creditCard.setCustomerId(authenticationServiceImpl.getName());
 		creditCard = creditCardService.save(creditCard);
 		uri = uriBuilder.path("/credit-cards/{id}").buildAndExpand(creditCard.getId()).encode().toUri();
@@ -123,8 +123,8 @@ public class CreditCardController {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.CREDIT_CARD_NOT_FOUND);
 		}
 
-		CreditCard creditCard = CreditCardForm.converterCreditCardFormUpdateToCreditCard(creditCardForm,
-				currentCreditCard.get());
+		CreditCard creditCard = currentCreditCard.get();
+		CreditCardMapper.INSTANCE.mapCreditCardFormToUpdateCreditCard(creditCard, creditCardForm);
 		creditCard.setId(creditCardId);
 		creditCard.setCustomerId(authenticationServiceImpl.getName());
 		creditCard = creditCardService.save(creditCard);

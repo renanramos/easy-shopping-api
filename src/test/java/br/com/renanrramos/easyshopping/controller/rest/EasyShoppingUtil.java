@@ -19,7 +19,6 @@ import br.com.renanrramos.easyshopping.model.Stock;
 import br.com.renanrramos.easyshopping.model.StockItem;
 import br.com.renanrramos.easyshopping.model.Store;
 import br.com.renanrramos.easyshopping.model.User;
-import br.com.renanrramos.easyshopping.model.builder.CreditCardBuilder;
 import br.com.renanrramos.easyshopping.model.builder.OrderBuilder;
 import br.com.renanrramos.easyshopping.model.builder.OrderItemBuilder;
 import br.com.renanrramos.easyshopping.model.builder.ProductBuilder;
@@ -30,6 +29,9 @@ import br.com.renanrramos.easyshopping.model.builder.StoreBuilder;
 import br.com.renanrramos.easyshopping.model.form.CreditCardForm;
 import br.com.renanrramos.easyshopping.model.form.OrderItemForm;
 import br.com.renanrramos.easyshopping.model.form.StockItemForm;
+import org.instancio.Instancio;
+
+import static org.instancio.Select.field;
 
 /**
  * @author renan.ramos
@@ -72,8 +74,12 @@ public class EasyShoppingUtil {
 	}
 
 	public static CreditCard getCreditCardInstance(Long id) {
-		return CreditCardBuilder.builder().withId(id).withCode(123).withCreditCardNumber("1234 1234 1234 1234")
-				.withOwnerName("OWNER NAME").build();
+		final CreditCard creditCard = new CreditCard();
+		creditCard.setId(id);
+		creditCard.setCode(123);
+		creditCard.setCreditCardNumber("1234 1234 1234 1234");
+		creditCard.setOwnerName("OWNER NAME");
+		return creditCard;
 	}
 
 	public static CreditCardForm getCreditCardForm() {

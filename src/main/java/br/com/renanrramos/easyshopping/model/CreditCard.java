@@ -22,16 +22,18 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import br.com.renanrramos.easyshopping.constants.messages.ValidationMessagesConstants;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.ToString;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * @author renan.ramos
  *
  */
-@Getter
-@Setter
+@Data
+@ToString
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class CreditCard implements Serializable{
@@ -64,11 +66,4 @@ public class CreditCard implements Serializable{
 	public CreditCard() {
 		// Intentionally empty
 	}
-
-	@Override
-	public String toString() {
-		return "CreditCard [creditCardNumber=" + creditCardNumber + ", ownerName=" + ownerName + ", validDate="
-				+ validDate + ", code=" + code + ", customer=" + customerId + "]";
-	}
-
 }
