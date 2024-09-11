@@ -22,6 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Optional;
 
 import org.hamcrest.core.IsNot;
@@ -485,7 +486,7 @@ public class StockItemControllerTest {
 	public void getStockItems_withValidParamters_shouldReturnListOfStockItems() throws Exception {
 		
 		when(stockService.findById(anyLong())).thenReturn(Optional.of(EasyShoppingUtil.getStockInstance(1L)));
-		when(itemService.findStockItemByStockId(eq(page), anyLong(), anyString())).thenReturn(Arrays.asList(EasyShoppingUtil.getStockItemInstance()));
+		when(itemService.findStockItemByStockId(eq(page), anyLong(), anyString())).thenReturn(Collections.singletonList(EasyShoppingUtil.getStockItemInstance()));
 
 		mockMvc.perform(get(BASE_URL).param("stockId", "1").param("name", "")).andExpect(status().isOk());
 

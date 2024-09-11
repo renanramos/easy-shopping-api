@@ -1,13 +1,16 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
+import br.com.renanrramos.easyshopping.enums.Profile;
 import br.com.renanrramos.easyshopping.model.Company;
 import br.com.renanrramos.easyshopping.model.dto.CompanyDTO;
+import br.com.renanrramos.easyshopping.model.form.CompanyForm;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.instancio.Select.field;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CompanyMapperTest {
@@ -29,6 +32,40 @@ class CompanyMapperTest {
         final List<CompanyDTO> companyDTOS = CompanyMapper.INSTANCE.mapCompanyListToCompanyDTOList(companyList);
 
         assertCompanyDTOList(companyDTOS, companyList);
+    }
+
+    @Test
+    void mapCompanyFormToCompany_withCompanyForm_shouldMapToCompany() {
+        final CompanyForm companyForm = Instancio.of(CompanyForm.class).create();
+
+        final Company company = CompanyMapper.INSTANCE.mapCompanyFormToCompany(companyForm);
+
+        assertCompany(company, companyForm);
+    }
+
+    @Test
+    void mapCompanyFormToUpdateCompany_whenCompanyFormUpdateOperation_shouldMapCompanyOnlyDifferentFields() {
+        // Arrange
+        final String companyEmail = "company@mail.com";
+        final CompanyForm companyForm = Instancio.of(CompanyForm.class)
+                .create();
+        Company company = CompanyMapper.INSTANCE.mapCompanyFormToCompany(companyForm);
+        company.setEmail(companyEmail);
+        companyForm.setEmail(null);
+        // Act
+        CompanyMapper.INSTANCE
+                .mapCompanyFormToUpdateCompany(company, companyForm);
+        // Assert
+        assertThat(company.getEmail()).isEqualTo(companyEmail);
+    }
+
+    private void assertCompany(final Company company, final CompanyForm companyForm) {
+        assertThat(company).isNotNull();
+        assertThat(company.getEmail()).isEqualTo(companyForm.getEmail());
+        assertThat(company.getName()).isEqualTo(companyForm.getName());
+        assertThat(company.getRegisteredNumber()).isEqualTo(companyForm.getRegisteredNumber());
+        assertThat(company.getPhone()).isEqualTo(companyForm.getPhone());
+        assertThat(company.getProfile()).isEqualTo(Profile.COMPANY);
     }
 
     private void assertCompanyDTOList(final List<CompanyDTO> companyDTOS, final List<Company> companyList) {

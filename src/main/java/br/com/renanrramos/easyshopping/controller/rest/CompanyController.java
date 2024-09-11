@@ -70,7 +70,7 @@ public class CompanyController {
 	@RolesAllowed({ "easy-shopping-admin", "easy-shopping-user" })
 	public ResponseEntity<CompanyDTO> saveCompany(@Valid @RequestBody CompanyForm companyForm,
 			UriComponentsBuilder uriBuilder) throws EasyShoppingException {
-		Company company = CompanyForm.converterCompanyFormToCompany(companyForm);
+		Company company = CompanyMapper.INSTANCE.mapCompanyFormToCompany(companyForm);
 
 		if (companyService.isRegisteredNumberInvalid(company.getRegisteredNumber())) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.CNPJ_ALREADY_EXIST);
@@ -135,7 +135,8 @@ public class CompanyController {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.ACCOUNT_NOT_FOUND);
 		}
 
-		Company company = CompanyForm.converterCompanyFormUpdateToCompany(companyForm, currentCompany.get());
+		Company company = currentCompany.get();
+		CompanyMapper.INSTANCE.mapCompanyFormToUpdateCompany(company, companyForm);
 
 		company.setId(currentCompany.get().getId());
 		company.setTokenId(companyId);

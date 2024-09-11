@@ -2,15 +2,15 @@ package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
 import br.com.renanrramos.easyshopping.model.Company;
 import br.com.renanrramos.easyshopping.model.dto.CompanyDTO;
-import org.mapstruct.Mapper;
-import org.mapstruct.Named;
-import org.mapstruct.ReportingPolicy;
+import br.com.renanrramos.easyshopping.model.form.CompanyForm;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface CompanyMapper {
 
     CompanyMapper INSTANCE = Mappers.getMapper(CompanyMapper.class);
@@ -24,4 +24,11 @@ public interface CompanyMapper {
                 .map(CompanyMapper.INSTANCE::mapCompanyToCompanyDTO)
                 .collect(Collectors.toList());
     }
+
+    @Named("mapCompanyFormToCompany")
+    @Mapping(target = "profile", constant = "COMPANY")
+    Company mapCompanyFormToCompany(final CompanyForm companyForm);
+
+    @Named("mapCompanyFormToUpdateCompany")
+    void mapCompanyFormToUpdateCompany(@MappingTarget Company company, CompanyForm companyForm);
 }
