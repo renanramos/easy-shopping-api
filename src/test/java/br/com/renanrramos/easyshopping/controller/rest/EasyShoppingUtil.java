@@ -19,7 +19,6 @@ import br.com.renanrramos.easyshopping.model.Stock;
 import br.com.renanrramos.easyshopping.model.StockItem;
 import br.com.renanrramos.easyshopping.model.Store;
 import br.com.renanrramos.easyshopping.model.User;
-import br.com.renanrramos.easyshopping.model.builder.OrderBuilder;
 import br.com.renanrramos.easyshopping.model.builder.OrderItemBuilder;
 import br.com.renanrramos.easyshopping.model.builder.ProductBuilder;
 import br.com.renanrramos.easyshopping.model.builder.PurchaseBuilder;
@@ -29,9 +28,6 @@ import br.com.renanrramos.easyshopping.model.builder.StoreBuilder;
 import br.com.renanrramos.easyshopping.model.form.CreditCardForm;
 import br.com.renanrramos.easyshopping.model.form.OrderItemForm;
 import br.com.renanrramos.easyshopping.model.form.StockItemForm;
-import org.instancio.Instancio;
-
-import static org.instancio.Select.field;
 
 /**
  * @author renan.ramos
@@ -101,7 +97,10 @@ public class EasyShoppingUtil {
 	}
 
 	public static Order getOrderInstance() {
-		return OrderBuilder.builder().withCustomerId("customerId").withOrderNumber("orderNumber").build();
+		final Order order = new Order();
+		order.setOrderNumber("orderNumber");
+		order.setCustomerId("customerId");
+		return order;
 	}
 
 	public static Product getProductInstance() {

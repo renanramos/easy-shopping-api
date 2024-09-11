@@ -2,6 +2,7 @@ package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
 import br.com.renanrramos.easyshopping.model.Order;
 import br.com.renanrramos.easyshopping.model.dto.OrderDTO;
+import br.com.renanrramos.easyshopping.model.form.OrderForm;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 
@@ -27,6 +28,38 @@ class OrderMapperTest {
         final List<OrderDTO> orderDTOS = OrderMapper.INSTANCE.mapOrderListToOrderDTOList(orders);
 
         assertOrderDTOList(orderDTOS, orders);
+    }
+
+    @Test
+    void mapOrderFormToOrder_withOrderForm_shouldMapToOrder() {
+        final OrderForm orderForm = Instancio.of(OrderForm.class).create();
+
+        final Order order = OrderMapper.INSTANCE.mapOrderFormToOrder(orderForm);
+
+        assertOrder(order, orderForm);
+    }
+
+    @Test
+    void mapOrderFormToUpdateOrder_whenOrderFormUpdateOperation_shouldMapToOrderOnlyDifferentFields() {
+        // Arrange
+        final OrderForm orderForm = Instancio.of(OrderForm.class)
+                .create();
+        final Order order = OrderMapper.INSTANCE.mapOrderFormToOrder(orderForm);
+        orderForm.setOrderNumber(null);
+        // Act
+        OrderMapper.INSTANCE.mapOrderFormToUpdateOrder(order, orderForm);
+        // Assert
+        assertThat(order).isNotNull();
+        assertThat(order.getCustomerId()).isEqualTo(orderForm.getCustomerId());
+        assertThat(order.getOrderNumber()).isNotNull();
+        assertThat(order.getId()).isEqualTo(orderForm.getId());
+    }
+
+    private void assertOrder(final Order order, final OrderForm orderForm) {
+        assertThat(order).isNotNull();
+        assertThat(order.getCustomerId()).isEqualTo(orderForm.getCustomerId());
+        assertThat(order.getOrderNumber()).isEqualTo(orderForm.getOrderNumber());
+        assertThat(order.getId()).isEqualTo(orderForm.getId());
     }
 
     private void assertOrderDTOList(final List<OrderDTO> orderDTOS, final List<Order> orders) {

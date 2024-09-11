@@ -8,15 +8,15 @@ package br.com.renanrramos.easyshopping.model.form;
 
 import javax.validation.constraints.NotBlank;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.ToString;
 
 /**
  * @author renan.ramos
  *
  */
-@Getter
-@Setter
+@Data
+@ToString
 public class LoginForm {
 
 	@NotBlank
@@ -32,10 +32,5 @@ public class LoginForm {
 	public LoginForm(String email, String password) {
 		this.email = email;
 		this.password = password;
-	}
-
-	@Override
-	public String toString() {
-		return "LoginForm [email=" + email + ", password=" + password + "]";
 	}
 }

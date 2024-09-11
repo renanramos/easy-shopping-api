@@ -63,7 +63,7 @@ public class OrderController {
 	@RolesAllowed("easy-shopping-user")
 	public ResponseEntity<OrderDTO> saveOrder(@Valid @RequestBody OrderForm orderForm,
 			UriComponentsBuilder uriBuilder) {
-		Order order = OrderForm.converterOrderFormToOrder(orderForm);
+		Order order = OrderMapper.INSTANCE.mapOrderFormToOrder(orderForm);
 		order.setCustomerId(authenticationServiceImpl.getName());
 		order = orderService.save(order);
 		uri = uriBuilder.path("/orders/{id}").buildAndExpand(order.getId()).encode().toUri();
