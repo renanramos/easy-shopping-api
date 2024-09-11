@@ -71,7 +71,7 @@ public class CustomerController {
 	public ResponseEntity<CustomerDTO> saveCustomer(@Valid @RequestBody CustomerForm customerForm,
 			UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 
-		Customer customer = CustomerForm.converterCustomerFormToCustomer(customerForm);
+		Customer customer = CustomerMapper.INSTANCE.mapCustomerFormToCustomer(customerForm);
 
 		Optional<List<Customer>> customerByCpf = customerService.findCustomerByCpf(customer.getCpf());
 
@@ -137,18 +137,19 @@ public class CustomerController {
 			throw new EasyShoppingException(ExceptionMessagesConstants.CUSTOMER_NOT_FOUND);
 		}
 
-		Customer customerFormConverted = CustomerForm.converterCustomerFormUpdateToCustomer(customerForm, currentCustomer.get());
+		Customer customer = currentCustomer.get();
+		CustomerMapper.INSTANCE.mapCustomerFormToUpdateCustomer(customer, customerForm);
 
-		Optional<List<Customer>> customerByCpf = customerService.findCustomerByCpf(customerFormConverted.getCpf());
+		Optional<List<Customer>> customerByCpf = customerService.findCustomerByCpf(customer.getCpf());
 
 		if (customerByCpf.isPresent() && customerByCpf.get().size() > 1) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.CPF_ALREADY_EXIST);
 		}
 
-		customerFormConverted.setId(currentCustomer.get().getId());
-		customerFormConverted.setTokenId(customerId);
-		customerFormConverted.setSync(true);
-		CustomerDTO customerUpdatedDTO = CustomerMapper.INSTANCE.mapCustomerToCustomerDTO(customerService.update(customerFormConverted));
+		customer.setId(currentCustomer.get().getId());
+		customer.setTokenId(customerId);
+		customer.setSync(true);
+		CustomerDTO customerUpdatedDTO = CustomerMapper.INSTANCE.mapCustomerToCustomerDTO(customerService.update(customer));
 		uri = uriBuilder.path("/customers/{id}").buildAndExpand(customerId).encode().toUri();
 		return ResponseEntity.accepted().location(uri).body(customerUpdatedDTO);
 	}

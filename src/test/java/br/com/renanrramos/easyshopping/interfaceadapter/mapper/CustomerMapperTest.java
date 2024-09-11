@@ -2,6 +2,7 @@ package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
 import br.com.renanrramos.easyshopping.model.Customer;
 import br.com.renanrramos.easyshopping.model.dto.CustomerDTO;
+import br.com.renanrramos.easyshopping.model.form.CustomerForm;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 
@@ -30,6 +31,43 @@ class CustomerMapperTest {
         final List<CustomerDTO> customerDTOS = CustomerMapper.INSTANCE.mapCustomerListToCustomerDTOList(customerList);
 
         assertCustomerDTOList(customerDTOS, customerList);
+    }
+
+    @Test
+    void mapCustomerFormToCustomer_withCustomerForm_shouldMapToCustomer() {
+        final CustomerForm customerForm = Instancio.of(CustomerForm.class)
+                .create();
+
+        final Customer customer = CustomerMapper.INSTANCE.mapCustomerFormToCustomer(customerForm);
+
+        assertCustomer(customer, customerForm);
+    }
+
+    @Test
+    void mapCustomerFormToUpdateCustomer_whenCustomerFormUpdateOperation_shouldMapToCustomerOnlyDifferentFields() {
+        // Arrange
+        final CustomerForm customerForm = Instancio.of(CustomerForm.class)
+                .create();
+        final Customer customer = CustomerMapper.INSTANCE.mapCustomerFormToCustomer(customerForm);
+        final String originalName = customer.getName();
+        customerForm.setName(null);
+        customerForm.setCpf("123.456.789-10");
+        customerForm.setEmail("customer@mail.com");
+        // Act
+        CustomerMapper.INSTANCE.mapCustomerFormToUpdateCustomer(customer, customerForm);
+        // Assert
+        assertThat(customer).isNotNull();
+        assertThat(customer.getEmail()).isEqualTo(customerForm.getEmail());
+        assertThat(customer.getCpf()).isEqualTo(customerForm.getCpf());
+        assertThat(customer.getName()).isNotNull().isEqualTo(originalName);
+    }
+
+    private void assertCustomer(final Customer customer, final CustomerForm customerForm) {
+        assertThat(customer).isNotNull();
+        assertThat(customer.getCpf()).isEqualTo(customerForm.getCpf());
+        assertThat(customer.getProfile()).isEqualTo(customerForm.getProfile());
+        assertThat(customer.getName()).isEqualTo(customerForm.getName());
+        assertThat(customer.getEmail()).isEqualTo(customerForm.getEmail());
     }
 
     private void assertCustomerDTOList(final List<CustomerDTO> customerDTOS, final List<Customer> customerList) {
