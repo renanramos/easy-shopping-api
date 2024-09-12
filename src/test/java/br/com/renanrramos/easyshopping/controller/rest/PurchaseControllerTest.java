@@ -120,8 +120,9 @@ public class PurchaseControllerTest {
 
 	@Test(expected = Exception.class)
 	public void savePurchase_withNullOrderId_shouldThrowException() throws JsonProcessingException, Exception {
+		final PurchaseForm productForm = getPurchaseForm();
 		mockMvc.perform(
-				post(BASE_URL).content(objecMapper.writeValueAsString(new PurchaseForm("customerId", null, 1L, 1L)))
+				post(BASE_URL).content(objecMapper.writeValueAsString(productForm))
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON));
 		verify(purchaseService, never()).save(any(Purchase.class));
 	}
@@ -130,7 +131,7 @@ public class PurchaseControllerTest {
 	public void savePurchase_whenOrderNotFound_shouldThrowException() throws JsonProcessingException, Exception {
 		when(orderService.findById(anyLong())).thenReturn(Optional.empty());
 
-		mockMvc.perform(post(BASE_URL).content(objecMapper.writeValueAsString(new PurchaseForm("customerId", 1L, 1L, 1L)))
+		mockMvc.perform(post(BASE_URL).content(objecMapper.writeValueAsString(getPurchaseForm()))
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON));
 
 		verify(orderService, times(1)).findById(anyLong());
@@ -144,7 +145,7 @@ public class PurchaseControllerTest {
 		when(orderService.findById(anyLong())).thenReturn(Optional.of(order));
 
 		mockMvc.perform(
-				post(BASE_URL).content(objecMapper.writeValueAsString(new PurchaseForm("customerId", 1L, null, 1L)))
+				post(BASE_URL).content(objecMapper.writeValueAsString(getPurchaseForm()))
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON));
 
 		verify(orderService, times(1)).findById(anyLong());
@@ -159,7 +160,7 @@ public class PurchaseControllerTest {
 		when(addressService.findById(anyLong())).thenReturn(Optional.empty());
 
 		mockMvc.perform(
-				post(BASE_URL).content(objecMapper.writeValueAsString(new PurchaseForm("customerId", 1L, 1L, 1L)))
+				post(BASE_URL).content(objecMapper.writeValueAsString(getPurchaseForm()))
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON));
 
 		verify(orderService, times(1)).findById(anyLong());
@@ -174,7 +175,7 @@ public class PurchaseControllerTest {
 		when(addressService.findById(anyLong())).thenReturn(Optional.of(address));
 
 		mockMvc.perform(
-				post(BASE_URL).content(objecMapper.writeValueAsString(new PurchaseForm("customerId", 1L, 1L, null)))
+				post(BASE_URL).content(objecMapper.writeValueAsString(getPurchaseForm()))
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON));
 
 		verify(orderService, times(1)).findById(anyLong());
@@ -190,7 +191,7 @@ public class PurchaseControllerTest {
 		when(creditCardService.findById(anyLong())).thenReturn(Optional.empty());
 
 		mockMvc.perform(
-				post(BASE_URL).content(objecMapper.writeValueAsString(new PurchaseForm("customerId", 1L, 1L, 1L)))
+				post(BASE_URL).content(objecMapper.writeValueAsString(getPurchaseForm()))
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON));
 
 		verify(orderService, times(1)).findById(anyLong());
@@ -207,7 +208,7 @@ public class PurchaseControllerTest {
 		when(purchaseService.save(any(Purchase.class))).thenReturn(purchase);
 
 		mockMvc.perform(
-				post(BASE_URL).content(objecMapper.writeValueAsString(new PurchaseForm("customerId", 1L, 1L, 1L)))
+				post(BASE_URL).content(objecMapper.writeValueAsString(getPurchaseForm()))
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
 		.andExpect(status().isCreated())
 		.andExpect(jsonPath("$.id", is(1))).andExpect(jsonPath("$.customerId", is("customerId")));
@@ -233,7 +234,7 @@ public class PurchaseControllerTest {
 		when(stockItemService.update(any(StockItem.class))).thenReturn(EasyShoppingUtil.getStockItemInstance());
 
 		mockMvc.perform(
-				post(BASE_URL).content(objecMapper.writeValueAsString(new PurchaseForm("customerId", 1L, 1L, 1L)))
+				post(BASE_URL).content(objecMapper.writeValueAsString(getPurchaseForm()))
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
 		.andExpect(status().isCreated())
 		.andExpect(jsonPath("$.id", is(1))).andExpect(jsonPath("$.customerId", is("customerId")));
@@ -259,7 +260,7 @@ public class PurchaseControllerTest {
 		when(stockItemService.update(any(StockItem.class))).thenReturn(EasyShoppingUtil.getStockItemInstance());
 
 		mockMvc.perform(
-				post(BASE_URL).content(objecMapper.writeValueAsString(new PurchaseForm("customerId", 1L, 1L, 1L)))
+				post(BASE_URL).content(objecMapper.writeValueAsString(getPurchaseForm()))
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
 		.andExpect(status().isCreated())
 		.andExpect(jsonPath("$.id", is(1))).andExpect(jsonPath("$.customerId", is("customerId")));
@@ -277,5 +278,13 @@ public class PurchaseControllerTest {
 		mockMvc.perform(get(BASE_URL + "/statistics"));
 
 		verify(orderItemService, times(1)).orderItemStatistic();
+	}
+
+	private static PurchaseForm getPurchaseForm() {
+		final PurchaseForm productForm = new PurchaseForm();
+		productForm.setOrderId(1L);
+		productForm.setAddressId(1L);
+		productForm.setCreditCardId(1L);
+		return productForm;
 	}
 }

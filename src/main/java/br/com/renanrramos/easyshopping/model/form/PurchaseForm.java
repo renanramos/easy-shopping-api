@@ -6,16 +6,16 @@
  */
 package br.com.renanrramos.easyshopping.model.form;
 
+import lombok.Data;
+import lombok.ToString;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * @author renan.ramos
  *
  */
-@Getter
-@Setter
+@Data
+@ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class PurchaseForm {
 
@@ -27,11 +27,5 @@ public class PurchaseForm {
 
 	public PurchaseForm() {
 		// Intentionally empty
-	}
-
-	public PurchaseForm(String customerId, Long orderId, Long addressId, Long creditCardId) {
-		this.orderId = orderId;
-		this.addressId = addressId;
-		this.creditCardId = creditCardId;
 	}
 }
