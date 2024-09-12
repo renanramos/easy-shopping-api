@@ -69,7 +69,7 @@ public class ProductCategoryController {
 	@RolesAllowed("easy-shopping-admin")
 	public ResponseEntity<ProductCategoryDTO> saveProductCategory(@Valid @RequestBody ProductCategoryForm productCategoryForm,
 			UriComponentsBuilder uriBuilder) {
-		ProductCategory productCategory = ProductCategoryForm.converterProductCategoryFormToProductCategory(productCategoryForm);
+		ProductCategory productCategory = ProductCategoryMapper.INSTANCE.mapProductCategoryFormToProductCategory(productCategoryForm);
 		productCategory = productCategoryService.save(productCategory);
 
 		if (productCategory.getId() == null) {
@@ -129,8 +129,10 @@ public class ProductCategoryController {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_NOT_FOUND);
 		}
 
-		ProductCategory productCategory = ProductCategoryForm
-				.converterProductCategoryFormUpdateToProductCategory(productCategoryForm, currentProductCategory.get());
+
+		ProductCategory productCategory = currentProductCategory.get();
+		ProductCategoryMapper.INSTANCE
+				.mapProductCategoryFormToUpdateProductCategory(productCategory, productCategoryForm);
 		productCategory.setId(productCategoryId);
 		ProductCategoryDTO productCategoryDTO = ProductCategoryMapper.INSTANCE
 						.mapProductCategoryToProductCategoryDTO(productCategoryService.update(productCategory));

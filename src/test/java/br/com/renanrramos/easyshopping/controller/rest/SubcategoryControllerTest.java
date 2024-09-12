@@ -48,7 +48,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.renanrramos.easyshopping.model.ProductCategory;
 import br.com.renanrramos.easyshopping.model.Subcategory;
-import br.com.renanrramos.easyshopping.model.builder.ProductCategoryBuilder;
 import br.com.renanrramos.easyshopping.model.builder.SubcategoryBuilder;
 import br.com.renanrramos.easyshopping.model.form.SubcategoryForm;
 import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
@@ -322,6 +321,9 @@ public class SubcategoryControllerTest {
 	}
 
 	private ProductCategory getProductCategoryInstance() {
-		return ProductCategoryBuilder.builder().withId(1L).withName("productCategory").build();
+		final ProductCategory productCategory = new ProductCategory();
+		productCategory.setId(1L);
+		productCategory.setName("productCategory");
+		return productCategory;
 	}
 }

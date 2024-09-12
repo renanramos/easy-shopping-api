@@ -2,15 +2,15 @@ package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
 import br.com.renanrramos.easyshopping.model.ProductCategory;
 import br.com.renanrramos.easyshopping.model.dto.ProductCategoryDTO;
-import org.mapstruct.Mapper;
-import org.mapstruct.Named;
-import org.mapstruct.ReportingPolicy;
+import br.com.renanrramos.easyshopping.model.form.ProductCategoryForm;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface ProductCategoryMapper {
 
     ProductCategoryMapper INSTANCE = Mappers.getMapper(ProductCategoryMapper.class);
@@ -26,4 +26,11 @@ public interface ProductCategoryMapper {
                 .map(ProductCategoryMapper.INSTANCE::mapProductCategoryToProductCategoryDTO)
                 .collect(Collectors.toList());
     }
+
+    @Named("mapProductCategoryFormToProductCategory")
+    ProductCategory mapProductCategoryFormToProductCategory(final ProductCategoryForm productCategoryForm);
+
+    @Named("mapProductCategoryFormToUpdateProductCategory")
+    void mapProductCategoryFormToUpdateProductCategory(@MappingTarget ProductCategory productCategory,
+                                                       final ProductCategoryForm productCategoryForm);
 }

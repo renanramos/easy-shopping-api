@@ -3,6 +3,7 @@ package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 import br.com.renanrramos.easyshopping.model.Product;
 import br.com.renanrramos.easyshopping.model.ProductCategory;
 import br.com.renanrramos.easyshopping.model.dto.ProductCategoryDTO;
+import br.com.renanrramos.easyshopping.model.form.ProductCategoryForm;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 
@@ -40,6 +41,37 @@ class ProductCategoryMapperTest {
                 .mapProductCategoryListToProductCategoryDTOList(productCategories);
 
         assertProductCategoryDTOList(productCategoryDTOS, productCategories);
+    }
+
+    @Test
+    void mapProductCategoryFormToProductCategory_withProductCategoryForm_shouldMapToProductCategory() {
+        final ProductCategoryForm productCategoryForm = Instancio.of(ProductCategoryForm.class).create();
+
+        final ProductCategory productCategory = ProductCategoryMapper.INSTANCE
+                .mapProductCategoryFormToProductCategory(productCategoryForm);
+
+        assertProductCategory(productCategory, productCategoryForm);
+    }
+
+    @Test
+    void mapProductCategoryFormToUpdateProductCategory_whenProductCategoryFormUpdateOperation_shouldMapToProductCategoryOnlyDifferentFields() {
+        // Arrange
+        final ProductCategoryForm productCategoryForm = Instancio.of(ProductCategoryForm.class).create();
+        productCategoryForm.setName(null);
+        final String productCategoryName = "productCategoryName";
+        final ProductCategory productCategory = new ProductCategory();
+        productCategory.setName(productCategoryName);
+        // Act
+        ProductCategoryMapper.INSTANCE.mapProductCategoryFormToUpdateProductCategory(productCategory, productCategoryForm);
+        // Assert
+        assertThat(productCategory.getName()).isNotNull();
+        assertThat(productCategory.getName()).isEqualTo(productCategoryName);
+    }
+
+    private void assertProductCategory(final ProductCategory productCategory,
+                                       final ProductCategoryForm productCategoryForm) {
+        assertThat(productCategory).isNotNull();
+        assertThat(productCategory.getName()).isEqualTo(productCategoryForm.getName());
     }
 
     private void assertProductCategoryDTO(final ProductCategoryDTO productCategoryDTO,

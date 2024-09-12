@@ -46,7 +46,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.renanrramos.easyshopping.model.ProductCategory;
-import br.com.renanrramos.easyshopping.model.builder.ProductCategoryBuilder;
 import br.com.renanrramos.easyshopping.model.form.ProductCategoryForm;
 import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
 import br.com.renanrramos.easyshopping.service.impl.ProductCategoryService;
@@ -239,7 +238,10 @@ public class ProductCategoryControllerTest {
 	}
 
 	private ProductCategory getProductCategoryInstance(Long id) {
-		return ProductCategoryBuilder.builder().withId(id).withName("name").build();
+		final ProductCategory productCategory = new ProductCategory();
+		productCategory.setId(id);
+		productCategory.setName("name");
+		return productCategory;
 	}
 
 	private ProductCategoryForm getProductCategoryForm() {
