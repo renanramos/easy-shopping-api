@@ -19,7 +19,6 @@ import br.com.renanrramos.easyshopping.model.Stock;
 import br.com.renanrramos.easyshopping.model.StockItem;
 import br.com.renanrramos.easyshopping.model.Store;
 import br.com.renanrramos.easyshopping.model.User;
-import br.com.renanrramos.easyshopping.model.builder.OrderItemBuilder;
 import br.com.renanrramos.easyshopping.model.builder.ProductBuilder;
 import br.com.renanrramos.easyshopping.model.builder.PurchaseBuilder;
 import br.com.renanrramos.easyshopping.model.builder.StockBuilder;
@@ -88,8 +87,13 @@ public class EasyShoppingUtil {
 	}
 
 	public static OrderItem getOrderItemInstance() {
-		return OrderItemBuilder.builder().withAmount(2).withPrice(20.0).withProductId(1L).withTotal(40.0)
-				.withOrder(getOrderInstance()).build();
+		final OrderItem orderItem = new OrderItem();
+		orderItem.setAmount(2);
+		orderItem.setPrice(20.0);
+		orderItem.setProductId(2L);
+		orderItem.setTotal(40.0);
+		orderItem.setOrder(getOrderInstance());
+		return orderItem;
 	}
 
 	public static OrderItemForm getOrderItemFormInstance() {
