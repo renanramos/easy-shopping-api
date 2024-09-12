@@ -6,18 +6,16 @@
  */
 package br.com.renanrramos.easyshopping.model.form;
 
-import br.com.renanrramos.easyshopping.model.ProductImage;
-import br.com.renanrramos.easyshopping.model.builder.ProductImageBuilder;
+import lombok.Data;
+import lombok.ToString;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * @author renan.ramos
  *
  */
-@Getter
-@Setter
+@Data
+@ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class ProductImageForm {
 
@@ -32,20 +30,4 @@ public class ProductImageForm {
 	public ProductImageForm() {
 		// Intentionally empty
 	}
-
-	public ProductImageForm(String description, Long productId, boolean isCoverImage, byte[] picture) {
-		this.description = description;
-		this.productId = productId;
-		this.isCoverImage = isCoverImage;
-		this.picture = picture;
-	}
-
-	public static ProductImage convertProductImageFormToProductImate(ProductImageForm productImageForm) {
-		return ProductImageBuilder.builder()
-				.withDescription(productImageForm.getDescription())
-				.withCoverImage(productImageForm.isCoverImage())
-				.withPicture(productImageForm.getPicture())
-				.build();
-	}
-	
 }

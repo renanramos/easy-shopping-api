@@ -2,6 +2,7 @@ package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
 import br.com.renanrramos.easyshopping.model.ProductImage;
 import br.com.renanrramos.easyshopping.model.dto.ProductImageDTO;
+import br.com.renanrramos.easyshopping.model.form.ProductImageForm;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -27,4 +28,8 @@ public interface ProductImageMapper {
                 .map(ProductImageMapper.INSTANCE::mapProductImageToProductImageDTO)
                 .collect(Collectors.toList());
     }
+
+    @Named("mapProductImageFormToProductImage")
+    @Mapping(target = "product.id", source = "productId")
+    ProductImage mapProductImageFormToProductImage(final ProductImageForm productImageForm);
 }

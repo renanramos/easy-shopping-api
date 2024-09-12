@@ -324,7 +324,7 @@ public class ProductController {
 		Product product = productOptional.get();
 		product.setPublished(false);
 		
-		ProductImage productImage = ProductImageForm.convertProductImageFormToProductImate(productImageForm);
+		ProductImage productImage = ProductImageMapper.INSTANCE.mapProductImageFormToProductImage(productImageForm);
 		productImage.setProduct(product);
 
 		productImage = productImageService.save(productImage);

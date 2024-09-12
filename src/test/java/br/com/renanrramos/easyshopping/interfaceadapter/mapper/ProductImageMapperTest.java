@@ -3,6 +3,7 @@ package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
 import br.com.renanrramos.easyshopping.model.ProductImage;
 import br.com.renanrramos.easyshopping.model.dto.ProductImageDTO;
+import br.com.renanrramos.easyshopping.model.form.ProductImageForm;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 
@@ -34,6 +35,22 @@ class ProductImageMapperTest {
 
         assertThat(productImageDTOList).isNotNull();
         assertProductImageDTOList(productImageDTOList, productImageList);
+    }
+
+    @Test
+    void mapProductImageFormToProductImage_withProductImage_shouldMapToProductImage() {
+        final ProductImageForm productImageForm = Instancio.of(ProductImageForm.class).create();
+
+        final ProductImage productImage = ProductImageMapper.INSTANCE.mapProductImageFormToProductImage(productImageForm);
+
+        assertProductImage(productImage, productImageForm);
+    }
+
+    private void assertProductImage(final ProductImage productImage, final ProductImageForm productImageForm) {
+        assertThat(productImage).isNotNull();
+        assertThat(productImage.isCoverImage()).isEqualTo(productImageForm.isCoverImage());
+        assertThat(productImage.getProduct().getId()).isEqualTo(productImageForm.getProductId());
+        assertThat(productImage.getDescription()).isEqualTo(productImageForm.getDescription());
     }
 
     private void assertProductImageDTOList(final List<ProductImageDTO> productImageDTOList,
