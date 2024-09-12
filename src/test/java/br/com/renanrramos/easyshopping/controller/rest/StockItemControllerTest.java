@@ -46,13 +46,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.com.renanrramos.easyshopping.model.Product;
 import br.com.renanrramos.easyshopping.model.Stock;
 import br.com.renanrramos.easyshopping.model.StockItem;
 import br.com.renanrramos.easyshopping.model.Store;
-import br.com.renanrramos.easyshopping.model.builder.ProductBuilder;
-import br.com.renanrramos.easyshopping.model.builder.StockBuilder;
-import br.com.renanrramos.easyshopping.model.builder.StockItemBuilder;
 import br.com.renanrramos.easyshopping.model.form.StockItemForm;
 import br.com.renanrramos.easyshopping.service.impl.ProductService;
 import br.com.renanrramos.easyshopping.service.impl.StockItemService;

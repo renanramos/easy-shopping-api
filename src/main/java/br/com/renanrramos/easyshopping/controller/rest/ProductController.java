@@ -120,7 +120,7 @@ public class ProductController {
 
 		Subcategory productCategory = productCategoryOptional.get();
 
-		Product product = ProductForm.converterProductFormToProduct(productForm);
+		Product product = ProductMapper.INSTANCE.mapProductFormToProduct(productForm);
 		product.setSubcategory(productCategory);
 		product.setStore(store);
 		product.setPublished(false);
@@ -247,7 +247,8 @@ public class ProductController {
 
 		Store store = storeOptional.get();
 
-		Product product = ProductForm.converterProductFormUpdateToProduct(productForm, currentProduct.get());
+		Product product = currentProduct.get();
+		ProductMapper.INSTANCE.mapProductFormToUpdateProduct(product, productForm);
 		product.setSubcategory(productCategory);
 		product.setStore(store);
 		product.setId(productId);

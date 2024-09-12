@@ -3,6 +3,7 @@ package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 import br.com.renanrramos.easyshopping.model.Product;
 import br.com.renanrramos.easyshopping.model.ProductImage;
 import br.com.renanrramos.easyshopping.model.dto.ProductDTO;
+import br.com.renanrramos.easyshopping.model.form.ProductForm;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 
@@ -53,6 +54,44 @@ class ProductMapperTest {
                 .mapPublishedProductListToProductDTOList(publishedProduct);
 
         assertProductDTOList(productDTOList, publishedProduct);
+    }
+
+    @Test
+    void mapProductFormToProduct_withProductForm_shouldMapToProduct() {
+        final ProductForm productForm = Instancio.of(ProductForm.class).create();
+
+        final Product product = ProductMapper.INSTANCE.mapProductFormToProduct(productForm);
+
+        assertProduct(product, productForm);
+    }
+
+    @Test
+    void mapProductFormToUpdateProduct_whenProductFormUpdateOperation_shouldMapToProductOnlyDifferentFields() {
+        // Arrange
+        final ProductForm productForm = Instancio.of(ProductForm.class).create();
+        final Product product = ProductMapper.INSTANCE.mapProductFormToProduct(productForm);
+        final String productName = "productName";
+        productForm.setName(null);
+        product.setName(productName);
+        // Act
+        ProductMapper.INSTANCE.mapProductFormToUpdateProduct(product, productForm);
+        // Assert
+        assertThat(product).isNotNull();
+        assertThat(product.getName()).isEqualTo(productName);
+        assertThat(product.getPrice()).isEqualTo(productForm.getPrice());
+        assertThat(product.getDescription()).isEqualTo(productForm.getDescription());
+        assertThat(product.getSubcategory().getId()).isEqualTo(productForm.getProductSubcategoryId());
+    }
+
+    private void assertProduct(final Product product, final ProductForm productForm) {
+        assertThat(product).isNotNull();
+        assertThat(product.getName()).isEqualTo(productForm.getName());
+        assertThat(product.getPrice()).isEqualTo(productForm.getPrice());
+        assertThat(product.getDescription()).isEqualTo(productForm.getDescription());
+        assertThat(product.getSubcategory().getId()).isEqualTo(productForm.getProductSubcategoryId());
+        assertThat(product.getStore().getId()).isEqualTo(productForm.getStoreId());
+        assertThat(product.getCompanyId()).isEqualTo(productForm.getCompanyId());
+
     }
 
     private void assertProductDTOList(final List<ProductDTO> productDTOList, final List<Product> products) {
