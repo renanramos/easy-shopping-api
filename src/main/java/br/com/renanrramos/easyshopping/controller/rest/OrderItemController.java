@@ -94,7 +94,7 @@ public class OrderItemController {
 			throw new EasyShoppingException(ExceptionMessagesConstants.PRODUCT_NOT_FOUND);
 		}
 
-		OrderItem orderItem = OrderItemForm.converterOrderItemFormToOrderItem(orderItemForm);
+		OrderItem orderItem = OrderItemMapper.INSTANCE.mapOrderItemFormToOrderItem(orderItemForm);
 		orderItem.setOrder(orderOptional.get());
 
 		orderItem = orderItemService.save(orderItem);

@@ -2,6 +2,7 @@ package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
 import br.com.renanrramos.easyshopping.model.OrderItem;
 import br.com.renanrramos.easyshopping.model.dto.OrderItemDTO;
+import br.com.renanrramos.easyshopping.model.form.OrderItemForm;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 
@@ -28,6 +29,24 @@ class OrderItemMapperTest {
                 .mapOrderItemListToOrderItemDTOList(orderItemList);
 
         assertOrderItemDTOList(orderItemDTOList, orderItemList);
+    }
+
+    @Test
+    void mapOrderItemFormToOrderItem_withOrderItemForm_shouldMapOrderItemFormToOrderItem() {
+        final OrderItemForm orderItemForm = Instancio.of(OrderItemForm.class).create();
+
+        final OrderItem orderItem = OrderItemMapper.INSTANCE.mapOrderItemFormToOrderItem(orderItemForm);
+
+        assertOrderItem(orderItem, orderItemForm);
+    }
+
+    private void assertOrderItem(final OrderItem orderItem, final OrderItemForm orderItemForm) {
+        assertThat(orderItem).isNotNull();
+        assertThat(orderItem.getOrder().getId()).isEqualTo(orderItemForm.getOrderId());
+        assertThat(orderItem.getProductName()).isEqualTo(orderItemForm.getProductName());
+        assertThat(orderItem.getTotal()).isEqualTo(orderItemForm.getTotal());
+        assertThat(orderItem.getAmount()).isEqualTo(orderItemForm.getAmount());
+        assertThat(orderItem.getPrice()).isEqualTo(orderItemForm.getPrice());
     }
 
     private void assertOrderItemDTOList(final List<OrderItemDTO> orderItemDTOList,

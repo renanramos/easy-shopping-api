@@ -93,7 +93,15 @@ public class EasyShoppingUtil {
 	}
 
 	public static OrderItemForm getOrderItemFormInstance() {
-		return new OrderItemForm(1L, 1L, 2, 3.0, 6.0, "productName");
+
+		final OrderItemForm orderItemForm = new OrderItemForm();
+		orderItemForm.setOrderId(1L);
+		orderItemForm.setProductId(1L);
+		orderItemForm.setAmount(2);
+		orderItemForm.setPrice(3.0);
+		orderItemForm.setTotal(6.0);
+		orderItemForm.setProductName("productName");
+		return orderItemForm;
 	}
 
 	public static Order getOrderInstance() {

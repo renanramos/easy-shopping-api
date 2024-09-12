@@ -2,6 +2,7 @@ package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
 import br.com.renanrramos.easyshopping.model.OrderItem;
 import br.com.renanrramos.easyshopping.model.dto.OrderItemDTO;
+import br.com.renanrramos.easyshopping.model.form.OrderItemForm;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -27,5 +28,9 @@ public interface OrderItemMapper {
                 .map(OrderItemMapper.INSTANCE::mapOrderItemToOrderItemDTO)
                 .collect(Collectors.toList());
     }
+
+    @Named("mapOrderItemFormToOrderItem")
+    @Mapping(target = "order.id", source = "orderId")
+    OrderItem mapOrderItemFormToOrderItem(final OrderItemForm orderItemForm);
 }
 

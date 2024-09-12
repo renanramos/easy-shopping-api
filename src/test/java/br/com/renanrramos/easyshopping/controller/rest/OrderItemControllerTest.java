@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import br.com.renanrramos.easyshopping.interfaceadapter.mapper.OrderItemMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -93,7 +94,7 @@ public class OrderItemControllerTest {
 	@Test
 	public void saveOrderItem_withValidParameters_shouldCreateSuccessfully() throws JsonProcessingException, Exception {
 
-		OrderItem orderItemResponse = OrderItemForm.converterOrderItemFormToOrderItem(orderItemForm);
+		OrderItem orderItemResponse = OrderItemMapper.INSTANCE.mapOrderItemFormToOrderItem(orderItemForm);
 		orderItemResponse.setId(1L);
 		order.setId(1L);
 		orderItemResponse.setOrder(order);
