@@ -3,16 +3,15 @@ package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 import br.com.renanrramos.easyshopping.model.Stock;
 import br.com.renanrramos.easyshopping.model.StockItem;
 import br.com.renanrramos.easyshopping.model.dto.StockDTO;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
-import org.mapstruct.ReportingPolicy;
+import br.com.renanrramos.easyshopping.model.form.StockForm;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface StockMapper {
 
     StockMapper INSTANCE = Mappers.getMapper(StockMapper.class);
@@ -35,4 +34,12 @@ public interface StockMapper {
                 .map(StockMapper.INSTANCE::mapStockToStockDTO)
                 .collect(Collectors.toList());
     }
+
+    @Mapping(target = "store.id", source = "storeId")
+    @Mapping(target = "store.name", source = "name")
+    Stock mapStockFormToStock(final StockForm stockForm);
+
+    @Named("mapStockFormToUpdateStock")
+    @Mapping(target = "store.id", source = "storeId")
+    void mapStockFormToUpdateStock(@MappingTarget Stock stock, final StockForm stockForm);
 }

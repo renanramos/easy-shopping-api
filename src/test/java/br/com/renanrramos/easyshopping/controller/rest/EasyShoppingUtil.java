@@ -20,7 +20,6 @@ import br.com.renanrramos.easyshopping.model.StockItem;
 import br.com.renanrramos.easyshopping.model.Store;
 import br.com.renanrramos.easyshopping.model.User;
 import br.com.renanrramos.easyshopping.model.builder.PurchaseBuilder;
-import br.com.renanrramos.easyshopping.model.builder.StockBuilder;
 import br.com.renanrramos.easyshopping.model.builder.StockItemBuilder;
 import br.com.renanrramos.easyshopping.model.builder.StoreBuilder;
 import br.com.renanrramos.easyshopping.model.form.CreditCardForm;
@@ -136,7 +135,10 @@ public class EasyShoppingUtil {
 	}
 
 	public static Stock getStockInstance(Long id) {
-		return StockBuilder.builder().withId(id).withName("stockName").build();
+		Stock stock = new Stock();
+		stock.setId(id);
+		stock.setName("stockName");
+		return stock;
 	}
 
 	public static StockItemForm getStockItemForm(Long productId, Long stockId) {

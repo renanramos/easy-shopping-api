@@ -46,7 +46,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.renanrramos.easyshopping.model.Stock;
 import br.com.renanrramos.easyshopping.model.Store;
-import br.com.renanrramos.easyshopping.model.builder.StockBuilder;
 import br.com.renanrramos.easyshopping.model.builder.StoreBuilder;
 import br.com.renanrramos.easyshopping.model.form.StockForm;
 import br.com.renanrramos.easyshopping.service.impl.StockService;
@@ -256,11 +255,18 @@ public class StockControllerTest {
 	}
 
 	private StockForm getStockForm() {
-		return new StockForm("name", 1L);
+		final StockForm stockForm = new StockForm();
+		stockForm.setName("stockName");
+		stockForm.setStoreId(1L);
+		return stockForm;
 	}
 
 	private Stock getStockInstance(Long id) {
-		return StockBuilder.builder().withId(id).withName("stockName").withStore(getStoreInstance(id)).build();
+		final Stock stock = new Stock();
+		stock.setId(id);
+		stock.setName("stockName");
+		stock.setStore(getStoreInstance(id));
+		return stock;
 	}
 
 }

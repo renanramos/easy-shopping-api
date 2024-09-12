@@ -82,7 +82,7 @@ public class StockController {
 			throw new EasyShoppingException(ExceptionMessagesConstants.STORE_NOT_FOUND);
 		}
 
-		Stock stock = StockForm.converterStockFormToStock(stockForm);
+		Stock stock = StockMapper.INSTANCE.mapStockFormToStock(stockForm);
 		stock.setStore(storeOptional.get());
 
 		stock = stockService.save(stock);
@@ -146,8 +146,8 @@ public class StockController {
 		if (!storeOptional.isPresent()) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.STORE_NOT_FOUND);
 		}
-
-		Stock stock = StockForm.converterStockFormUpdateToStock(stockForm, currentStock.get());
+		Stock stock = currentStock.get();
+		StockMapper.INSTANCE.mapStockFormToUpdateStock(stock, stockForm);
 		stock.setId(stockId);
 		stock.setStore(storeOptional.get());
 		StockDTO stockUpdatedDTO = StockMapper.INSTANCE.mapStockToStockDTO(stockService.update(stock));

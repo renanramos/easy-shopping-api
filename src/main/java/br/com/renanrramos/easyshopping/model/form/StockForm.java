@@ -6,20 +6,16 @@
  */
 package br.com.renanrramos.easyshopping.model.form;
 
-import java.util.Optional;
-
-import br.com.renanrramos.easyshopping.model.Stock;
-import br.com.renanrramos.easyshopping.model.builder.StockBuilder;
+import lombok.Data;
+import lombok.ToString;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * @author renan.ramos
  *
  */
-@Getter
-@Setter
+@Data
+@ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class StockForm {
 
@@ -29,19 +25,5 @@ public class StockForm {
 
 	public StockForm() {
 		// Intentionally empty
-	}
-
-	public StockForm(String name, Long storeId) {
-		this.name = name;
-		this.storeId = storeId;
-	}
-
-	public static Stock converterStockFormToStock(StockForm stockForm) {
-		return StockBuilder.builder().withName(stockForm.getName()).build();
-	}
-
-	public static Stock converterStockFormUpdateToStock(StockForm stockForm, Stock currentStock) {
-		return StockBuilder.builder().withName(Optional.ofNullable(stockForm.getName()).orElse(currentStock.getName()))
-				.build();
 	}
 }

@@ -2,6 +2,7 @@ package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
 import br.com.renanrramos.easyshopping.model.Stock;
 import br.com.renanrramos.easyshopping.model.dto.StockDTO;
+import br.com.renanrramos.easyshopping.model.form.StockForm;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 
@@ -32,6 +33,36 @@ class StockMapperTest {
         final List<StockDTO> stockDTOList = StockMapper.INSTANCE.mapStockListToStockDTOList(stockList);
 
         assertStockDTOList(stockDTOList, stockList);
+    }
+
+    @Test
+    void mapStockFormToStock_withStockForm_shouldMapToStock() {
+        final StockForm stockForm = Instancio.of(StockForm.class).create();
+
+        final Stock stock = StockMapper.INSTANCE.mapStockFormToStock(stockForm);
+
+        assertStock(stock, stockForm);
+    }
+
+    @Test
+    void mapStockFormToUpdateStock_withStockForm_shouldMapToStockOnlyDifferentFields() {
+        final StockForm stockForm = Instancio.of(StockForm.class).create();
+        stockForm.setName(null);
+        final Stock stock = Instancio.of(Stock.class).create();
+        final String stockName = "stockName";
+        stock.setName(stockName);
+        // Act
+        StockMapper.INSTANCE.mapStockFormToUpdateStock(stock, stockForm);
+        // Assert
+        assertThat(stock).isNotNull();
+        assertThat(stock.getStore().getId()).isEqualTo(stockForm.getStoreId());
+        assertThat(stock.getName()).isEqualTo(stockName);
+    }
+
+    private void assertStock(final Stock stock, final StockForm stockForm) {
+        assertThat(stock).isNotNull();
+        assertThat(stock.getName()).isEqualTo(stockForm.getName());
+        assertThat(stock.getStore().getId()).isEqualTo(stockForm.getStoreId());
     }
 
     private void assertStockDTOList(final List<StockDTO> stockDTOList,
