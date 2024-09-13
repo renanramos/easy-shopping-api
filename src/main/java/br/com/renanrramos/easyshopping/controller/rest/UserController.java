@@ -10,6 +10,7 @@ import java.util.Optional;
 
 import javax.annotation.security.RolesAllowed;
 
+import br.com.renanrramos.easyshopping.interfaceadapter.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -48,11 +49,10 @@ public class UserController {
 	public ResponseEntity<UserDTO> getCustomerProfile() {
 
 		Optional<User> user = userService.findUserByTokenId(authenticationServiceImpl.getName());
-		if (user.isPresent()) {
-			return ResponseEntity.ok(UserDTO.converterUserToUserDTO(user.get()));
-		}
+        return user.map(value -> ResponseEntity.
+						ok(UserMapper.INSTANCE.mapUserToUserDTO(value)))
+							.orElseGet(() -> ResponseEntity.ok().build());
 
-		return ResponseEntity.ok().build();
-	}
+    }
 
 }

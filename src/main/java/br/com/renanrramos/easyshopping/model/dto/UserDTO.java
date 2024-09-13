@@ -6,19 +6,16 @@
  */
 package br.com.renanrramos.easyshopping.model.dto;
 
-import java.util.Optional;
-
-import br.com.renanrramos.easyshopping.model.User;
+import lombok.Data;
+import lombok.ToString;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * @author renan.ramos
  *
  */
-@Getter
-@Setter
+@Data
+@ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class UserDTO {
 
@@ -30,15 +27,5 @@ public class UserDTO {
 
 	public UserDTO() {
 		// Intentionally empty
-	}
-
-	public UserDTO(User user) {
-		this.name = Optional.ofNullable(user.getName()).orElse("");
-		this.email = Optional.ofNullable(user.getEmail()).orElse("");
-		this.isSync = user.isSync();
-	}
-
-	public static UserDTO converterUserToUserDTO(User user) {
-		return new UserDTO(user);
 	}
 }
