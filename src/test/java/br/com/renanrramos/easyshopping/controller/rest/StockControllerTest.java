@@ -46,7 +46,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.renanrramos.easyshopping.model.Stock;
 import br.com.renanrramos.easyshopping.model.Store;
-import br.com.renanrramos.easyshopping.model.builder.StoreBuilder;
 import br.com.renanrramos.easyshopping.model.form.StockForm;
 import br.com.renanrramos.easyshopping.service.impl.StockService;
 import br.com.renanrramos.easyshopping.service.impl.StoreService;
@@ -251,7 +250,11 @@ public class StockControllerTest {
 	}
 
 	private Store getStoreInstance(Long id) {
-		return StoreBuilder.builder().withId(id).withName("storeName").withRegisteredNumber("registeredNumber").build();
+		final Store store = new Store();
+		store.setId(id);
+		store.setName("storeName");
+		store.setRegisteredNumber("registeredNumber");
+		return store;
 	}
 
 	private StockForm getStockForm() {

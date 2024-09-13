@@ -74,7 +74,7 @@ public class StoreController {
 			throw new EasyShoppingException(ExceptionMessagesConstants.CNPJ_ALREADY_EXIST);
 		}
 
-		Store store = StoreForm.converterStoreFormToStore(storeForm);
+		Store store = StoreMapper.INSTANCE.mapStoreFormToStore(storeForm);
 		store.setTokenId(authenticationServiceImpl.getName());
 		store = storeService.save(store);
 		uri = uriBuilder.path("/stores/{id}").buildAndExpand(store.getId()).encode().toUri();
@@ -146,7 +146,8 @@ public class StoreController {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.STORE_NOT_FOUND);
 		}
 
-		Store store = StoreForm.converterStoreFormUpdateToStore(storeForm, currentStore.get());
+		Store store = currentStore.get();
+		StoreMapper.INSTANCE.mapStoreFormToUpdateStore(store, storeForm);
 		store.setTokenId(authenticationServiceImpl.getName());
 		store.setId(storeId);
 		StoreDTO storeUpdatedDTO = StoreMapper.INSTANCE.mapStoreToStoreDTO(storeService.update(store));

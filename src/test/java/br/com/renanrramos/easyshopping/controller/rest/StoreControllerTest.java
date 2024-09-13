@@ -46,7 +46,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.renanrramos.easyshopping.model.Store;
-import br.com.renanrramos.easyshopping.model.builder.StoreBuilder;
 import br.com.renanrramos.easyshopping.model.form.StoreForm;
 import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
 import br.com.renanrramos.easyshopping.service.impl.StoreService;

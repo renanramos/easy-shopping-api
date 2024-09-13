@@ -19,7 +19,6 @@ import br.com.renanrramos.easyshopping.model.Stock;
 import br.com.renanrramos.easyshopping.model.StockItem;
 import br.com.renanrramos.easyshopping.model.Store;
 import br.com.renanrramos.easyshopping.model.User;
-import br.com.renanrramos.easyshopping.model.builder.StoreBuilder;
 import br.com.renanrramos.easyshopping.model.form.CreditCardForm;
 import br.com.renanrramos.easyshopping.model.form.OrderItemForm;
 import br.com.renanrramos.easyshopping.model.form.StockItemForm;
@@ -132,8 +131,12 @@ public class EasyShoppingUtil {
 	}
 
 	public static Store getStoreInstance(Long id) {
-		return StoreBuilder.builder().withId(id).withCorporateName("corporateName").withName("name")
-				.withRegisteredNumber("registeredNumber").build();
+		final Store store = new Store();
+		store.setId(id);
+		store.setCorporateName("corporateName");
+		store.setName("name");
+		store.setRegisteredNumber("registeredNumber");
+		return store;
 	}
 
 	public static Stock getStockInstance(Long id) {

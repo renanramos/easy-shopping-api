@@ -2,15 +2,15 @@ package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
 import br.com.renanrramos.easyshopping.model.Store;
 import br.com.renanrramos.easyshopping.model.dto.StoreDTO;
-import org.mapstruct.Mapper;
-import org.mapstruct.Named;
-import org.mapstruct.ReportingPolicy;
+import br.com.renanrramos.easyshopping.model.form.StoreForm;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface StoreMapper {
 
     StoreMapper INSTANCE = Mappers.getMapper(StoreMapper.class);
@@ -25,4 +25,10 @@ public interface StoreMapper {
                 .map(StoreMapper.INSTANCE::mapStoreToStoreDTO)
                 .collect(Collectors.toList());
     }
+
+    @Named("mapStoreFormToStore")
+    Store mapStoreFormToStore(final StoreForm storeForm);
+
+    @Named("mapStoreFormToUpdateStore")
+    void mapStoreFormToUpdateStore(@MappingTarget Store store, final StoreForm storeForm);
 }
