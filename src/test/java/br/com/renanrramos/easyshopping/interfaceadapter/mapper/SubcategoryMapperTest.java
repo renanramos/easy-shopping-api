@@ -3,6 +3,7 @@ package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
 import br.com.renanrramos.easyshopping.model.Subcategory;
 import br.com.renanrramos.easyshopping.model.dto.SubcategoryDTO;
+import br.com.renanrramos.easyshopping.model.form.SubcategoryForm;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 
@@ -33,6 +34,37 @@ class SubcategoryMapperTest {
                 .mapSubcategoryListToSubcategoryDTOList(subcategoryList);
 
         assertSubcategoryDTOList(subcategoryDTOList, subcategoryList);
+    }
+
+    @Test
+    void mapSubcategoryFormToSubcategory_withSubcategoryForm_shouldMapToSubcategory() {
+        final SubcategoryForm subcategoryForm = Instancio.of(SubcategoryForm.class).create();
+        final Subcategory subcategory = SubcategoryMapper.INSTANCE.mapSubcategoryFormToSubcategory(subcategoryForm);
+        asserSubcategory(subcategory, subcategoryForm);
+    }
+
+    @Test
+    void mapSubcategoryFormToUpdateSubcategory_whenSubcategoryFormUpdateOperation_shouldMapToSubcategoryOnlyDifferentFields() {
+        // Arrange
+        final SubcategoryForm subcategoryForm = Instancio.of(SubcategoryForm.class).create();
+        final Subcategory subcategory = Instancio.of(Subcategory.class)
+                .withMaxDepth(2)
+                .create();
+        final String subcategoryName = "subcategoryName";
+        subcategoryForm.setName(null);
+        subcategory.setName(subcategoryName);
+        // Act
+        SubcategoryMapper.INSTANCE.mapSubcategoryFormToUpdateSubcategory(subcategory, subcategoryForm);
+        // Assert
+        assertThat(subcategory).isNotNull();
+        assertThat(subcategory.getName()).isEqualTo(subcategoryName);
+        assertThat(subcategory.getProductCategory().getId()).isEqualTo(subcategoryForm.getProductCategoryId());
+    }
+
+    private void asserSubcategory(final Subcategory subcategory, final SubcategoryForm subcategoryForm) {
+        assertThat(subcategory).isNotNull();
+        assertThat(subcategory.getName()).isEqualTo(subcategoryForm.getName());
+        assertThat(subcategory.getProductCategory().getId()).isEqualTo(subcategoryForm.getProductCategoryId());
     }
 
     private void assertSubcategoryDTOList(final List<SubcategoryDTO> subcategoryDTOList,

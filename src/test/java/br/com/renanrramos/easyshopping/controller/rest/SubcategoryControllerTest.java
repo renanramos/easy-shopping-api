@@ -48,7 +48,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.renanrramos.easyshopping.model.ProductCategory;
 import br.com.renanrramos.easyshopping.model.Subcategory;
-import br.com.renanrramos.easyshopping.model.builder.SubcategoryBuilder;
 import br.com.renanrramos.easyshopping.model.form.SubcategoryForm;
 import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
 import br.com.renanrramos.easyshopping.service.impl.ProductCategoryService;
@@ -98,7 +97,7 @@ public class SubcategoryControllerTest {
 	@Test
 	public void saveSubcategory_withValidSubcategory_shouldCreateSuccessfully()
 			throws JsonProcessingException, Exception {
-		SubcategoryForm subcategoryForm = new SubcategoryForm("subcategory", 1L);
+		SubcategoryForm subcategoryForm = getSubcategoryForm(1L);
 		Subcategory subcategory = getSubcategoryInstance();
 		subcategory.setId(1L);
 		when(subcategoryService.save(any(Subcategory.class))).thenReturn(subcategory);
@@ -130,7 +129,7 @@ public class SubcategoryControllerTest {
 	@Test(expected = Exception.class)
 	public void saveSubcategory_whenoutProductCategoryNotFound_shouldThrowException()
 			throws JsonProcessingException, Exception {
-		SubcategoryForm subcategoryForm = new SubcategoryForm("subcategory", 1L);
+		SubcategoryForm subcategoryForm = getSubcategoryForm(1L);
 
 		when(productCategoryService.findById(anyLong())).thenReturn(Optional.empty());
 
@@ -206,7 +205,7 @@ public class SubcategoryControllerTest {
 	@Test
 	public void updateSubcategory_withValidSubcategory_shouldUpdateSuccessfully()
 			throws JsonProcessingException, Exception {
-		SubcategoryForm subcategoryForm = new SubcategoryForm("subcategory", 1L);
+		SubcategoryForm subcategoryForm = getSubcategoryForm(1L);
 		Subcategory subcategory = getSubcategoryInstance();
 		subcategory.setId(1L);
 
@@ -226,7 +225,7 @@ public class SubcategoryControllerTest {
 	@Test(expected = Exception.class)
 	public void updateSubcategory_withoutInvalidProductCategoryId_shouldThrowException()
 			throws JsonProcessingException, Exception {
-		SubcategoryForm subcategoryForm = new SubcategoryForm("subcategory", null);
+		SubcategoryForm subcategoryForm = getSubcategoryForm(null);
 		Subcategory subcategory = getSubcategoryInstance();
 		subcategory.setId(1L);
 
@@ -245,7 +244,7 @@ public class SubcategoryControllerTest {
 	@Test(expected = Exception.class)
 	public void updateSubcategory_withtInvalidProductCategoryId_shouldThrowException()
 			throws JsonProcessingException, Exception {
-		SubcategoryForm subcategoryForm = new SubcategoryForm("subcategory", 12L);
+		SubcategoryForm subcategoryForm = getSubcategoryForm(12L);
 		Subcategory subcategory = getSubcategoryInstance();
 		subcategory.setId(1L);
 
@@ -262,7 +261,7 @@ public class SubcategoryControllerTest {
 	@Test(expected = Exception.class)
 	public void updateSubcategory_withtInvalidSubcategoryId_shouldThrowException()
 			throws JsonProcessingException, Exception {
-		SubcategoryForm subcategoryForm = new SubcategoryForm("subcategory", 12L);
+		SubcategoryForm subcategoryForm = getSubcategoryForm(12L);
 		Subcategory subcategory = getSubcategoryInstance();
 		subcategory.setId(1L);
 
@@ -275,6 +274,13 @@ public class SubcategoryControllerTest {
 		verify(subcategoryService, times(1)).findById(anyLong());
 		verify(productCategoryService, times(1)).findById(anyLong());
 		verify(subcategoryService, never()).save(any(Subcategory.class));
+	}
+
+	private static SubcategoryForm getSubcategoryForm(final Long productCategoryId) {
+		 SubcategoryForm subcategoryForm = new SubcategoryForm();
+		 subcategoryForm.setName("subcategory");
+		 subcategoryForm.setProductCategoryId(productCategoryId);
+		 return subcategoryForm;
 	}
 
 	@Test
@@ -315,9 +321,10 @@ public class SubcategoryControllerTest {
 	}
 
 	private Subcategory getSubcategoryInstance() {
-		return SubcategoryBuilder.builder()
-				.withName("subcategory")
-				.withProductCategory(getProductCategoryInstance()).build();
+		final Subcategory subcategory = new Subcategory();
+		subcategory.setName("subcategory");
+		subcategory.setProductCategory(getProductCategoryInstance());
+		return subcategory;
 	}
 
 	private ProductCategory getProductCategoryInstance() {

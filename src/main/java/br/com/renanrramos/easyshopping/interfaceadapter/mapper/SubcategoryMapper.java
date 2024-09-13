@@ -2,16 +2,15 @@ package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
 import br.com.renanrramos.easyshopping.model.Subcategory;
 import br.com.renanrramos.easyshopping.model.dto.SubcategoryDTO;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
-import org.mapstruct.ReportingPolicy;
+import br.com.renanrramos.easyshopping.model.form.SubcategoryForm;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface SubcategoryMapper {
 
     SubcategoryMapper INSTANCE = Mappers.getMapper(SubcategoryMapper.class);
@@ -29,4 +28,11 @@ public interface SubcategoryMapper {
                 .collect(Collectors.toList());
     }
 
+    @Named("mapSubcategoryFormToSubcategory")
+    @Mapping(target = "productCategory.id", source = "productCategoryId")
+    Subcategory mapSubcategoryFormToSubcategory(final SubcategoryForm subcategoryForm);
+
+    @Named("mapSubcategoryFormToUpdateSubcategory")
+    @Mapping(target = "productCategory.id", source = "productCategoryId")
+    void mapSubcategoryFormToUpdateSubcategory(@MappingTarget Subcategory subcategory, SubcategoryForm subcategoryForm);
 }

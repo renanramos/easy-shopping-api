@@ -84,7 +84,7 @@ public class SubcategoryController {
 		}
 
 		ProductCategory productCategory = productCategoryOptional.get();
-		Subcategory subcategory = SubcategoryForm.convertSubcategoryFormToSubcategory(subcategoryForm);
+		Subcategory subcategory = SubcategoryMapper.INSTANCE.mapSubcategoryFormToSubcategory(subcategoryForm);
 		subcategory.setProductCategory(productCategory);
 		subcategory = subcategoryService.save(subcategory);
 		uri = uriBuilder.path("/subcategories/{id}").buildAndExpand(subcategory.getId()).encode().toUri();
@@ -149,8 +149,8 @@ public class SubcategoryController {
 			throw new EasyShoppingException(ExceptionMessagesConstants.SUBCATEGORY_NOT_FOUND);
 		}
 
-		Subcategory subcategory = SubcategoryForm.convertSubcategoryFormUpdateToSubcategory(subcategoryForm, currentSubcategory.get());
-
+		Subcategory subcategory = currentSubcategory.get();
+		SubcategoryMapper.INSTANCE.mapSubcategoryFormToUpdateSubcategory(subcategory, subcategoryForm);
 		subcategory.setId(subcategoryId);
 		subcategory.setProductCategory(productCategory);
 		subcategory = subcategoryService.save(subcategory);
