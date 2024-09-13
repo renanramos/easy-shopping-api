@@ -47,7 +47,6 @@ import br.com.renanrramos.easyshopping.model.Order;
 import br.com.renanrramos.easyshopping.model.OrderItem;
 import br.com.renanrramos.easyshopping.model.Purchase;
 import br.com.renanrramos.easyshopping.model.StockItem;
-import br.com.renanrramos.easyshopping.model.builder.StockItemBuilder;
 import br.com.renanrramos.easyshopping.model.form.PurchaseForm;
 import br.com.renanrramos.easyshopping.service.impl.AddressService;
 import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
@@ -256,7 +255,7 @@ public class PurchaseControllerTest {
 		when(addressService.findById(anyLong())).thenReturn(Optional.of(address));
 		when(creditCardService.findById(anyLong())).thenReturn(Optional.of(creditCard));
 		when(purchaseService.save(any(Purchase.class))).thenReturn(purchase);
-		when(stockItemService.findStockItemByProductId(anyLong())).thenReturn(Optional.of(StockItemBuilder.builder().withId(null).build()));
+		when(stockItemService.findStockItemByProductId(anyLong())).thenReturn(Optional.of(new StockItem()));
 		when(stockItemService.update(any(StockItem.class))).thenReturn(EasyShoppingUtil.getStockItemInstance());
 
 		mockMvc.perform(

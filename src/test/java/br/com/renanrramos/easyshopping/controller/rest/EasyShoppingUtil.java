@@ -19,7 +19,6 @@ import br.com.renanrramos.easyshopping.model.Stock;
 import br.com.renanrramos.easyshopping.model.StockItem;
 import br.com.renanrramos.easyshopping.model.Store;
 import br.com.renanrramos.easyshopping.model.User;
-import br.com.renanrramos.easyshopping.model.builder.StockItemBuilder;
 import br.com.renanrramos.easyshopping.model.builder.StoreBuilder;
 import br.com.renanrramos.easyshopping.model.form.CreditCardForm;
 import br.com.renanrramos.easyshopping.model.form.OrderItemForm;
@@ -145,12 +144,24 @@ public class EasyShoppingUtil {
 	}
 
 	public static StockItemForm getStockItemForm(Long productId, Long stockId) {
-		return new StockItemForm(productId, 20.0, 5.0, 10, stockId, "productName");
+		final StockItemForm stockItemForm = new StockItemForm();
+		stockItemForm.setStockId(stockId);
+		stockItemForm.setMaxAmount(20.0);
+		stockItemForm.setCurrentAmount(10);
+		stockItemForm.setMinAmount(5.0);
+		stockItemForm.setProductId(productId);
+		stockItemForm.setProductName("productName");
+		return  stockItemForm;
 	}
 
 	public static StockItem getStockItemInstance() {
-		return StockItemBuilder.builder().withId(1L).withCurrentAmount(10).withMaxAmount(20.0).withMinAmount(5.0)
-				.withProductName("productName").build();
+		final StockItem stockItem = new StockItem();
+		stockItem.setId(1L);
+		stockItem.setCurrentAmount(10);
+		stockItem.setMaxAmount(20.0);
+		stockItem.setMinAmount(5.0);
+		stockItem.setProductName("productName");
+		return stockItem;
 	}
 
 	public static User getUserInstance() {

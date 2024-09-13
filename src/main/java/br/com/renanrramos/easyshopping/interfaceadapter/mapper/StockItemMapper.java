@@ -2,6 +2,7 @@ package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
 import br.com.renanrramos.easyshopping.model.StockItem;
 import br.com.renanrramos.easyshopping.model.dto.StockItemDTO;
+import br.com.renanrramos.easyshopping.model.form.StockItemForm;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -29,4 +30,8 @@ public interface StockItemMapper {
                 .map(StockItemMapper.INSTANCE::mapStockItemToStockItemDTO)
                 .collect(Collectors.toList());
     }
+
+    @Named("mapStockItemFormToStockItem")
+    @Mapping(target = "stock.id", source = "stockId")
+    StockItem mapStockItemFormToStockItem(final StockItemForm stockItemForm);
 }

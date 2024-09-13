@@ -2,6 +2,7 @@ package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
 import br.com.renanrramos.easyshopping.model.StockItem;
 import br.com.renanrramos.easyshopping.model.dto.StockItemDTO;
+import br.com.renanrramos.easyshopping.model.form.StockItemForm;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 
@@ -31,6 +32,25 @@ class StockItemMapperTest {
         final List<StockItemDTO> stockItemDTOList = StockItemMapper.INSTANCE.mapStockItemListToStockItemDTOList(stockItems);
 
         assertStockItemDTOList(stockItemDTOList, stockItems);
+    }
+
+    @Test
+    void mapStockItemFormToStockItem_withStockItem_shouldMapStockStockItem() {
+        final StockItemForm stockItemForm = Instancio.of(StockItemForm.class).create();
+
+        final StockItem stockItem = StockItemMapper.INSTANCE.mapStockItemFormToStockItem(stockItemForm);
+
+        assertStockItem(stockItem, stockItemForm);
+    }
+
+    private void assertStockItem(final StockItem stockItem, final StockItemForm stockItemForm) {
+        assertThat(stockItem).isNotNull();
+        assertThat(stockItem.getStock().getId()).isEqualTo(stockItemForm.getStockId());
+        assertThat(stockItem.getProductId()).isEqualTo(stockItemForm.getProductId());
+        assertThat(stockItem.getProductName()).isEqualTo(stockItemForm.getProductName());
+        assertThat(stockItem.getCurrentAmount()).isEqualTo(stockItemForm.getCurrentAmount());
+        assertThat(stockItem.getMinAmount()).isEqualTo(stockItemForm.getMinAmount());
+        assertThat(stockItem.getMaxAmount()).isEqualTo(stockItemForm.getMaxAmount());
     }
 
     private void assertStockItemDTOList(final List<StockItemDTO> stockItemDTOList,

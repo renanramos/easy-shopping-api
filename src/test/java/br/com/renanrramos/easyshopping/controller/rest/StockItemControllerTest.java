@@ -123,7 +123,10 @@ public class StockItemControllerTest {
 		when(productService.findById(anyLong())).thenReturn(Optional.of(EasyShoppingUtil.getProductInstance()));
 		when(stockService.findById(anyLong())).thenReturn(Optional.of(stock));
 
-		mockMvc.perform(post(BASE_URL).content(objecMapper.writeValueAsString(new StockItemForm(1L, 20.0, null, 10, 1L, "productName")))
+		final StockItemForm stockItemForm = EasyShoppingUtil.getStockItemForm(1L, 1L);
+		stockItemForm.setMinAmount(null);
+
+		mockMvc.perform(post(BASE_URL).content(objecMapper.writeValueAsString(stockItemForm))
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)).andExpect(jsonPath("$.id", is(1)))
 		.andExpect(jsonPath("$.productName", is("productName")))
 		.andExpect(jsonPath("$.currentAmount", is(10)));
@@ -144,7 +147,10 @@ public class StockItemControllerTest {
 		when(productService.findById(anyLong())).thenReturn(Optional.of(EasyShoppingUtil.getProductInstance()));
 		when(stockService.findById(anyLong())).thenReturn(Optional.of(stock));
 
-		mockMvc.perform(post(BASE_URL).content(objecMapper.writeValueAsString(new StockItemForm(1L, 20.0, -2.0, 10, 1L, "productName")))
+		final StockItemForm stockItemForm = EasyShoppingUtil.getStockItemForm(1L, 1L);
+		stockItemForm.setMinAmount(-2.0);
+
+		mockMvc.perform(post(BASE_URL).content(objecMapper.writeValueAsString(stockItemForm))
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)).andExpect(jsonPath("$.id", is(1)))
 		.andExpect(jsonPath("$.productName", is("productName")))
 		.andExpect(jsonPath("$.currentAmount", is(10)));
@@ -165,7 +171,10 @@ public class StockItemControllerTest {
 		when(productService.findById(anyLong())).thenReturn(Optional.of(EasyShoppingUtil.getProductInstance()));
 		when(stockService.findById(anyLong())).thenReturn(Optional.of(stock));
 
-		mockMvc.perform(post(BASE_URL).content(objecMapper.writeValueAsString(new StockItemForm(1L, 2.0, 25.0, 10, 1L, "productName")))
+		final StockItemForm stockItemForm = EasyShoppingUtil.getStockItemForm(1L, 1L);
+		stockItemForm.setMinAmount(25.0);
+
+		mockMvc.perform(post(BASE_URL).content(objecMapper.writeValueAsString(stockItemForm))
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)).andExpect(jsonPath("$.id", is(1)))
 		.andExpect(jsonPath("$.productName", is("productName")))
 		.andExpect(jsonPath("$.currentAmount", is(10)));
@@ -386,7 +395,10 @@ public class StockItemControllerTest {
 		when(productService.findById(anyLong())).thenReturn(Optional.of(EasyShoppingUtil.getProductInstance()));
 		when(stockService.findById(anyLong())).thenReturn(Optional.of(stock));
 
-		mockMvc.perform(patch(BASE_URL + "/1").content(objecMapper.writeValueAsString(new StockItemForm(1L, 2.0, 25.0, 10, 1L, "productName")))
+		final StockItemForm stockItemForm = EasyShoppingUtil.getStockItemForm(1L, 1L);
+		stockItemForm.setMinAmount(25.0);
+
+		mockMvc.perform(patch(BASE_URL + "/1").content(objecMapper.writeValueAsString(stockItemForm))
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)).andExpect(jsonPath("$.id", is(1)))
 		.andExpect(jsonPath("$.productName", is("productName")))
 		.andExpect(jsonPath("$.currentAmount", is(10.0)));
@@ -412,7 +424,10 @@ public class StockItemControllerTest {
 		when(productService.findById(anyLong())).thenReturn(Optional.of(EasyShoppingUtil.getProductInstance()));
 		when(stockService.findById(anyLong())).thenReturn(Optional.of(stock));
 
-		mockMvc.perform(patch(BASE_URL + "/1").content(objecMapper.writeValueAsString(new StockItemForm(1L, 2.0, null, 10, 1L, "productName")))
+		final StockItemForm stockItemForm = EasyShoppingUtil.getStockItemForm(1L, 1L);
+		stockItemForm.setMinAmount(null);
+
+		mockMvc.perform(patch(BASE_URL + "/1").content(objecMapper.writeValueAsString(stockItemForm))
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)).andExpect(jsonPath("$.id", is(1)))
 		.andExpect(jsonPath("$.productName", is("productName")))
 		.andExpect(jsonPath("$.currentAmount", is(10.0)));
@@ -438,7 +453,10 @@ public class StockItemControllerTest {
 		when(productService.findById(anyLong())).thenReturn(Optional.of(EasyShoppingUtil.getProductInstance()));
 		when(stockService.findById(anyLong())).thenReturn(Optional.of(stock));
 
-		mockMvc.perform(patch(BASE_URL + "/1").content(objecMapper.writeValueAsString(new StockItemForm(1L, 2.0, -1.0, 10, 1L, "productName")))
+		final StockItemForm stockItemForm = EasyShoppingUtil.getStockItemForm(1L, 1L);
+		stockItemForm.setMinAmount(-1.0);
+
+		mockMvc.perform(patch(BASE_URL + "/1").content(objecMapper.writeValueAsString(stockItemForm))
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)).andExpect(jsonPath("$.id", is(1)))
 		.andExpect(jsonPath("$.productName", is("productName")))
 		.andExpect(jsonPath("$.currentAmount", is(10.0)));

@@ -105,7 +105,7 @@ public class StockItemController {
 			throw new EasyShoppingException(ExceptionMessagesConstants.INVALID_FIELDS_TITLE);
 		}
 
-		StockItem item = StockItemForm.converterStockItemFormToStockItem(itemForm);
+		StockItem item = StockItemMapper.INSTANCE.mapStockItemFormToStockItem(itemForm);
 		item.setStock(stockOptional.get());
 		item = itemService.save(item);
 		item.setProductId(productOptional.get().getId());
@@ -157,7 +157,7 @@ public class StockItemController {
 			throw new EasyShoppingException(ExceptionMessagesConstants.STOCK_ITEM_NOT_FOUND);
 		}
 
-		StockItem item = StockItemForm.converterStockItemFormToStockItem(itemForm);
+		StockItem item = StockItemMapper.INSTANCE.mapStockItemFormToStockItem(itemForm);
 		item.setStock(stockOptional.get());
 		item.setId(itemId);
 		item = itemService.save(item);
