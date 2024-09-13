@@ -16,20 +16,20 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 import br.com.renanrramos.easyshopping.constants.sql.EasyShoppingSqlConstants;
-import br.com.renanrramos.easyshopping.model.Subcategory;
+import br.com.renanrramos.easyshopping.model.SubCategory;
 
 /**
  * @author renan.ramos
  *
  */
-public interface SubcategoryRepository extends PagingAndSortingRepository<Subcategory, Long> {
-	Page<Subcategory> findSubcategoryByProductCategoryId(Pageable page, Long productCategoryId);
+public interface SubCategoryRepository extends PagingAndSortingRepository<SubCategory, Long> {
+	Page<SubCategory> findSubCategoryByProductCategoryId(Pageable page, Long productCategoryId);
 
 	@Query(EasyShoppingSqlConstants.GET_SUBCATEGORIES_BY_NAME)
-	Page<Subcategory> findSubcategoryName(Pageable page, @Param("name")String name);
+	Page<SubCategory> findSubCategoryName(Pageable page, @Param("name")String name);
 
 	@Transactional
 	@Modifying
-	@Query("DELETE FROM Subcategory WHERE ID = :subcategoryId")
-	public void removeById(Long subcategoryId);
+	@Query("DELETE FROM SubCategory WHERE ID = :subCategoryId")
+	void removeById(Long subCategoryId);
 }

@@ -17,13 +17,13 @@ import lombok.EqualsAndHashCode;
 @Data
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class SubcategoryForm {
+public class SubCategoryForm {
 
 	private String name;
 
 	private Long productCategoryId;
 
-	public SubcategoryForm() {
+	public SubCategoryForm() {
 		// Intentionally empty
 	}
 }

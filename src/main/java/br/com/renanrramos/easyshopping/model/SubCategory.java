@@ -41,7 +41,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Subcategory implements Serializable{
+public class SubCategory implements Serializable{
 
 	private static final long serialVersionUID = 1026705649369198665L;
 
@@ -63,12 +63,12 @@ public class Subcategory implements Serializable{
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<Product> products = new ArrayList<>();
 
-	public Subcategory() {
+	public SubCategory() {
 		// Intentionally empty
 	}
 
 	@Override
 	public String toString() {
-		return "Subcategory [id=" + id + ", name=" + name + ", productCategory=" + productCategory.getId() + "]";
+		return "SubCategory [id=" + id + ", name=" + name + ", productCategory=" + productCategory.getId() + "]";
 	}
 }

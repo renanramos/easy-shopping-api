@@ -17,8 +17,8 @@ public interface ProductMapper {
 
     @Named("mapProductToProductDTO")
     @Mapping(target = "storeId", source = "product.store.id")
-    @Mapping(target = "subcategoryId", source = "product.subcategory.id")
-    @Mapping(target = "subcategoryName", source = "product.subcategory.name")
+    @Mapping(target = "subCategoryId", source = "product.subCategory.id")
+    @Mapping(target = "subCategoryName", source = "product.subCategory.name")
     ProductDTO mapProductToProductDTO(final Product product);
 
     @Named("mapProductListToProductDTOList")
@@ -39,12 +39,12 @@ public interface ProductMapper {
 
     @Named("mapProductFormToProduct")
     @Mapping(target = "store.id", source = "storeId")
-    @Mapping(target = "subcategory.id", source = "productSubcategoryId")
+    @Mapping(target = "subCategory.id", source = "productSubCategoryId")
     Product mapProductFormToProduct(final ProductForm productForm);
 
     @Named("mapProductFormToUpdateProduct")
     @Mapping(target = "store.id", source = "storeId")
-    @Mapping(target = "subcategory.id", source = "productSubcategoryId")
+    @Mapping(target = "subCategory.id", source = "productSubCategoryId")
     void mapProductFormToUpdateProduct(@MappingTarget Product product, final ProductForm productForm);
 }
 

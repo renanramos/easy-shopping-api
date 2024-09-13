@@ -36,9 +36,9 @@ public class ProductDTO {
 
 	private double price;
 
-	private Long subcategoryId;
+	private Long subCategoryId;
 
-	private String subcategoryName;
+	private String subCategoryName;
 
 	private Long storeId;
 
@@ -55,9 +55,9 @@ public class ProductDTO {
 		this.name = product.getName();
 		this.description = product.getDescription();
 		this.price = product.getPrice();
-		this.subcategoryName = product.getSubcategory().getName();
+		this.subCategoryName = product.getSubCategory().getName();
 		this.storeId = product.getStore().getId();
-		this.subcategoryId = product.getSubcategory().getId();
+		this.subCategoryId = product.getSubCategory().getId();
 		this.productImages = Optional.ofNullable(product.getImages()).orElse(new HashSet<>());
 		this.isProductPublished = product.isPublished();
 	}

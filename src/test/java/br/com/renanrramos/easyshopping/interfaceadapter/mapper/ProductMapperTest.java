@@ -80,7 +80,7 @@ class ProductMapperTest {
         assertThat(product.getName()).isEqualTo(productName);
         assertThat(product.getPrice()).isEqualTo(productForm.getPrice());
         assertThat(product.getDescription()).isEqualTo(productForm.getDescription());
-        assertThat(product.getSubcategory().getId()).isEqualTo(productForm.getProductSubcategoryId());
+        assertThat(product.getSubCategory().getId()).isEqualTo(productForm.getProductSubCategoryId());
     }
 
     private void assertProduct(final Product product, final ProductForm productForm) {
@@ -88,7 +88,7 @@ class ProductMapperTest {
         assertThat(product.getName()).isEqualTo(productForm.getName());
         assertThat(product.getPrice()).isEqualTo(productForm.getPrice());
         assertThat(product.getDescription()).isEqualTo(productForm.getDescription());
-        assertThat(product.getSubcategory().getId()).isEqualTo(productForm.getProductSubcategoryId());
+        assertThat(product.getSubCategory().getId()).isEqualTo(productForm.getProductSubCategoryId());
         assertThat(product.getStore().getId()).isEqualTo(productForm.getStoreId());
         assertThat(product.getCompanyId()).isEqualTo(productForm.getCompanyId());
 
@@ -110,8 +110,8 @@ class ProductMapperTest {
         assertThat(productDTO.getName()).isEqualTo(product.getName());
         assertThat(productDTO.getPrice()).isEqualTo(product.getPrice());
         assertThat(productDTO.getStoreId()).isEqualTo(product.getStore().getId());
-        assertThat(productDTO.getSubcategoryId()).isEqualTo(product.getSubcategory().getId());
-        assertThat(productDTO.getSubcategoryName()).isEqualTo(product.getSubcategory().getName());
+        assertThat(productDTO.getSubCategoryId()).isEqualTo(product.getSubCategory().getId());
+        assertThat(productDTO.getSubCategoryName()).isEqualTo(product.getSubCategory().getName());
     }
 
 }

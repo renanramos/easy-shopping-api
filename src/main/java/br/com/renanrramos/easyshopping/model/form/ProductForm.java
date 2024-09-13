@@ -25,7 +25,7 @@ public class ProductForm {
 
 	private double price;
 
-	private Long productSubcategoryId;
+	private Long productSubCategoryId;
 
 	private Long storeId;
 

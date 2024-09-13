@@ -154,7 +154,7 @@ public class ProductCategoryController {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_NOT_FOUND);
 		}
 
-		if (productService.isThereAnyProductWithSubcategoryId(productCategoryId)) {
+		if (productService.isThereAnyProductWithSubCategoryId(productCategoryId)) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.CANNOT_REMOVE_PRODUCT_CATEGORY_IN_USE);
 		}
 

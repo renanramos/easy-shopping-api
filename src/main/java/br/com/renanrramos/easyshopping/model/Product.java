@@ -56,7 +56,7 @@ public class Product implements Serializable{
 
 	@ManyToOne
 	@JoinColumn(name = "subcategory_id")
-	private Subcategory subcategory;
+	private SubCategory subCategory;
 
 	@ManyToOne
 	@JoinColumn(name = "store_id")
@@ -76,6 +76,6 @@ public class Product implements Serializable{
 	@Override
 	public String toString() {
 		return "Product [id=" + id + ", name=" + name + ", description=" + description + ", price=" + price
-				+ ", subcategory=" + subcategory + ", store=" + store + "]";
+				+ ", subcategory=" + subCategory + ", store=" + store + "]";
 	}
 }

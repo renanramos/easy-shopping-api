@@ -17,7 +17,7 @@ import lombok.ToString;
 @Data
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class SubcategoryDTO {
+public class SubCategoryDTO {
 
 	private Long id;
 
@@ -27,7 +27,7 @@ public class SubcategoryDTO {
 
 	private String productCategoryName;
 
-	public SubcategoryDTO() {
+	public SubCategoryDTO() {
 		// Intentionally empty
 	}
 }

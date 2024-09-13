@@ -28,7 +28,7 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, L
 
 	Page<Product> findProductByCompanyId(Pageable page, String companyId);
 
-	Page<Product> findProductBySubcategoryId(Pageable page, Long subcategoryId);
+	Page<Product> findProductBySubCategoryId(Pageable page, Long subCategoryId);
 
 	@Query(EasyShoppingSqlConstants.GET_PRODUCT_BY_NAME_AND_COMPANY_ID)
 	Page<Product> getProductByCompanyIdAndName(Pageable page, @Param("tokenId") String tokenId,

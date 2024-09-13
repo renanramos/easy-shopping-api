@@ -14,7 +14,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
-import br.com.renanrramos.easyshopping.interfaceadapter.mapper.SubcategoryMapper;
+import br.com.renanrramos.easyshopping.interfaceadapter.mapper.SubCategoryMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -36,12 +36,12 @@ import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConst
 import br.com.renanrramos.easyshopping.exception.EasyShoppingException;
 import br.com.renanrramos.easyshopping.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.model.ProductCategory;
-import br.com.renanrramos.easyshopping.model.Subcategory;
-import br.com.renanrramos.easyshopping.model.dto.SubcategoryDTO;
-import br.com.renanrramos.easyshopping.model.form.SubcategoryForm;
+import br.com.renanrramos.easyshopping.model.SubCategory;
+import br.com.renanrramos.easyshopping.model.dto.SubCategoryDTO;
+import br.com.renanrramos.easyshopping.model.form.SubCategoryForm;
 import br.com.renanrramos.easyshopping.service.impl.ProductCategoryService;
 import br.com.renanrramos.easyshopping.service.impl.ProductService;
-import br.com.renanrramos.easyshopping.service.impl.SubcategoryService;
+import br.com.renanrramos.easyshopping.service.impl.SubCategoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -53,10 +53,10 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping(path = "api/subcategories", produces = "application/json")
 @Api(tags = "Subcategories")
 @CrossOrigin(origins = "*")
-public class SubcategoryController {
+public class SubCategoryController {
 
 	@Autowired
-	private SubcategoryService subcategoryService;
+	private SubCategoryService subCategoryService;
 
 	@Autowired
 	private ProductCategoryService productCategoryService;
@@ -69,33 +69,33 @@ public class SubcategoryController {
 	@ResponseBody
 	@PostMapping
 	@Transactional
-	@ApiOperation(value = "Save a new subcategory")
+	@ApiOperation(value = "Save a new subCategory")
 	@RolesAllowed("easy-shopping-admin")
-	public ResponseEntity<SubcategoryDTO> saveSubcategory(@Valid @RequestBody SubcategoryForm subcategoryForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
+	public ResponseEntity<SubCategoryDTO> saveSubCategory(@Valid @RequestBody SubCategoryForm subCategoryForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 
-		if (subcategoryForm.getProductCategoryId() == null) {
+		if (subCategoryForm.getProductCategoryId() == null) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.PRODUCT_ID_NOT_FOUND_ON_REQUEST);
 		}
 
-		Optional<ProductCategory> productCategoryOptional = productCategoryService.findById(subcategoryForm.getProductCategoryId());
+		Optional<ProductCategory> productCategoryOptional = productCategoryService.findById(subCategoryForm.getProductCategoryId());
 
 		if (!productCategoryOptional.isPresent()) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.PRODUCT_CATEGORY_NOT_FOUND);
 		}
 
 		ProductCategory productCategory = productCategoryOptional.get();
-		Subcategory subcategory = SubcategoryMapper.INSTANCE.mapSubcategoryFormToSubcategory(subcategoryForm);
-		subcategory.setProductCategory(productCategory);
-		subcategory = subcategoryService.save(subcategory);
-		uri = uriBuilder.path("/subcategories/{id}").buildAndExpand(subcategory.getId()).encode().toUri();
+		SubCategory subCategory = SubCategoryMapper.INSTANCE.mapSubCategoryFormToSubCategory(subCategoryForm);
+		subCategory.setProductCategory(productCategory);
+		subCategory = subCategoryService.save(subCategory);
+		uri = uriBuilder.path("/subCategories/{id}").buildAndExpand(subCategory.getId()).encode().toUri();
 
-		return ResponseEntity.created(uri).body(SubcategoryMapper.INSTANCE.mapSubcategoryToSubcategoryDTO(subcategory));
+		return ResponseEntity.created(uri).body(SubCategoryMapper.INSTANCE.mapSubCategoryToSubCategoryDTO(subCategory));
 	}
 
 	@ResponseBody
 	@GetMapping
-	@ApiOperation(value = "Get all subcategories")
-	public ResponseEntity<List<SubcategoryDTO>> getSubcategories(
+	@ApiOperation(value = "Get all subCategories")
+	public ResponseEntity<List<SubCategoryDTO>> getSubCategories(
 			@RequestParam(required = false) String name,
 			@RequestParam(required = false) Long productCategoryId,
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber,
@@ -106,36 +106,38 @@ public class SubcategoryController {
 				.withSize(pageSize)
 				.withSort(sortBy)
 				.buildPageable();
-		List<Subcategory> subcategories =
+		List<SubCategory> subCategories =
 				(name == null || name.isEmpty()) ?
-						subcategoryService.findAllPageable(page, productCategoryId) :
-							subcategoryService.findSubcategoryByName(page, name);
-						return ResponseEntity.ok(SubcategoryMapper.INSTANCE
-								.mapSubcategoryListToSubcategoryDTOList(subcategories));
+						subCategoryService.findAllPageable(page, productCategoryId) :
+							subCategoryService.findSubCategoryByName(page, name);
+						return ResponseEntity.ok(SubCategoryMapper.INSTANCE
+								.mapSubCategoryListToSubCategoryDTOList(subCategories));
 	}
 
 	@ResponseBody
 	@GetMapping(path = "/{id}")
-	@ApiOperation(value = "Get subcategory by id")
-	public ResponseEntity<SubcategoryDTO> getSubcategoriesBydId(@PathVariable("id") Long subcategoryId) {
-		Optional<Subcategory> subcategoryOptional = subcategoryService.findById(subcategoryId);
-        return subcategoryOptional.map(subcategory ->
-				ResponseEntity.ok(SubcategoryMapper.INSTANCE.mapSubcategoryToSubcategoryDTO(subcategory)))
+	@ApiOperation(value = "Get SubCategory by id")
+	public ResponseEntity<SubCategoryDTO> getSubCategoriesBydId(@PathVariable("id") Long subCategoryId) {
+		Optional<SubCategory> subcategoryOptional = subCategoryService.findById(subCategoryId);
+        return subcategoryOptional.map(subCategory ->
+				ResponseEntity.ok(SubCategoryMapper.INSTANCE.mapSubCategoryToSubCategoryDTO(subCategory)))
 				.orElseGet(() -> ResponseEntity.notFound().build());
     }
 
 	@ResponseBody
 	@PatchMapping(path = "/{id}")
 	@Transactional
-	@ApiOperation(value = "Update a subcategory")
+	@ApiOperation(value = "Update a SubCategory")
 	@RolesAllowed("easy-shopping-admin")
-	public ResponseEntity<SubcategoryDTO> updateSubcategory(@PathVariable("id") Long subcategoryId, @RequestBody SubcategoryForm subcategoryForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
+	public ResponseEntity<SubCategoryDTO> updateSubCategory(@PathVariable("id") Long subCategoryId,
+															@RequestBody SubCategoryForm subCategoryForm,
+															UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 
-		if (subcategoryForm.getProductCategoryId() == null) {
+		if (subCategoryForm.getProductCategoryId() == null) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.PRODUCT_CATEGORY_ID_NOT_FOUND_ON_REQUEST);
 		}
 
-		Optional<ProductCategory> productCatgoryOptional = productCategoryService.findById(subcategoryForm.getProductCategoryId());
+		Optional<ProductCategory> productCatgoryOptional = productCategoryService.findById(subCategoryForm.getProductCategoryId());
 
 		if (!productCatgoryOptional.isPresent()) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.PRODUCT_CATEGORY_NOT_FOUND);
@@ -143,40 +145,40 @@ public class SubcategoryController {
 
 		ProductCategory productCategory = productCatgoryOptional.get();
 
-		Optional<Subcategory> currentSubcategory = subcategoryService.findById(subcategoryId);
+		Optional<SubCategory> currentSubCategory = subCategoryService.findById(subCategoryId);
 
-		if (!currentSubcategory.isPresent()) {
+		if (!currentSubCategory.isPresent()) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.SUBCATEGORY_NOT_FOUND);
 		}
 
-		Subcategory subcategory = currentSubcategory.get();
-		SubcategoryMapper.INSTANCE.mapSubcategoryFormToUpdateSubcategory(subcategory, subcategoryForm);
-		subcategory.setId(subcategoryId);
-		subcategory.setProductCategory(productCategory);
-		subcategory = subcategoryService.save(subcategory);
+		SubCategory subCategory = currentSubCategory.get();
+		SubCategoryMapper.INSTANCE.mapSubCategoryFormToUpdateSubCategory(subCategory, subCategoryForm);
+		subCategory.setId(subCategoryId);
+		subCategory.setProductCategory(productCategory);
+		subCategory = subCategoryService.save(subCategory);
 
-		uri = uriBuilder.path("/subcategories/{id}").buildAndExpand(subcategory.getId()).encode().toUri();
+		uri = uriBuilder.path("/subCategories/{id}").buildAndExpand(subCategory.getId()).encode().toUri();
 
-		return ResponseEntity.accepted().location(uri).body(SubcategoryMapper.INSTANCE.mapSubcategoryToSubcategoryDTO(subcategory));
+		return ResponseEntity.accepted().location(uri).body(SubCategoryMapper.INSTANCE.mapSubCategoryToSubCategoryDTO(subCategory));
 	}
 
 	@ResponseBody
 	@DeleteMapping(path = "/{id}")
 	@Transactional
-	@ApiOperation(value = "Remove a subcategory")
+	@ApiOperation(value = "Remove a SubCategory")
 	@RolesAllowed("easy-shopping-admin")
-	public ResponseEntity<SubcategoryDTO> removeSubcategory(@PathVariable("id") Long subcategoryId) throws EasyShoppingException {
-		Optional<Subcategory> subcategoryOptional = subcategoryService.findById(subcategoryId);
+	public ResponseEntity<SubCategoryDTO> removeSubCategory(@PathVariable("id") Long subCategoryId) throws EasyShoppingException {
+		Optional<SubCategory> subCategoryOptional = subCategoryService.findById(subCategoryId);
 
-		if (!subcategoryOptional.isPresent()) {
+		if (!subCategoryOptional.isPresent()) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.SUBCATEGORY_NOT_FOUND);
 		}
 
-		if (productService.isThereAnyProductWithSubcategoryId(subcategoryId)) {
+		if (productService.isThereAnyProductWithSubCategoryId(subCategoryId)) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.CANNOT_REMOVE_PRODUCT_CATEGORY_IN_USE);
 		}
 
-		subcategoryService.remove(subcategoryId);
+		subCategoryService.remove(subCategoryId);
 		return ResponseEntity.ok().build();
 	}
 }

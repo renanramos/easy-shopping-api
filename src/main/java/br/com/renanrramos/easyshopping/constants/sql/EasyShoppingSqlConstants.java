@@ -14,7 +14,7 @@ public class EasyShoppingSqlConstants {
 
 	public static final String GET_CUSTOMER_BY_ID = "FROM Customer c WHERE c.id = :customerId";
 
-	public static final String GET_SUBCATEGORIES_BY_NAME = "SELECT s FROM Subcategory s LEFT JOIN ProductCategory p ON p.id = s.productCategory.id WHERE s.name LIKE %:name% or p.name LIKE %:name%";
+	public static final String GET_SUBCATEGORIES_BY_NAME = "SELECT s FROM SubCategory s LEFT JOIN ProductCategory p ON p.id = s.productCategory.id WHERE s.name LIKE %:name% or p.name LIKE %:name%";
 
 	public static final String GET_CUSTOMER_BY_NAME = "SELECT c FROM Customer c WHERE (c.name LIKE %:name% or c.cpf LIKE %:name% or c.email LIKE %:name%)";
 
@@ -34,9 +34,9 @@ public class EasyShoppingSqlConstants {
 
 	public static final String GET_STOCK_ITEM_BY_PRODUCT_NAME = "SELECT si FROM StockItem si LEFT JOIN Stock s ON s.id = si.stock.id LEFT JOIN Product p ON p.id = si.productId WHERE p.name LIKE %:name% AND s.id = :stockId";
 
-	public static final String GET_PRODUCT_BY_NAME = "SELECT p FROM Product p LEFT JOIN Subcategory s ON s.id = p.subcategory.id WHERE s.name LIKE %:name% OR p.name LIKE %:name%";
+	public static final String GET_PRODUCT_BY_NAME = "SELECT p FROM Product p LEFT JOIN SubCategory s ON s.id = p.subCategory.id WHERE s.name LIKE %:name% OR p.name LIKE %:name%";
 
-	public static final String GET_PRODUCT_BY_NAME_AND_COMPANY_ID = "Select p FROM Product p LEFT JOIN Subcategory s ON s.id = p.subcategory.id WHERE s.name LIKE %:name% OR p.name LIKE %:name% AND p.companyId = :tokenId";
+	public static final String GET_PRODUCT_BY_NAME_AND_COMPANY_ID = "Select p FROM Product p LEFT JOIN SubCategory s ON s.id = p.subCategory.id WHERE s.name LIKE %:name% OR p.name LIKE %:name% AND p.companyId = :tokenId";
 
 	public static final String GET_CUSTOMER_ORDERS = "SELECT o FROM Order o WHERE o.customerId = :customerId";
 

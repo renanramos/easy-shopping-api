@@ -42,7 +42,7 @@ import br.com.renanrramos.easyshopping.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.model.Product;
 import br.com.renanrramos.easyshopping.model.ProductImage;
 import br.com.renanrramos.easyshopping.model.Store;
-import br.com.renanrramos.easyshopping.model.Subcategory;
+import br.com.renanrramos.easyshopping.model.SubCategory;
 import br.com.renanrramos.easyshopping.model.dto.ProductDTO;
 import br.com.renanrramos.easyshopping.model.dto.ProductImageDTO;
 import br.com.renanrramos.easyshopping.model.form.ProductForm;
@@ -52,7 +52,7 @@ import br.com.renanrramos.easyshopping.service.impl.ProductImageService;
 import br.com.renanrramos.easyshopping.service.impl.ProductService;
 import br.com.renanrramos.easyshopping.service.impl.StockItemService;
 import br.com.renanrramos.easyshopping.service.impl.StoreService;
-import br.com.renanrramos.easyshopping.service.impl.SubcategoryService;
+import br.com.renanrramos.easyshopping.service.impl.SubCategoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -74,7 +74,7 @@ public class ProductController {
 	private ProductService productService;
 
 	@Autowired
-	private SubcategoryService productCategoryService;
+	private SubCategoryService productCategoryService;
 
 	@Autowired
 	private StoreService storeService;
@@ -96,7 +96,7 @@ public class ProductController {
 	public ResponseEntity<ProductDTO> saveProduct(@Valid @RequestBody ProductForm productForm,
 			UriComponentsBuilder uriComponentsBuilder) {
 
-		if (productForm.getProductSubcategoryId() == null) {
+		if (productForm.getProductSubCategoryId() == null) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_ID_NOT_FOUND_ON_REQUEST);
 		}
 
@@ -104,7 +104,7 @@ public class ProductController {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.STORE_ID_NOT_FOUND_ON_REQUEST);
 		}
 
-		Optional<Subcategory> productCategoryOptional = productCategoryService.findById(productForm.getProductSubcategoryId());
+		Optional<SubCategory> productCategoryOptional = productCategoryService.findById(productForm.getProductSubCategoryId());
 
 		if (!productCategoryOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_NOT_FOUND);
@@ -118,10 +118,10 @@ public class ProductController {
 
 		Store store = storeOptional.get();
 
-		Subcategory productCategory = productCategoryOptional.get();
+		SubCategory productCategory = productCategoryOptional.get();
 
 		Product product = ProductMapper.INSTANCE.mapProductFormToProduct(productForm);
-		product.setSubcategory(productCategory);
+		product.setSubCategory(productCategory);
 		product.setStore(store);
 		product.setPublished(false);
 		product.setCompanyId(authenticationServiceImpl.getName());
@@ -176,9 +176,9 @@ public class ProductController {
 	}
 
 	@ResponseBody
-	@GetMapping("/subcategory")
+	@GetMapping("/subCategory")
 	@ApiOperation(value = "Get all products")
-	public ResponseEntity<List<ProductDTO>> getAllProductsBySubcategory(
+	public ResponseEntity<List<ProductDTO>> getAllProductsBySubCategory(
 			@RequestParam(name = "published", required = false) boolean onlyPublishedProducts,
 			@RequestParam(required = false) Long subcategoryId,
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber,
@@ -189,7 +189,7 @@ public class ProductController {
 				.withSize(pageSize)
 				.withSort(sortBy)
 				.buildPageable();
-		List<Product> products = productService.getProductsBySubcategoryId(page, subcategoryId);
+		List<Product> products = productService.getProductsBySubCategoryId(page, subcategoryId);
 		return onlyPublishedProducts
 				? ResponseEntity.ok(ProductMapper.INSTANCE.mapPublishedProductListToProductDTOList(products))
 				: ResponseEntity.ok(ProductMapper.INSTANCE.mapProductListToProductDTOList(products));
@@ -217,7 +217,7 @@ public class ProductController {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_ID_NOT_FOUND_ON_REQUEST);
 		}
 
-		if (productForm.getProductSubcategoryId() == null) {
+		if (productForm.getProductSubCategoryId() == null) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_ID_NOT_FOUND_ON_REQUEST);
 		}
 
@@ -231,13 +231,13 @@ public class ProductController {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_NOT_FOUND);
 		}
 
-		Optional<Subcategory> productCategoryOptional = productCategoryService.findById(productForm.getProductSubcategoryId());
+		Optional<SubCategory> productCategoryOptional = productCategoryService.findById(productForm.getProductSubCategoryId());
 
 		if (!productCategoryOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_NOT_FOUND);
 		}
 
-		Subcategory productCategory = productCategoryOptional.get();
+		SubCategory productCategory = productCategoryOptional.get();
 
 		Optional<Store> storeOptional = storeService.findById(productForm.getStoreId());
 
@@ -249,7 +249,7 @@ public class ProductController {
 
 		Product product = currentProduct.get();
 		ProductMapper.INSTANCE.mapProductFormToUpdateProduct(product, productForm);
-		product.setSubcategory(productCategory);
+		product.setSubCategory(productCategory);
 		product.setStore(store);
 		product.setId(productId);
 		product.setCompanyId(authenticationServiceImpl.getName());

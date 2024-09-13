@@ -207,7 +207,7 @@ public class ProductCategoryControllerTest {
 	public void removeProductCategory_withValidProductCategoryId_shouldRemoveSuccessfully() throws Exception {
 
 		when(productCategoryService.findById(anyLong())).thenReturn(Optional.of(getProductCategoryInstance(1L)));
-		when(productService.isThereAnyProductWithSubcategoryId(anyLong())).thenReturn(false);
+		when(productService.isThereAnyProductWithSubCategoryId(anyLong())).thenReturn(false);
 
 		mockMvc.perform(delete(BASE_URL + "/1")).andExpect(status().isOk());
 
@@ -222,19 +222,19 @@ public class ProductCategoryControllerTest {
 		mockMvc.perform(delete(BASE_URL + "/1")).andExpect(status().isOk());
 
 		verify(productCategoryService, never()).remove(anyLong());
-		verify(productService, never()).isThereAnyProductWithSubcategoryId(anyLong());
+		verify(productService, never()).isThereAnyProductWithSubCategoryId(anyLong());
 	}
 
 	@Test(expected = Exception.class)
 	public void removeProductCategory_whenProductHasProductCategoryId_shouldThrowException() throws Exception {
 
 		when(productCategoryService.findById(anyLong())).thenReturn(Optional.of(getProductCategoryInstance(1L)));
-		when(productService.isThereAnyProductWithSubcategoryId(anyLong())).thenReturn(true);
+		when(productService.isThereAnyProductWithSubCategoryId(anyLong())).thenReturn(true);
 
 		mockMvc.perform(delete(BASE_URL + "/1")).andExpect(status().isOk());
 
 		verify(productCategoryService, never()).remove(anyLong());
-		verify(productService, times(1)).isThereAnyProductWithSubcategoryId(anyLong());
+		verify(productService, times(1)).isThereAnyProductWithSubCategoryId(anyLong());
 	}
 
 	private ProductCategory getProductCategoryInstance(Long id) {
