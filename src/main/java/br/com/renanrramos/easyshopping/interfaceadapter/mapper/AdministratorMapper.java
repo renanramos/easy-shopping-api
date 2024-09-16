@@ -1,8 +1,8 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
 import br.com.renanrramos.easyshopping.model.Administrator;
-import br.com.renanrramos.easyshopping.model.dto.AdministratorDTO;
-import br.com.renanrramos.easyshopping.model.form.AdministratorForm;
+import br.com.renanrramos.easyshopping.infra.controller.rest.dto.AdministratorDTO;
+import br.com.renanrramos.easyshopping.infra.controller.rest.form.AdministratorForm;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 

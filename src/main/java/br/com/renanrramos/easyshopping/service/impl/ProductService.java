@@ -19,7 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import br.com.renanrramos.easyshopping.model.Product;
-import br.com.renanrramos.easyshopping.repository.ProductRepository;
+import br.com.renanrramos.easyshopping.interfaceadapter.repository.ProductRepository;
 import br.com.renanrramos.easyshopping.service.CommonService;
 
 /**

@@ -4,7 +4,7 @@
  * Creator: renan.ramos - 07/08/2020
  * ------------------------------------------------------------
  */
-package br.com.renanrramos.easyshopping.exception;
+package br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception;
 
 /**
  * @author renan.ramos

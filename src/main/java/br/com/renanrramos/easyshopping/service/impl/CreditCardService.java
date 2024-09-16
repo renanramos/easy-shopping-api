@@ -16,7 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.renanrramos.easyshopping.model.CreditCard;
-import br.com.renanrramos.easyshopping.repository.CreditCardRepositoy;
+import br.com.renanrramos.easyshopping.interfaceadapter.repository.CreditCardRepositoy;
 import br.com.renanrramos.easyshopping.service.CommonService;
 
 /**

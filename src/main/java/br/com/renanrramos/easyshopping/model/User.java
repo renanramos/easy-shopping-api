@@ -21,7 +21,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 import br.com.renanrramos.easyshopping.constants.messages.ValidationMessagesConstants;
-import br.com.renanrramos.easyshopping.enums.Profile;
+import br.com.renanrramos.easyshopping.core.domain.enums.Profile;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

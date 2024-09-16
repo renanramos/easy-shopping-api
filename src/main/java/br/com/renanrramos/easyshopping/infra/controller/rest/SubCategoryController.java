@@ -4,7 +4,7 @@
  * Creator: renan.ramos - 08/08/2020
  * ------------------------------------------------------------
  */
-package br.com.renanrramos.easyshopping.controller.rest;
+package br.com.renanrramos.easyshopping.infra.controller.rest;
 
 import java.net.URI;
 import java.util.List;
@@ -33,12 +33,12 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
-import br.com.renanrramos.easyshopping.exception.EasyShoppingException;
-import br.com.renanrramos.easyshopping.factory.PageableFactory;
+import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
+import br.com.renanrramos.easyshopping.infra.controller.rest.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.model.ProductCategory;
 import br.com.renanrramos.easyshopping.model.SubCategory;
-import br.com.renanrramos.easyshopping.model.dto.SubCategoryDTO;
-import br.com.renanrramos.easyshopping.model.form.SubCategoryForm;
+import br.com.renanrramos.easyshopping.infra.controller.rest.dto.SubCategoryDTO;
+import br.com.renanrramos.easyshopping.infra.controller.rest.form.SubCategoryForm;
 import br.com.renanrramos.easyshopping.service.impl.ProductCategoryService;
 import br.com.renanrramos.easyshopping.service.impl.ProductService;
 import br.com.renanrramos.easyshopping.service.impl.SubCategoryService;

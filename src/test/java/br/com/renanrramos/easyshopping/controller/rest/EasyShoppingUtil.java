@@ -6,7 +6,7 @@
  */
 package br.com.renanrramos.easyshopping.controller.rest;
 
-import br.com.renanrramos.easyshopping.enums.Profile;
+import br.com.renanrramos.easyshopping.core.domain.enums.Profile;
 import br.com.renanrramos.easyshopping.model.Address;
 import br.com.renanrramos.easyshopping.model.Company;
 import br.com.renanrramos.easyshopping.model.CreditCard;
@@ -19,9 +19,9 @@ import br.com.renanrramos.easyshopping.model.Stock;
 import br.com.renanrramos.easyshopping.model.StockItem;
 import br.com.renanrramos.easyshopping.model.Store;
 import br.com.renanrramos.easyshopping.model.User;
-import br.com.renanrramos.easyshopping.model.form.CreditCardForm;
-import br.com.renanrramos.easyshopping.model.form.OrderItemForm;
-import br.com.renanrramos.easyshopping.model.form.StockItemForm;
+import br.com.renanrramos.easyshopping.infra.controller.rest.form.CreditCardForm;
+import br.com.renanrramos.easyshopping.infra.controller.rest.form.OrderItemForm;
+import br.com.renanrramos.easyshopping.infra.controller.rest.form.StockItemForm;
 
 /**
  * @author renan.ramos

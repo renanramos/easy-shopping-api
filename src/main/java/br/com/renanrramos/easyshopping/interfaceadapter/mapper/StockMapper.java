@@ -2,8 +2,8 @@ package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
 import br.com.renanrramos.easyshopping.model.Stock;
 import br.com.renanrramos.easyshopping.model.StockItem;
-import br.com.renanrramos.easyshopping.model.dto.StockDTO;
-import br.com.renanrramos.easyshopping.model.form.StockForm;
+import br.com.renanrramos.easyshopping.infra.controller.rest.dto.StockDTO;
+import br.com.renanrramos.easyshopping.infra.controller.rest.form.StockForm;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 

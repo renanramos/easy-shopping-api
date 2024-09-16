@@ -4,7 +4,7 @@
  * Creator: renan.ramos - 30/09/2020
  * ------------------------------------------------------------
  */
-package br.com.renanrramos.easyshopping.exception;
+package br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

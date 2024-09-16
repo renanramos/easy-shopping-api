@@ -4,7 +4,7 @@
  * Creator: renan.ramos - 07/07/2020
  * ------------------------------------------------------------
  */
-package br.com.renanrramos.easyshopping.controller.rest;
+package br.com.renanrramos.easyshopping.infra.controller.rest;
 
 import java.io.IOException;
 import java.net.URI;
@@ -37,16 +37,16 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
-import br.com.renanrramos.easyshopping.exception.EasyShoppingException;
-import br.com.renanrramos.easyshopping.factory.PageableFactory;
+import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
+import br.com.renanrramos.easyshopping.infra.controller.rest.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.model.Product;
 import br.com.renanrramos.easyshopping.model.ProductImage;
 import br.com.renanrramos.easyshopping.model.Store;
 import br.com.renanrramos.easyshopping.model.SubCategory;
-import br.com.renanrramos.easyshopping.model.dto.ProductDTO;
-import br.com.renanrramos.easyshopping.model.dto.ProductImageDTO;
-import br.com.renanrramos.easyshopping.model.form.ProductForm;
-import br.com.renanrramos.easyshopping.model.form.ProductImageForm;
+import br.com.renanrramos.easyshopping.infra.controller.rest.dto.ProductDTO;
+import br.com.renanrramos.easyshopping.infra.controller.rest.dto.ProductImageDTO;
+import br.com.renanrramos.easyshopping.infra.controller.rest.form.ProductForm;
+import br.com.renanrramos.easyshopping.infra.controller.rest.form.ProductImageForm;
 import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
 import br.com.renanrramos.easyshopping.service.impl.ProductImageService;
 import br.com.renanrramos.easyshopping.service.impl.ProductService;

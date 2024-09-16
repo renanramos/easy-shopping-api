@@ -2,8 +2,8 @@ package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
 import br.com.renanrramos.easyshopping.model.Product;
 import br.com.renanrramos.easyshopping.model.ProductCategory;
-import br.com.renanrramos.easyshopping.model.dto.ProductCategoryDTO;
-import br.com.renanrramos.easyshopping.model.form.ProductCategoryForm;
+import br.com.renanrramos.easyshopping.infra.controller.rest.dto.ProductCategoryDTO;
+import br.com.renanrramos.easyshopping.infra.controller.rest.form.ProductCategoryForm;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +11,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.instancio.Select.field;
-import static org.junit.jupiter.api.Assertions.*;
 
 class ProductCategoryMapperTest {
 

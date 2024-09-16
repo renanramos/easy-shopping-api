@@ -21,6 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.Arrays;
 import java.util.Optional;
 
+import br.com.renanrramos.easyshopping.infra.controller.rest.PurchaseController;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,7 +48,7 @@ import br.com.renanrramos.easyshopping.model.Order;
 import br.com.renanrramos.easyshopping.model.OrderItem;
 import br.com.renanrramos.easyshopping.model.Purchase;
 import br.com.renanrramos.easyshopping.model.StockItem;
-import br.com.renanrramos.easyshopping.model.form.PurchaseForm;
+import br.com.renanrramos.easyshopping.infra.controller.rest.form.PurchaseForm;
 import br.com.renanrramos.easyshopping.service.impl.AddressService;
 import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
 import br.com.renanrramos.easyshopping.service.impl.CreditCardService;

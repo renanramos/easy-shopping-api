@@ -1,8 +1,8 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
 import br.com.renanrramos.easyshopping.model.User;
-import br.com.renanrramos.easyshopping.model.dto.UserDTO;
-import br.com.renanrramos.easyshopping.model.form.UserForm;
+import br.com.renanrramos.easyshopping.infra.controller.rest.dto.UserDTO;
+import br.com.renanrramos.easyshopping.infra.controller.rest.form.UserForm;
 import org.mapstruct.Mapper;
 import org.mapstruct.Named;
 import org.mapstruct.ReportingPolicy;

@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import br.com.renanrramos.easyshopping.infra.controller.rest.CompanyController;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

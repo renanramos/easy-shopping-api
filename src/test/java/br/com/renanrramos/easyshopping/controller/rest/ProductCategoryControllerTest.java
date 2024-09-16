@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import br.com.renanrramos.easyshopping.infra.controller.rest.ProductCategoryController;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,7 +47,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.renanrramos.easyshopping.model.ProductCategory;
-import br.com.renanrramos.easyshopping.model.form.ProductCategoryForm;
+import br.com.renanrramos.easyshopping.infra.controller.rest.form.ProductCategoryForm;
 import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
 import br.com.renanrramos.easyshopping.service.impl.ProductCategoryService;
 import br.com.renanrramos.easyshopping.service.impl.ProductService;

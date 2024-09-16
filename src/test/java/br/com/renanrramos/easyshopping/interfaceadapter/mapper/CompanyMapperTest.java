@@ -1,9 +1,9 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
-import br.com.renanrramos.easyshopping.enums.Profile;
+import br.com.renanrramos.easyshopping.core.domain.enums.Profile;
 import br.com.renanrramos.easyshopping.model.Company;
-import br.com.renanrramos.easyshopping.model.dto.CompanyDTO;
-import br.com.renanrramos.easyshopping.model.form.CompanyForm;
+import br.com.renanrramos.easyshopping.infra.controller.rest.dto.CompanyDTO;
+import br.com.renanrramos.easyshopping.infra.controller.rest.form.CompanyForm;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +11,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.instancio.Select.field;
-import static org.junit.jupiter.api.Assertions.*;
 
 class CompanyMapperTest {
 

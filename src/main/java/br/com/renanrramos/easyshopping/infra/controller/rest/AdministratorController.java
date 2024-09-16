@@ -4,7 +4,7 @@
  * Creator: renan.ramos - 02/07/2020
  * ------------------------------------------------------------
  */
-package br.com.renanrramos.easyshopping.controller.rest;
+package br.com.renanrramos.easyshopping.infra.controller.rest;
 
 import java.net.URI;
 import java.util.List;
@@ -34,12 +34,12 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
-import br.com.renanrramos.easyshopping.enums.Profile;
-import br.com.renanrramos.easyshopping.exception.EasyShoppingException;
-import br.com.renanrramos.easyshopping.factory.PageableFactory;
+import br.com.renanrramos.easyshopping.core.domain.enums.Profile;
+import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
+import br.com.renanrramos.easyshopping.infra.controller.rest.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.model.Administrator;
-import br.com.renanrramos.easyshopping.model.dto.AdministratorDTO;
-import br.com.renanrramos.easyshopping.model.form.AdministratorForm;
+import br.com.renanrramos.easyshopping.infra.controller.rest.dto.AdministratorDTO;
+import br.com.renanrramos.easyshopping.infra.controller.rest.form.AdministratorForm;
 import br.com.renanrramos.easyshopping.service.impl.AdministratorService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

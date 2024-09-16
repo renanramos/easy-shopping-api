@@ -4,7 +4,7 @@
  * Creator: renan.ramos - 22/07/2020
  * ------------------------------------------------------------
  */
-package br.com.renanrramos.easyshopping.factory;
+package br.com.renanrramos.easyshopping.infra.controller.rest.factory;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -59,7 +59,7 @@ public class PageableFactory {
 				String sortType = p[0];
 				String sortDirection = p[1];
 				
-				if (sortDirection.equals("asc") && !sortDirection.equals("desc")) {
+				if (sortDirection.equals("asc")) {
 					sortDirection = "asc";
 				}
 				

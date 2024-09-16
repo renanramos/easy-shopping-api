@@ -1,9 +1,8 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
 import br.com.renanrramos.easyshopping.model.Product;
-import br.com.renanrramos.easyshopping.model.ProductImage;
-import br.com.renanrramos.easyshopping.model.dto.ProductDTO;
-import br.com.renanrramos.easyshopping.model.form.ProductForm;
+import br.com.renanrramos.easyshopping.infra.controller.rest.dto.ProductDTO;
+import br.com.renanrramos.easyshopping.infra.controller.rest.form.ProductForm;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 

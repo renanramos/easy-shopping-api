@@ -11,7 +11,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.PrimaryKeyJoinColumn;
 
-import br.com.renanrramos.easyshopping.enums.Profile;
+import br.com.renanrramos.easyshopping.core.domain.enums.Profile;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

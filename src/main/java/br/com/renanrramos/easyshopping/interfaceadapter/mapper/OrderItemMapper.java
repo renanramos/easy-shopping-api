@@ -1,8 +1,8 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
 import br.com.renanrramos.easyshopping.model.OrderItem;
-import br.com.renanrramos.easyshopping.model.dto.OrderItemDTO;
-import br.com.renanrramos.easyshopping.model.form.OrderItemForm;
+import br.com.renanrramos.easyshopping.infra.controller.rest.dto.OrderItemDTO;
+import br.com.renanrramos.easyshopping.infra.controller.rest.form.OrderItemForm;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;

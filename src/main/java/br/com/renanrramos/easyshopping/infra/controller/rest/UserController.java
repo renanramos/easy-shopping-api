@@ -4,7 +4,7 @@
  * Creator: renan.ramos - 22/10/2020
  * ------------------------------------------------------------
  */
-package br.com.renanrramos.easyshopping.controller.rest;
+package br.com.renanrramos.easyshopping.infra.controller.rest;
 
 import java.util.Optional;
 
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.renanrramos.easyshopping.model.User;
-import br.com.renanrramos.easyshopping.model.dto.UserDTO;
+import br.com.renanrramos.easyshopping.infra.controller.rest.dto.UserDTO;
 import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
 import br.com.renanrramos.easyshopping.service.impl.UserService;
 import io.swagger.annotations.Api;

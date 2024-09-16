@@ -16,7 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.renanrramos.easyshopping.model.ProductCategory;
-import br.com.renanrramos.easyshopping.repository.ProductCategoryRepository;
+import br.com.renanrramos.easyshopping.interfaceadapter.repository.ProductCategoryRepository;
 import br.com.renanrramos.easyshopping.service.CommonService;
 
 /**

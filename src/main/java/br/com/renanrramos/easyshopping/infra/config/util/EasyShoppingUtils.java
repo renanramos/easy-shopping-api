@@ -4,7 +4,7 @@
  * Creator: renan.ramos - 11/08/2020
  * ------------------------------------------------------------
  */
-package br.com.renanrramos.easyshopping.config.util;
+package br.com.renanrramos.easyshopping.infra.config.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import br.com.renanrramos.easyshopping.exception.EasyShoppingException;
+import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
 
 /**
  * @author renan.ramos

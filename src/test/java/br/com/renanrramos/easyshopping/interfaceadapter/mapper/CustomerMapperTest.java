@@ -1,15 +1,14 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
 import br.com.renanrramos.easyshopping.model.Customer;
-import br.com.renanrramos.easyshopping.model.dto.CustomerDTO;
-import br.com.renanrramos.easyshopping.model.form.CustomerForm;
+import br.com.renanrramos.easyshopping.infra.controller.rest.dto.CustomerDTO;
+import br.com.renanrramos.easyshopping.infra.controller.rest.form.CustomerForm;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class CustomerMapperTest {
 

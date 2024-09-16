@@ -21,11 +21,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Optional;
 
-import org.hamcrest.core.IsNot;
+import br.com.renanrramos.easyshopping.infra.controller.rest.StockItemController;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,7 +48,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import br.com.renanrramos.easyshopping.model.Stock;
 import br.com.renanrramos.easyshopping.model.StockItem;
 import br.com.renanrramos.easyshopping.model.Store;
-import br.com.renanrramos.easyshopping.model.form.StockItemForm;
+import br.com.renanrramos.easyshopping.infra.controller.rest.form.StockItemForm;
 import br.com.renanrramos.easyshopping.service.impl.ProductService;
 import br.com.renanrramos.easyshopping.service.impl.StockItemService;
 import br.com.renanrramos.easyshopping.service.impl.StockService;

@@ -4,7 +4,7 @@
  * Creator: renan.ramos - 29/06/2020
  * ------------------------------------------------------------
  */
-package br.com.renanrramos.easyshopping.controller.exceptionhandler;
+package br.com.renanrramos.easyshopping.infra.controller.exceptionhandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,9 +28,9 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
-import br.com.renanrramos.easyshopping.exception.EasyShoppingException;
-import br.com.renanrramos.easyshopping.model.error.ApiError;
-import br.com.renanrramos.easyshopping.model.error.builder.ApiErrorBuilder;
+import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
+import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.error.ApiError;
+import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.error.builder.ApiErrorBuilder;
 
 /**
  * @author renan.ramos

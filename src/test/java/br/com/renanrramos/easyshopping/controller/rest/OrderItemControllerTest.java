@@ -16,11 +16,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
+import br.com.renanrramos.easyshopping.infra.controller.rest.OrderItemController;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.OrderItemMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,7 +42,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import br.com.renanrramos.easyshopping.model.Order;
 import br.com.renanrramos.easyshopping.model.OrderItem;
 import br.com.renanrramos.easyshopping.model.Product;
-import br.com.renanrramos.easyshopping.model.form.OrderItemForm;
+import br.com.renanrramos.easyshopping.infra.controller.rest.form.OrderItemForm;
 import br.com.renanrramos.easyshopping.service.impl.OrderItemService;
 import br.com.renanrramos.easyshopping.service.impl.OrderService;
 import br.com.renanrramos.easyshopping.service.impl.ProductService;

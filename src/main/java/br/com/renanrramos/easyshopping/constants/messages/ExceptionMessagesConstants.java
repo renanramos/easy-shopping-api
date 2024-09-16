@@ -39,7 +39,6 @@ public class ExceptionMessagesConstants {
 	public static final String ADDRESS_ID_NOT_FOUND_ON_REQUEST = "Id do endereço é obrigatório";
 	public static final String CREDIT_CARD_ID_NOT_FOUND_ON_REQUEST = "Id do cartão de crédito é obrigatório";
 
-	public static final String EMAIL_ALREADY_EXIST = "O email informado já é utilizado.";
 	public static final String CPF_ALREADY_EXIST = "O CPF informado já está cadastrado.";
 	public static final String CNPJ_ALREADY_EXIST = "O CNPJ informado já está cadastrado.";
 
@@ -49,17 +48,10 @@ public class ExceptionMessagesConstants {
 	public static final String ERRORS_FOUND = "Erros encontrados";
 
 	public static final String INVALID_CREDENTIALS = "Email/senha inválidos.";
-	public static final String USER_DISABLED = "Usuário desabilitado";
 
 	public static final String CANNOT_REMOVE_PRODUCT_CATEGORY_IN_USE = "A categoria do produto ainda é utilizada e não pode ser removida.";
 	public static final String INTERNAL_ERROR = "Erro no momento de efetuar a ação";
 
-	public static final String INVALID_TOKEN = "Token informado é inválido.";
-	public static final String EXPIRED_TOKEN = "Token informado expirou.";
-	public static final String UNAUTHENTICATED_USER = "Usuário não autenticado";
-	public static final String UNACTIVATED_USER = "Usuário ainda não ativado.";
-
-	public static final String WRONG_USER_ID = "Usuário selecionado é diferente do usuário logado.";
 	public static final String WRONG_PRODUCT_ID = "Produto informado não é igual ao que está no parâmetro.";
 	public static final String INVALID_FILE = "Arquivo inválido ou nulo.";
 	public static final String PRODUCT_IMAGE_NOT_FOUND = "Imagem não localizada";

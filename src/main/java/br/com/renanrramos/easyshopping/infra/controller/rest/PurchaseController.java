@@ -4,7 +4,7 @@
  * Creator: renan.ramos - 02/12/2020
  * ------------------------------------------------------------
  */
-package br.com.renanrramos.easyshopping.controller.rest;
+package br.com.renanrramos.easyshopping.infra.controller.rest;
 
 import java.net.URI;
 import java.time.LocalDateTime;
@@ -29,16 +29,15 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
-import br.com.renanrramos.easyshopping.exception.EasyShoppingException;
+import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
 import br.com.renanrramos.easyshopping.model.Address;
 import br.com.renanrramos.easyshopping.model.CreditCard;
 import br.com.renanrramos.easyshopping.model.Order;
 import br.com.renanrramos.easyshopping.model.OrderItem;
 import br.com.renanrramos.easyshopping.model.Purchase;
 import br.com.renanrramos.easyshopping.model.StockItem;
-import br.com.renanrramos.easyshopping.model.dto.PurchaseDTO;
-import br.com.renanrramos.easyshopping.model.dto.PurchaseStatisticDTO;
-import br.com.renanrramos.easyshopping.model.form.PurchaseForm;
+import br.com.renanrramos.easyshopping.infra.controller.rest.dto.PurchaseDTO;
+import br.com.renanrramos.easyshopping.infra.controller.rest.form.PurchaseForm;
 import br.com.renanrramos.easyshopping.service.impl.AddressService;
 import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
 import br.com.renanrramos.easyshopping.service.impl.CreditCardService;

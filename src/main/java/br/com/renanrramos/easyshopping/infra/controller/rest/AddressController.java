@@ -4,7 +4,7 @@
  * Creator: renan.ramos - 12/07/2020
  * ------------------------------------------------------------
  */
-package br.com.renanrramos.easyshopping.controller.rest;
+package br.com.renanrramos.easyshopping.infra.controller.rest;
 
 import java.net.URI;
 import java.util.List;
@@ -34,10 +34,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
-import br.com.renanrramos.easyshopping.factory.PageableFactory;
+import br.com.renanrramos.easyshopping.infra.controller.rest.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.model.Address;
-import br.com.renanrramos.easyshopping.model.dto.AddressDTO;
-import br.com.renanrramos.easyshopping.model.form.AddressForm;
+import br.com.renanrramos.easyshopping.infra.controller.rest.dto.AddressDTO;
+import br.com.renanrramos.easyshopping.infra.controller.rest.form.AddressForm;
 import br.com.renanrramos.easyshopping.service.impl.AddressService;
 import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
 import io.swagger.annotations.Api;

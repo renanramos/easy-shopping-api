@@ -4,7 +4,7 @@
  * Creator: renan.ramos - 26/11/2020
  * ------------------------------------------------------------
  */
-package br.com.renanrramos.easyshopping.controller.rest;
+package br.com.renanrramos.easyshopping.infra.controller.rest;
 
 import java.net.URI;
 import java.util.List;
@@ -29,12 +29,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
-import br.com.renanrramos.easyshopping.exception.EasyShoppingException;
+import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
 import br.com.renanrramos.easyshopping.model.Order;
 import br.com.renanrramos.easyshopping.model.OrderItem;
 import br.com.renanrramos.easyshopping.model.Product;
-import br.com.renanrramos.easyshopping.model.dto.OrderItemDTO;
-import br.com.renanrramos.easyshopping.model.form.OrderItemForm;
+import br.com.renanrramos.easyshopping.infra.controller.rest.dto.OrderItemDTO;
+import br.com.renanrramos.easyshopping.infra.controller.rest.form.OrderItemForm;
 import br.com.renanrramos.easyshopping.service.impl.OrderItemService;
 import br.com.renanrramos.easyshopping.service.impl.OrderService;
 import br.com.renanrramos.easyshopping.service.impl.ProductService;

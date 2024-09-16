@@ -4,7 +4,7 @@
  * Creator: renan.ramos - 30/06/2020
  * ------------------------------------------------------------
  */
-package br.com.renanrramos.easyshopping.controller.rest;
+package br.com.renanrramos.easyshopping.infra.controller.rest;
 
 import java.net.URI;
 import java.util.List;
@@ -34,12 +34,12 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
-import br.com.renanrramos.easyshopping.enums.Profile;
-import br.com.renanrramos.easyshopping.exception.EasyShoppingException;
-import br.com.renanrramos.easyshopping.factory.PageableFactory;
+import br.com.renanrramos.easyshopping.core.domain.enums.Profile;
+import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
+import br.com.renanrramos.easyshopping.infra.controller.rest.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.model.Company;
-import br.com.renanrramos.easyshopping.model.dto.CompanyDTO;
-import br.com.renanrramos.easyshopping.model.form.CompanyForm;
+import br.com.renanrramos.easyshopping.infra.controller.rest.dto.CompanyDTO;
+import br.com.renanrramos.easyshopping.infra.controller.rest.form.CompanyForm;
 import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
 import br.com.renanrramos.easyshopping.service.impl.CompanyService;
 import io.swagger.annotations.Api;
