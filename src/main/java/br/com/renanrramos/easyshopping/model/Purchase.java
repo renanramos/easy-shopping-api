@@ -50,7 +50,7 @@ public class Purchase implements Serializable {
 	private Order order;
 
 	@OneToOne(mappedBy = "purchase", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
-	private Address address;
+	private AddressEntity address;
 
 	@OneToOne(mappedBy = "purchase", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
 	private CreditCard creditCard;

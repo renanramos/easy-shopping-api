@@ -1,11 +1,11 @@
 package br.com.renanrramos.easyshopping.infra.controller.rest;
 
+import br.com.renanrramos.easyshopping.core.domain.Address;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.AddressDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.AddressForm;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
 import br.com.renanrramos.easyshopping.infra.delegate.AddressDelegate;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.AddressMapper;
-import br.com.renanrramos.easyshopping.model.Address;
 
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;

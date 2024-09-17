@@ -7,20 +7,14 @@
 package br.com.renanrramos.easyshopping.infra.controller.rest;
 
 import java.net.URI;
-import java.util.List;
-import java.util.Optional;
 
 import javax.annotation.security.RolesAllowed;
-import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
 import br.com.renanrramos.easyshopping.infra.delegate.AddressDelegate;
-import br.com.renanrramos.easyshopping.interfaceadapter.mapper.AddressMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -37,13 +31,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
-import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
-import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
-import br.com.renanrramos.easyshopping.model.Address;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.AddressDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.AddressForm;
-import br.com.renanrramos.easyshopping.service.impl.AddressService;
-import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 

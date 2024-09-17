@@ -8,23 +8,22 @@ package br.com.renanrramos.easyshopping.interfaceadapter.repository;
 
 import javax.transaction.Transactional;
 
+import br.com.renanrramos.easyshopping.model.AddressEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-import br.com.renanrramos.easyshopping.model.Address;
-
 /**
  * @author renan.ramos
  *
  */
-public interface AddressRepository extends PagingAndSortingRepository<Address, Long> {
+public interface AddressRepository extends PagingAndSortingRepository<AddressEntity, Long> {
 
-	Page<Address> findAddressByStreetNameContaining(Pageable page, String streetName);
+	Page<AddressEntity> findAddressByStreetNameContaining(Pageable page, String streetName);
 
-	Page<Address> findAddressByCustomerId(Pageable page, String customerId);
+	Page<AddressEntity> findAddressByCustomerId(Pageable page, String customerId);
 	
 	@Transactional
 	@Modifying

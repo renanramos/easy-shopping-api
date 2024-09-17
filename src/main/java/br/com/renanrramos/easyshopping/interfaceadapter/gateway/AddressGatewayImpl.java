@@ -1,15 +1,14 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.gateway;
 
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
+import br.com.renanrramos.easyshopping.core.domain.Address;
 import br.com.renanrramos.easyshopping.core.gateway.AddressGateway;
-import br.com.renanrramos.easyshopping.infra.controller.entity.dto.AddressDTO;
-import br.com.renanrramos.easyshopping.infra.controller.entity.form.AddressForm;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
 import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.AddressMapper;
 import br.com.renanrramos.easyshopping.interfaceadapter.repository.AddressRepository;
-import br.com.renanrramos.easyshopping.model.Address;
 
+import br.com.renanrramos.easyshopping.model.AddressEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,13 +22,13 @@ public class AddressGatewayImpl implements AddressGateway {
     private final AddressRepository addressRepository;
 
     @Override
-    public AddressDTO save(final AddressForm addressForm) {
-        final Address address = AddressMapper.INSTANCE.mapAddressFormToAddress(addressForm);
-        return AddressMapper.INSTANCE.mapAddressToAddressDTO(addressRepository.save(address));
+    public Address save(final Address address) {
+        final AddressEntity addressEntity = AddressMapper.INSTANCE.mapAddressToAddressEntity(address);
+        return AddressMapper.INSTANCE.mapAddressEntityToAddress(addressRepository.save(addressEntity));
     }
 
     @Override
-    public PageResponse<AddressDTO> findAllAddress(final Integer pageNumber,
+    public PageResponse<Address> findAllAddress(final Integer pageNumber,
                                                    final Integer pageSize, final String sortBy) {
         final Pageable page = new PageableFactory()
                     .withPageNumber(pageNumber)
@@ -37,13 +36,13 @@ public class AddressGatewayImpl implements AddressGateway {
                     .withSortBy(sortBy)
                     .buildPageable();
 
-        final Page<Address> paginatedAddresses = addressRepository.findAll(page);
+        final Page<AddressEntity> paginatedAddresses = addressRepository.findAll(page);
 
         return buildPageResponse(paginatedAddresses);
     }
 
     @Override
-    public PageResponse<AddressDTO> findAllAddress(final Integer pageNumber,
+    public PageResponse<Address> findAllAddress(final Integer pageNumber,
                                                    final Integer pageSize,
                                                    final  String sortBy,
                                                    final String streetName) {
@@ -53,41 +52,41 @@ public class AddressGatewayImpl implements AddressGateway {
                 .withSortBy(sortBy)
                 .buildPageable();
 
-        final Page<Address> addressByStreetName =
+        final Page<AddressEntity> addressByStreetName =
                 addressRepository.findAddressByStreetNameContaining(page, streetName);
 
         return buildPageResponse(addressByStreetName);
     }
 
     @Override
-    public AddressDTO findAddressById(final Long addressId) {
+    public Address findAddressById(final Long addressId) {
         return addressRepository.findById(addressId)
-                .map(AddressMapper.INSTANCE::mapAddressToAddressDTO)
+                .map(AddressMapper.INSTANCE::mapAddressEntityToAddress)
                 .orElseThrow(() -> new EntityNotFoundException(ExceptionMessagesConstants.ADDRESS_NOT_FOUND));
     }
 
     @Override
-    public AddressDTO updateAddress(final AddressForm addressForm, final Long addressId) {
-        final Optional<Address> addressById = addressRepository.findById(addressId);
+    public Address updateAddress(final Address address, final Long addressId) {
+        final Optional<AddressEntity> addressById = addressRepository.findById(addressId);
         if (!addressById.isPresent()) {
             throw new EntityNotFoundException(ExceptionMessagesConstants.ADDRESS_NOT_FOUND);
         }
-        final Address address = addressById.get();
-        AddressMapper.INSTANCE.mapAddressFormToUpdateAddress(address, addressForm);
-        return AddressMapper.INSTANCE.mapAddressToAddressDTO(addressRepository.save(address));
+        final AddressEntity addressEntity = addressById.get();
+        AddressMapper.INSTANCE.mapAddressToUpdateAddressEntity(addressEntity, address);
+        return AddressMapper.INSTANCE.mapAddressEntityToAddress(addressRepository.save(addressEntity));
     }
 
     @Override
     public void removeAddress(final Long addressId) {
-        final Optional<Address> addressById = addressRepository.findById(addressId);
+        final Optional<AddressEntity> addressById = addressRepository.findById(addressId);
         if (!addressById.isPresent()) {
             throw new EntityNotFoundException(ExceptionMessagesConstants.ADDRESS_NOT_FOUND);
         }
         addressRepository.removeById(addressId);
     }
 
-    private static PageResponse<AddressDTO> buildPageResponse(Page<Address> page) {
+    private static PageResponse<Address> buildPageResponse(Page<AddressEntity> page) {
         return new PageResponse<>(page.getTotalElements(),
-                page.getTotalPages(), AddressMapper.INSTANCE.mapAddressListTOAddressDTOList(page.getContent()));
+                page.getTotalPages(), AddressMapper.INSTANCE.mapAddressEntityListToAddress(page.getContent()));
     }
 }

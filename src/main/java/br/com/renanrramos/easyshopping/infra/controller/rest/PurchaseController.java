@@ -15,6 +15,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import br.com.renanrramos.easyshopping.core.domain.Address;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.PurchaseMapper;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.PurchaseStatisticMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
-import br.com.renanrramos.easyshopping.model.Address;
+import br.com.renanrramos.easyshopping.model.AddressEntity;
 import br.com.renanrramos.easyshopping.model.CreditCard;
 import br.com.renanrramos.easyshopping.model.Order;
 import br.com.renanrramos.easyshopping.model.OrderItem;
@@ -38,7 +39,6 @@ import br.com.renanrramos.easyshopping.model.Purchase;
 import br.com.renanrramos.easyshopping.model.StockItem;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.PurchaseDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.PurchaseForm;
-import br.com.renanrramos.easyshopping.service.impl.AddressService;
 import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
 import br.com.renanrramos.easyshopping.service.impl.CreditCardService;
 import br.com.renanrramos.easyshopping.service.impl.OrderItemService;
@@ -70,8 +70,8 @@ public class PurchaseController {
 	@Autowired
 	private StockItemService stockItemService;
 
-	@Autowired
-	private AddressService addressService;
+//	@Autowired
+//	private AddressService addressService;
 
 	@Autowired
 	private CreditCardService creditCardService;
@@ -103,11 +103,11 @@ public class PurchaseController {
 			throw new EasyShoppingException(ExceptionMessagesConstants.ADDRESS_ID_NOT_FOUND_ON_REQUEST);
 		}
 
-		Optional<Address> addressOptional = addressService.findById(purchaseForm.getAddressId());
+		Optional<Address> addressOptional = Optional.empty();//addressService.findById(purchaseForm.getAddressId());
 
-		if (!addressOptional.isPresent()) {
-			throw new EasyShoppingException(ExceptionMessagesConstants.ADDRESS_NOT_FOUND);
-		}
+//		if (!addressOptional.isPresent()) {
+//			throw new EasyShoppingException(ExceptionMessagesConstants.ADDRESS_NOT_FOUND);
+//		}
 
 		if (purchaseForm.getCreditCardId() == null) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.CREDIT_CARD_ID_NOT_FOUND_ON_REQUEST);
@@ -121,7 +121,7 @@ public class PurchaseController {
 
 		Purchase purchase = new Purchase();
 		purchase.setOrder(orderOptional.get());
-		purchase.setAddress(addressOptional.get());
+//		purchase.setAddress(addressOptional.get());
 		purchase.setCreditCard(creditCardOptional.get());
 		purchase.setCustomerId(authenticationServiceImpl.getName());
 		purchase.setPurchaseDate(LocalDateTime.now());

@@ -1,8 +1,9 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
-import br.com.renanrramos.easyshopping.model.Address;
+import br.com.renanrramos.easyshopping.core.domain.Address;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.AddressDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.AddressForm;
+import br.com.renanrramos.easyshopping.model.AddressEntity;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -31,4 +32,20 @@ public interface AddressMapper {
 
     @Named("mapAddressFormToUpdateAddress")
     void mapAddressFormToUpdateAddress(@MappingTarget Address address, final AddressForm addressForm);
+
+    @Named("mapAddressToAddressEntity")
+    AddressEntity mapAddressToAddressEntity(final Address address);
+
+    @Named("mapAddressEntityToAddress")
+    Address mapAddressEntityToAddress(final AddressEntity addressEntity);
+
+    @Named("mapAddressEntityListToAddress")
+    default List<Address> mapAddressEntityListToAddress(List<AddressEntity> entities) {
+        return entities
+                .stream().map(AddressMapper.INSTANCE::mapAddressEntityToAddress)
+                .collect(Collectors.toList());
+    }
+
+    @Named("mapAddressToUpdateAddressEntity")
+    void mapAddressToUpdateAddressEntity(@MappingTarget AddressEntity addressEntity, Address address);
 }

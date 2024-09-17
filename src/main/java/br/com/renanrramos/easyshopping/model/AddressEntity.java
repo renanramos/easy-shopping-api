@@ -30,9 +30,9 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@Entity
+@Entity(name = "Address")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Address implements Serializable{
+public class AddressEntity implements Serializable{
 
 	private static final long serialVersionUID = 1130436355437175562L;
 
@@ -65,7 +65,7 @@ public class Address implements Serializable{
 	@JoinColumn(name = "purchase_id")
 	private Purchase purchase;
 
-	public Address() {
+	public AddressEntity() {
 		// Intentionally empty
 	}
 

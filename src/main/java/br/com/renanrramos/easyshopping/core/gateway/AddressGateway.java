@@ -1,23 +1,22 @@
 package br.com.renanrramos.easyshopping.core.gateway;
 
-import br.com.renanrramos.easyshopping.infra.controller.entity.dto.AddressDTO;
-import br.com.renanrramos.easyshopping.infra.controller.entity.form.AddressForm;
+import br.com.renanrramos.easyshopping.core.domain.Address;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
 
 public interface AddressGateway {
 
-    AddressDTO save(AddressForm addressForm);
+    Address save(final Address address);
 
-    PageResponse<AddressDTO> findAllAddress(final Integer pageNumber,
+    PageResponse<Address> findAllAddress(final Integer pageNumber,
                                             final Integer pageSize,
                                             final String sortBy);
-    PageResponse<AddressDTO> findAllAddress(final Integer pageNumber,
+    PageResponse<Address> findAllAddress(final Integer pageNumber,
                                             final Integer pageSize,
                                             final String sortBy, final String streetName);
 
-    AddressDTO findAddressById(final Long addressId);
+    Address findAddressById(final Long addressId);
 
-    AddressDTO updateAddress(final AddressForm addressForm, final Long addressId);
+    Address updateAddress(final Address address, final Long addressId);
 
     void removeAddress(final Long addressId);
 }
