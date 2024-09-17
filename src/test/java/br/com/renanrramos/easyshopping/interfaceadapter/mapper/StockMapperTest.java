@@ -48,7 +48,9 @@ class StockMapperTest {
     void mapStockFormToUpdateStock_withStockForm_shouldMapToStockOnlyDifferentFields() {
         final StockForm stockForm = Instancio.of(StockForm.class).create();
         stockForm.setName(null);
-        final Stock stock = Instancio.of(Stock.class).create();
+        final Stock stock = Instancio.of(Stock.class)
+                .withMaxDepth(2)
+                .create();
         final String stockName = "stockName";
         stock.setName(stockName);
         // Act

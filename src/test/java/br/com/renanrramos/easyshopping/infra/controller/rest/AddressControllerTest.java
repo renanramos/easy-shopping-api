@@ -67,7 +67,6 @@ class AddressControllerTest {
                 .findAddresses(1, 1, "asc", "");
 	}
 
-
     private AddressDTO buildAddressDTO(final AddressForm addressForm) {
         final AddressDTO addressDTO = new AddressDTO();
         addressDTO.setCep(addressForm.getCep());
