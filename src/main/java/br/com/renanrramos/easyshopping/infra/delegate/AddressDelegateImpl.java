@@ -27,4 +27,14 @@ public class AddressDelegateImpl implements AddressDelegate{
     public AddressDTO findAddressById(final Long addressId) {
         return addressUseCase.findByAddressId(addressId);
     }
+
+    @Override
+    public AddressDTO updateAddress(final AddressForm addressForm, final Long addressId) {
+        return addressUseCase.update(addressForm, addressId);
+    }
+
+    @Override
+    public void removeAddress(final Long addressId) {
+        addressUseCase.removeAddress(addressId);
+    }
 }

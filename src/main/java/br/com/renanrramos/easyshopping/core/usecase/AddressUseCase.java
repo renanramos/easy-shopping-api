@@ -3,7 +3,6 @@ package br.com.renanrramos.easyshopping.core.usecase;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.AddressDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.AddressForm;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
-import br.com.renanrramos.easyshopping.model.Address;
 
 public interface AddressUseCase {
 
@@ -17,7 +16,7 @@ public interface AddressUseCase {
 
     AddressDTO findByAddressId(Long addressId);
 
-    Address update(AddressForm addressForm);
+    AddressDTO update(AddressForm addressForm, Long addressId);
 
     void removeAddress(Long addressId);
 }

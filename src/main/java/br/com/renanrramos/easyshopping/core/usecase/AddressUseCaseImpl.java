@@ -1,5 +1,6 @@
 package br.com.renanrramos.easyshopping.core.usecase;
 
+import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.core.gateway.AddressGateway;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.AddressDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.AddressForm;
@@ -7,6 +8,8 @@ import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse
 import br.com.renanrramos.easyshopping.model.Address;
 
 import lombok.RequiredArgsConstructor;
+
+import javax.persistence.EntityNotFoundException;
 
 @RequiredArgsConstructor
 public class AddressUseCaseImpl implements AddressUseCase{
@@ -27,9 +30,7 @@ public class AddressUseCaseImpl implements AddressUseCase{
     public PageResponse<AddressDTO> findAllAddress(final Integer pageNumber, final Integer pageSize,
                                                    final String sortBy, final String streetName) {
 
-        return (streetName == null || streetName.isEmpty()) ?
-                addressGateway.findAllAddress(pageNumber, pageSize, sortBy) :
-                addressGateway.findAllAddress(pageNumber, pageSize, sortBy, streetName);
+        return addressGateway.findAllAddress(pageNumber, pageSize, sortBy, streetName);
     }
 
     @Override
@@ -38,12 +39,12 @@ public class AddressUseCaseImpl implements AddressUseCase{
     }
 
     @Override
-    public Address update(AddressForm addressForm) {
-        return null;
+    public AddressDTO update(final AddressForm addressForm, final Long addressId) {
+        return addressGateway.updateAddress(addressForm, addressId);
     }
 
     @Override
-    public void removeAddress(Long addressId) {
-
+    public void removeAddress(final Long addressId) {
+        addressGateway.removeAddress(addressId);
     }
 }

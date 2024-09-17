@@ -7,11 +7,10 @@
 package br.com.renanrramos.easyshopping.infra;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@EnableAutoConfiguration
+//@EnableAutoConfiguration
 public class EasyShopping {
 	public static void main(String[] args) {
 		SpringApplication.run(EasyShopping.class, args);

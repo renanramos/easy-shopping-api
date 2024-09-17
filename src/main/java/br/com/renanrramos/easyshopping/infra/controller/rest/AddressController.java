@@ -58,25 +58,17 @@ import io.swagger.annotations.ApiOperation;
 @RequiredArgsConstructor
 public class AddressController {
 
-	private final AddressService addressService;
-
 	private final AddressDelegate addressDelegate;
 
 	private URI uri;
-
-	@Autowired
-	private AuthenticationServiceImpl authenticationServiceImpl;
 
 	@ResponseBody
 	@PostMapping
 	@Transactional
 	@ApiOperation(value = "Save a new address")
 	@RolesAllowed({"CUSTOMER", "easy-shopping-user", "app-customer"})
-	public ResponseEntity<AddressDTO> saveAddress(@Valid @RequestBody AddressForm addressForm,
-			UriComponentsBuilder uriBuilder) {
-		final AddressDTO addressDTO = addressDelegate.saveAddress(addressForm);
-		uri = uriBuilder.path("/addresses/{id}").buildAndExpand(addressDTO.getId()).encode().toUri();
-		return ResponseEntity.status(HttpStatus.CREATED).body(addressDTO);
+	public ResponseEntity<AddressDTO> saveAddress(@Valid @RequestBody AddressForm addressForm) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(addressDelegate.saveAddress(addressForm));
 	}
 
 	@ResponseBody
@@ -109,22 +101,11 @@ public class AddressController {
 	@RolesAllowed({"easy-shopping-admin", "easy-shopping-user"})
 	public ResponseEntity<AddressDTO> updateAddress(@PathVariable("id") Long addressId,
 			@RequestBody AddressForm addressForm, UriComponentsBuilder uriBuilder) {
-
-		Optional<Address> currentAddress = addressService.findById(addressId);
-
-		if (!currentAddress.isPresent()) {
-			throw new EntityNotFoundException(ExceptionMessagesConstants.ADDRESS_NOT_FOUND);
-		}
-
-		Address address = currentAddress.get();
-
-		AddressMapper.INSTANCE.mapAddressFormToUpdateAddress(currentAddress.get(), addressForm);
-		address.setId(addressId);
-		address.setCustomerId(authenticationServiceImpl.getName());
-		address = addressService.save(address);
-		uri = uriBuilder.path("/addresses/{id}").buildAndExpand(address.getId()).encode().toUri();
-
-		return ResponseEntity.accepted().location(uri).body(AddressMapper.INSTANCE.mapAddressToAddressDTO(address));
+		uri = uriBuilder.path("/addresses/{id}")
+				.buildAndExpand(addressId).encode().toUri();
+		return ResponseEntity.accepted()
+				.location(uri)
+				.body(addressDelegate.updateAddress(addressForm, addressId));
 	}
 
 	@ResponseBody
@@ -133,13 +114,7 @@ public class AddressController {
 	@ApiOperation(value = "Remove an address")
 	@RolesAllowed({"easy-shopping-admin", "easy-shopping-user"})
 	public ResponseEntity<AddressDTO> removeAddress(@PathVariable("id") Long addressId) {
-		Optional<Address> addressOptional = addressService.findById(addressId);
-
-		if (!addressOptional.isPresent()) {
-			throw new EntityNotFoundException(ExceptionMessagesConstants.ADDRESS_NOT_FOUND);
-		}
-
-		addressService.remove(addressId);
+		addressDelegate.removeAddress(addressId);
 		return ResponseEntity.ok().build();
 	}
 

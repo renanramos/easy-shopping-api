@@ -1,5 +1,6 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.gateway;
 
+import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.AddressDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.AddressForm;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
@@ -8,6 +9,7 @@ import br.com.renanrramos.easyshopping.interfaceadapter.mapper.AddressMapper;
 import br.com.renanrramos.easyshopping.interfaceadapter.repository.AddressRepository;
 import br.com.renanrramos.easyshopping.model.Address;
 import org.instancio.Instancio;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,11 +17,15 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.*;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.instancio.Select.field;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AddressGatewayImplTest {
@@ -58,7 +64,66 @@ class AddressGatewayImplTest {
     }
 
     @Test
-    void findAddressById() {
+    void updateAddress_withAddressForm_shouldRunSuccessfully() {
+        // Arrange
+        final Long addressId = 1L;
+        final Address currentAddress = Instancio.of(Address.class)
+                .set(field("id"), addressId)
+                .set(field("streetName"), "Rua lateral")
+                .create();
+        final AddressForm addressForm = Instancio.of(AddressForm.class)
+                .set(field("streetName"), "Avenida Principal")
+                .create();
+        final Address address = AddressMapper.INSTANCE.mapAddressFormToAddress(addressForm);
+        when(addressRepository.findById(addressId)).thenReturn(Optional.of(currentAddress));
+        when(addressRepository.save(any(Address.class))).thenReturn(address);
+        // Act
+        final AddressDTO updatedAddressDTO = addressGateway.updateAddress(addressForm, addressId);
+        // Assert
+        assertAddressDTO(updatedAddressDTO, addressForm);
+    }
+
+    @Test
+    void updateAddress_whenAddressIdNotFound_shouldThrowException() {
+        // Arrange
+        final AddressForm addressForm = Instancio.of(AddressForm.class).create();
+        when(addressRepository.findById(any()))
+                .thenThrow(new EntityNotFoundException(ExceptionMessagesConstants.ADDRESS_NOT_FOUND));
+        // Act/Assert
+        final EntityNotFoundException entityNotFoundException = assertThrows(EntityNotFoundException.class,
+                () -> addressGateway.updateAddress(addressForm, 1L));
+        assertThat(entityNotFoundException).isNotNull();
+        assertThat(entityNotFoundException.getMessage()).isEqualTo(ExceptionMessagesConstants.ADDRESS_NOT_FOUND);
+        verify(addressRepository, times(1)).findById(any());
+        verify(addressRepository, never()).save(any());
+    }
+
+    @Test
+    void removeAddress_withValidAddressId_shouldRunSuccessfully() {
+        // Arrange
+        final Long addressId = 1L;
+        final Address address = Instancio.of(Address.class).create();
+        when(addressRepository.findById(addressId)).thenReturn(Optional.of(address));
+        // Act
+        addressGateway.removeAddress(addressId);
+        // Assert
+        verify(addressRepository).findById(addressId);
+        verify(addressRepository).removeById(addressId);
+    }
+
+    @Test
+    void removeAddress_whenAddressNotFound_shouldThrowException() {
+        // Arrange
+        final Long addressId = 1L;
+        when(addressRepository.findById(addressId)).thenReturn(Optional.empty());
+        // Act
+        final EntityNotFoundException entityNotFoundException =
+                assertThrows(EntityNotFoundException.class, () -> addressGateway.removeAddress(addressId));
+        // Assert
+        verify(addressRepository).findById(addressId);
+        verify(addressRepository, never()).removeById(addressId);
+        assertThat(entityNotFoundException).isNotNull();
+        assertThat(entityNotFoundException.getMessage()).isEqualTo(ExceptionMessagesConstants.ADDRESS_NOT_FOUND);
     }
 
     private void assertAddressDTOList(final PageResponse<AddressDTO> addressDTOPageResponse,

@@ -12,4 +12,8 @@ public interface AddressDelegate {
                                               final String sortBy, final String streetName);
 
     AddressDTO findAddressById(Long addressId);
+
+    AddressDTO updateAddress(AddressForm addressForm, Long addressId);
+
+    void removeAddress(final Long addressId);
 }

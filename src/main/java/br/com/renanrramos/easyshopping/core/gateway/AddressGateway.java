@@ -16,4 +16,8 @@ public interface AddressGateway {
                                             final String sortBy, final String streetName);
 
     AddressDTO findAddressById(final Long addressId);
+
+    AddressDTO updateAddress(final AddressForm addressForm, final Long addressId);
+
+    void removeAddress(final Long addressId);
 }

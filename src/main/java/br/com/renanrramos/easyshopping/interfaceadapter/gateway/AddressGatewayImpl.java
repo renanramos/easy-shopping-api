@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 public class AddressGatewayImpl implements AddressGateway {
@@ -63,6 +64,26 @@ public class AddressGatewayImpl implements AddressGateway {
         return addressRepository.findById(addressId)
                 .map(AddressMapper.INSTANCE::mapAddressToAddressDTO)
                 .orElseThrow(() -> new EntityNotFoundException(ExceptionMessagesConstants.ADDRESS_NOT_FOUND));
+    }
+
+    @Override
+    public AddressDTO updateAddress(final AddressForm addressForm, final Long addressId) {
+        final Optional<Address> addressById = addressRepository.findById(addressId);
+        if (!addressById.isPresent()) {
+            throw new EntityNotFoundException(ExceptionMessagesConstants.ADDRESS_NOT_FOUND);
+        }
+        final Address address = addressById.get();
+        AddressMapper.INSTANCE.mapAddressFormToUpdateAddress(address, addressForm);
+        return AddressMapper.INSTANCE.mapAddressToAddressDTO(addressRepository.save(address));
+    }
+
+    @Override
+    public void removeAddress(final Long addressId) {
+        final Optional<Address> addressById = addressRepository.findById(addressId);
+        if (!addressById.isPresent()) {
+            throw new EntityNotFoundException(ExceptionMessagesConstants.ADDRESS_NOT_FOUND);
+        }
+        addressRepository.removeById(addressId);
     }
 
     private static PageResponse<AddressDTO> buildPageResponse(Page<Address> page) {
