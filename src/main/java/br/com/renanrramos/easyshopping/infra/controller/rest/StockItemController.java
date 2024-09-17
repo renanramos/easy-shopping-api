@@ -33,12 +33,12 @@ import org.springframework.web.util.UriComponentsBuilder;
 import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
-import br.com.renanrramos.easyshopping.infra.controller.rest.factory.PageableFactory;
+import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.model.Product;
 import br.com.renanrramos.easyshopping.model.Stock;
 import br.com.renanrramos.easyshopping.model.StockItem;
-import br.com.renanrramos.easyshopping.infra.controller.rest.dto.StockItemDTO;
-import br.com.renanrramos.easyshopping.infra.controller.rest.form.StockItemForm;
+import br.com.renanrramos.easyshopping.infra.controller.entity.dto.StockItemDTO;
+import br.com.renanrramos.easyshopping.infra.controller.entity.form.StockItemForm;
 import br.com.renanrramos.easyshopping.service.impl.ProductService;
 import br.com.renanrramos.easyshopping.service.impl.StockItemService;
 import br.com.renanrramos.easyshopping.service.impl.StockService;
@@ -193,7 +193,11 @@ public class StockItemController {
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy)
 					throws EasyShoppingException {
-		Pageable page = new PageableFactory().withPage(pageNumber).withSize(pageSize).withSort(sortBy).buildPageable();
+		Pageable page = new PageableFactory()
+				.withPageNumber(pageNumber)
+				.withPageSize(pageSize)
+				.withSortBy(sortBy)
+				.buildPageable();
 
 		Optional<Stock> stockOptional = stockService.findById(stockId);
 

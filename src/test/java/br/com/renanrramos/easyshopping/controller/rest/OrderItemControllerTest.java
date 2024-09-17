@@ -42,7 +42,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import br.com.renanrramos.easyshopping.model.Order;
 import br.com.renanrramos.easyshopping.model.OrderItem;
 import br.com.renanrramos.easyshopping.model.Product;
-import br.com.renanrramos.easyshopping.infra.controller.rest.form.OrderItemForm;
+import br.com.renanrramos.easyshopping.infra.controller.entity.form.OrderItemForm;
 import br.com.renanrramos.easyshopping.service.impl.OrderItemService;
 import br.com.renanrramos.easyshopping.service.impl.OrderService;
 import br.com.renanrramos.easyshopping.service.impl.ProductService;

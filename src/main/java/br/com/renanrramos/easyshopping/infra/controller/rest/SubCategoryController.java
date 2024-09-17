@@ -34,11 +34,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
-import br.com.renanrramos.easyshopping.infra.controller.rest.factory.PageableFactory;
+import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.model.ProductCategory;
 import br.com.renanrramos.easyshopping.model.SubCategory;
-import br.com.renanrramos.easyshopping.infra.controller.rest.dto.SubCategoryDTO;
-import br.com.renanrramos.easyshopping.infra.controller.rest.form.SubCategoryForm;
+import br.com.renanrramos.easyshopping.infra.controller.entity.dto.SubCategoryDTO;
+import br.com.renanrramos.easyshopping.infra.controller.entity.form.SubCategoryForm;
 import br.com.renanrramos.easyshopping.service.impl.ProductCategoryService;
 import br.com.renanrramos.easyshopping.service.impl.ProductService;
 import br.com.renanrramos.easyshopping.service.impl.SubCategoryService;
@@ -102,9 +102,9 @@ public class SubCategoryController {
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
 		Pageable page = new PageableFactory()
-				.withPage(pageNumber)
-				.withSize(pageSize)
-				.withSort(sortBy)
+				.withPageNumber(pageNumber)
+				.withPageSize(pageSize)
+				.withSortBy(sortBy)
 				.buildPageable();
 		List<SubCategory> subCategories =
 				(name == null || name.isEmpty()) ?

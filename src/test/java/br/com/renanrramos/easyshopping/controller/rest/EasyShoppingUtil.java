@@ -19,9 +19,9 @@ import br.com.renanrramos.easyshopping.model.Stock;
 import br.com.renanrramos.easyshopping.model.StockItem;
 import br.com.renanrramos.easyshopping.model.Store;
 import br.com.renanrramos.easyshopping.model.User;
-import br.com.renanrramos.easyshopping.infra.controller.rest.form.CreditCardForm;
-import br.com.renanrramos.easyshopping.infra.controller.rest.form.OrderItemForm;
-import br.com.renanrramos.easyshopping.infra.controller.rest.form.StockItemForm;
+import br.com.renanrramos.easyshopping.infra.controller.entity.form.CreditCardForm;
+import br.com.renanrramos.easyshopping.infra.controller.entity.form.OrderItemForm;
+import br.com.renanrramos.easyshopping.infra.controller.entity.form.StockItemForm;
 
 /**
  * @author renan.ramos

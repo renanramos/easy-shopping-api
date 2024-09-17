@@ -28,7 +28,7 @@ import java.util.Optional;
 
 import br.com.renanrramos.easyshopping.infra.controller.rest.SubCategoryController;
 import br.com.renanrramos.easyshopping.model.SubCategory;
-import br.com.renanrramos.easyshopping.infra.controller.rest.form.SubCategoryForm;
+import br.com.renanrramos.easyshopping.infra.controller.entity.form.SubCategoryForm;
 import br.com.renanrramos.easyshopping.service.impl.SubCategoryService;
 import org.junit.Before;
 import org.junit.Test;

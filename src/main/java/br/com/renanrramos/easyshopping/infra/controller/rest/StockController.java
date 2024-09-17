@@ -35,11 +35,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
-import br.com.renanrramos.easyshopping.infra.controller.rest.factory.PageableFactory;
+import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.model.Stock;
 import br.com.renanrramos.easyshopping.model.Store;
-import br.com.renanrramos.easyshopping.infra.controller.rest.dto.StockDTO;
-import br.com.renanrramos.easyshopping.infra.controller.rest.form.StockForm;
+import br.com.renanrramos.easyshopping.infra.controller.entity.dto.StockDTO;
+import br.com.renanrramos.easyshopping.infra.controller.entity.form.StockForm;
 import br.com.renanrramos.easyshopping.service.impl.StockService;
 import br.com.renanrramos.easyshopping.service.impl.StoreService;
 import io.swagger.annotations.Api;
@@ -100,7 +100,11 @@ public class StockController {
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
 
-		Pageable page = new PageableFactory().withPage(pageNumber).withSize(pageSize).withSort(sortBy).buildPageable();
+		Pageable page = new PageableFactory()
+				.withPageNumber(pageNumber)
+				.withPageSize(pageSize)
+				.withSortBy(sortBy)
+				.buildPageable();
 
 		List<Stock> stocks = (name == null) ? stockService.findAll(page) : stockService.findStockByName(page, name);
 		return ResponseEntity.ok(StockMapper.INSTANCE.mapStockListToStockDTOList(stocks));

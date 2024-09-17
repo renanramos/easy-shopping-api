@@ -36,10 +36,10 @@ import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.core.domain.enums.Profile;
 import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
-import br.com.renanrramos.easyshopping.infra.controller.rest.factory.PageableFactory;
+import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.model.Company;
-import br.com.renanrramos.easyshopping.infra.controller.rest.dto.CompanyDTO;
-import br.com.renanrramos.easyshopping.infra.controller.rest.form.CompanyForm;
+import br.com.renanrramos.easyshopping.infra.controller.entity.dto.CompanyDTO;
+import br.com.renanrramos.easyshopping.infra.controller.entity.form.CompanyForm;
 import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
 import br.com.renanrramos.easyshopping.service.impl.CompanyService;
 import io.swagger.annotations.Api;
@@ -99,9 +99,9 @@ public class CompanyController {
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
 
 		Pageable page = new PageableFactory()
-				.withPage(pageNumber)
-				.withSize(pageSize)
-				.withSort(sortBy)
+				.withPageNumber(pageNumber)
+				.withPageSize(pageSize)
+				.withSortBy(sortBy)
 				.buildPageable();
 
 		List<CompanyDTO> listOfCompanyDTOs = (name == null) ?

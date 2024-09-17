@@ -36,10 +36,10 @@ import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.core.domain.enums.Profile;
 import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
-import br.com.renanrramos.easyshopping.infra.controller.rest.factory.PageableFactory;
+import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.model.Administrator;
-import br.com.renanrramos.easyshopping.infra.controller.rest.dto.AdministratorDTO;
-import br.com.renanrramos.easyshopping.infra.controller.rest.form.AdministratorForm;
+import br.com.renanrramos.easyshopping.infra.controller.entity.dto.AdministratorDTO;
+import br.com.renanrramos.easyshopping.infra.controller.entity.form.AdministratorForm;
 import br.com.renanrramos.easyshopping.service.impl.AdministratorService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -86,9 +86,9 @@ public class AdministratorController {
             @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
             @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
 		Pageable page = new PageableFactory()
-				.withPage(pageNumber)
-				.withSize(pageSize)
-				.withSort(sortBy)
+				.withPageNumber(pageNumber)
+				.withPageSize(pageSize)
+				.withSortBy(sortBy)
 				.buildPageable();
 		List<Administrator> administrators =
 				(name == null) ?

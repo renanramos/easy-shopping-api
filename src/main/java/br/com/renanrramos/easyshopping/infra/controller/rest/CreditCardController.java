@@ -34,10 +34,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
-import br.com.renanrramos.easyshopping.infra.controller.rest.factory.PageableFactory;
+import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.model.CreditCard;
-import br.com.renanrramos.easyshopping.infra.controller.rest.dto.CreditCardDTO;
-import br.com.renanrramos.easyshopping.infra.controller.rest.form.CreditCardForm;
+import br.com.renanrramos.easyshopping.infra.controller.entity.dto.CreditCardDTO;
+import br.com.renanrramos.easyshopping.infra.controller.entity.form.CreditCardForm;
 import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
 import br.com.renanrramos.easyshopping.service.impl.CreditCardService;
 import io.swagger.annotations.Api;
@@ -86,9 +86,9 @@ public class CreditCardController {
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
 		Pageable page = new PageableFactory()
-				.withPage(pageNumber)
-				.withSize(pageSize)
-				.withSort(sortBy)
+				.withPageNumber(pageNumber)
+				.withPageSize(pageSize)
+				.withSortBy(sortBy)
 				.buildPageable();
 		List<CreditCard> creditCards = creditCardService.findAllPageable(page,
 				authenticationServiceImpl.getName());

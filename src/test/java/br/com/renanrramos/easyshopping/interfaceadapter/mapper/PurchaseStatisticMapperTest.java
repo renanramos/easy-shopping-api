@@ -1,7 +1,7 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
 import br.com.renanrramos.easyshopping.model.OrderItem;
-import br.com.renanrramos.easyshopping.infra.controller.rest.dto.PurchaseStatisticDTO;
+import br.com.renanrramos.easyshopping.infra.controller.entity.dto.PurchaseStatisticDTO;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 

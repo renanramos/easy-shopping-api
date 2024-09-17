@@ -47,7 +47,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.renanrramos.easyshopping.model.Stock;
 import br.com.renanrramos.easyshopping.model.Store;
-import br.com.renanrramos.easyshopping.infra.controller.rest.form.StockForm;
+import br.com.renanrramos.easyshopping.infra.controller.entity.form.StockForm;
 import br.com.renanrramos.easyshopping.service.impl.StockService;
 import br.com.renanrramos.easyshopping.service.impl.StoreService;
 

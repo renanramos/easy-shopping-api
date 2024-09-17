@@ -2,8 +2,8 @@ package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
 
 import br.com.renanrramos.easyshopping.model.SubCategory;
-import br.com.renanrramos.easyshopping.infra.controller.rest.dto.SubCategoryDTO;
-import br.com.renanrramos.easyshopping.infra.controller.rest.form.SubCategoryForm;
+import br.com.renanrramos.easyshopping.infra.controller.entity.dto.SubCategoryDTO;
+import br.com.renanrramos.easyshopping.infra.controller.entity.form.SubCategoryForm;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 

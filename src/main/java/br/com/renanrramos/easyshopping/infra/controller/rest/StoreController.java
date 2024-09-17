@@ -35,10 +35,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
-import br.com.renanrramos.easyshopping.infra.controller.rest.factory.PageableFactory;
+import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.model.Store;
-import br.com.renanrramos.easyshopping.infra.controller.rest.dto.StoreDTO;
-import br.com.renanrramos.easyshopping.infra.controller.rest.form.StoreForm;
+import br.com.renanrramos.easyshopping.infra.controller.entity.dto.StoreDTO;
+import br.com.renanrramos.easyshopping.infra.controller.entity.form.StoreForm;
 import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
 import br.com.renanrramos.easyshopping.service.impl.StoreService;
 import io.swagger.annotations.Api;
@@ -91,9 +91,9 @@ public class StoreController {
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
 
 		Pageable page = new PageableFactory()
-				.withPage(pageNumber)
-				.withSize(pageSize)
-				.withSort(sortBy)
+				.withPageNumber(pageNumber)
+				.withPageSize(pageSize)
+				.withSortBy(sortBy)
 				.buildPageable();
 
 		List<Store> stores = storeService.findAllPageable(page, authenticationServiceImpl.getName(), name);
@@ -109,9 +109,9 @@ public class StoreController {
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
 		Pageable page = new PageableFactory()
-				.withPage(pageNumber)
-				.withSize(pageSize)
-				.withSort(sortBy)
+				.withPageNumber(pageNumber)
+				.withPageSize(pageSize)
+				.withSortBy(sortBy)
 				.buildPageable();
 
 		List<Store> stores = (name == null || name.isEmpty()) ?

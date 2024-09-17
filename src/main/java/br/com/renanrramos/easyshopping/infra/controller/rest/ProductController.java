@@ -38,15 +38,15 @@ import org.springframework.web.util.UriComponentsBuilder;
 import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
-import br.com.renanrramos.easyshopping.infra.controller.rest.factory.PageableFactory;
+import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.model.Product;
 import br.com.renanrramos.easyshopping.model.ProductImage;
 import br.com.renanrramos.easyshopping.model.Store;
 import br.com.renanrramos.easyshopping.model.SubCategory;
-import br.com.renanrramos.easyshopping.infra.controller.rest.dto.ProductDTO;
-import br.com.renanrramos.easyshopping.infra.controller.rest.dto.ProductImageDTO;
-import br.com.renanrramos.easyshopping.infra.controller.rest.form.ProductForm;
-import br.com.renanrramos.easyshopping.infra.controller.rest.form.ProductImageForm;
+import br.com.renanrramos.easyshopping.infra.controller.entity.dto.ProductDTO;
+import br.com.renanrramos.easyshopping.infra.controller.entity.dto.ProductImageDTO;
+import br.com.renanrramos.easyshopping.infra.controller.entity.form.ProductForm;
+import br.com.renanrramos.easyshopping.infra.controller.entity.form.ProductImageForm;
 import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
 import br.com.renanrramos.easyshopping.service.impl.ProductImageService;
 import br.com.renanrramos.easyshopping.service.impl.ProductService;
@@ -143,9 +143,9 @@ public class ProductController {
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
 		page = new PageableFactory()
-				.withPage(pageNumber)
-				.withSize(pageSize)
-				.withSort(sortBy)
+				.withPageNumber(pageNumber)
+				.withPageSize(pageSize)
+				.withSortBy(sortBy)
 				.buildPageable();
 		List<Product> products = productService.findAllPageable(page, storeId);
 		return onlyPublishedProducts
@@ -163,9 +163,9 @@ public class ProductController {
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
 		page = new PageableFactory()
-				.withPage(pageNumber)
-				.withSize(pageSize)
-				.withSort(sortBy)
+				.withPageNumber(pageNumber)
+				.withPageSize(pageSize)
+				.withSortBy(sortBy)
 				.buildPageable();
 		List<Product> products = productService.searchProductByName(page, name,
 				authenticationServiceImpl.getAuthentication());
@@ -185,9 +185,9 @@ public class ProductController {
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
 		page = new PageableFactory()
-				.withPage(pageNumber)
-				.withSize(pageSize)
-				.withSort(sortBy)
+				.withPageNumber(pageNumber)
+				.withPageSize(pageSize)
+				.withSortBy(sortBy)
 				.buildPageable();
 		List<Product> products = productService.getProductsBySubCategoryId(page, subcategoryId);
 		return onlyPublishedProducts

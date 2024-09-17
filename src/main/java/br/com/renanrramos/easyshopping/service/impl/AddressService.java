@@ -10,9 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import br.com.renanrramos.easyshopping.model.Address;
@@ -23,11 +25,10 @@ import br.com.renanrramos.easyshopping.service.CommonService;
  * @author renan.ramos
  *
  */
-@Service
+@RequiredArgsConstructor
 public class AddressService implements CommonService<Address> {
 
-	@Autowired
-	private AddressRepository addressRepository;
+	private final AddressRepository addressRepository;
 	
 	@Override
 	public Address save(Address address) {

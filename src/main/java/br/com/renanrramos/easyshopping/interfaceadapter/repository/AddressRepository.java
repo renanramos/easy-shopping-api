@@ -29,5 +29,5 @@ public interface AddressRepository extends PagingAndSortingRepository<Address, L
 	@Transactional
 	@Modifying
 	@Query("DELETE FROM Address WHERE ID = :addressId")
-	public void removeById(Long addressId);
+	void removeById(Long addressId);
 }

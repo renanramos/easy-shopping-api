@@ -17,15 +17,15 @@ import org.springframework.data.domain.Pageable;
  */
 public interface CommonService<T> {
 
-	public T save(T entity);
+	T save(T entity);
 
-	public List<T> findAll(Pageable page);
+	List<T> findAll(Pageable page);
 
-	public Optional<T> findById(Long entityId);
+	Optional<T> findById(Long entityId);
 	
-	public T update(T entity);
+	T update(T entity);
 	
-	public void remove(Long entityId);
+	void remove(Long entityId);
 
-	public List<T> findAllPageable(Pageable page, Long id);
+	List<T> findAllPageable(Pageable page, Long id);
 }

@@ -31,8 +31,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.model.Order;
-import br.com.renanrramos.easyshopping.infra.controller.rest.dto.OrderDTO;
-import br.com.renanrramos.easyshopping.infra.controller.rest.form.OrderForm;
+import br.com.renanrramos.easyshopping.infra.controller.entity.dto.OrderDTO;
+import br.com.renanrramos.easyshopping.infra.controller.entity.form.OrderForm;
 import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
 import br.com.renanrramos.easyshopping.service.impl.OrderService;
 import io.swagger.annotations.Api;
