@@ -36,7 +36,6 @@ import br.com.renanrramos.easyshopping.model.CreditCardEntity;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.PurchaseDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.PurchaseForm;
 import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
-import br.com.renanrramos.easyshopping.service.impl.CreditCardService;
 import br.com.renanrramos.easyshopping.service.impl.OrderItemService;
 import br.com.renanrramos.easyshopping.service.impl.OrderService;
 import br.com.renanrramos.easyshopping.service.impl.PurchaseService;
@@ -69,8 +68,8 @@ public class PurchaseController {
 //	@Autowired
 //	private AddressService addressService;
 
-	@Autowired
-	private CreditCardService creditCardService;
+//	@Autowired
+//	private CreditCardService creditCardService;
 
 	@Autowired
 	private AuthenticationServiceImpl authenticationServiceImpl;
@@ -109,16 +108,16 @@ public class PurchaseController {
 			throw new EasyShoppingException(ExceptionMessagesConstants.CREDIT_CARD_ID_NOT_FOUND_ON_REQUEST);
 		}
 
-		Optional<CreditCardEntity> creditCardOptional = creditCardService.findById(purchaseForm.getCreditCardId());
+		Optional<CreditCardEntity> creditCardOptional = Optional.empty();//creditCardService.findById(purchaseForm.getCreditCardId());
 
-		if (!creditCardOptional.isPresent()) {
-			throw new EasyShoppingException(ExceptionMessagesConstants.CREDIT_CARD_NOT_FOUND);
-		}
+//		if (!creditCardOptional.isPresent()) {
+//			throw new EasyShoppingException(ExceptionMessagesConstants.CREDIT_CARD_NOT_FOUND);
+//		}
 
 		Purchase purchase = new Purchase();
 		purchase.setOrder(orderOptional.get());
 //		purchase.setAddress(addressOptional.get());
-		purchase.setCreditCard(creditCardOptional.get());
+//		purchase.setCreditCard(creditCardOptional.get());
 		purchase.setCustomerId(authenticationServiceImpl.getName());
 		purchase.setPurchaseDate(LocalDateTime.now());
 		purchase = purchaseService.save(purchase);
