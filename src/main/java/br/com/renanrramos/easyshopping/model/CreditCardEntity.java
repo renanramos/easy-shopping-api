@@ -23,7 +23,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import br.com.renanrramos.easyshopping.constants.messages.ValidationMessagesConstants;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
 import lombok.EqualsAndHashCode;
@@ -34,9 +33,9 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @ToString
-@Entity
+@Entity(name = "CreditCard")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class CreditCard implements Serializable{
+public class CreditCardEntity implements Serializable{
 
 	private static final long serialVersionUID = 4576301775857441140L;
 
@@ -63,7 +62,7 @@ public class CreditCard implements Serializable{
 	@JoinColumn(name = "purchase_id")
 	private Purchase purchase;
 
-	public CreditCard() {
+	public CreditCardEntity() {
 		// Intentionally empty
 	}
 }

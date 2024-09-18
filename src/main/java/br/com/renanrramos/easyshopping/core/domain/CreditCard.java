@@ -83,7 +83,7 @@ public class CreditCard {
 
 	@Override
 	public String toString() {
-		return "CreditCard{" +
+		return "CreditCardEntity{" +
 				"id=" + id +
 				", creditCardNumber='" + creditCardNumber + '\'' +
 				", ownerName='" + ownerName + '\'' +

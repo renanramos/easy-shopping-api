@@ -53,7 +53,7 @@ public class Purchase implements Serializable {
 	private AddressEntity address;
 
 	@OneToOne(mappedBy = "purchase", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
-	private CreditCard creditCard;
+	private CreditCardEntity creditCard;
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
 	private LocalDateTime purchaseDate;

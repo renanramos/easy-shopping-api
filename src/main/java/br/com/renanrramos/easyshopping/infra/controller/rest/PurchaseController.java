@@ -18,6 +18,7 @@ import javax.validation.Valid;
 import br.com.renanrramos.easyshopping.core.domain.Address;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.PurchaseMapper;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.PurchaseStatisticMapper;
+import br.com.renanrramos.easyshopping.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -31,12 +32,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
-import br.com.renanrramos.easyshopping.model.AddressEntity;
-import br.com.renanrramos.easyshopping.model.CreditCard;
-import br.com.renanrramos.easyshopping.model.Order;
-import br.com.renanrramos.easyshopping.model.OrderItem;
-import br.com.renanrramos.easyshopping.model.Purchase;
-import br.com.renanrramos.easyshopping.model.StockItem;
+import br.com.renanrramos.easyshopping.model.CreditCardEntity;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.PurchaseDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.PurchaseForm;
 import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
@@ -113,7 +109,7 @@ public class PurchaseController {
 			throw new EasyShoppingException(ExceptionMessagesConstants.CREDIT_CARD_ID_NOT_FOUND_ON_REQUEST);
 		}
 
-		Optional<CreditCard> creditCardOptional = creditCardService.findById(purchaseForm.getCreditCardId());
+		Optional<CreditCardEntity> creditCardOptional = creditCardService.findById(purchaseForm.getCreditCardId());
 
 		if (!creditCardOptional.isPresent()) {
 			throw new EasyShoppingException(ExceptionMessagesConstants.CREDIT_CARD_NOT_FOUND);
