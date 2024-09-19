@@ -24,7 +24,7 @@ import lombok.Setter;
 @Entity
 @PrimaryKeyJoinColumn(name="id")
 @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-public class Customer extends User{
+public class Customer extends UserEntity {
 
 	private static final long serialVersionUID = 7345201836941654514L;
 

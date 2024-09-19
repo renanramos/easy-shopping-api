@@ -45,9 +45,8 @@ class AddressUseCaseImplTest {
     @Test
     void findAllAddress_withParameters_shouldReturnAddressDTOPageResponse() {
         // Arrange
-        final AddressForm addressForm = Instancio.of(AddressForm.class).create();
         final PageResponse<Address> addressPageResponse = new PageResponse<>(3L, 1,
-                Collections.nCopies(3, AddressMapper.INSTANCE.mapAddressFormToAddress(addressForm)));
+                Collections.nCopies(3, Instancio.of(Address.class).create()));
         when(addressGateway.findAllAddress(any(), any(), any())).thenReturn(addressPageResponse);
         // Act
         final PageResponse<AddressDTO> addressDTOPageResponse =

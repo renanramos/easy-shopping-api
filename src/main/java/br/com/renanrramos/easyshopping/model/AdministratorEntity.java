@@ -26,7 +26,7 @@ import lombok.Setter;
 @Entity(name = "AdministratorEntity")
 @PrimaryKeyJoinColumn(name="id")
 @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-public class AdministratorEntity extends User{
+public class AdministratorEntity extends UserEntity {
 
 	private static final long serialVersionUID = 8713673214822893155L;
 

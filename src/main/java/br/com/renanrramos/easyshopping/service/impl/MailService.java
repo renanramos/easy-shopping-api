@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.renanrramos.easyshopping.constants.messages.MailContentMessages;
 import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
-import br.com.renanrramos.easyshopping.model.User;
+import br.com.renanrramos.easyshopping.model.UserEntity;
 import lombok.AllArgsConstructor;
 
 /**
@@ -37,7 +37,7 @@ public class MailService {
 		// Intentionally empty
 	}
 	
-	public void sendEmail(String token, User user) throws EasyShoppingException {
+	public void sendEmail(String token, UserEntity user) throws EasyShoppingException {
 		sendEmail(token, user.getEmail());
 	}
 	

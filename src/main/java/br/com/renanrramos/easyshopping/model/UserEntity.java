@@ -32,7 +32,7 @@ import lombok.Setter;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class User implements Serializable{
+public class UserEntity implements Serializable{
 
 	private static final long serialVersionUID = -234475925678811197L;
 
@@ -60,12 +60,12 @@ public class User implements Serializable{
 
 	private boolean isSync;
 
-	public User() {
+	public UserEntity() {
 		// Intentionally empty
 	}
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", name=" + name + "]";
+		return "UserEntity [id=" + id + ", name=" + name + "]";
 	}
 }

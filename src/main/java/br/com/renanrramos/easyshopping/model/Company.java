@@ -26,7 +26,7 @@ import lombok.Setter;
 @Entity
 @PrimaryKeyJoinColumn(name = "id")
 @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-public class Company extends User implements Serializable{
+public class Company extends UserEntity implements Serializable{
 
 	private static final long serialVersionUID = -5594496999476155657L;
 

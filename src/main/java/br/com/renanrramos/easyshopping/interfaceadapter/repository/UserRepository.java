@@ -9,21 +9,20 @@ package br.com.renanrramos.easyshopping.interfaceadapter.repository;
 import java.util.List;
 import java.util.Optional;
 
+import br.com.renanrramos.easyshopping.model.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import br.com.renanrramos.easyshopping.model.User;
 
 /**
  * @author renan.ramos
  *
  */
 @Repository
-public interface UserRepository extends JpaRepository<User, Long>{
+public interface UserRepository extends JpaRepository<UserEntity, Long>{
 
-	Optional<User> findTopUserByEmail(String email);
+	Optional<UserEntity> findTopUserByEmail(String email);
 
-	Optional<List<User>> findUserByEmail(String email);
+	Optional<List<UserEntity>> findUserByEmail(String email);
 
-	Optional<User> findUserByTokenId(String tokenId);
+	Optional<UserEntity> findUserByTokenId(String tokenId);
 }

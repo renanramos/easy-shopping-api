@@ -9,11 +9,11 @@ package br.com.renanrramos.easyshopping.service.impl;
 import java.util.List;
 import java.util.Optional;
 
+import br.com.renanrramos.easyshopping.model.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import br.com.renanrramos.easyshopping.model.User;
 import br.com.renanrramos.easyshopping.interfaceadapter.repository.UserRepository;
 import br.com.renanrramos.easyshopping.service.CommonService;
 
@@ -22,29 +22,29 @@ import br.com.renanrramos.easyshopping.service.CommonService;
  *
  */
 @Service
-public class UserService implements CommonService<User>{
+public class UserService implements CommonService<UserEntity>{
 
 	@Autowired
 	private UserRepository userRepository;
 
 	@Override
-	public User save(User entity) {
+	public UserEntity save(UserEntity entity) {
 		// Not used
 		return null;
 	}
 
 	@Override
-	public List<User> findAll(Pageable page) {
+	public List<UserEntity> findAll(Pageable page) {
 		return userRepository.findAll(page).getContent();
 	}
 
 	@Override
-	public Optional<User> findById(Long userId) {
+	public Optional<UserEntity> findById(Long userId) {
 		return userRepository.findById(userId);
 	}
 
 	@Override
-	public User update(User entity) {
+	public UserEntity update(UserEntity entity) {
 		// Not used
 		return null;
 	}
@@ -55,12 +55,12 @@ public class UserService implements CommonService<User>{
 	}
 
 	@Override
-	public List<User> findAllPageable(Pageable page, Long id) {
+	public List<UserEntity> findAllPageable(Pageable page, Long id) {
 		// Not used
 		return null;
 	}
 
-	public Optional<User> findUserByTokenId(String tokenId) {
+	public Optional<UserEntity> findUserByTokenId(String tokenId) {
 		return userRepository.findUserByTokenId(tokenId);
 	}
 }

@@ -1,6 +1,6 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
-import br.com.renanrramos.easyshopping.model.User;
+import br.com.renanrramos.easyshopping.model.UserEntity;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.UserDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.UserForm;
 import org.mapstruct.Mapper;
@@ -13,8 +13,8 @@ public interface UserMapper {
 
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    UserDTO mapUserToUserDTO(final User user);
+    UserDTO mapUserToUserDTO(final UserEntity user);
 
     @Named("mapUserFormToUser")
-    User mapUserFormToUser(final UserForm userForm);
+    UserEntity mapUserFormToUser(final UserForm userForm);
 }

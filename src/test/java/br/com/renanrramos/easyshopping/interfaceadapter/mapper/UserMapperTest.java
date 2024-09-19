@@ -1,6 +1,6 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
-import br.com.renanrramos.easyshopping.model.User;
+import br.com.renanrramos.easyshopping.model.UserEntity;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.UserDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.UserForm;
 import org.instancio.Instancio;
@@ -13,7 +13,7 @@ class UserMapperTest {
 
     @Test
     void mapUserToUserDTO_withUser_shouldMapToUserDTO() {
-        final User user = Instancio.of(User.class).create();
+        final UserEntity user = Instancio.of(UserEntity.class).create();
 
         final UserDTO userDto = UserMapper.INSTANCE.mapUserToUserDTO(user);
 
@@ -26,7 +26,7 @@ class UserMapperTest {
     void mapUserFormToUser_withUserForm_shouldMapToUser() {
         final UserForm userForm = Instancio.of(UserForm.class).create();
 
-        final User user = UserMapper.INSTANCE.mapUserFormToUser(userForm);
+        final UserEntity user = UserMapper.INSTANCE.mapUserFormToUser(userForm);
 
         assertThat(user).isNotNull();
         assertThat(user.getEmail()).isEqualTo(userForm.getEmail());

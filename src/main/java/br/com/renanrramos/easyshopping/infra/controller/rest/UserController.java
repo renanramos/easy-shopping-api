@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.renanrramos.easyshopping.model.User;
+import br.com.renanrramos.easyshopping.model.UserEntity;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.UserDTO;
 import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
 import br.com.renanrramos.easyshopping.service.impl.UserService;
@@ -48,7 +48,7 @@ public class UserController {
 	@RolesAllowed({"ADMINISTRATOR", "CUSTOMER", "easy-shopping-user"})
 	public ResponseEntity<UserDTO> getCustomerProfile() {
 
-		Optional<User> user = userService.findUserByTokenId(authenticationServiceImpl.getName());
+		Optional<UserEntity> user = userService.findUserByTokenId(authenticationServiceImpl.getName());
         return user.map(value -> ResponseEntity.
 						ok(UserMapper.INSTANCE.mapUserToUserDTO(value)))
 							.orElseGet(() -> ResponseEntity.ok().build());
