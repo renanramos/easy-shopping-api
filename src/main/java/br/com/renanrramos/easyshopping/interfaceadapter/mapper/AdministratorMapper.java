@@ -17,21 +17,21 @@ public interface AdministratorMapper {
     AdministratorMapper INSTANCE = Mappers.getMapper(AdministratorMapper.class);
 
     @Named("mapAdministratorToAdministratorDTO")
-    AdministratorDTO mapAdministratorToAdministratorDTO(final AdministratorEntity administratorEntity);
+    AdministratorDTO mapAdministratorToAdministratorDTO(final Administrator administrator);
 
     @Named("mapAdministratorListToAdministratorDTOList")
-    default List<AdministratorDTO> mapAdministratorListToAdministratorDTOList(final List<AdministratorEntity> administratorEntityList) {
-        return administratorEntityList
+    default List<AdministratorDTO> mapAdministratorListToAdministratorDTOList(final List<Administrator> administratorList) {
+        return administratorList
                 .stream().map(AdministratorMapper.INSTANCE::mapAdministratorToAdministratorDTO)
                 .collect(Collectors.toList());
     }
 
     @Named("mapAdministratorFormToAdministrator")
     @Mapping(target = "profile", constant = "ADMINISTRATOR")
-    AdministratorEntity mapAdministratorFormToAdministrator(final AdministratorForm administratorForm);
+    Administrator mapAdministratorFormToAdministrator(final AdministratorForm administratorForm);
 
     @Named("mapAdministratorFormToUpdateAdministrator")
-    void mapAdministratorFormToUpdateAdministrator(@MappingTarget AdministratorEntity administratorEntity,
+    void mapAdministratorFormToUpdateAdministrator(@MappingTarget Administrator administrator,
                                                    final AdministratorForm administratorFormUpdate);
 
     @Named("mapAdministratorToAdministratorEntity")
