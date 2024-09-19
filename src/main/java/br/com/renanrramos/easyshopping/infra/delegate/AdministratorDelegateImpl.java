@@ -4,10 +4,10 @@ import br.com.renanrramos.easyshopping.core.usecase.AdministratorUseCase;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.AdministratorDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.AdministratorForm;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
-import lombok.RequiredArgsConstructor;
+import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 
-import java.util.Collections;
-import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.util.StringUtils;
 
 @RequiredArgsConstructor
 public class AdministratorDelegateImpl implements AdministratorDelegate{
@@ -17,13 +17,6 @@ public class AdministratorDelegateImpl implements AdministratorDelegate{
     @Override
     public AdministratorDTO save(final AdministratorForm administratorForm) {
         return administratorUseCase.save(administratorForm);
-    }
-
-    @Override
-    public PageResponse<AdministratorDTO> findAllAdministrators(final Integer pageNumber,
-                                                                final Integer pageSize,
-                                                                final String sortBy) {
-        return administratorUseCase.findAllAdministrators(pageNumber, pageSize, sortBy);
     }
 
     @Override
@@ -42,7 +35,20 @@ public class AdministratorDelegateImpl implements AdministratorDelegate{
     }
 
     @Override
-    public List<AdministratorDTO> searchAdministratorByName(final String name) {
-        return administratorUseCase.searchAdministratorByName(name);
+    public PageResponse<AdministratorDTO> findAdministrators(final ParametersRequest parametersRequest, final String name) {
+        return StringUtils.isEmpty(name) ?
+                findAllAdministrators(parametersRequest) :
+                searchAdministratorByName(parametersRequest, name);
+
+    }
+
+    private PageResponse<AdministratorDTO> findAllAdministrators(final ParametersRequest parametersRequest) {
+        return administratorUseCase.findAllAdministrators(parametersRequest.getPageNumber(),
+                parametersRequest.getPageSize(), parametersRequest.getSortBy());
+    }
+
+    private PageResponse<AdministratorDTO> searchAdministratorByName(final ParametersRequest parametersRequest,
+                                                                     final String name) {
+        return administratorUseCase.searchAdministratorByName(parametersRequest, name);
     }
 }

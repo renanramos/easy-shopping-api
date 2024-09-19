@@ -1,9 +1,8 @@
 package br.com.renanrramos.easyshopping.core.gateway;
 
 import br.com.renanrramos.easyshopping.core.domain.Administrator;
+import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
-
-import java.util.List;
 
 public interface AdministratorGateway {
 
@@ -19,5 +18,5 @@ public interface AdministratorGateway {
 
     void removeAdministrator(final Long administratorId);
 
-    List<Administrator> searchAdministratorByName(final String name);
+    PageResponse<Administrator> searchAdministratorByName(final ParametersRequest parametersRequest, final String name);
 }

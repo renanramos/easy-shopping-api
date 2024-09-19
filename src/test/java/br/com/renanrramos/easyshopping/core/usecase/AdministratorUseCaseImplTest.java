@@ -5,6 +5,7 @@ import br.com.renanrramos.easyshopping.core.gateway.AdministratorGateway;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.AdministratorDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.AdministratorForm;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
+import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.AdministratorMapper;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageImpl;
 
 import java.util.Collections;
 import java.util.List;
@@ -127,13 +129,20 @@ class AdministratorUseCaseImplTest {
     @Test
     void searchAdministratorByName_withAdministratorName_shouldRunSuccessfully() {
         // Arrange
+        final int pageNumber = 1;
+        final int pageSize = 1;
+        final String sortBy = "asc";
         final String administratorName = "name";
         final List<Administrator> administrators = Instancio.ofList(Administrator.class)
                 .size(3)
                 .create();
+        final PageResponse<Administrator> expectedPageResponse = new PageResponse<>(3L, 1,
+                administrators);
         final List<AdministratorDTO> expectedResponse =
                 AdministratorMapper.INSTANCE.mapAdministratorListToAdministratorDTOList(administrators);
-        when(administratorGateway.searchAdministratorByName(administratorName)).thenReturn(administrators);
+        final ParametersRequest parametersRequest = new ParametersRequest(pageNumber, pageSize, sortBy);
+        when(administratorGateway.searchAdministratorByName(parametersRequest, administratorName))
+                .thenReturn(expectedPageResponse);
         // Act
         final List<AdministratorDTO> response = administratorUseCase.searchAdministratorByName(administratorName);
         // Assert

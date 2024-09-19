@@ -62,7 +62,8 @@ public class AdministratorService implements CommonService<AdministratorEntity>{
 	}
 
 	public List<AdministratorEntity> searchAdministratorByName(String name) {
-		return administratorRepository.findAdministratorByNameContains(name);
+//		return administratorRepository.findAdministratorByNameContains(name);
+		return null;
 	}
 
 	@Override

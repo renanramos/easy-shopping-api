@@ -6,8 +6,8 @@
  */
 package br.com.renanrramos.easyshopping.interfaceadapter.repository;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -22,7 +22,7 @@ import javax.transaction.Transactional;
  */
 public interface AdministratorRepository extends PagingAndSortingRepository<AdministratorEntity, Long> {
 
-	List<AdministratorEntity> findAdministratorByNameContains(final String name);
+	Page<AdministratorEntity> findAdministratorByNameContains(final Pageable pageable, final String name);
 
 	@Transactional
 	@Modifying

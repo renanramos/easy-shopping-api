@@ -5,6 +5,7 @@ import br.com.renanrramos.easyshopping.core.gateway.AdministratorGateway;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.AdministratorDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.AdministratorForm;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
+import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.AdministratorMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -52,9 +53,9 @@ public class AdministratorUseCaseImpl implements AdministratorUseCase{
     }
 
     @Override
-    public List<AdministratorDTO> searchAdministratorByName(final String name) {
-        return AdministratorMapper.INSTANCE
-                .mapAdministratorListToAdministratorDTOList(administratorGateway.searchAdministratorByName(name));
+    public PageResponse<AdministratorDTO> searchAdministratorByName(final ParametersRequest parametersRequest,
+                                                                    final String name) {
+        return buildPageResponse(administratorGateway.searchAdministratorByName(parametersRequest, name));
     }
 
     private PageResponse<AdministratorDTO> buildPageResponse(final PageResponse<Administrator> allAdministrators) {

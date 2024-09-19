@@ -3,6 +3,7 @@ package br.com.renanrramos.easyshopping.interfaceadapter.gateway;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.core.domain.Administrator;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
+import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.AdministratorMapper;
 import br.com.renanrramos.easyshopping.interfaceadapter.repository.AdministratorRepository;
@@ -187,12 +188,18 @@ class AdministratorGatewayImplTest {
                 .withMaxDepth(1)
                 .set(field(AdministratorEntity::getName), administratorName)
                 .create());
-        when(administratorRepository.findAdministratorByNameContains(administratorName))
-                .thenReturn(administratorEntities);
+        final ParametersRequest parametersRequest = new ParametersRequest(1, 1, "asc");
+        final Pageable pageable = getBuildPageable(parametersRequest.getPageNumber(),
+                parametersRequest.getPageSize(), parametersRequest.getSortBy());
+        when(administratorRepository.findAdministratorByNameContains(pageable, administratorName))
+                .thenReturn(buildAdministratorEntitiesPageResponse());
         // Act
-        final List<Administrator> administrators = administratorGateway.searchAdministratorByName(administratorName);
+        final PageResponse<Administrator> administrators =
+                administratorGateway.searchAdministratorByName(parametersRequest, administratorName);
         // Assert
-        assertThat(administrators).isNotNull()
+        assertThat(administrators.getTotalElements()).isEqualTo(3L);
+        assertThat(administrators.getTotalPages()).isEqualTo(1L);
+        assertThat(administrators.getResponseItems()).isNotNull()
                 .hasSize(3)
                 .usingDefaultElementComparator()
                 .allSatisfy(administrator ->
@@ -201,7 +208,6 @@ class AdministratorGatewayImplTest {
                         .isEqualTo(administratorName));
 
     }
-
 
     private static Pageable getBuildPageable(final Integer pageNumber, final Integer pageSize, final String sortBy) {
         return new PageableFactory()

@@ -5,6 +5,7 @@ import br.com.renanrramos.easyshopping.core.usecase.AdministratorUseCase;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.AdministratorDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.AdministratorForm;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
+import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.AdministratorMapper;
 
 import org.instancio.Instancio;
@@ -54,16 +55,17 @@ class AdministratorDelegateImplTest {
     @Test
     void findAllAdministrators_withParameters_shouldReturnPageResponse() {
         // Arrange
-        final Integer pageNumber = 1;
-        final Integer pageSize = 1;
+        final int pageNumber = 1;
+        final int pageSize = 1;
         final String sortBy = "asc";
         final PageResponse<AdministratorDTO> expectedPageResponse = new PageResponse<>(3L, 1,
                 Collections.nCopies(3, Instancio.of(AdministratorDTO.class).create()));
         when(administratorUseCase.findAllAdministrators(pageNumber, pageSize, sortBy))
                 .thenReturn(expectedPageResponse);
+        final ParametersRequest parametersRequest = new ParametersRequest(pageNumber, pageSize, sortBy);
         // Act
         final PageResponse<AdministratorDTO> pageResponse =
-                administratorDelegate.findAllAdministrators(pageNumber, pageSize, sortBy);
+                administratorDelegate.findAdministrators(parametersRequest, "");
         // Assert
         assertThat(pageResponse).isNotNull();
         assertThat(pageResponse.getTotalPages()).isEqualTo(expectedPageResponse.getTotalPages());
@@ -129,14 +131,20 @@ class AdministratorDelegateImplTest {
         final List<Administrator> administrators = Instancio.ofList(Administrator.class)
                 .size(3)
                 .create();
-        final List<AdministratorDTO> expectedResponse =
-                AdministratorMapper.INSTANCE.mapAdministratorListToAdministratorDTOList(administrators);
-        when(administratorUseCase.searchAdministratorByName(administratorName)).thenReturn(expectedResponse);
+        final ParametersRequest parametersRequest = new ParametersRequest(1, 1, "asc");
+        final PageResponse<AdministratorDTO> expectedResponse = new PageResponse<>(3L, 1,
+                AdministratorMapper.INSTANCE.mapAdministratorListToAdministratorDTOList(administrators));
+        when(administratorUseCase.searchAdministratorByName(parametersRequest, administratorName))
+                .thenReturn(expectedResponse);
         // Act
-        final List<AdministratorDTO> response = administratorDelegate.searchAdministratorByName(administratorName);
+        final PageResponse<AdministratorDTO> response = administratorDelegate
+                .findAdministrators(parametersRequest, administratorName);
         // Assert
-        assertThat(response)
+        assertThat(response).isNotNull();
+        assertThat(response.getTotalPages()).isEqualTo(expectedResponse.getTotalPages());
+        assertThat(response.getTotalElements()).isEqualTo(expectedResponse.getTotalElements());
+        assertThat(response.getResponseItems())
                 .isNotNull()
-                .isEqualTo(expectedResponse);
+                .hasSameElementsAs(expectedResponse.getResponseItems());
     }
 }

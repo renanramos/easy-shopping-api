@@ -6,6 +6,7 @@
  */
 package br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory;
 
+import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,8 +19,8 @@ import org.springframework.data.domain.Sort;
  */
 public class PageableFactory {
 
-	Integer pageNumber = 0;
-	Integer pageSize = 0;
+	Integer pageNumber = 1;
+	Integer pageSize = 10;
 	String sortBy = "asc";
 
 	public PageableFactory withPageNumber(final Integer pageNumber) {
@@ -35,6 +36,13 @@ public class PageableFactory {
 	public PageableFactory withSortBy(final String sortBy) {
 		this.sortBy = sortBy;
 		return this;
+	}
+
+	public Pageable buildPageable(final ParametersRequest parametersRequest) {
+		this.pageNumber = parametersRequest.getPageNumber();
+		this.pageSize = parametersRequest.getPageSize();
+		this.sortBy = parametersRequest.getSortBy();
+		return buildPageable();
 	}
 
 	public Pageable buildPageable() {

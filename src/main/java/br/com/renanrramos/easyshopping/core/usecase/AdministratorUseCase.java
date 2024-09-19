@@ -3,8 +3,7 @@ package br.com.renanrramos.easyshopping.core.usecase;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.AdministratorDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.AdministratorForm;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
-
-import java.util.List;
+import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 
 public interface AdministratorUseCase {
 
@@ -20,5 +19,6 @@ public interface AdministratorUseCase {
 
     void removeAdministrator(final Long administratorId);
 
-    List<AdministratorDTO> searchAdministratorByName(final String name);
+    PageResponse<AdministratorDTO> searchAdministratorByName(final ParametersRequest parametersRequest,
+                                                     final String name);
 }

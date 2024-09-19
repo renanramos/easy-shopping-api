@@ -3,15 +3,11 @@ package br.com.renanrramos.easyshopping.infra.delegate;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.AdministratorDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.AdministratorForm;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
-
-import java.util.List;
+import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 
 public interface AdministratorDelegate {
-    AdministratorDTO save(final AdministratorForm administratorForm);
 
-    PageResponse<AdministratorDTO> findAllAdministrators(final Integer pageNumber,
-                                                         final Integer pageSize,
-                                                         final  String sortBy);
+    AdministratorDTO save(final AdministratorForm administratorForm);
 
     AdministratorDTO findAdministratorById(final Long administratorId);
 
@@ -19,5 +15,5 @@ public interface AdministratorDelegate {
 
     void removeAdministrator(final Long administratorId);
 
-    List<AdministratorDTO> searchAdministratorByName(final String name);
+    PageResponse<AdministratorDTO> findAdministrators(final ParametersRequest parametersRequest, final  String name);
 }

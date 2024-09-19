@@ -16,9 +16,14 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import br.com.renanrramos.easyshopping.core.domain.Administrator;
+import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
+import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
+import br.com.renanrramos.easyshopping.infra.delegate.AdministratorDelegate;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.AdministratorMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,8 +40,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
-import br.com.renanrramos.easyshopping.core.domain.enums.Profile;
-import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
 import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.model.AdministratorEntity;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.AdministratorDTO;
@@ -53,10 +56,13 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping(path = "/api/admin", produces = "application/json")
 @Api(tags = "Administrators")
 @CrossOrigin(origins = "*")
+@RequiredArgsConstructor
 public class AdministratorController {
 
 	@Autowired
 	private AdministratorService administratorService;
+
+	private final AdministratorDelegate administratorDelegate;
 
 	private URI uri;
 
@@ -64,40 +70,22 @@ public class AdministratorController {
 	@PostMapping(path = "/register")
 	@Transactional
 	@ApiOperation(value = "Save a new administrator")
-	public ResponseEntity<AdministratorDTO> saveAdministrator(@Valid @RequestBody AdministratorForm administratorForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
-//		AdministratorEntity administratorEntity = AdministratorMapper.INSTANCE.mapAdministratorFormToAdministrator(administratorForm);
-//
-//		administratorEntity.setProfile(Profile.ADMINISTRATOR);
-//
-//		AdministratorEntity administratorEntityCreated = administratorService.save(administratorEntity);
-//		if (administratorEntityCreated.getId() != null) {
-//			uri = uriBuilder.path("/admin/{id}").buildAndExpand(administratorEntityCreated.getId()).encode().toUri();
-//			return ResponseEntity.created(uri).body(AdministratorMapper.INSTANCE.mapAdministratorToAdministratorDTO(administratorEntityCreated));
-//		}
-//		return ResponseEntity.noContent().build();
-		return ResponseEntity.ok().build();
+	public ResponseEntity<AdministratorDTO> saveAdministrator(@Valid @RequestBody AdministratorForm administratorForm) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(administratorDelegate.save(administratorForm));
 	}
 
 	@ResponseBody
 	@GetMapping
 	@ApiOperation(value = "Get all administrators")
 	@RolesAllowed({"ADMINISTRATOR", "easy-shopping-admin"})
-	public ResponseEntity<List<AdministratorDTO>> getAdministrators(
+	public ResponseEntity<PageResponse<AdministratorDTO>> getAdministrators(
 			@RequestParam(required = false) String name,
 			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber, 
             @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
             @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
-		Pageable page = new PageableFactory()
-				.withPageNumber(pageNumber)
-				.withPageSize(pageSize)
-				.withSortBy(sortBy)
-				.buildPageable();
-		List<AdministratorEntity> administratorEntities =
-				(name == null) ?
-						administratorService.findAllPageable(page, null) :
-						administratorService.searchAdministratorByName(name);
-//		return ResponseEntity.ok(AdministratorMapper.INSTANCE.mapAdministratorListToAdministratorDTOList(administratorEntities));
-		return ResponseEntity.ok().build();
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(administratorDelegate
+						.findAdministrators(new ParametersRequest(pageNumber, pageSize, sortBy), name));
 	}
 	
 	@ResponseBody
