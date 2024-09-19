@@ -2,6 +2,7 @@ package br.com.renanrramos.easyshopping.interfaceadapter.gateway;
 
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.core.domain.Administrator;
+import br.com.renanrramos.easyshopping.core.domain.enums.Profile;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
@@ -18,14 +19,14 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.instancio.Select.field;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -192,7 +193,7 @@ class AdministratorGatewayImplTest {
         final Pageable pageable = getBuildPageable(parametersRequest.getPageNumber(),
                 parametersRequest.getPageSize(), parametersRequest.getSortBy());
         when(administratorRepository.findAdministratorByNameContains(pageable, administratorName))
-                .thenReturn(buildAdministratorEntitiesPageResponse());
+                .thenReturn(new PageImpl<>(administratorEntities));
         // Act
         final PageResponse<Administrator> administrators =
                 administratorGateway.searchAdministratorByName(parametersRequest, administratorName);
@@ -220,6 +221,7 @@ class AdministratorGatewayImplTest {
     private static PageImpl<AdministratorEntity> buildAdministratorEntitiesPageResponse() {
         final List<AdministratorEntity> administratorEntities = Instancio.ofList(AdministratorEntity.class)
                 .size(3)
+                .set(field(AdministratorEntity::getProfile), Profile.ADMINISTRATOR)
                 .create();
         return new PageImpl<>(administratorEntities);
     }

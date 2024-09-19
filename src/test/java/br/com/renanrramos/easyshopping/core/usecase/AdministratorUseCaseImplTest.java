@@ -13,14 +13,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.PageImpl;
 
 import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.instancio.Select.field;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
@@ -144,9 +143,12 @@ class AdministratorUseCaseImplTest {
         when(administratorGateway.searchAdministratorByName(parametersRequest, administratorName))
                 .thenReturn(expectedPageResponse);
         // Act
-        final List<AdministratorDTO> response = administratorUseCase.searchAdministratorByName(administratorName);
+        final PageResponse<AdministratorDTO> response =
+                administratorUseCase.searchAdministratorByName(parametersRequest, administratorName);
         // Assert
-        assertThat(response)
+        assertThat(response.getTotalPages()).isEqualTo(expectedPageResponse.getTotalPages());
+        assertThat(response.getTotalElements()).isEqualTo(expectedPageResponse.getTotalElements());
+        assertThat(response.getResponseItems())
                 .isNotNull()
                 .isEqualTo(expectedResponse);
     }
