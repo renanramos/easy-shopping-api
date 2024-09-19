@@ -1,7 +1,7 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
 import br.com.renanrramos.easyshopping.core.domain.enums.Profile;
-import br.com.renanrramos.easyshopping.model.Administrator;
+import br.com.renanrramos.easyshopping.model.AdministratorEntity;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.AdministratorDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.AdministratorForm;
 import org.instancio.Instancio;
@@ -12,37 +12,37 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.instancio.Select.field;
 
-class AdministratorMapperTest {
+class AdministratorEntityMapperTest {
 
     private static final String UPDATED_EMAIL = "another_email@mail.com";
 
     @Test
     void mapAdministratorToAdministratorDTO_withAddress_shouldMapAdministratorDTO() {
-        final Administrator administrator = Instancio.create(Administrator.class);
+        final AdministratorEntity administratorEntity = Instancio.create(AdministratorEntity.class);
 
         final AdministratorDTO administratorDTO = AdministratorMapper.INSTANCE
-                .mapAdministratorToAdministratorDTO(administrator);
+                .mapAdministratorToAdministratorDTO(administratorEntity);
 
-        assertAdministratorDTO(administratorDTO, administrator);
+        assertAdministratorDTO(administratorDTO, administratorEntity);
     }
 
     @Test
     void mapAdministratorListToAdministratorDTOList_withAdministratorList_shouldMapToAdministratorDTO() {
-        final List<Administrator> administratorList = Instancio.ofList(Administrator.class).size(10).create();
+        final List<AdministratorEntity> administratorEntityList = Instancio.ofList(AdministratorEntity.class).size(10).create();
 
         final List<AdministratorDTO> administratorDTOs = AdministratorMapper.INSTANCE
-                .mapAdministratorListToAdministratorDTOList(administratorList);
+                .mapAdministratorListToAdministratorDTOList(administratorEntityList);
 
-        assertAdministratorDTOList(administratorDTOs, administratorList);
+        assertAdministratorDTOList(administratorDTOs, administratorEntityList);
     }
 
     @Test
     void mapAdministratorFormToAdministrator_withAdministratorForm_shouldMapAdministrator() {
         final AdministratorForm administratorForm = Instancio.of(AdministratorForm.class).create();
 
-        final Administrator administrator = AdministratorMapper.INSTANCE.mapAdministratorFormToAdministrator(administratorForm);
+        final AdministratorEntity administratorEntity = AdministratorMapper.INSTANCE.mapAdministratorFormToAdministrator(administratorForm);
 
-        assertAdministrator(administratorForm, administrator);
+        assertAdministrator(administratorForm, administratorEntity);
     }
 
     @Test
@@ -52,36 +52,36 @@ class AdministratorMapperTest {
                 .set(field("profile"), Profile.ADMINISTRATOR)
                 .ignore(field("email"))
                 .create();
-        final Administrator administrator = AdministratorMapper.INSTANCE.mapAdministratorFormToAdministrator(administratorFormUpdate);
+        final AdministratorEntity administratorEntity = AdministratorMapper.INSTANCE.mapAdministratorFormToAdministrator(administratorFormUpdate);
         // Act
-        AdministratorMapper.INSTANCE.mapAdministratorFormToUpdateAdministrator(administrator, administratorFormUpdate);
+        AdministratorMapper.INSTANCE.mapAdministratorFormToUpdateAdministrator(administratorEntity, administratorFormUpdate);
         // Assert
-        assertAdministrator(administratorFormUpdate, administrator);
+        assertAdministrator(administratorFormUpdate, administratorEntity);
     }
 
-    private void assertAdministrator(final AdministratorForm administratorForm, final Administrator administrator) {
-        assertThat(administrator).isNotNull();
-        assertThat(administrator.getName()).isEqualTo(administratorForm.getName());
-        assertThat(administrator.getProfile().name()).isEqualTo(Profile.ADMINISTRATOR.name());
-        assertThat(administrator.getEmail()).isEqualTo(administratorForm.getEmail());
+    private void assertAdministrator(final AdministratorForm administratorForm, final AdministratorEntity administratorEntity) {
+        assertThat(administratorEntity).isNotNull();
+        assertThat(administratorEntity.getName()).isEqualTo(administratorForm.getName());
+        assertThat(administratorEntity.getProfile().name()).isEqualTo(Profile.ADMINISTRATOR.name());
+        assertThat(administratorEntity.getEmail()).isEqualTo(administratorForm.getEmail());
     }
 
     private void assertAdministratorDTOList(final List<AdministratorDTO> administratorDTOs,
-                                            final List<Administrator> administratorList) {
-        assertThat(administratorDTOs).hasSize(administratorList.size());
+                                            final List<AdministratorEntity> administratorEntityList) {
+        assertThat(administratorDTOs).hasSize(administratorEntityList.size());
         int index = 0;
         for(final AdministratorDTO administratorDTO : administratorDTOs) {
-            assertAdministratorDTO(administratorDTO, administratorList.get(index));
+            assertAdministratorDTO(administratorDTO, administratorEntityList.get(index));
             index++;
         }
     }
 
     private static void assertAdministratorDTO(final AdministratorDTO administratorDTO,
-                                               final Administrator administrator) {
+                                               final AdministratorEntity administratorEntity) {
         assertThat(administratorDTO).isNotNull();
-        assertThat(administratorDTO.getId()).isEqualTo(administrator.getId());
-        assertThat(administratorDTO.getName()).isEqualTo(administrator.getName());
-        assertThat(administratorDTO.getEmail()).isEqualTo(administrator.getEmail());
-        assertThat(administratorDTO.getProfile().name()).isEqualTo(administrator.getProfile().name());
+        assertThat(administratorDTO.getId()).isEqualTo(administratorEntity.getId());
+        assertThat(administratorDTO.getName()).isEqualTo(administratorEntity.getName());
+        assertThat(administratorDTO.getEmail()).isEqualTo(administratorEntity.getEmail());
+        assertThat(administratorDTO.getProfile().name()).isEqualTo(administratorEntity.getProfile().name());
     }
 }

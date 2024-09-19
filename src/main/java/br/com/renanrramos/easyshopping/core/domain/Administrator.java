@@ -30,6 +30,6 @@ public class Administrator extends User {
 
 	@Override
 	public String toString() {
-		return "Administrator [profile=" + profile + "]";
+		return "AdministratorEntity [profile=" + profile + "]";
 	}
 }

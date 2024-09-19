@@ -37,7 +37,7 @@ import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConst
 import br.com.renanrramos.easyshopping.core.domain.enums.Profile;
 import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
 import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
-import br.com.renanrramos.easyshopping.model.Administrator;
+import br.com.renanrramos.easyshopping.model.AdministratorEntity;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.AdministratorDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.AdministratorForm;
 import br.com.renanrramos.easyshopping.service.impl.AdministratorService;
@@ -64,14 +64,14 @@ public class AdministratorController {
 	@Transactional
 	@ApiOperation(value = "Save a new administrator")
 	public ResponseEntity<AdministratorDTO> saveAdministrator(@Valid @RequestBody AdministratorForm administratorForm, UriComponentsBuilder uriBuilder) throws EasyShoppingException {
-		Administrator administrator = AdministratorMapper.INSTANCE.mapAdministratorFormToAdministrator(administratorForm);
+		AdministratorEntity administratorEntity = AdministratorMapper.INSTANCE.mapAdministratorFormToAdministrator(administratorForm);
 
-		administrator.setProfile(Profile.ADMINISTRATOR);
+		administratorEntity.setProfile(Profile.ADMINISTRATOR);
 
-		Administrator administratorCreated = administratorService.save(administrator);
-		if (administratorCreated.getId() != null) {
-			uri = uriBuilder.path("/admin/{id}").buildAndExpand(administratorCreated.getId()).encode().toUri();
-			return ResponseEntity.created(uri).body(AdministratorMapper.INSTANCE.mapAdministratorToAdministratorDTO(administratorCreated));
+		AdministratorEntity administratorEntityCreated = administratorService.save(administratorEntity);
+		if (administratorEntityCreated.getId() != null) {
+			uri = uriBuilder.path("/admin/{id}").buildAndExpand(administratorEntityCreated.getId()).encode().toUri();
+			return ResponseEntity.created(uri).body(AdministratorMapper.INSTANCE.mapAdministratorToAdministratorDTO(administratorEntityCreated));
 		}
 		return ResponseEntity.noContent().build();
 	}
@@ -90,11 +90,11 @@ public class AdministratorController {
 				.withPageSize(pageSize)
 				.withSortBy(sortBy)
 				.buildPageable();
-		List<Administrator> administrators =
+		List<AdministratorEntity> administratorEntities =
 				(name == null) ?
 						administratorService.findAllPageable(page, null) :
 						administratorService.searchAdministratorByName(name);
-		return ResponseEntity.ok(AdministratorMapper.INSTANCE.mapAdministratorListToAdministratorDTOList(administrators));
+		return ResponseEntity.ok(AdministratorMapper.INSTANCE.mapAdministratorListToAdministratorDTOList(administratorEntities));
 	}
 	
 	@ResponseBody
@@ -106,7 +106,7 @@ public class AdministratorController {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.INVALID_ID);
 		}
 
-		Optional<Administrator> administratorOptional = administratorService.findById(administratorId);
+		Optional<AdministratorEntity> administratorOptional = administratorService.findById(administratorId);
 
 		if (!administratorOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.ADMINISTRATOR_NOT_FOUND);
@@ -125,16 +125,16 @@ public class AdministratorController {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.INVALID_ID);
 		}
 
-		Optional<Administrator> administratorOptional = administratorService.findById(administratorId);
+		Optional<AdministratorEntity> administratorOptional = administratorService.findById(administratorId);
 
 		if (!administratorOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.ACCOUNT_NOT_FOUND);
 		}
-		Administrator administrator = administratorOptional.get();
-		AdministratorMapper.INSTANCE.mapAdministratorFormToUpdateAdministrator(administrator, administratorForm);
-		administrator.setId(administratorId);
-		AdministratorDTO administratorUpdated = AdministratorMapper.INSTANCE.mapAdministratorToAdministratorDTO(administratorService.save(administrator));
-		uri = uriBuilder.path("/admin/{id}").buildAndExpand(administrator.getId()).encode().toUri();
+		AdministratorEntity administratorEntity = administratorOptional.get();
+		AdministratorMapper.INSTANCE.mapAdministratorFormToUpdateAdministrator(administratorEntity, administratorForm);
+		administratorEntity.setId(administratorId);
+		AdministratorDTO administratorUpdated = AdministratorMapper.INSTANCE.mapAdministratorToAdministratorDTO(administratorService.save(administratorEntity));
+		uri = uriBuilder.path("/admin/{id}").buildAndExpand(administratorEntity.getId()).encode().toUri();
 
 		return ResponseEntity.accepted().location(uri).body(administratorUpdated);
 	}
@@ -150,7 +150,7 @@ public class AdministratorController {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.INVALID_ID);
 		}
 
-		Optional<Administrator> administratorOptional = administratorService.findById(administratorId);
+		Optional<AdministratorEntity> administratorOptional = administratorService.findById(administratorId);
 
 		if (!administratorOptional.isPresent()) {
 			throw new EntityNotFoundException(ExceptionMessagesConstants.ACCOUNT_NOT_FOUND);

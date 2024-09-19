@@ -10,12 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import br.com.renanrramos.easyshopping.model.AdministratorEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import br.com.renanrramos.easyshopping.model.Administrator;
 import br.com.renanrramos.easyshopping.interfaceadapter.repository.AdministratorRepository;
 import br.com.renanrramos.easyshopping.service.CommonService;
 
@@ -24,7 +24,7 @@ import br.com.renanrramos.easyshopping.service.CommonService;
  *
  */
 @Service
-public class AdministratorService implements CommonService<Administrator>{
+public class AdministratorService implements CommonService<AdministratorEntity>{
 
 	@Autowired
 	private AdministratorRepository administratorRepository;
@@ -34,26 +34,26 @@ public class AdministratorService implements CommonService<Administrator>{
 	}
 
 	@Override
-	public Administrator save(Administrator administrator) {
-		return administratorRepository.save(administrator);
+	public AdministratorEntity save(AdministratorEntity administratorEntity) {
+		return administratorRepository.save(administratorEntity);
 	}
 
 	@Override
-	public List<Administrator> findAllPageable(Pageable page, Long administratorId) {
-		Page<Administrator> pagedResult = administratorRepository.findAll(page);
+	public List<AdministratorEntity> findAllPageable(Pageable page, Long administratorId) {
+		Page<AdministratorEntity> pagedResult = administratorRepository.findAll(page);
 		return pagedResult.hasContent() ?
 				pagedResult.getContent() :
 					new ArrayList<>();
 	}
 
 	@Override
-	public Optional<Administrator> findById(Long administratorId) {
+	public Optional<AdministratorEntity> findById(Long administratorId) {
 		return administratorRepository.findById(administratorId);
 	}
 
 	@Override
-	public Administrator update(Administrator administrator) {
-		return administratorRepository.save(administrator);
+	public AdministratorEntity update(AdministratorEntity administratorEntity) {
+		return administratorRepository.save(administratorEntity);
 	}
 
 	@Override
@@ -61,12 +61,12 @@ public class AdministratorService implements CommonService<Administrator>{
 		administratorRepository.deleteById(administratorId);
 	}
 
-	public List<Administrator> searchAdministratorByName(String name) {
+	public List<AdministratorEntity> searchAdministratorByName(String name) {
 		return administratorRepository.findAdministratorByNameContains(name);
 	}
 
 	@Override
-	public List<Administrator> findAll(Pageable page) {
+	public List<AdministratorEntity> findAll(Pageable page) {
 		return null;
 	}
 }

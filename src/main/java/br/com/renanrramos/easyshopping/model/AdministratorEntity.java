@@ -23,10 +23,10 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@Entity(name = "Administrator")
+@Entity(name = "AdministratorEntity")
 @PrimaryKeyJoinColumn(name="id")
 @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-public class Administrator extends User{
+public class AdministratorEntity extends User{
 
 	private static final long serialVersionUID = 8713673214822893155L;
 
@@ -34,12 +34,12 @@ public class Administrator extends User{
 	@Enumerated(EnumType.STRING)
 	private Profile profile = Profile.ADMINISTRATOR;
 
-	public Administrator() {
+	public AdministratorEntity() {
 		// Intentionally empty
 	}
 
 	@Override
 	public String toString() {
-		return "Administrator [profile=" + profile + "]";
+		return "AdministratorEntity [profile=" + profile + "]";
 	}
 }
