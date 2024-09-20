@@ -1,8 +1,8 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
-import br.com.renanrramos.easyshopping.model.Company;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.CompanyDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.CompanyForm;
+import br.com.renanrramos.easyshopping.model.CompanyEntity;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -16,10 +16,10 @@ public interface CompanyMapper {
     CompanyMapper INSTANCE = Mappers.getMapper(CompanyMapper.class);
 
     @Named("mapCompanyToCompanyDTO")
-    CompanyDTO mapCompanyToCompanyDTO(final Company company);
+    CompanyDTO mapCompanyToCompanyDTO(final CompanyEntity company);
 
     @Named("mapCompanyListToCompanyDTOList")
-    default List<CompanyDTO> mapCompanyListToCompanyDTOList(final List<Company> companies) {
+    default List<CompanyDTO> mapCompanyListToCompanyDTOList(final List<CompanyEntity> companies) {
         return companies.stream()
                 .map(CompanyMapper.INSTANCE::mapCompanyToCompanyDTO)
                 .collect(Collectors.toList());
@@ -27,8 +27,8 @@ public interface CompanyMapper {
 
     @Named("mapCompanyFormToCompany")
     @Mapping(target = "profile", constant = "COMPANY")
-    Company mapCompanyFormToCompany(final CompanyForm companyForm);
+    CompanyEntity mapCompanyFormToCompany(final CompanyForm companyForm);
 
     @Named("mapCompanyFormToUpdateCompany")
-    void mapCompanyFormToUpdateCompany(@MappingTarget Company company, CompanyForm companyForm);
+    void mapCompanyFormToUpdateCompany(@MappingTarget CompanyEntity company, CompanyForm companyForm);
 }

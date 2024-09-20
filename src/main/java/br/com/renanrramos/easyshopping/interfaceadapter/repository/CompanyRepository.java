@@ -6,29 +6,28 @@
  */
 package br.com.renanrramos.easyshopping.interfaceadapter.repository;
 
-import java.util.List;
-import java.util.Optional;
-
+import br.com.renanrramos.easyshopping.interfaceadapter.repository.constants.EasyShoppingSqlConstants;
+import br.com.renanrramos.easyshopping.model.CompanyEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-import br.com.renanrramos.easyshopping.interfaceadapter.repository.constants.EasyShoppingSqlConstants;
-import br.com.renanrramos.easyshopping.model.Company;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author renan.ramos
  *
  */
-public interface CompanyRepository extends PagingAndSortingRepository<Company, Long>{
+public interface CompanyRepository extends PagingAndSortingRepository<CompanyEntity, Long>{
 
-	Company findTopCompanyByRegisteredNumber(String registeredNumber);
+	CompanyEntity findTopCompanyByRegisteredNumber(String registeredNumber);
 
 	@Query(EasyShoppingSqlConstants.GET_COMPANY_BY_NAME)
-	Page<Company> getCompanyByNameRegisteredNumberOrEmail(Pageable page, String name);
+	Page<CompanyEntity> getCompanyByNameRegisteredNumberOrEmail(Pageable page, String name);
 
-	List<Company> findAll();
+	List<CompanyEntity> findAll();
 
-	Optional<Company> findCompanyByTokenId(String tokenId);
+	Optional<CompanyEntity> findCompanyByTokenId(String tokenId);
 }
