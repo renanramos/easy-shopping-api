@@ -5,7 +5,6 @@ import br.com.renanrramos.easyshopping.core.domain.Address;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.AddressMapper;
 import br.com.renanrramos.easyshopping.interfaceadapter.repository.AddressRepository;
-
 import br.com.renanrramos.easyshopping.model.AddressEntity;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
@@ -13,12 +12,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
+import static br.com.renanrramos.easyshopping.interfaceadapter.mapper.util.TestUtils.assertAddress;
+import static br.com.renanrramos.easyshopping.interfaceadapter.mapper.util.TestUtils.assertAddressDTOList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.instancio.Select.field;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -125,49 +128,11 @@ class AddressGatewayImplTest {
         assertThat(entityNotFoundException.getMessage()).isEqualTo(ExceptionMessagesConstants.ADDRESS_NOT_FOUND);
     }
 
-    private void assertAddressDTOList(final PageResponse<Address> addressDTOPageResponse,
-                                      final Page<AddressEntity> addressPage) {
-        assertThat(addressDTOPageResponse).isNotNull();
-        assertThat(addressPage).isNotNull();
-        assertThat(addressDTOPageResponse.getTotalElements()).isEqualTo(addressPage.getTotalElements());
-        assertThat(addressDTOPageResponse.getTotalPages()).isEqualTo(addressPage.getTotalPages());
-
-        assertAddressList(addressDTOPageResponse.getResponseItems(), addressPage.getContent());
-    }
-
-    private static void assertAddressList(final List<Address> addressPageResponse,
-                                          final List<AddressEntity> addresses) {
-        assertThat(addressPageResponse).hasSize(addresses.size());
-        int index = 0;
-        for(final Address address : addressPageResponse) {
-            final AddressEntity addressEntity = addresses.get(index);
-
-            assertThat(address).isNotNull();
-            assertThat(address.getCep()).isEqualTo(addressEntity.getCep());
-            assertThat(address.getCity()).isEqualTo(addressEntity.getCity());
-            assertThat(address.getDistrict()).isEqualTo(addressEntity.getDistrict());
-            assertThat(address.getNumber()).isEqualTo(addressEntity.getNumber());
-            assertThat(address.getState()).isEqualTo(addressEntity.getState());
-            assertThat(address.getStreetName()).isEqualTo(addressEntity.getStreetName());
-            index++;
-        }
-    }
-
     private Page<AddressEntity> getAddressList() {
         final List<AddressEntity> addresses = Instancio
                 .ofList(AddressEntity.class)
                 .size(PAGE_SIZE)
                 .create();
         return new PageImpl<>(addresses);
-    }
-
-    private static void assertAddress(final Address addressDTO, final AddressEntity addressForm) {
-        assertThat(addressDTO).isNotNull();
-        assertThat(addressDTO.getCep()).isEqualTo(addressForm.getCep());
-        assertThat(addressDTO.getCity()).isEqualTo(addressForm.getCity());
-        assertThat(addressDTO.getDistrict()).isEqualTo(addressForm.getDistrict());
-        assertThat(addressDTO.getNumber()).isEqualTo(addressForm.getNumber());
-        assertThat(addressDTO.getState()).isEqualTo(addressForm.getState());
-        assertThat(addressDTO.getStreetName()).isEqualTo(addressForm.getStreetName());
     }
 }

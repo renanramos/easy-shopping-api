@@ -6,18 +6,19 @@
  */
 package br.com.renanrramos.easyshopping.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
+import br.com.renanrramos.easyshopping.core.domain.Company;
+import br.com.renanrramos.easyshopping.interfaceadapter.repository.CompanyRepository;
+import br.com.renanrramos.easyshopping.model.CompanyEntity;
+import br.com.renanrramos.easyshopping.service.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import br.com.renanrramos.easyshopping.model.Company;
-import br.com.renanrramos.easyshopping.interfaceadapter.repository.CompanyRepository;
-import br.com.renanrramos.easyshopping.service.CommonService;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author renan.ramos
@@ -31,29 +32,33 @@ public class CompanyService implements CommonService<Company>{
 	
 	@Override
 	public Company save(Company company) {
-		return companyRepository.save(company);
+//		return companyRepository.save(company);
+		return null;
 	}
 
 	@Override
 	public List<Company> findAll(Pageable page) {
-		Page<Company> pagedResult = companyRepository.findAll(page); 
-		return pagedResult.hasContent() ?
-				pagedResult.getContent() :
-					new ArrayList<>();
+//		Page<CompanyEntity> pagedResult = companyRepository.findAll(page);
+//		return pagedResult.hasContent() ?
+//				pagedResult.getContent() :
+//					new ArrayList<>();
+		return Collections.emptyList();
 	}
 
 	public List<Company> findAllCompanies() {
-		return companyRepository.findAll();
+//		return companyRepository.findAll();
+		return Collections.emptyList();
 	}
 	
 	@Override
 	public Optional<Company> findById(Long companyId) {
-		return companyRepository.findById(companyId);
+		return null; //companyRepository.findById(companyId);
 	}
 
 	@Override
 	public Company update(Company company) {
-		return companyRepository.save(company);
+		return null;
+				//companyRepository.save(company);
 	}
 
 	@Override
@@ -62,8 +67,8 @@ public class CompanyService implements CommonService<Company>{
 	}
 
 	public boolean isRegisteredNumberInvalid(String registeredNumber) {
-		Company company = companyRepository.findTopCompanyByRegisteredNumber(registeredNumber);
-		return Optional.ofNullable(company).isPresent();
+//		CompanyEntity company = companyRepository.findTopCompanyByRegisteredNumber(registeredNumber);
+		return false; //Optional.ofNullable(company).isPresent();
 	}
 
 	@Override
@@ -72,13 +77,14 @@ public class CompanyService implements CommonService<Company>{
 	}
 
 	public List<Company> findCompanyByName(Pageable page, String name) {
-		Page<Company> pagedResult = companyRepository.getCompanyByNameRegisteredNumberOrEmail(page, name); 
-		return pagedResult.hasContent() ?
-				pagedResult.getContent() :
-					new ArrayList<>();
+		Page<CompanyEntity> pagedResult = companyRepository.getCompanyByNameRegisteredNumberOrEmail(page, name);
+//		return pagedResult.hasContent() ?
+//				pagedResult.getContent() :
+//					new ArrayList<>();
+		return Collections.emptyList();
 	}
 
 	public Optional<Company> findCompanyByTokenId(String tokenId) {
-		return companyRepository.findCompanyByTokenId(tokenId);
+		return Optional.empty();//companyRepository.findCompanyByTokenId(tokenId);
 	}
 }
