@@ -13,7 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -22,12 +21,12 @@ import java.util.Optional;
  */
 public interface CompanyRepository extends PagingAndSortingRepository<CompanyEntity, Long>{
 
-	CompanyEntity findTopCompanyByRegisteredNumber(String registeredNumber);
+	Optional<CompanyEntity> findTopCompanyByRegisteredNumber(final String registeredNumber);
 
 	@Query(EasyShoppingSqlConstants.GET_COMPANY_BY_NAME)
-	Page<CompanyEntity> getCompanyByNameRegisteredNumberOrEmail(Pageable page, String name);
+	Page<CompanyEntity> getCompanyByNameRegisteredNumberOrEmail(final Pageable page, final String name);
 
-	List<CompanyEntity> findAll();
+	Page<CompanyEntity> findAll(final Pageable page);
 
-	Optional<CompanyEntity> findCompanyByTokenId(String tokenId);
+	Optional<CompanyEntity> findCompanyByTokenId(final String tokenId);
 }

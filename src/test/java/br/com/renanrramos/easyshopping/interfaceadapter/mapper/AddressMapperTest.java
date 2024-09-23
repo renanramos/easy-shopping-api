@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static br.com.renanrramos.easyshopping.interfaceadapter.mapper.util.TestUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class AddressMapperTest {
@@ -60,38 +61,5 @@ class AddressMapperTest {
         assertThat(address.getState()).isEqualTo(addressFormUpdate.getState());
         assertThat(address.getCep()).isEqualTo(addressFormUpdate.getCep());
         assertThat(address.getNumber()).isEqualTo(addressFormUpdate.getNumber());
-    }
-
-    private void assertAddress(final Address address, final AddressForm addressForm) {
-        assertThat(address).isNotNull();
-        assertThat(address.getCity()).isEqualTo(addressForm.getCity());
-        assertThat(address.getState()).isEqualTo(addressForm.getState());
-        assertThat(address.getNumber()).isEqualTo(addressForm.getNumber());
-        assertThat(address.getDistrict()).isEqualTo(addressForm.getDistrict());
-        assertThat(address.getCep()).isEqualTo(addressForm.getCep());
-        assertThat(address.getStreetName()).isEqualTo(addressForm.getStreetName());
-        assertThat(address.getState()).isEqualTo(addressForm.getState());
-    }
-
-    private void assertAddressDTOList(final List<AddressDTO> addressDTOS, final List<Address> addressList) {
-
-        assertThat(addressDTOS).hasSize(addressList.size());
-        int index = 0;
-        for (final AddressDTO addressDTO: addressDTOS) {
-            assertAddressDTO(addressDTO, addressList.get(index));
-            index++;
-        }
-    }
-
-    private static void assertAddressDTO(final AddressDTO addressDTO, final Address address) {
-        assertThat(addressDTO).isNotNull();
-        assertThat(addressDTO.getId()).isEqualTo(address.getId());
-        assertThat(addressDTO.getNumber()).isEqualTo(address.getNumber());
-        assertThat(addressDTO.getDistrict()).isEqualTo(address.getDistrict());
-        assertThat(addressDTO.getCity()).isEqualTo(address.getCity());
-        assertThat(addressDTO.getCep()).isEqualTo(address.getCep());
-        assertThat(addressDTO.getCustomerId()).isEqualTo(address.getCustomerId());
-        assertThat(addressDTO.getState()).isEqualTo(address.getState());
-        assertThat(addressDTO.getStreetName()).isEqualTo(address.getStreetName());
     }
 }

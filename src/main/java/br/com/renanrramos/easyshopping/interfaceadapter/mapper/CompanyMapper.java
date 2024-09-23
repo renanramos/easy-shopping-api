@@ -1,5 +1,6 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
+import br.com.renanrramos.easyshopping.core.domain.Company;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.CompanyDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.CompanyForm;
 import br.com.renanrramos.easyshopping.model.CompanyEntity;
@@ -16,10 +17,10 @@ public interface CompanyMapper {
     CompanyMapper INSTANCE = Mappers.getMapper(CompanyMapper.class);
 
     @Named("mapCompanyToCompanyDTO")
-    CompanyDTO mapCompanyToCompanyDTO(final CompanyEntity company);
+    CompanyDTO mapCompanyToCompanyDTO(final Company company);
 
     @Named("mapCompanyListToCompanyDTOList")
-    default List<CompanyDTO> mapCompanyListToCompanyDTOList(final List<CompanyEntity> companies) {
+    default List<CompanyDTO> mapCompanyListToCompanyDTOList(final List<Company> companies) {
         return companies.stream()
                 .map(CompanyMapper.INSTANCE::mapCompanyToCompanyDTO)
                 .collect(Collectors.toList());
@@ -27,8 +28,25 @@ public interface CompanyMapper {
 
     @Named("mapCompanyFormToCompany")
     @Mapping(target = "profile", constant = "COMPANY")
-    CompanyEntity mapCompanyFormToCompany(final CompanyForm companyForm);
+    Company mapCompanyFormToCompany(final CompanyForm companyForm);
 
     @Named("mapCompanyFormToUpdateCompany")
-    void mapCompanyFormToUpdateCompany(@MappingTarget CompanyEntity company, CompanyForm companyForm);
+    void mapCompanyFormToUpdateCompany(@MappingTarget Company company, CompanyForm companyForm);
+
+    @Named("mapCompanyToCompanyEntity")
+    CompanyEntity mapCompanyToCompanyEntity(final Company company);
+
+    @Named("mapCompanyEntityToCompany")
+    Company mapCompanyEntityToCompany(final CompanyEntity companyEntity);
+
+    @Named("mapCompanyEntityListToCompanyList")
+    default List<Company> mapCompanyEntityListToCompanyList(final List<CompanyEntity> companyEntities) {
+        return companyEntities
+                .stream()
+                .map(CompanyMapper.INSTANCE::mapCompanyEntityToCompany)
+                .collect(Collectors.toList());
+    }
+
+    @Named("mapCompanyToUpdateCompanyEntity")
+    void mapCompanyToUpdateCompanyEntity(@MappingTarget CompanyEntity companyToBeUpdated, final Company company);
 }
