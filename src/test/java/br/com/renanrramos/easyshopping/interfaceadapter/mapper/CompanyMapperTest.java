@@ -67,7 +67,7 @@ class CompanyMapperTest {
     void mapCompanyToCompanyEntity_withCompany_shouldMapToCompanyEntity() {
         // Arrange
         final Company company = Instancio.of(Company.class).create();
-        company.setPhone(Profile.COMPANY.name());
+        company.setProfile(Profile.COMPANY);
         // Act
         final CompanyEntity companyEntity = CompanyMapper.INSTANCE.mapCompanyToCompanyEntity(company);
         // Assert
