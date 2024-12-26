@@ -43,7 +43,6 @@ public class UserEntity implements Serializable{
 	@Column(length = 50)
 	private String name;
 
-	@Email
 	@Column(length = 250)
 	private String email;
 

@@ -9,6 +9,7 @@ package br.com.renanrramos.easyshopping.infra.controller.entity.form;
 import br.com.renanrramos.easyshopping.core.domain.enums.Profile;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.EqualsAndHashCode;
 
@@ -19,6 +20,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@RequiredArgsConstructor
 public class AdministratorForm {
 
 	private String name;
@@ -27,7 +29,4 @@ public class AdministratorForm {
 	@ApiModelProperty(hidden = true)
 	private Profile profile;
 
-	public AdministratorForm() {
-		// Intentionally empty
-	}
 }

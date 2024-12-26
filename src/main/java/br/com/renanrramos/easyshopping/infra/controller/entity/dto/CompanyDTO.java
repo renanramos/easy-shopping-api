@@ -28,12 +28,10 @@ public class CompanyDTO {
 
 	private String name;
 
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String registeredNumber;
 
 	private String email;
 
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String phone;
 
 	private Profile profile;

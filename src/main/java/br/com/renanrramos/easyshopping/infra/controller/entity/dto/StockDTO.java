@@ -25,7 +25,6 @@ public class StockDTO {
 
 	private Long id;
 
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String name;
 
 	private Long storeId;

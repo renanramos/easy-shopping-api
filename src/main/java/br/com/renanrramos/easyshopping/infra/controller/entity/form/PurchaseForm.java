@@ -1,12 +1,12 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- *
  * Creator: renan.ramos - 02/12/2020
  * ------------------------------------------------------------
  */
 package br.com.renanrramos.easyshopping.infra.controller.entity.form;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.EqualsAndHashCode;
 
@@ -17,6 +17,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@RequiredArgsConstructor
 public class PurchaseForm {
 
 	private Long orderId;
@@ -25,7 +26,4 @@ public class PurchaseForm {
 
 	private Long creditCardId;
 
-	public PurchaseForm() {
-		// Intentionally empty
-	}
 }

@@ -5,7 +5,6 @@
  */
 package br.com.renanrramos.easyshopping.infra.controller.entity.dto;
 
-import br.com.renanrramos.easyshopping.constants.messages.ValidationMessagesConstants;
 import br.com.renanrramos.easyshopping.core.domain.enums.Profile;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +27,6 @@ public class CustomerDTO {
 
 	private String name;
 
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String cpf;
 
 	private String email;

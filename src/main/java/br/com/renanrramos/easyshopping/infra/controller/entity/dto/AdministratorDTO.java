@@ -10,6 +10,7 @@ import br.com.renanrramos.easyshopping.core.domain.enums.Profile;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.EqualsAndHashCode;
 /**
@@ -19,6 +20,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@RequiredArgsConstructor
 public class AdministratorDTO {
 	
 	private Long id;
@@ -31,8 +33,5 @@ public class AdministratorDTO {
 
 	@ApiModelProperty(hidden = true)
 	private Profile profile;
-	
-	public AdministratorDTO() {
-		// Intentionally empty
-	}
+
 }

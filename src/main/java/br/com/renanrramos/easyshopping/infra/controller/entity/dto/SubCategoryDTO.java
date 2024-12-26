@@ -5,14 +5,11 @@
  */
 package br.com.renanrramos.easyshopping.infra.controller.entity.dto;
 
-import br.com.renanrramos.easyshopping.constants.messages.ValidationMessagesConstants;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-
-import javax.validation.constraints.NotBlank;
 
 /**
  * @author renan.ramos
@@ -27,7 +24,6 @@ public class SubCategoryDTO {
 	@ApiModelProperty(hidden = true)
 	private Long id;
 
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String name;
 
 	private Long productCategoryId;

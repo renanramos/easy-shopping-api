@@ -32,10 +32,8 @@ public class ProductDTO {
 
 	private Long id;
 
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String name;
 
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String description;
 
 	private double price;

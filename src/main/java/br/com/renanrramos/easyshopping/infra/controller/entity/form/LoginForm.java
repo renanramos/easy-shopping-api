@@ -1,6 +1,5 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- * 
  * Creator: renan.ramos - 11/08/2020
  * ------------------------------------------------------------
  */
@@ -9,6 +8,7 @@ package br.com.renanrramos.easyshopping.infra.controller.entity.form;
 import javax.validation.constraints.NotBlank;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 /**
@@ -17,6 +17,7 @@ import lombok.ToString;
  */
 @Data
 @ToString
+@RequiredArgsConstructor
 public class LoginForm {
 
 	@NotBlank
@@ -25,12 +26,4 @@ public class LoginForm {
 	@NotBlank
 	private String password;
 
-	public LoginForm() {
-		// Intentionally empty
-	}
-
-	public LoginForm(String email, String password) {
-		this.email = email;
-		this.password = password;
-	}
 }

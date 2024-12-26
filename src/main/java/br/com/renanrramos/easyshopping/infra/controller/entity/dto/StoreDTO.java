@@ -1,6 +1,5 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- *
  * Creator: renan.ramos - 02/07/2020
  * ------------------------------------------------------------
  */
@@ -28,13 +27,10 @@ public class StoreDTO {
 	@ApiModelProperty(hidden = true)
 	private Long id;
 
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String name;
 
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String registeredNumber;
 
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String corporateName;
 
 	private String companyId;

@@ -24,22 +24,16 @@ public class AddressDTO {
 
 	private Long id;
 
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String streetName;
 
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String district;
 
-	@NotNull(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private Long number;
 
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String cep;
 
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String state;
 
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String city;
 
 	private String customerId;

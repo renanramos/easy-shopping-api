@@ -27,6 +27,5 @@ public class ProductCategoryDTO {
 	@ApiModelProperty(hidden = true)
 	private Long id;
 
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String name;
 }

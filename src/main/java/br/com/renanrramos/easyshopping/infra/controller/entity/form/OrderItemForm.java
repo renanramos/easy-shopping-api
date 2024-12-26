@@ -7,6 +7,7 @@
 package br.com.renanrramos.easyshopping.infra.controller.entity.form;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.EqualsAndHashCode;
 
@@ -17,6 +18,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@RequiredArgsConstructor
 public class OrderItemForm {
 
 	private Long orderId;
@@ -31,7 +33,4 @@ public class OrderItemForm {
 
 	private Double total;
 
-	public OrderItemForm() {
-		// Intentionally empty
-	}
 }

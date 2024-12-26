@@ -28,16 +28,12 @@ public class CreditCardDTO {
 
 	private Long id;
 
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String creditCardNumber;
 
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String ownerName;
 
-	@NotNull(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private LocalDate validDate;
 
-	@NotNull(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private Integer code;
 
 	private String customerId;
