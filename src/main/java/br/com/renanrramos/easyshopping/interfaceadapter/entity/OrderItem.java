@@ -38,7 +38,6 @@ public class OrderItem implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@ApiModelProperty(hidden = true)
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)

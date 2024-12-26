@@ -41,14 +41,11 @@ public class Store implements Serializable{
 	private Long id;
 
 	@Column(nullable = false, length = 50)
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String name;
 
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String registeredNumber;
 
 	@Column(nullable = false, length = 250)
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String corporateName;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "store")

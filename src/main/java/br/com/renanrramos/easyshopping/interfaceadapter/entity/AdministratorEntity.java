@@ -1,6 +1,5 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- * 
  * Creator: renan.ramos - 26/06/2020
  * ------------------------------------------------------------
  */
@@ -24,16 +23,11 @@ import lombok.*;
 @PrimaryKeyJoinColumn(name="id")
 @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 @RequiredArgsConstructor
+@ToString
 public class AdministratorEntity extends UserEntity {
 
 	private static final long serialVersionUID = 8713673214822893155L;
 
-	@ApiModelProperty(hidden = true)
 	@Enumerated(EnumType.STRING)
 	private Profile profile = Profile.ADMINISTRATOR;
-
-	@Override
-	public String toString() {
-		return "AdministratorEntity [profile=" + profile + "]";
-	}
 }

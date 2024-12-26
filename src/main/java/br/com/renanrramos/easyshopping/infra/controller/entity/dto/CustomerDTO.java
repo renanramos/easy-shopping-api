@@ -1,15 +1,18 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- *
  * Creator: renan.ramos - 27/06/2020
  * ------------------------------------------------------------
  */
 package br.com.renanrramos.easyshopping.infra.controller.entity.dto;
 
+import br.com.renanrramos.easyshopping.constants.messages.ValidationMessagesConstants;
 import br.com.renanrramos.easyshopping.core.domain.enums.Profile;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.EqualsAndHashCode;
+
+import javax.validation.constraints.NotBlank;
 
 /**
  * @author renan.ramos
@@ -18,12 +21,14 @@ import lombok.EqualsAndHashCode;
 @Data
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@RequiredArgsConstructor
 public class CustomerDTO {
 
 	private Long id;
 
 	private String name;
 
+	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String cpf;
 
 	private String email;
@@ -34,7 +39,4 @@ public class CustomerDTO {
 
 	private boolean isSync;
 
-	public CustomerDTO() {
-		// Intentionally empty
-	}
 }

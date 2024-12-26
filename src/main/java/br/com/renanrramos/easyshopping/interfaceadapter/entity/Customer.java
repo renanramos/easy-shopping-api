@@ -1,6 +1,5 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- *
  * Creator: renan.ramos - 24/06/2020
  * ------------------------------------------------------------
  */
@@ -28,10 +27,6 @@ public class Customer extends UserEntity {
 	private static final long serialVersionUID = 7345201836941654514L;
 
 	@EqualsAndHashCode.Include
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String cpf;
 
-	public Customer(String cpf) {
-		this.cpf = cpf;
-	}
 }

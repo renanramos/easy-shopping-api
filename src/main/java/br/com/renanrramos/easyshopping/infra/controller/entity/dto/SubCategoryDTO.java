@@ -1,14 +1,18 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- * 
  * Creator: renan.ramos - 08/08/2020
  * ------------------------------------------------------------
  */
 package br.com.renanrramos.easyshopping.infra.controller.entity.dto;
 
+import br.com.renanrramos.easyshopping.constants.messages.ValidationMessagesConstants;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
+
+import javax.validation.constraints.NotBlank;
 
 /**
  * @author renan.ramos
@@ -17,17 +21,17 @@ import lombok.ToString;
 @Data
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@RequiredArgsConstructor
 public class SubCategoryDTO {
 
+	@ApiModelProperty(hidden = true)
 	private Long id;
 
+	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String name;
 
 	private Long productCategoryId;
 
 	private String productCategoryName;
 
-	public SubCategoryDTO() {
-		// Intentionally empty
-	}
 }

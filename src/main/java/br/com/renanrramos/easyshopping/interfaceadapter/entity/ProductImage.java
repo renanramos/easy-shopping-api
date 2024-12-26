@@ -40,7 +40,7 @@ public class ProductImage implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@ApiModelProperty(hidden = true)
+
 	private Long id;
 
 	@Column

@@ -41,12 +41,10 @@ public class UserEntity implements Serializable{
 	private Long id;
 
 	@Column(length = 50)
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String name;
 
 	@Email
 	@Column(length = 250)
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String email;
 
 	@ApiModelProperty(hidden = true)

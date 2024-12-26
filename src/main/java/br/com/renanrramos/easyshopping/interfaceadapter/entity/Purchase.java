@@ -38,7 +38,6 @@ public class Purchase implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@ApiModelProperty(hidden = true)
 	private Long id;
 
 	private String customerId;

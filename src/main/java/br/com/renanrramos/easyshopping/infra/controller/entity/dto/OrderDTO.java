@@ -1,12 +1,13 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- *
  * Creator: renan.ramos - 23/11/2020
  * ------------------------------------------------------------
  */
 package br.com.renanrramos.easyshopping.infra.controller.entity.dto;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.EqualsAndHashCode;
 
@@ -17,7 +18,10 @@ import lombok.EqualsAndHashCode;
 @Data
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@RequiredArgsConstructor
 public class OrderDTO {
+
+	@ApiModelProperty(hidden = true)
 	private Long id;
 
 	private String orderNumber;
@@ -26,7 +30,4 @@ public class OrderDTO {
 
 	private boolean isFinished;
 
-	public OrderDTO() {
-		// Intentionally empty
-	}
 }

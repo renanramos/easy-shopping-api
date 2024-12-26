@@ -8,6 +8,7 @@ package br.com.renanrramos.easyshopping.infra.controller.entity.dto;
 
 import br.com.renanrramos.easyshopping.core.domain.enums.Profile;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
 import lombok.EqualsAndHashCode;
@@ -28,6 +29,7 @@ public class AdministratorDTO {
 
 	private boolean isActive;
 
+	@ApiModelProperty(hidden = true)
 	private Profile profile;
 	
 	public AdministratorDTO() {

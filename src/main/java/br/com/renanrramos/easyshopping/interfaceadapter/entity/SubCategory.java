@@ -45,11 +45,9 @@ public class SubCategory implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@ApiModelProperty(hidden = true)
 	private Long id;
 
 	@Column(nullable = false, length = 250)
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String name;
 
 	@ManyToOne(fetch = FetchType.LAZY)

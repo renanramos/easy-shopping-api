@@ -37,11 +37,9 @@ public class ProductCategory implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@ApiModelProperty(hidden = true)
 	private Long id;
 
 	@Column(nullable = false, length = 250)
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String name;
 
 	@OneToMany(targetEntity = SubCategory.class, cascade = CascadeType.ALL, mappedBy = "productCategory", fetch = FetchType.LAZY)

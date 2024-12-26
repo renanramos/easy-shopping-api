@@ -27,10 +27,8 @@ public class CompanyEntity extends UserEntity implements Serializable{
 
 	private static final long serialVersionUID = -5594496999476155657L;
 
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String registeredNumber;
 
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String phone;
 
 }

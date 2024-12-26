@@ -1,6 +1,5 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- *
  * Creator: renan.ramos - 08/07/2020
  * ------------------------------------------------------------
  */
@@ -10,12 +9,16 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import br.com.renanrramos.easyshopping.constants.messages.ValidationMessagesConstants;
 import br.com.renanrramos.easyshopping.interfaceadapter.entity.Product;
 import br.com.renanrramos.easyshopping.interfaceadapter.entity.ProductImage;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.EqualsAndHashCode;
+
+import javax.validation.constraints.NotBlank;
 
 /**
  * @author renan.ramos
@@ -24,12 +27,15 @@ import lombok.EqualsAndHashCode;
 @Data
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@RequiredArgsConstructor
 public class ProductDTO {
 
 	private Long id;
 
+	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String name;
 
+	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String description;
 
 	private double price;
@@ -43,22 +49,6 @@ public class ProductDTO {
 	private Set<ProductImage> productImages;
 
 	private boolean isProductPublished;
-
-	public ProductDTO() {
-		// Intentionally empty
-	}
-
-	public ProductDTO(Product product) {
-		this.id = product.getId();
-		this.name = product.getName();
-		this.description = product.getDescription();
-		this.price = product.getPrice();
-		this.subCategoryName = product.getSubCategory().getName();
-		this.storeId = product.getStore().getId();
-		this.subCategoryId = product.getSubCategory().getId();
-		this.productImages = Optional.ofNullable(product.getImages()).orElse(new HashSet<>());
-		this.isProductPublished = product.isPublished();
-	}
 
 //	public static List<ProductDTO> converterProductListToProductDTOList(List<Product> products) {
 //		return products.stream().map(ProductDTO::new).collect(Collectors.toList());

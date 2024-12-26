@@ -1,6 +1,5 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- *
  * Creator: renan.ramos - 23/11/2020
  * ------------------------------------------------------------
  */
@@ -40,7 +39,6 @@ public class Order implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@ApiModelProperty(hidden = true)
 	private Long id;
 
 	private String orderNumber;

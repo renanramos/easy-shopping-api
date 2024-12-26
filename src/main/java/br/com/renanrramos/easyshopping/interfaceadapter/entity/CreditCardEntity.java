@@ -45,17 +45,13 @@ public class CreditCardEntity implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String creditCardNumber;
 
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String ownerName;
 
-	@NotNull(message = ValidationMessagesConstants.EMPTY_FIELD)
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDate validDate;
 
-	@NotNull(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private Integer code;
 
 	private String customerId;

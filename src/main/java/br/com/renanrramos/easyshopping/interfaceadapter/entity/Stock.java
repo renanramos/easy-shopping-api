@@ -44,7 +44,6 @@ public class Stock implements Serializable {
 	private Long id;
 
 	@Column(nullable = false, length = 50)
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String name;
 
 	@ManyToOne
