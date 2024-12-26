@@ -1,13 +1,14 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
  *
- * Creator: renan.ramos - 26/06/2020
+ * Creator: renan.ramos - 10/11/2020
  * ------------------------------------------------------------
  */
-package br.com.renanrramos.easyshopping.model;
+package br.com.renanrramos.easyshopping.interfaceadapter.domain;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -35,9 +36,9 @@ import lombok.Setter;
 @Setter
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Product implements Serializable{
+public class Stock implements Serializable {
 
-	private static final long serialVersionUID = -8837444544799506973L;
+	private static final long serialVersionUID = -1868754634925172817L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,34 +49,15 @@ public class Product implements Serializable{
 	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String name;
 
-	@Column(nullable = false, length = 250)
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
-	private String description;
-
-	private double price;
-
-	@ManyToOne
-	@JoinColumn(name = "subcategory_id")
-	private SubCategory subCategory;
-
 	@ManyToOne
 	@JoinColumn(name = "store_id")
 	private Store store;
 
-	private String companyId;
-
-	@OneToMany(targetEntity = ProductImage.class, cascade = CascadeType.ALL, mappedBy = "product", fetch = FetchType.EAGER)
-	private Set<ProductImage> images;
-
-	private boolean isPublished;
-
-	public Product() {
-		// Intentionally empty
-	}
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "stock", fetch = FetchType.EAGER)
+	private List<StockItem> items = new ArrayList<>();
 
 	@Override
 	public String toString() {
-		return "Product [id=" + id + ", name=" + name + ", description=" + description + ", price=" + price
-				+ ", subcategory=" + subCategory + ", store=" + store + "]";
+		return "Stock [id=" + id + ", name=" + name + ", store=" + store.getName() + "]";
 	}
 }

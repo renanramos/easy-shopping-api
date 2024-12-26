@@ -1,7 +1,7 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
 import br.com.renanrramos.easyshopping.core.domain.CreditCard;
-import br.com.renanrramos.easyshopping.model.CreditCardEntity;
+import br.com.renanrramos.easyshopping.interfaceadapter.domain.CreditCardEntity;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.CreditCardDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.CreditCardForm;
 import org.mapstruct.*;

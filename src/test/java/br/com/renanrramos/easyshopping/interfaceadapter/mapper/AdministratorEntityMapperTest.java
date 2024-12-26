@@ -2,7 +2,6 @@ package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
 import br.com.renanrramos.easyshopping.core.domain.Administrator;
 import br.com.renanrramos.easyshopping.core.domain.enums.Profile;
-import br.com.renanrramos.easyshopping.model.AdministratorEntity;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.AdministratorDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.AdministratorForm;
 import org.instancio.Instancio;

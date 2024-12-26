@@ -1,6 +1,6 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
-import br.com.renanrramos.easyshopping.model.SubCategory;
+import br.com.renanrramos.easyshopping.interfaceadapter.domain.SubCategory;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.SubCategoryDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.SubCategoryForm;
 import org.mapstruct.*;

@@ -16,9 +16,9 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import br.com.renanrramos.easyshopping.core.domain.Address;
+import br.com.renanrramos.easyshopping.interfaceadapter.domain.*;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.PurchaseMapper;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.PurchaseStatisticMapper;
-import br.com.renanrramos.easyshopping.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -32,7 +32,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
-import br.com.renanrramos.easyshopping.model.CreditCardEntity;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.PurchaseDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.PurchaseForm;
 import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;

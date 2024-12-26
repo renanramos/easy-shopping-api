@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-import br.com.renanrramos.easyshopping.model.AdministratorEntity;
+import br.com.renanrramos.easyshopping.interfaceadapter.domain.AdministratorEntity;
 
 import javax.transaction.Transactional;
 

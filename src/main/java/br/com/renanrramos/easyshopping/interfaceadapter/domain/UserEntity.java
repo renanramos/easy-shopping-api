@@ -4,7 +4,7 @@
  * Creator: renan.ramos - 24/06/2020
  * ------------------------------------------------------------
  */
-package br.com.renanrramos.easyshopping.model;
+package br.com.renanrramos.easyshopping.interfaceadapter.domain;
 
 import java.io.Serializable;
 

@@ -4,7 +4,7 @@
  * Creator: renan.ramos - 26/06/2020
  * ------------------------------------------------------------
  */
-package br.com.renanrramos.easyshopping.model;
+package br.com.renanrramos.easyshopping.interfaceadapter.domain;
 
 import br.com.renanrramos.easyshopping.constants.messages.ValidationMessagesConstants;
 import lombok.EqualsAndHashCode;

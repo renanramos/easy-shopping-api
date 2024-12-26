@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.renanrramos.easyshopping.constants.messages.MailContentMessages;
 import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
-import br.com.renanrramos.easyshopping.model.UserEntity;
+import br.com.renanrramos.easyshopping.interfaceadapter.domain.UserEntity;
 import lombok.AllArgsConstructor;
 
 /**

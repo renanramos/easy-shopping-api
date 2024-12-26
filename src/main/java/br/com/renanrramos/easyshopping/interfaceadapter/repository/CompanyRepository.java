@@ -7,7 +7,7 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.repository;
 
 import br.com.renanrramos.easyshopping.interfaceadapter.repository.constants.EasyShoppingSqlConstants;
-import br.com.renanrramos.easyshopping.model.CompanyEntity;
+import br.com.renanrramos.easyshopping.interfaceadapter.domain.CompanyEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;

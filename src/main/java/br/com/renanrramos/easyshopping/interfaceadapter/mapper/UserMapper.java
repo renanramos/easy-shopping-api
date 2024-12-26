@@ -1,6 +1,6 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
-import br.com.renanrramos.easyshopping.model.UserEntity;
+import br.com.renanrramos.easyshopping.interfaceadapter.domain.UserEntity;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.UserDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.UserForm;
 import org.mapstruct.Mapper;

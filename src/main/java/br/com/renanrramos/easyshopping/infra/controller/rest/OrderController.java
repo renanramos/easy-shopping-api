@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
-import br.com.renanrramos.easyshopping.model.Order;
+import br.com.renanrramos.easyshopping.interfaceadapter.domain.Order;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.OrderDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.OrderForm;
 import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;

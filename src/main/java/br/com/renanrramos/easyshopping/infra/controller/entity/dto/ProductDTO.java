@@ -7,13 +7,11 @@
 package br.com.renanrramos.easyshopping.infra.controller.entity.dto;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-import br.com.renanrramos.easyshopping.model.Product;
-import br.com.renanrramos.easyshopping.model.ProductImage;
+import br.com.renanrramos.easyshopping.interfaceadapter.domain.Product;
+import br.com.renanrramos.easyshopping.interfaceadapter.domain.ProductImage;
 
 import lombok.Data;
 import lombok.ToString;

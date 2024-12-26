@@ -3,7 +3,7 @@ package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 import br.com.renanrramos.easyshopping.core.domain.Address;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.AddressDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.AddressForm;
-import br.com.renanrramos.easyshopping.model.AddressEntity;
+import br.com.renanrramos.easyshopping.interfaceadapter.domain.AddressEntity;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 

@@ -8,7 +8,7 @@ package br.com.renanrramos.easyshopping.service.impl;
 
 import br.com.renanrramos.easyshopping.core.domain.Company;
 import br.com.renanrramos.easyshopping.interfaceadapter.repository.CompanyRepository;
-import br.com.renanrramos.easyshopping.model.CompanyEntity;
+import br.com.renanrramos.easyshopping.interfaceadapter.domain.CompanyEntity;
 import br.com.renanrramos.easyshopping.service.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

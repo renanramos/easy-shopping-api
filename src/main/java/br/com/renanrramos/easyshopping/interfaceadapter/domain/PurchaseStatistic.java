@@ -1,4 +1,4 @@
-package br.com.renanrramos.easyshopping.model;
+package br.com.renanrramos.easyshopping.interfaceadapter.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

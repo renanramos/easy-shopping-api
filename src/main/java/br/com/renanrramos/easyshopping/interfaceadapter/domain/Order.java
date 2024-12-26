@@ -4,22 +4,22 @@
  * Creator: renan.ramos - 23/11/2020
  * ------------------------------------------------------------
  */
-package br.com.renanrramos.easyshopping.model;
+package br.com.renanrramos.easyshopping.interfaceadapter.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;
@@ -34,38 +34,35 @@ import lombok.Setter;
 @Setter
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class OrderItem implements Serializable {
+@Table(name = "`order`")
+public class Order implements Serializable {
 
-	private static final long serialVersionUID = 6973936402754269388L;
+	private static final long serialVersionUID = -6015194357896415019L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@ApiModelProperty(hidden = true)
 	private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "order_id")
-	@Fetch(FetchMode.JOIN)
-	@JsonIgnore
-	private Order order;
+	private String orderNumber;
 
-	private Long productId;
+	private String customerId;
 
-	private String productName;
+	private boolean finished;
 
-	private Integer amount;
+	@OneToMany(targetEntity = OrderItem.class, cascade = CascadeType.ALL, mappedBy = "order", fetch = FetchType.EAGER)
+	private List<OrderItem> items = new ArrayList<>();
 
-	private Double price;
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "purchase_id")
+	private Purchase purchase;
 
-	private Double total;
-
-	public OrderItem() {
+	public Order() {
 		// Intentionally empty
 	}
 
 	@Override
 	public String toString() {
-		return "OrderItem [id=" + id + ", order=" + order + ", productId=" + productId + ", amount=" + amount
-				+ ", price=" + price + ", total=" + total + "]";
+		return "Order [id=" + id + ", customerId=" + customerId + "]";
 	}
 }

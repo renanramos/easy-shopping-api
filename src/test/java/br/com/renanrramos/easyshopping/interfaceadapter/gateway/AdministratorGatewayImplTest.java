@@ -8,7 +8,7 @@ import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRe
 import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.AdministratorMapper;
 import br.com.renanrramos.easyshopping.interfaceadapter.repository.AdministratorRepository;
-import br.com.renanrramos.easyshopping.model.AdministratorEntity;
+import br.com.renanrramos.easyshopping.interfaceadapter.domain.AdministratorEntity;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

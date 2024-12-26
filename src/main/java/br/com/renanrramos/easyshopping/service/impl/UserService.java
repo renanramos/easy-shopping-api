@@ -9,7 +9,7 @@ package br.com.renanrramos.easyshopping.service.impl;
 import java.util.List;
 import java.util.Optional;
 
-import br.com.renanrramos.easyshopping.model.UserEntity;
+import br.com.renanrramos.easyshopping.interfaceadapter.domain.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

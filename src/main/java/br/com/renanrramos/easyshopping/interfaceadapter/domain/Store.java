@@ -1,22 +1,23 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
  *
- * Creator: renan.ramos - 11/07/2020
+ * Creator: renan.ramos - 26/06/2020
  * ------------------------------------------------------------
  */
-package br.com.renanrramos.easyshopping.model;
+package br.com.renanrramos.easyshopping.interfaceadapter.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import br.com.renanrramos.easyshopping.constants.messages.ValidationMessagesConstants;
 import io.swagger.annotations.ApiModelProperty;
@@ -30,48 +31,43 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@Entity(name = "Address")
+@Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class AddressEntity implements Serializable{
+public class Store implements Serializable{
 
-	private static final long serialVersionUID = 1130436355437175562L;
+	private static final long serialVersionUID = 979835710158008524L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@ApiModelProperty(hidden = true)
 	private Long id;
 
+	@Column(nullable = false, length = 50)
 	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
-	private String streetName;
-
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
-	private String district;
-
-	@NotNull(message = ValidationMessagesConstants.EMPTY_FIELD)
-	private Long number;
+	private String name;
 
 	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
-	private String cep;
+	private String registeredNumber;
 
+	@Column(nullable = false, length = 250)
 	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
-	private String state;
+	private String corporateName;
 
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
-	private String city;
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "store")
+	private List<Product> products = new ArrayList<>();
 
-	private String customerId;
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "store")
+	private List<Stock> stocks = new ArrayList<>();
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "purchase_id")
-	private Purchase purchase;
+	private String tokenId;
 
-	public AddressEntity() {
+	public Store() {
 		// Intentionally empty
 	}
 
 	@Override
 	public String toString() {
-		return "Address [id=" + id + ", streetName=" + streetName + ", district=" + district + ", number=" + number
-				+ ", cep=" + cep + ", state=" + state + ", city=" + city + ", customer=" + customerId + "]";
+		return "Store [id=" + id + ", name=" + name + ", registeredNumber=" + registeredNumber + ", corporateName="
+				+ corporateName + ", products=" + products + ", stocks=" + stocks + "]";
 	}
 }

@@ -9,7 +9,7 @@ package br.com.renanrramos.easyshopping.interfaceadapter.repository;
 import java.util.List;
 import java.util.Optional;
 
-import br.com.renanrramos.easyshopping.model.UserEntity;
+import br.com.renanrramos.easyshopping.interfaceadapter.domain.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

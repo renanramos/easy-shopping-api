@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import br.com.renanrramos.easyshopping.interfaceadapter.repository.constants.EasyShoppingSqlConstants;
-import br.com.renanrramos.easyshopping.model.Stock;
+import br.com.renanrramos.easyshopping.interfaceadapter.domain.Stock;
 
 /**
  * @author renan.ramos

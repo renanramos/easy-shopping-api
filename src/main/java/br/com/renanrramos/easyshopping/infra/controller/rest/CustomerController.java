@@ -37,7 +37,7 @@ import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
 import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
-import br.com.renanrramos.easyshopping.model.Customer;
+import br.com.renanrramos.easyshopping.interfaceadapter.domain.Customer;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.CustomerDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.CustomerForm;
 import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;

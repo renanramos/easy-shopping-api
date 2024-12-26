@@ -1,19 +1,25 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
  *
- * Creator: renan.ramos - 10/11/2020
+ * Creator: renan.ramos - 23/11/2020
  * ------------------------------------------------------------
  */
-package br.com.renanrramos.easyshopping.model;
+package br.com.renanrramos.easyshopping.interfaceadapter.domain;
 
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;
@@ -28,32 +34,38 @@ import lombok.Setter;
 @Setter
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class StockItem implements Serializable {
+public class OrderItem implements Serializable {
 
-	private static final long serialVersionUID = 6415687420314987028L;
+	private static final long serialVersionUID = 6973936402754269388L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@ApiModelProperty(hidden = true)
 	private Long id;
 
-	@ManyToOne
-	@JoinColumn(name = "stock_id")
-	private Stock stock;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "order_id")
+	@Fetch(FetchMode.JOIN)
+	@JsonIgnore
+	private Order order;
 
 	private Long productId;
 
 	private String productName;
 
-	private Double maxAmount;
+	private Integer amount;
 
-	private Double minAmount;
+	private Double price;
 
-	private Integer currentAmount;
+	private Double total;
+
+	public OrderItem() {
+		// Intentionally empty
+	}
 
 	@Override
 	public String toString() {
-		return "StockItem [id=" + id + ", stock=" + stock + ", productId=" + productId + ", maxAmount=" + maxAmount
-				+ ", minAmount=" + minAmount + ", currentAmount=" + currentAmount + "]";
+		return "OrderItem [id=" + id + ", order=" + order + ", productId=" + productId + ", amount=" + amount
+				+ ", price=" + price + ", total=" + total + "]";
 	}
 }
