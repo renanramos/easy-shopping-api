@@ -72,13 +72,7 @@ public class CompanyController {
 	@ApiOperation(value = "Update a company")
 	@RolesAllowed({ "easy-shopping-admin", "easy-shopping-user" })
 	public ResponseEntity<CompanyDTO> updateCompany(@PathVariable("id") Long companyId,
-			@Valid @RequestBody CompanyForm companyForm, UriComponentsBuilder uriBuilder) {
-		//		TODO: aplicar validação na camada gateway/usecase
-		//		Optional<CompanyEntity> currentCompany = companyService.findCompanyByTokenId(companyId);
-		//
-		//		if(!currentCompany.isPresent()) {
-		//			throw new EntityNotFoundException(ExceptionMessagesConstants.ACCOUNT_NOT_FOUND);
-		//		}
+			@Valid @RequestBody CompanyForm companyForm) {
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(companyDelegate.updateCompany(companyForm, companyId));
 	}

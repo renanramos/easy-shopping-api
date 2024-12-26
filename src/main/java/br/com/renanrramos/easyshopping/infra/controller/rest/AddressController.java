@@ -1,12 +1,9 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- *
  * Creator: renan.ramos - 12/07/2020
  * ------------------------------------------------------------
  */
 package br.com.renanrramos.easyshopping.infra.controller.rest;
-
-import java.net.URI;
 
 import javax.annotation.security.RolesAllowed;
 import javax.transaction.Transactional;
@@ -49,9 +46,7 @@ public class AddressController {
 
 	private final AddressDelegate addressDelegate;
 
-	private URI uri;
-
-	@ResponseBody
+    @ResponseBody
 	@PostMapping
 	@Transactional
 	@ApiOperation(value = "Save a new address")
@@ -90,10 +85,11 @@ public class AddressController {
 	@RolesAllowed({"easy-shopping-admin", "easy-shopping-user"})
 	public ResponseEntity<AddressDTO> updateAddress(@PathVariable("id") Long addressId,
 			@RequestBody AddressForm addressForm, UriComponentsBuilder uriBuilder) {
-		uri = uriBuilder.path("/addresses/{id}")
-				.buildAndExpand(addressId).encode().toUri();
 		return ResponseEntity.accepted()
-				.location(uri)
+				.location(uriBuilder.path("/addresses/{id}")
+						.buildAndExpand(addressId)
+						.encode()
+						.toUri())
 				.body(addressDelegate.updateAddress(addressForm, addressId));
 	}
 

@@ -17,6 +17,8 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.CustomerMapper;
+import br.com.renanrramos.easyshopping.service.AuthenticationService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -53,15 +55,14 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping(path = "api/customers", produces = "application/json")
 @Api(tags = "Customers")
 @CrossOrigin(origins = "*")
+@RequiredArgsConstructor
 public class CustomerController {
 
-	@Autowired
-	private CustomerService customerService;
+	private final CustomerService customerService;
 
 	private URI uri;
 
-	@Autowired
-	private AuthenticationServiceImpl authenticationServiceImpl;
+	private final AuthenticationService authenticationService;
 
 	@ResponseBody
 	@PostMapping
@@ -79,7 +80,7 @@ public class CustomerController {
 			throw new EasyShoppingException(ExceptionMessagesConstants.CPF_ALREADY_EXIST);
 		}
 
-		customer.setTokenId(authenticationServiceImpl.getName());
+		customer.setTokenId(authenticationService.getName());
 		customer.setSync(true);
 
 		Customer customerCreated = customerService.save(customer);

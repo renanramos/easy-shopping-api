@@ -1,6 +1,5 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- *
  * Creator: renan.ramos - 23/11/2020
  * ------------------------------------------------------------
  */
@@ -15,4 +14,6 @@ import org.springframework.security.core.Authentication;
 public interface AuthenticationService {
 
 	Authentication getAuthentication();
+
+	String getName();
 }

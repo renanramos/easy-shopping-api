@@ -37,6 +37,7 @@ import br.com.renanrramos.easyshopping.service.AuthenticationService;
 import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.CreditCardDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.CreditCardForm;
+import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * @author renan.ramos
@@ -52,8 +53,6 @@ public class CreditCardController {
 	private final AuthenticationService authenticationService;
 
 	private final CreditCardDelegate creditCardDelegate;
-
-	private URI uri;
 
 	@ResponseBody
 	@PostMapping
@@ -93,9 +92,12 @@ public class CreditCardController {
 	@ApiOperation(value = "Update a credit card")
 	@RolesAllowed({"easy-shopping-admin", "easy-shopping-user"})
 	public ResponseEntity<CreditCardDTO> updateCreditCard(@PathVariable("id") Long creditCardId,
-			@RequestBody CreditCardForm creditCardForm) {
+			@RequestBody CreditCardForm creditCardForm, UriComponentsBuilder uriBuilder) {
 		final CreditCardDTO creditCardDto = creditCardDelegate.updateCreditCard(creditCardForm, creditCardId);
-		return ResponseEntity.accepted().location(uri).body(creditCardDto);
+		return ResponseEntity.accepted().location(uriBuilder.path("/credit-cards/{id}")
+				.buildAndExpand(creditCardDto.getId())
+				.encode()
+				.toUri()).body(creditCardDto);
 	}
 
 	@ResponseBody

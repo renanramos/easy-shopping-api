@@ -38,8 +38,6 @@ public class AdministratorController {
 
 	private final AdministratorDelegate administratorDelegate;
 
-	private URI uri;
-
 	@ResponseBody
 	@PostMapping(path = "/register")
 	@Transactional

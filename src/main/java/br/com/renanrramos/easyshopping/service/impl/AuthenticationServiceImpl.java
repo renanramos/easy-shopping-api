@@ -23,6 +23,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		return SecurityContextHolder.getContext().getAuthentication();
 	}
 
+	@Override
 	public String getName() {
 		return getAuthentication().getName();
 	}
