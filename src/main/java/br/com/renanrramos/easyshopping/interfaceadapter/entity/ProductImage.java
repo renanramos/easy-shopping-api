@@ -1,10 +1,9 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- * 
  * Creator: renan.ramos - 23/09/2020
  * ------------------------------------------------------------
  */
-package br.com.renanrramos.easyshopping.interfaceadapter.domain;
+package br.com.renanrramos.easyshopping.interfaceadapter.entity;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -18,24 +17,23 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import lombok.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.swagger.annotations.ApiModelProperty;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * @author renan.ramos
  *
  */
-@Getter
-@Setter
+@Data
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@RequiredArgsConstructor
+@ToString
 public class ProductImage implements Serializable {
 
 	private static final long serialVersionUID = 5427495329867275306L;
@@ -59,13 +57,4 @@ public class ProductImage implements Serializable {
 
 	private boolean isCoverImage;
 
-	public ProductImage() {
-		// Intentionally empty
-	}
-
-	@Override
-	public String toString() {
-		return "ProductImage [id=" + id + ", description=" + description + ", picture=" + Arrays.toString(picture)
-				+ ", product=" + product + "]";
-	}
 }

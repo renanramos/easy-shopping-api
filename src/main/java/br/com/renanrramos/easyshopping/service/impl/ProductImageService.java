@@ -15,7 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import br.com.renanrramos.easyshopping.interfaceadapter.domain.ProductImage;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.ProductImage;
 import br.com.renanrramos.easyshopping.interfaceadapter.repository.ProductImageRepository;
 import br.com.renanrramos.easyshopping.service.CommonService;
 

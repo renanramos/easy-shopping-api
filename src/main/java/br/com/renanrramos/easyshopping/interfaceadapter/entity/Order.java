@@ -4,7 +4,7 @@
  * Creator: renan.ramos - 23/11/2020
  * ------------------------------------------------------------
  */
-package br.com.renanrramos.easyshopping.interfaceadapter.domain;
+package br.com.renanrramos.easyshopping.interfaceadapter.entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -22,19 +22,18 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import io.swagger.annotations.ApiModelProperty;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * @author renan.ramos
  *
  */
-@Getter
-@Setter
+@Data
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "`order`")
+@ToString
+@RequiredArgsConstructor
 public class Order implements Serializable {
 
 	private static final long serialVersionUID = -6015194357896415019L;
@@ -57,12 +56,4 @@ public class Order implements Serializable {
 	@JoinColumn(name = "purchase_id")
 	private Purchase purchase;
 
-	public Order() {
-		// Intentionally empty
-	}
-
-	@Override
-	public String toString() {
-		return "Order [id=" + id + ", customerId=" + customerId + "]";
-	}
 }

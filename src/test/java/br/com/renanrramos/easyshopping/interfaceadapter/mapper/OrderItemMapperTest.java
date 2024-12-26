@@ -1,6 +1,6 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
-import br.com.renanrramos.easyshopping.interfaceadapter.domain.OrderItem;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.OrderItem;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.OrderItemDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.OrderItemForm;
 import org.instancio.Instancio;

@@ -1,13 +1,11 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- *
- * Creator: renan.ramos - 08/08/2020
+ * Creator: renan.ramos - 27/06/2020
  * ------------------------------------------------------------
  */
-package br.com.renanrramos.easyshopping.interfaceadapter.domain;
+package br.com.renanrramos.easyshopping.interfaceadapter.entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -17,33 +15,25 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import br.com.renanrramos.easyshopping.constants.messages.ValidationMessagesConstants;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * @author renan.ramos
  *
  */
-@Getter
-@Setter
+@Data
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class SubCategory implements Serializable{
-
-	private static final long serialVersionUID = 1026705649369198665L;
+@RequiredArgsConstructor
+@ToString
+public class ProductCategory implements Serializable{
+ 
+	private static final long serialVersionUID = -4711255794768433234L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,21 +44,7 @@ public class SubCategory implements Serializable{
 	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String name;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "productCategory_id")
-	@Fetch(FetchMode.JOIN)
-	@JsonIgnore
-	private ProductCategory productCategory;
+	@OneToMany(targetEntity = SubCategory.class, cascade = CascadeType.ALL, mappedBy = "productCategory", fetch = FetchType.LAZY)
+	private List<SubCategory> subcategories;
 
-	@OneToMany(cascade = CascadeType.ALL)
-	private List<Product> products = new ArrayList<>();
-
-	public SubCategory() {
-		// Intentionally empty
-	}
-
-	@Override
-	public String toString() {
-		return "SubCategory [id=" + id + ", name=" + name + ", productCategory=" + productCategory.getId() + "]";
-	}
 }

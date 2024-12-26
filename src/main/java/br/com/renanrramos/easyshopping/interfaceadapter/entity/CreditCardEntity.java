@@ -1,12 +1,13 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
  *
- * Creator: renan.ramos - 11/07/2020
+ * Creator: renan.ramos - 01/08/2020
  * ------------------------------------------------------------
  */
-package br.com.renanrramos.easyshopping.interfaceadapter.domain;
+package br.com.renanrramos.easyshopping.interfaceadapter.entity;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -18,60 +19,48 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import br.com.renanrramos.easyshopping.constants.messages.ValidationMessagesConstants;
-import io.swagger.annotations.ApiModelProperty;
+
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * @author renan.ramos
  *
  */
-@Getter
-@Setter
-@Entity(name = "Address")
+@Data
+@ToString
+@Entity(name = "CreditCard")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class AddressEntity implements Serializable{
+@RequiredArgsConstructor
+public class CreditCardEntity implements Serializable{
 
-	private static final long serialVersionUID = 1130436355437175562L;
+	private static final long serialVersionUID = 4576301775857441140L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@ApiModelProperty(hidden = true)
 	private Long id;
 
 	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
-	private String streetName;
+	private String creditCardNumber;
 
 	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
-	private String district;
+	private String ownerName;
 
 	@NotNull(message = ValidationMessagesConstants.EMPTY_FIELD)
-	private Long number;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private LocalDate validDate;
 
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
-	private String cep;
-
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
-	private String state;
-
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
-	private String city;
+	@NotNull(message = ValidationMessagesConstants.EMPTY_FIELD)
+	private Integer code;
 
 	private String customerId;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "purchase_id")
 	private Purchase purchase;
-
-	public AddressEntity() {
-		// Intentionally empty
-	}
-
-	@Override
-	public String toString() {
-		return "Address [id=" + id + ", streetName=" + streetName + ", district=" + district + ", number=" + number
-				+ ", cep=" + cep + ", state=" + state + ", city=" + city + ", customer=" + customerId + "]";
-	}
 }

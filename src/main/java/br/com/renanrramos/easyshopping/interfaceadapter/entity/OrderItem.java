@@ -1,10 +1,9 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- *
  * Creator: renan.ramos - 23/11/2020
  * ------------------------------------------------------------
  */
-package br.com.renanrramos.easyshopping.interfaceadapter.domain;
+package br.com.renanrramos.easyshopping.interfaceadapter.entity;
 
 import java.io.Serializable;
 
@@ -16,24 +15,23 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import lombok.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.swagger.annotations.ApiModelProperty;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * @author renan.ramos
  *
  */
-@Getter
-@Setter
+@Data
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString
+@RequiredArgsConstructor
 public class OrderItem implements Serializable {
 
 	private static final long serialVersionUID = 6973936402754269388L;
@@ -59,13 +57,4 @@ public class OrderItem implements Serializable {
 
 	private Double total;
 
-	public OrderItem() {
-		// Intentionally empty
-	}
-
-	@Override
-	public String toString() {
-		return "OrderItem [id=" + id + ", order=" + order + ", productId=" + productId + ", amount=" + amount
-				+ ", price=" + price + ", total=" + total + "]";
-	}
 }

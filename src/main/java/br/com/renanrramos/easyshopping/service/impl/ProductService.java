@@ -18,7 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import br.com.renanrramos.easyshopping.interfaceadapter.domain.Product;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.Product;
 import br.com.renanrramos.easyshopping.interfaceadapter.repository.ProductRepository;
 import br.com.renanrramos.easyshopping.service.CommonService;
 

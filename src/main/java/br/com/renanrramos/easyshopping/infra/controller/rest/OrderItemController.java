@@ -30,9 +30,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
-import br.com.renanrramos.easyshopping.interfaceadapter.domain.Order;
-import br.com.renanrramos.easyshopping.interfaceadapter.domain.OrderItem;
-import br.com.renanrramos.easyshopping.interfaceadapter.domain.Product;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.Order;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.OrderItem;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.Product;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.OrderItemDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.OrderItemForm;
 import br.com.renanrramos.easyshopping.service.impl.OrderItemService;

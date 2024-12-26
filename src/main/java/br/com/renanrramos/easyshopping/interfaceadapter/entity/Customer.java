@@ -4,26 +4,25 @@
  * Creator: renan.ramos - 24/06/2020
  * ------------------------------------------------------------
  */
-package br.com.renanrramos.easyshopping.interfaceadapter.domain;
+package br.com.renanrramos.easyshopping.interfaceadapter.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.validation.constraints.NotBlank;
 
 import br.com.renanrramos.easyshopping.constants.messages.ValidationMessagesConstants;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * @author renan.ramos
  *
  */
-@Getter
-@Setter
+@Data
 @Entity
 @PrimaryKeyJoinColumn(name="id")
 @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+@ToString
+@RequiredArgsConstructor
 public class Customer extends UserEntity {
 
 	private static final long serialVersionUID = 7345201836941654514L;
@@ -32,16 +31,7 @@ public class Customer extends UserEntity {
 	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String cpf;
 
-	public Customer() {
-		// Intentionally empty
-	}
-
 	public Customer(String cpf) {
 		this.cpf = cpf;
-	}
-
-	@Override
-	public String toString() {
-		return "Customer [cpf=" + cpf + ", name= " + getName() + "]";
 	}
 }

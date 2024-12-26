@@ -1,10 +1,9 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- *
  * Creator: renan.ramos - 02/12/2020
  * ------------------------------------------------------------
  */
-package br.com.renanrramos.easyshopping.interfaceadapter.domain;
+package br.com.renanrramos.easyshopping.interfaceadapter.entity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -17,23 +16,22 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.swagger.annotations.ApiModelProperty;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * @author renan.ramos
  *
  */
-@Getter
-@Setter
+@Data
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@RequiredArgsConstructor
+@ToString
 public class Purchase implements Serializable {
 
 	private static final long serialVersionUID = -6564412536666152947L;
@@ -58,13 +56,4 @@ public class Purchase implements Serializable {
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
 	private LocalDateTime purchaseDate;
 
-	public Purchase() {
-		// Intentionally empty
-	}
-
-	@Override
-	public String toString() {
-		return "Purchase [id=" + id + ", customerId=" + customerId + ", order=" + order + ", address=" + address
-				+ ", creditCard=" + creditCard + ", date=" + purchaseDate + "]";
-	}
 }

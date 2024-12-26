@@ -15,7 +15,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 import br.com.renanrramos.easyshopping.interfaceadapter.repository.constants.EasyShoppingSqlConstants;
-import br.com.renanrramos.easyshopping.interfaceadapter.domain.Store;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.Store;
 
 /**
  * @author renan.ramos

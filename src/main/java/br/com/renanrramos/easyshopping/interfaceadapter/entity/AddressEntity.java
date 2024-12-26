@@ -1,13 +1,11 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- *
- * Creator: renan.ramos - 01/08/2020
+ * Creator: renan.ramos - 11/07/2020
  * ------------------------------------------------------------
  */
-package br.com.renanrramos.easyshopping.interfaceadapter.domain;
+package br.com.renanrramos.easyshopping.interfaceadapter.entity;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,42 +17,45 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import br.com.renanrramos.easyshopping.constants.messages.ValidationMessagesConstants;
-
-import lombok.Data;
-import lombok.ToString;
-import lombok.EqualsAndHashCode;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.*;
 
 /**
  * @author renan.ramos
  *
  */
 @Data
-@ToString
-@Entity(name = "CreditCard")
+@Entity(name = "Address")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class CreditCardEntity implements Serializable{
+@RequiredArgsConstructor
+@ToString
+public class AddressEntity implements Serializable{
 
-	private static final long serialVersionUID = 4576301775857441140L;
+	private static final long serialVersionUID = 1130436355437175562L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@ApiModelProperty(hidden = true)
 	private Long id;
 
 	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
-	private String creditCardNumber;
+	private String streetName;
 
 	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
-	private String ownerName;
+	private String district;
 
 	@NotNull(message = ValidationMessagesConstants.EMPTY_FIELD)
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private LocalDate validDate;
+	private Long number;
 
-	@NotNull(message = ValidationMessagesConstants.EMPTY_FIELD)
-	private Integer code;
+	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
+	private String cep;
+
+	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
+	private String state;
+
+	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
+	private String city;
 
 	private String customerId;
 
@@ -62,7 +63,4 @@ public class CreditCardEntity implements Serializable{
 	@JoinColumn(name = "purchase_id")
 	private Purchase purchase;
 
-	public CreditCardEntity() {
-		// Intentionally empty
-	}
 }

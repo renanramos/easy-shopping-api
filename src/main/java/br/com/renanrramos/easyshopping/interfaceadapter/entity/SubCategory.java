@@ -1,10 +1,9 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- *
- * Creator: renan.ramos - 10/11/2020
+ * Creator: renan.ramos - 08/08/2020
  * ------------------------------------------------------------
  */
-package br.com.renanrramos.easyshopping.interfaceadapter.domain;
+package br.com.renanrramos.easyshopping.interfaceadapter.entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -22,42 +21,44 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 
+import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.com.renanrramos.easyshopping.constants.messages.ValidationMessagesConstants;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * @author renan.ramos
  *
  */
-@Getter
-@Setter
+@Data
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Stock implements Serializable {
+@RequiredArgsConstructor
+@ToString
+public class SubCategory implements Serializable{
 
-	private static final long serialVersionUID = -1868754634925172817L;
+	private static final long serialVersionUID = 1026705649369198665L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@ApiModelProperty(hidden = true)
 	private Long id;
 
-	@Column(nullable = false, length = 50)
+	@Column(nullable = false, length = 250)
 	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
 	private String name;
 
-	@ManyToOne
-	@JoinColumn(name = "store_id")
-	private Store store;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "productCategory_id")
+	@Fetch(FetchMode.JOIN)
+	@JsonIgnore
+	private ProductCategory productCategory;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "stock", fetch = FetchType.EAGER)
-	private List<StockItem> items = new ArrayList<>();
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<Product> products = new ArrayList<>();
 
-	@Override
-	public String toString() {
-		return "Stock [id=" + id + ", name=" + name + ", store=" + store.getName() + "]";
-	}
 }

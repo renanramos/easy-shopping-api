@@ -10,7 +10,7 @@ import java.util.List;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-import br.com.renanrramos.easyshopping.interfaceadapter.domain.Purchase;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.Purchase;
 
 /**
  * @author renan.ramos

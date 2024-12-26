@@ -8,8 +8,8 @@ import br.com.renanrramos.easyshopping.infra.controller.entity.dto.CompanyDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.AddressForm;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.CompanyForm;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
-import br.com.renanrramos.easyshopping.interfaceadapter.domain.AddressEntity;
-import br.com.renanrramos.easyshopping.interfaceadapter.domain.CompanyEntity;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.AddressEntity;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.CompanyEntity;
 import org.springframework.data.domain.Page;
 
 import java.util.List;

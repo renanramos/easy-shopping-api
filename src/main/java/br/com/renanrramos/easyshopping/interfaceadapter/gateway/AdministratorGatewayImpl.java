@@ -9,7 +9,7 @@ import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.Pageable
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.AdministratorMapper;
 import br.com.renanrramos.easyshopping.interfaceadapter.repository.AdministratorRepository;
 
-import br.com.renanrramos.easyshopping.interfaceadapter.domain.AdministratorEntity;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.AdministratorEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

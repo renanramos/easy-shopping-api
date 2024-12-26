@@ -16,7 +16,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import br.com.renanrramos.easyshopping.core.domain.Address;
-import br.com.renanrramos.easyshopping.interfaceadapter.domain.*;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.*;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.PurchaseMapper;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.PurchaseStatisticMapper;
 import org.springframework.beans.factory.annotation.Autowired;

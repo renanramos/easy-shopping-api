@@ -1,10 +1,9 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- *
  * Creator: renan.ramos - 24/06/2020
  * ------------------------------------------------------------
  */
-package br.com.renanrramos.easyshopping.interfaceadapter.domain;
+package br.com.renanrramos.easyshopping.interfaceadapter.entity;
 
 import java.io.Serializable;
 
@@ -23,15 +22,14 @@ import javax.validation.constraints.NotBlank;
 import br.com.renanrramos.easyshopping.constants.messages.ValidationMessagesConstants;
 import br.com.renanrramos.easyshopping.core.domain.enums.Profile;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@RequiredArgsConstructor
+@ToString
 public class UserEntity implements Serializable{
 
 	private static final long serialVersionUID = -234475925678811197L;
@@ -59,13 +57,4 @@ public class UserEntity implements Serializable{
 	private String tokenId;
 
 	private boolean isSync;
-
-	public UserEntity() {
-		// Intentionally empty
-	}
-
-	@Override
-	public String toString() {
-		return "UserEntity [id=" + id + ", name=" + name + "]";
-	}
 }

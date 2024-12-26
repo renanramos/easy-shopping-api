@@ -1,10 +1,9 @@
 /**------------------------------------------------------------
  * Project: easy-shopping
- *
  * Creator: renan.ramos - 10/11/2020
  * ------------------------------------------------------------
  */
-package br.com.renanrramos.easyshopping.interfaceadapter.domain;
+package br.com.renanrramos.easyshopping.interfaceadapter.entity;
 
 import java.io.Serializable;
 
@@ -16,18 +15,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import io.swagger.annotations.ApiModelProperty;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * @author renan.ramos
  *
  */
-@Getter
-@Setter
+@Data
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@RequiredArgsConstructor
+@ToString
 public class StockItem implements Serializable {
 
 	private static final long serialVersionUID = 6415687420314987028L;
@@ -51,9 +49,4 @@ public class StockItem implements Serializable {
 
 	private Integer currentAmount;
 
-	@Override
-	public String toString() {
-		return "StockItem [id=" + id + ", stock=" + stock + ", productId=" + productId + ", maxAmount=" + maxAmount
-				+ ", minAmount=" + minAmount + ", currentAmount=" + currentAmount + "]";
-	}
 }

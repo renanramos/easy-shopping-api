@@ -16,7 +16,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 import br.com.renanrramos.easyshopping.interfaceadapter.repository.constants.EasyShoppingSqlConstants;
-import br.com.renanrramos.easyshopping.interfaceadapter.domain.Customer;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.Customer;
 
 public interface CustomerRepository extends PagingAndSortingRepository<Customer, Long>{
 

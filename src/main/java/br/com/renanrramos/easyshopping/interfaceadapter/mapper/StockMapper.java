@@ -1,7 +1,7 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
-import br.com.renanrramos.easyshopping.interfaceadapter.domain.Stock;
-import br.com.renanrramos.easyshopping.interfaceadapter.domain.StockItem;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.Stock;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.StockItem;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.StockDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.StockForm;
 import org.mapstruct.*;

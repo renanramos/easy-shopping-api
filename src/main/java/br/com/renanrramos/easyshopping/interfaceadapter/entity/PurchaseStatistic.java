@@ -1,24 +1,18 @@
-package br.com.renanrramos.easyshopping.interfaceadapter.domain;
+package br.com.renanrramos.easyshopping.interfaceadapter.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
-@Getter
-@Setter
+@Data
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@RequiredArgsConstructor
 public class PurchaseStatistic {
 
 	private Order order;
 
 	private Purchase purchase;
 
-	public PurchaseStatistic() {
-		// Intentionally empty
-	}
 }

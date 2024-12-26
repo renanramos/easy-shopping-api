@@ -10,8 +10,8 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import br.com.renanrramos.easyshopping.interfaceadapter.domain.Product;
-import br.com.renanrramos.easyshopping.interfaceadapter.domain.ProductImage;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.Product;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.ProductImage;
 
 import lombok.Data;
 import lombok.ToString;

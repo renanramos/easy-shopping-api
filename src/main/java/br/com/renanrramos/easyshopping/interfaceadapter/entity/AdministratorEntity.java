@@ -4,7 +4,7 @@
  * Creator: renan.ramos - 26/06/2020
  * ------------------------------------------------------------
  */
-package br.com.renanrramos.easyshopping.interfaceadapter.domain;
+package br.com.renanrramos.easyshopping.interfaceadapter.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -13,19 +13,17 @@ import javax.persistence.PrimaryKeyJoinColumn;
 
 import br.com.renanrramos.easyshopping.core.domain.enums.Profile;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * @author renan.ramos
  *
  */
-@Getter
-@Setter
+@Data
 @Entity(name = "AdministratorEntity")
 @PrimaryKeyJoinColumn(name="id")
 @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+@RequiredArgsConstructor
 public class AdministratorEntity extends UserEntity {
 
 	private static final long serialVersionUID = 8713673214822893155L;
@@ -33,10 +31,6 @@ public class AdministratorEntity extends UserEntity {
 	@ApiModelProperty(hidden = true)
 	@Enumerated(EnumType.STRING)
 	private Profile profile = Profile.ADMINISTRATOR;
-
-	public AdministratorEntity() {
-		// Intentionally empty
-	}
 
 	@Override
 	public String toString() {

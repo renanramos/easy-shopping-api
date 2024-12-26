@@ -8,7 +8,7 @@ import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.Pageable
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.AddressMapper;
 import br.com.renanrramos.easyshopping.interfaceadapter.repository.AddressRepository;
 
-import br.com.renanrramos.easyshopping.interfaceadapter.domain.AddressEntity;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.AddressEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

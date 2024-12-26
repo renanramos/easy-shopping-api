@@ -8,7 +8,7 @@ package br.com.renanrramos.easyshopping.interfaceadapter.repository;
 
 import javax.transaction.Transactional;
 
-import br.com.renanrramos.easyshopping.interfaceadapter.domain.AddressEntity;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.AddressEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;

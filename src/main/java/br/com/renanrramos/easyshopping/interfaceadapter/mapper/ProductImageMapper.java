@@ -1,6 +1,6 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
-import br.com.renanrramos.easyshopping.interfaceadapter.domain.ProductImage;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.ProductImage;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.ProductImageDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.ProductImageForm;
 import org.mapstruct.Mapper;

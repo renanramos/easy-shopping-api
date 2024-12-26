@@ -7,7 +7,7 @@ import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse
 import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.CreditCardMapper;
 import br.com.renanrramos.easyshopping.interfaceadapter.repository.CreditCardRepositoy;
-import br.com.renanrramos.easyshopping.interfaceadapter.domain.CreditCardEntity;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.CreditCardEntity;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

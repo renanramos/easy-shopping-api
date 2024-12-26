@@ -1,7 +1,7 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
-import br.com.renanrramos.easyshopping.interfaceadapter.domain.Product;
-import br.com.renanrramos.easyshopping.interfaceadapter.domain.ProductCategory;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.Product;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.ProductCategory;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.ProductCategoryDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.ProductCategoryForm;
 import org.instancio.Instancio;

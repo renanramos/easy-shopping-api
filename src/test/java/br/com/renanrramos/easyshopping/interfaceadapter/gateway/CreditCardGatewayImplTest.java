@@ -6,7 +6,7 @@ import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse
 import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.CreditCardMapper;
 import br.com.renanrramos.easyshopping.interfaceadapter.repository.CreditCardRepositoy;
-import br.com.renanrramos.easyshopping.interfaceadapter.domain.CreditCardEntity;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.CreditCardEntity;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
