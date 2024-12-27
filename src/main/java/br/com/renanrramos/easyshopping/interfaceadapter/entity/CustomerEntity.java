@@ -7,9 +7,7 @@ package br.com.renanrramos.easyshopping.interfaceadapter.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
-import javax.validation.constraints.NotBlank;
 
-import br.com.renanrramos.easyshopping.constants.messages.ValidationMessagesConstants;
 import lombok.*;
 
 /**
@@ -22,7 +20,7 @@ import lombok.*;
 @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 @ToString
 @RequiredArgsConstructor
-public class Customer extends UserEntity {
+public class CustomerEntity extends UserEntity {
 
 	private static final long serialVersionUID = 7345201836941654514L;
 

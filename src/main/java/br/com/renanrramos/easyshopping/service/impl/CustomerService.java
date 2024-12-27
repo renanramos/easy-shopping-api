@@ -10,12 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.CustomerEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import br.com.renanrramos.easyshopping.interfaceadapter.entity.Customer;
 import br.com.renanrramos.easyshopping.interfaceadapter.repository.CustomerRepository;
 import br.com.renanrramos.easyshopping.service.CommonService;
 
@@ -24,32 +24,32 @@ import br.com.renanrramos.easyshopping.service.CommonService;
  *
  */
 @Service
-public class CustomerService implements CommonService<Customer>{
+public class CustomerService implements CommonService<CustomerEntity>{
 
 	@Autowired
 	private CustomerRepository customerRepository;
 
 	@Override
-	public Customer save(Customer customer) {
-		return customerRepository.save(customer);
+	public CustomerEntity save(CustomerEntity customerEntity) {
+		return customerRepository.save(customerEntity);
 	}
 
 	@Override
-	public List<Customer> findAllPageable(Pageable page, Long id) {
-		Page<Customer> pagedResult = customerRepository.findAll(page);
+	public List<CustomerEntity> findAllPageable(Pageable page, Long id) {
+		Page<CustomerEntity> pagedResult = customerRepository.findAll(page);
 		return pagedResult.hasContent() ?
 				pagedResult.getContent() :
 					new ArrayList<>();
 	}
 
 	@Override
-	public Optional<Customer> findById(Long customerId) {
+	public Optional<CustomerEntity> findById(Long customerId) {
 		return customerRepository.findById(customerId);
 	}
 
 	@Override
-	public Customer update(Customer customer) {
-		return customerRepository.save(customer);
+	public CustomerEntity update(CustomerEntity customerEntity) {
+		return customerRepository.save(customerEntity);
 	}
 
 	@Override
@@ -57,24 +57,24 @@ public class CustomerService implements CommonService<Customer>{
 		customerRepository.deleteById(customerId);
 	}
 
-	public Optional<List<Customer>> findCustomerByCpf(String cpf) {
-		List<Customer> customers = customerRepository.findCustomerByCpf(cpf);
-		return  Optional.of(customers);
+	public Optional<List<CustomerEntity>> findCustomerByCpf(String cpf) {
+		List<CustomerEntity> customerEntities = customerRepository.findCustomerByCpf(cpf);
+		return  Optional.of(customerEntities);
 	}
 
 	@Override
-	public List<Customer> findAll(Pageable page) {
+	public List<CustomerEntity> findAll(Pageable page) {
 		return new ArrayList<>();
 	}
 
-	public List<Customer> findCustomerByName(Pageable page, String name) {
-		Page<Customer> pagedResult = customerRepository.getCustomerByNameCPFOrEmail(page, name);
+	public List<CustomerEntity> findCustomerByName(Pageable page, String name) {
+		Page<CustomerEntity> pagedResult = customerRepository.getCustomerByNameCPFOrEmail(page, name);
 		return pagedResult.hasContent() ?
 				pagedResult.getContent() :
 					new ArrayList<>();
 	}
 
-	public Optional<Customer> findCustomerByTokenId(String tokenId) {
+	public CustomerEntity findCustomerByTokenId(String tokenId) {
 		return customerRepository.findCustomerByTokenId(tokenId);
 	}
 }

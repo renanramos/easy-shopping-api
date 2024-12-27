@@ -17,11 +17,16 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.instancio.Select.field;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -34,6 +39,12 @@ class CreditCardControllerTest {
     private Authentication authentication;
     @Mock
     private AuthenticationService authenticationService;
+    @Mock
+    private UriComponentsBuilder uriComponentsBuilder;
+    @Mock
+    private UriComponents uriComponents;
+
+    private URI uri;
     @InjectMocks
     private CreditCardController creditCardController;
 
@@ -117,9 +128,14 @@ class CreditCardControllerTest {
                 .create();
         final CreditCardDTO expectedResponse = buildCreditCardDTO(creditCardForm);
         when(creditCardDelegate.updateCreditCard(creditCardForm, creditCardId)).thenReturn(expectedResponse);
+        when(uriComponentsBuilder.path(anyString())).thenReturn(uriComponentsBuilder);
+        when(uriComponentsBuilder.buildAndExpand(eq(expectedResponse.getId()))).thenReturn(uriComponents);
+        when(uriComponents.encode()).thenReturn(uriComponents);
+        when(uriComponents.toUri()).thenReturn(uri);
+
         // Act
         final ResponseEntity<CreditCardDTO> responseEntity =
-                creditCardController.updateCreditCard(creditCardId, creditCardForm);
+                creditCardController.updateCreditCard(creditCardId, creditCardForm, uriComponentsBuilder);
         // Assert
         assertThat(responseEntity).isNotNull();
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.ACCEPTED);

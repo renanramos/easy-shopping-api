@@ -1,8 +1,9 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
-import br.com.renanrramos.easyshopping.interfaceadapter.entity.Customer;
+import br.com.renanrramos.easyshopping.core.domain.Customer;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.CustomerDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.CustomerForm;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.CustomerEntity;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 
@@ -10,26 +11,15 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class CustomerMapperTest {
+class CustomerEntityMapperTest {
 
     @Test
     void mapCustomerToCustomerDTO_withCustomer_shouldMapToCustomerDTO() {
-        final Customer customer = Instancio.create(Customer.class);
+        final CustomerEntity customerEntity = Instancio.create(CustomerEntity.class);
 
-        final CustomerDTO customerDTO = CustomerMapper.INSTANCE.mapCustomerToCustomerDTO(customer);
+        final CustomerDTO customerDTO = CustomerMapper.INSTANCE.mapCustomerToCustomerDTO(customerEntity);
 
-        assertCustomerDTO(customerDTO, customer);
-    }
-
-    @Test
-    void mapCustomerListToCustomerDTOList_withCustomerList_shouldMapToCustomerDTOList() {
-        final List<Customer> customerList = Instancio.ofList(Customer.class)
-                .size(10)
-                .create();
-
-        final List<CustomerDTO> customerDTOS = CustomerMapper.INSTANCE.mapCustomerListToCustomerDTOList(customerList);
-
-        assertCustomerDTOList(customerDTOS, customerList);
+        assertCustomerDTO(customerDTO, customerEntity);
     }
 
     @Test
@@ -69,22 +59,22 @@ class CustomerMapperTest {
         assertThat(customer.getEmail()).isEqualTo(customerForm.getEmail());
     }
 
-    private void assertCustomerDTOList(final List<CustomerDTO> customerDTOS, final List<Customer> customerList) {
-        assertThat(customerDTOS).hasSize(customerList.size());
+    private void assertCustomerDTOList(final List<CustomerDTO> customerDTOS, final List<CustomerEntity> customerEntityList) {
+        assertThat(customerDTOS).hasSize(customerEntityList.size());
         int index = 0;
-        for(final CustomerDTO customerDTO : customerDTOS) {
-           assertCustomerDTO(customerDTO, customerList.get(index));
-           index++;
+        for (final CustomerDTO customerDTO : customerDTOS) {
+            assertCustomerDTO(customerDTO, customerEntityList.get(index));
+            index++;
         }
     }
 
-    private static void assertCustomerDTO(final CustomerDTO customerDTO, final Customer customer) {
+    private static void assertCustomerDTO(final CustomerDTO customerDTO, final CustomerEntity customerEntity) {
         assertThat(customerDTO).isNotNull();
-        assertThat(customerDTO.getId()).isEqualTo(customer.getId());
-        assertThat(customerDTO.getProfile().name()).isEqualTo(customer.getProfile().name());
-        assertThat(customerDTO.getName()).isEqualTo(customer.getName());
-        assertThat(customerDTO.getCpf()).isEqualTo(customer.getCpf());
-        assertThat(customerDTO.getEmail()).isEqualTo(customer.getEmail());
-        assertThat(customerDTO.getTokenId()).isEqualTo(customer.getTokenId());
+        assertThat(customerDTO.getId()).isEqualTo(customerEntity.getId());
+        assertThat(customerDTO.getProfile().name()).isEqualTo(customerEntity.getProfile().name());
+        assertThat(customerDTO.getName()).isEqualTo(customerEntity.getName());
+        assertThat(customerDTO.getCpf()).isEqualTo(customerEntity.getCpf());
+        assertThat(customerDTO.getEmail()).isEqualTo(customerEntity.getEmail());
+        assertThat(customerDTO.getTokenId()).isEqualTo(customerEntity.getTokenId());
     }
 }
