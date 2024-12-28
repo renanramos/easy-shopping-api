@@ -4,11 +4,10 @@ import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConst
 import br.com.renanrramos.easyshopping.core.domain.Address;
 import br.com.renanrramos.easyshopping.core.gateway.AddressGateway;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.AddressEntity;
 import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.AddressMapper;
 import br.com.renanrramos.easyshopping.interfaceadapter.repository.AddressRepository;
-
-import br.com.renanrramos.easyshopping.interfaceadapter.entity.AddressEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,23 +28,24 @@ public class AddressGatewayImpl implements AddressGateway {
 
     @Override
     public PageResponse<Address> findAllAddress(final Integer pageNumber,
-                                                   final Integer pageSize, final String sortBy) {
+                                                final Integer pageSize, final String sortBy) {
         final Pageable page = new PageableFactory()
-                    .withPageNumber(pageNumber)
-                    .withPageSize(pageSize)
-                    .withSortBy(sortBy)
-                    .buildPageable();
+                .withPageNumber(pageNumber)
+                .withPageSize(pageSize)
+                .withSortBy(sortBy)
+                .buildPageable();
 
         final Page<AddressEntity> paginatedAddresses = addressRepository.findAll(page);
 
-        return buildPageResponse(paginatedAddresses);
+        return PageResponse.buildPageResponse(paginatedAddresses,
+                AddressMapper.INSTANCE.mapAddressEntityListToAddress(paginatedAddresses.getContent()));
     }
 
     @Override
     public PageResponse<Address> findAllAddress(final Integer pageNumber,
-                                                   final Integer pageSize,
-                                                   final  String sortBy,
-                                                   final String streetName) {
+                                                final Integer pageSize,
+                                                final String sortBy,
+                                                final String streetName) {
         final Pageable page = new PageableFactory()
                 .withPageNumber(pageNumber)
                 .withPageSize(pageSize)
@@ -55,38 +55,34 @@ public class AddressGatewayImpl implements AddressGateway {
         final Page<AddressEntity> addressByStreetName =
                 addressRepository.findAddressByStreetNameContaining(page, streetName);
 
-        return buildPageResponse(addressByStreetName);
+        return PageResponse.buildPageResponse(addressByStreetName,
+                AddressMapper.INSTANCE.mapAddressEntityListToAddress(addressByStreetName.getContent()));
     }
 
     @Override
     public Address findAddressById(final Long addressId) {
-        return addressRepository.findById(addressId)
-                .map(AddressMapper.INSTANCE::mapAddressEntityToAddress)
-                .orElseThrow(() -> new EntityNotFoundException(ExceptionMessagesConstants.ADDRESS_NOT_FOUND));
+        final AddressEntity addressEntity = getAddressEntityOrThrow(addressId);
+        return AddressMapper.INSTANCE.mapAddressEntityToAddress(addressEntity);
     }
 
     @Override
     public Address updateAddress(final Address address, final Long addressId) {
-        final Optional<AddressEntity> addressById = addressRepository.findById(addressId);
-        if (!addressById.isPresent()) {
-            throw new EntityNotFoundException(ExceptionMessagesConstants.ADDRESS_NOT_FOUND);
-        }
-        final AddressEntity addressEntity = addressById.get();
+        final AddressEntity addressEntity = getAddressEntityOrThrow(addressId);
         AddressMapper.INSTANCE.mapAddressToUpdateAddressEntity(addressEntity, address);
         return AddressMapper.INSTANCE.mapAddressEntityToAddress(addressRepository.save(addressEntity));
     }
 
     @Override
     public void removeAddress(final Long addressId) {
-        final Optional<AddressEntity> addressById = addressRepository.findById(addressId);
-        if (!addressById.isPresent()) {
-            throw new EntityNotFoundException(ExceptionMessagesConstants.ADDRESS_NOT_FOUND);
-        }
+        getAddressEntityOrThrow(addressId);
         addressRepository.removeById(addressId);
     }
 
-    private static PageResponse<Address> buildPageResponse(Page<AddressEntity> page) {
-        return new PageResponse<>(page.getTotalElements(),
-                page.getTotalPages(), AddressMapper.INSTANCE.mapAddressEntityListToAddress(page.getContent()));
+    private AddressEntity getAddressEntityOrThrow(final Long addressId) {
+        final Optional<AddressEntity> addressById = addressRepository.findById(addressId);
+        if (addressById.isEmpty()) {
+            throw new EntityNotFoundException(ExceptionMessagesConstants.ADDRESS_NOT_FOUND);
+        }
+        return addressById.get();
     }
 }

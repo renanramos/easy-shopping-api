@@ -3,13 +3,12 @@ package br.com.renanrramos.easyshopping.interfaceadapter.gateway;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.core.domain.Administrator;
 import br.com.renanrramos.easyshopping.core.gateway.AdministratorGateway;
-import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
+import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.AdministratorEntity;
 import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.AdministratorMapper;
 import br.com.renanrramos.easyshopping.interfaceadapter.repository.AdministratorRepository;
-
-import br.com.renanrramos.easyshopping.interfaceadapter.entity.AdministratorEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,44 +36,43 @@ public class AdministratorGatewayImpl implements AdministratorGateway {
                 .withPageSize(pageSize)
                 .withSortBy(sortBy)
                 .buildPageable();
-        return buildPageResponse(administratorRepository.findAll(page));
+        final Page<AdministratorEntity> administratorEntityPage = administratorRepository.findAll(page);
+        return PageResponse.buildPageResponse(administratorEntityPage,
+                AdministratorMapper.INSTANCE.mapAdministratorEntityListToAdministratorList(administratorEntityPage.getContent()));
     }
 
     @Override
     public Administrator findAdministratorById(final Long administratorId) {
-        return administratorRepository.findById(administratorId)
-                .map(AdministratorMapper.INSTANCE::mapAdministratorEntityToAdministrator)
-                .orElseThrow(() -> new EntityNotFoundException(ExceptionMessagesConstants.ADMINISTRATOR_NOT_FOUND));
+        final AdministratorEntity administratorEntity = getAdministratorOrThrow(administratorId);
+        return AdministratorMapper.INSTANCE.mapAdministratorEntityToAdministrator(administratorEntity);
     }
 
     @Override
     public Administrator updateAdministrator(final Administrator administrator, final Long administratorId) {
-        final AdministratorEntity administratorEntity = getAdministratorEntity(administratorId);
+        final AdministratorEntity administratorEntity = getAdministratorOrThrow(administratorId);
         AdministratorMapper.INSTANCE.mapAdministratorEntityToUpdateAdministrator(administratorEntity, administrator);
-        final AdministratorEntity updated = administratorRepository.save(administratorEntity);
-        return AdministratorMapper.INSTANCE.mapAdministratorEntityToAdministrator(updated);
+        return AdministratorMapper.INSTANCE
+                .mapAdministratorEntityToAdministrator(administratorRepository.save(administratorEntity));
     }
 
     @Override
     public void removeAdministrator(final Long administratorId) {
-        getAdministratorEntity(administratorId);
+        getAdministratorOrThrow(administratorId);
         administratorRepository.removeById(administratorId);
     }
 
     @Override
     public PageResponse<Administrator> searchAdministratorByName(final ParametersRequest parametersRequest, final String name) {
         final Pageable page = new PageableFactory().buildPageable(parametersRequest);
-        return buildPageResponse(administratorRepository.findAdministratorByNameContains(page, name));
+        final Page<AdministratorEntity> administratorByName =
+                administratorRepository.findAdministratorByNameContains(page, name);
+        return PageResponse.buildPageResponse(administratorByName,
+                AdministratorMapper.INSTANCE
+                        .mapAdministratorEntityListToAdministratorList(administratorByName.getContent()));
     }
 
-    private AdministratorEntity getAdministratorEntity(final Long administratorId) {
+    private AdministratorEntity getAdministratorOrThrow(final Long administratorId) {
         return administratorRepository.findById(administratorId)
                 .orElseThrow(() -> new EntityNotFoundException(ExceptionMessagesConstants.ADMINISTRATOR_NOT_FOUND));
-    }
-
-    private PageResponse<Administrator> buildPageResponse(final Page<AdministratorEntity> page) {
-        return new PageResponse<>(page.getTotalElements(),
-                page.getTotalPages(),
-                AdministratorMapper.INSTANCE.mapAdministratorEntityListToAdministratorList(page.getContent()));
     }
 }
