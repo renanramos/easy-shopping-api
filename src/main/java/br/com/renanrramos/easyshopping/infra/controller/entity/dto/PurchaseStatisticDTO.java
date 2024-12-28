@@ -1,12 +1,11 @@
 package br.com.renanrramos.easyshopping.infra.controller.entity.dto;
 
-import br.com.renanrramos.easyshopping.interfaceadapter.entity.Order;
+import br.com.renanrramos.easyshopping.core.domain.Order;
 import br.com.renanrramos.easyshopping.interfaceadapter.entity.Purchase;
-
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import lombok.EqualsAndHashCode;
 
 @Data
 @ToString
@@ -14,8 +13,8 @@ import lombok.EqualsAndHashCode;
 @RequiredArgsConstructor
 public class PurchaseStatisticDTO {
 
-	private Order order;
+    private Order order;
 
-	private Purchase purchase;
+    private Purchase purchase;
 
 }

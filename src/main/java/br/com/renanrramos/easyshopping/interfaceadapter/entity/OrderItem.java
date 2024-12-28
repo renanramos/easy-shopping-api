@@ -1,27 +1,21 @@
-/**------------------------------------------------------------
+/**
+ * ------------------------------------------------------------
  * Project: easy-shopping
  * Creator: renan.ramos - 23/11/2020
  * ------------------------------------------------------------
  */
 package br.com.renanrramos.easyshopping.interfaceadapter.entity;
 
-import java.io.Serializable;
-
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import io.swagger.annotations.ApiModelProperty;
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @author renan.ramos
@@ -34,26 +28,26 @@ import io.swagger.annotations.ApiModelProperty;
 @RequiredArgsConstructor
 public class OrderItem implements Serializable {
 
-	private static final long serialVersionUID = 6973936402754269388L;
+    private static final long serialVersionUID = 6973936402754269388L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "order_id")
-	@Fetch(FetchMode.JOIN)
-	@JsonIgnore
-	private Order order;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
+    @Fetch(FetchMode.JOIN)
+    @JsonIgnore
+    private OrderEntity order;
 
-	private Long productId;
+    private Long productId;
 
-	private String productName;
+    private String productName;
 
-	private Integer amount;
+    private Integer amount;
 
-	private Double price;
+    private Double price;
 
-	private Double total;
+    private Double total;
 
 }

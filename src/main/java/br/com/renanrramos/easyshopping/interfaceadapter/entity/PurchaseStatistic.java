@@ -1,8 +1,10 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 @Data
 @ToString
@@ -11,8 +13,8 @@ import lombok.*;
 @RequiredArgsConstructor
 public class PurchaseStatistic {
 
-	private Order order;
+    private OrderEntity order;
 
-	private Purchase purchase;
+    private Purchase purchase;
 
 }

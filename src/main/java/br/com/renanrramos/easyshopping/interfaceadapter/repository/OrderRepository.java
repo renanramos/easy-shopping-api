@@ -1,25 +1,22 @@
-/**------------------------------------------------------------
+/**
+ * ------------------------------------------------------------
  * Project: easy-shopping
- *
  * Creator: renan.ramos - 23/11/2020
  * ------------------------------------------------------------
  */
 package br.com.renanrramos.easyshopping.interfaceadapter.repository;
 
-import java.util.List;
-
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.OrderEntity;
+import br.com.renanrramos.easyshopping.interfaceadapter.repository.constants.EasyShoppingSqlConstants;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-import br.com.renanrramos.easyshopping.interfaceadapter.repository.constants.EasyShoppingSqlConstants;
-import br.com.renanrramos.easyshopping.interfaceadapter.entity.Order;
-
 /**
  * @author renan.ramos
- *
  */
-public interface OrderRepository extends PagingAndSortingRepository<Order, Long> {
+public interface OrderRepository extends PagingAndSortingRepository<OrderEntity, Long> {
 
-	@Query(EasyShoppingSqlConstants.GET_CUSTOMER_ORDERS)
-	List<Order> getCustomerOrders(String customerId);
+    @Query(EasyShoppingSqlConstants.GET_CUSTOMER_ORDERS)
+    Page<OrderEntity> getCustomerOrders(String customerId);
 }

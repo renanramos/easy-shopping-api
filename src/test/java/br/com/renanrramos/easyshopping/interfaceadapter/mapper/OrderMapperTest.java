@@ -1,8 +1,8 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
-import br.com.renanrramos.easyshopping.interfaceadapter.entity.Order;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.OrderDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.OrderForm;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.OrderEntity;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +14,7 @@ class OrderMapperTest {
 
     @Test
     void mapOrderToOrderDTO_withOrder_shouldMapOrderDTO() {
-        final Order order = Instancio.create(Order.class);
+        final OrderEntity order = Instancio.create(OrderEntity.class);
 
         final OrderDTO orderDTO = OrderMapper.INSTANCE.mapOrderToOrderDTO(order);
 
@@ -23,7 +23,7 @@ class OrderMapperTest {
 
     @Test
     void mapOrderListToOrderDTOList_withOrderList_shouldMapOrderDTOList() {
-        final List<Order> orders = Instancio.ofList(Order.class).size(10).create();
+        final List<OrderEntity> orders = Instancio.ofList(OrderEntity.class).size(10).create();
 
         final List<OrderDTO> orderDTOS = OrderMapper.INSTANCE.mapOrderListToOrderDTOList(orders);
 
@@ -34,7 +34,7 @@ class OrderMapperTest {
     void mapOrderFormToOrder_withOrderForm_shouldMapToOrder() {
         final OrderForm orderForm = Instancio.of(OrderForm.class).create();
 
-        final Order order = OrderMapper.INSTANCE.mapOrderFormToOrder(orderForm);
+        final OrderEntity order = OrderMapper.INSTANCE.mapOrderFormToOrder(orderForm);
 
         assertOrder(order, orderForm);
     }
@@ -44,7 +44,7 @@ class OrderMapperTest {
         // Arrange
         final OrderForm orderForm = Instancio.of(OrderForm.class)
                 .create();
-        final Order order = OrderMapper.INSTANCE.mapOrderFormToOrder(orderForm);
+        final OrderEntity order = OrderMapper.INSTANCE.mapOrderFormToOrder(orderForm);
         orderForm.setOrderNumber(null);
         // Act
         OrderMapper.INSTANCE.mapOrderFormToUpdateOrder(order, orderForm);
@@ -55,23 +55,23 @@ class OrderMapperTest {
         assertThat(order.getId()).isEqualTo(orderForm.getId());
     }
 
-    private void assertOrder(final Order order, final OrderForm orderForm) {
+    private void assertOrder(final OrderEntity order, final OrderForm orderForm) {
         assertThat(order).isNotNull();
         assertThat(order.getCustomerId()).isEqualTo(orderForm.getCustomerId());
         assertThat(order.getOrderNumber()).isEqualTo(orderForm.getOrderNumber());
         assertThat(order.getId()).isEqualTo(orderForm.getId());
     }
 
-    private void assertOrderDTOList(final List<OrderDTO> orderDTOS, final List<Order> orders) {
+    private void assertOrderDTOList(final List<OrderDTO> orderDTOS, final List<OrderEntity> orders) {
         assertThat(orderDTOS).hasSize(orders.size());
         int index = 0;
-        for(final OrderDTO orderDTO : orderDTOS) {
+        for (final OrderDTO orderDTO : orderDTOS) {
             assertOrderDTO(orderDTO, orders.get(index));
             index++;
         }
     }
 
-    private static void assertOrderDTO(final OrderDTO orderDTO, final Order order) {
+    private static void assertOrderDTO(final OrderDTO orderDTO, final OrderEntity order) {
         assertThat(orderDTO).isNotNull();
         assertThat(orderDTO.getOrderNumber()).isEqualTo(order.getOrderNumber());
         assertThat(orderDTO.getId()).isEqualTo(order.getId());

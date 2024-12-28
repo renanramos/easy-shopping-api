@@ -4,12 +4,10 @@ import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConst
 import br.com.renanrramos.easyshopping.core.domain.Customer;
 import br.com.renanrramos.easyshopping.core.gateway.CustomerGateway;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
-import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.BadRequestException;
 import br.com.renanrramos.easyshopping.interfaceadapter.entity.CustomerEntity;
 import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.CustomerMapper;
 import br.com.renanrramos.easyshopping.interfaceadapter.repository.CustomerRepository;
-import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,7 +41,8 @@ public class CustomerGatewayImpl implements CustomerGateway {
                 customerRepository.findAll(page) :
                 customerRepository.getCustomerByNameCPFOrEmail(page, searchKey);
 
-        return buildPageResponse(customerEntityPage);
+        return PageResponse.buildPageResponse(customerEntityPage,
+                CustomerMapper.INSTANCE.mapCustomerEntityListToCustomerList(customerEntityPage.getContent()));
     }
 
     @Override
@@ -56,7 +55,7 @@ public class CustomerGatewayImpl implements CustomerGateway {
 
     @Override
     public Customer update(final Customer customer, final String customerId) {
-        if (CollectionUtils.isEmpty(customerRepository.findCustomerByCpf(customer.getCpf()))){
+        if (CollectionUtils.isEmpty(customerRepository.findCustomerByCpf(customer.getCpf()))) {
             throw new EntityNotFoundException(ExceptionMessagesConstants.CPF_ALREADY_EXIST);
         }
 
@@ -86,10 +85,4 @@ public class CustomerGatewayImpl implements CustomerGateway {
         }
         return customerEntity;
     }
-
-    private PageResponse<Customer> buildPageResponse(final Page<CustomerEntity> page) {
-        return new PageResponse<>(page.getTotalElements(), page.getTotalPages(),
-                CustomerMapper.INSTANCE.mapCustomerEntityListToCustomerList(page.getContent()));
-    }
-
 }

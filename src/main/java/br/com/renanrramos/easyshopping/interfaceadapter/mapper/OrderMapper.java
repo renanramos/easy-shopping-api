@@ -1,8 +1,9 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
-import br.com.renanrramos.easyshopping.interfaceadapter.entity.Order;
+import br.com.renanrramos.easyshopping.core.domain.Order;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.OrderDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.OrderForm;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.OrderEntity;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -16,18 +17,35 @@ public interface OrderMapper {
     OrderMapper INSTANCE = Mappers.getMapper(OrderMapper.class);
 
     @Named("mapOrderToOrderDTO")
-    OrderDTO mapOrderToOrderDTO(final Order order);
+    OrderDTO mapOrderToOrderDTO(final OrderEntity order);
 
     @Named("mapOrderListToOrderDTOList")
-    default List<OrderDTO> mapOrderListToOrderDTOList(final List<Order> orders) {
+    default List<OrderDTO> mapOrderListToOrderDTOList(final List<OrderEntity> orders) {
         return orders.stream()
                 .map(OrderMapper.INSTANCE::mapOrderToOrderDTO)
                 .collect(Collectors.toList());
     }
 
     @Named("mapOrderFormToOrder")
-    Order mapOrderFormToOrder(final OrderForm orderForm);
+    OrderEntity mapOrderFormToOrder(final OrderForm orderForm);
 
     @Named("mapOrderFormToUpdateOrder")
-    void mapOrderFormToUpdateOrder(@MappingTarget Order order, final OrderForm orderForm);
+    void mapOrderFormToUpdateOrder(@MappingTarget OrderEntity order, final OrderForm orderForm);
+
+    @Named("mapOrderToOrderEntity")
+    OrderEntity mapOrderToOrderEntity(final Order order);
+
+    @Named("mapOrderEntityToOrder")
+    Order mapOrderEntityToOrder(final OrderEntity orderEntity);
+
+    @Named("mapOrderEntityListToOrderList")
+    default List<Order> mapOrderEntityListToOrderList(final List<OrderEntity> orderEntities) {
+        return orderEntities
+                .stream()
+                .map(this::mapOrderEntityToOrder)
+                .collect(Collectors.toList());
+    }
+
+    @Named("mapOrderToUpdateOrder")
+    void mapOrderToUpdateOrder(@MappingTarget OrderEntity orderEntity, final Order order);
 }
