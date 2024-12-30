@@ -9,9 +9,7 @@ public interface AdministratorUseCase {
 
     AdministratorDTO save(final AdministratorForm administratorForm);
 
-    PageResponse<AdministratorDTO> findAllAdministrators(final Integer pageNumber,
-                                                      final Integer pageSize,
-                                                      final  String sortBy);
+    PageResponse<AdministratorDTO> findAllAdministrators(final ParametersRequest parametersRequest);
 
     AdministratorDTO findAdministratorById(final Long administratorId);
 
@@ -20,5 +18,5 @@ public interface AdministratorUseCase {
     void removeAdministrator(final Long administratorId);
 
     PageResponse<AdministratorDTO> searchAdministratorByName(final ParametersRequest parametersRequest,
-                                                     final String name);
+                                                             final String name);
 }

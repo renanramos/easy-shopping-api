@@ -28,13 +28,11 @@ public class AdministratorGatewayImpl implements AdministratorGateway {
     }
 
     @Override
-    public PageResponse<Administrator> findAllAdministrators(final Integer pageNumber,
-                                                             final Integer pageSize,
-                                                             final String sortBy) {
+    public PageResponse<Administrator> findAllAdministrators(final ParametersRequest parametersRequest) {
         final Pageable page = new PageableFactory()
-                .withPageNumber(pageNumber)
-                .withPageSize(pageSize)
-                .withSortBy(sortBy)
+                .withPageNumber(parametersRequest.getPageNumber())
+                .withPageSize(parametersRequest.getPageSize())
+                .withSortBy(parametersRequest.getSortBy())
                 .buildPageable();
         final Page<AdministratorEntity> administratorEntityPage = administratorRepository.findAll(page);
         return PageResponse.buildPageResponse(administratorEntityPage,

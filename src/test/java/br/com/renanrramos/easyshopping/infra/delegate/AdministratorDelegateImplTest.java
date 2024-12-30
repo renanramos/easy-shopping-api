@@ -7,7 +7,6 @@ import br.com.renanrramos.easyshopping.infra.controller.entity.form.Administrato
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.AdministratorMapper;
-
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -55,14 +54,11 @@ class AdministratorDelegateImplTest {
     @Test
     void findAllAdministrators_withParameters_shouldReturnPageResponse() {
         // Arrange
-        final int pageNumber = 1;
-        final int pageSize = 1;
-        final String sortBy = "asc";
+        final ParametersRequest parametersRequest = new ParametersRequest();
         final PageResponse<AdministratorDTO> expectedPageResponse = new PageResponse<>(3L, 1,
                 Collections.nCopies(3, Instancio.of(AdministratorDTO.class).create()));
-        when(administratorUseCase.findAllAdministrators(pageNumber, pageSize, sortBy))
+        when(administratorUseCase.findAllAdministrators(parametersRequest))
                 .thenReturn(expectedPageResponse);
-        final ParametersRequest parametersRequest = new ParametersRequest(pageNumber, pageSize, sortBy);
         // Act
         final PageResponse<AdministratorDTO> pageResponse =
                 administratorDelegate.findAdministrators(parametersRequest, "");

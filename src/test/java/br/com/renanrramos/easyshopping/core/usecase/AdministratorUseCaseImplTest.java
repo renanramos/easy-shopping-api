@@ -54,18 +54,16 @@ class AdministratorUseCaseImplTest {
     @Test
     void findAllAdministrators_withParameters_shouldReturnPageResponse() {
         // Arrange
-        final Integer pageNumber = 1;
-        final Integer pageSize = 1;
-        final String sortBy = "asc";
+        final ParametersRequest parametersRequest = new ParametersRequest();
         final PageResponse<Administrator> expectedPageResponse = new PageResponse<>(3L, 1,
                 Collections.nCopies(3, Instancio.of(Administrator.class).create()));
         final List<AdministratorDTO> expectedAdministratorDTOList =
                 AdministratorMapper.INSTANCE.mapAdministratorListToAdministratorDTOList(expectedPageResponse.getResponseItems());
-        when(administratorGateway.findAllAdministrators(pageNumber, pageSize, sortBy))
+        when(administratorGateway.findAllAdministrators(parametersRequest))
                 .thenReturn(expectedPageResponse);
         // Act
         final PageResponse<AdministratorDTO> pageResponse =
-                administratorUseCase.findAllAdministrators(pageNumber, pageSize, sortBy);
+                administratorUseCase.findAllAdministrators(parametersRequest);
         // Assert
         assertThat(pageResponse).isNotNull();
         assertThat(pageResponse.getTotalPages()).isEqualTo(expectedPageResponse.getTotalPages());

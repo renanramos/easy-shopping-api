@@ -7,14 +7,10 @@ import br.com.renanrramos.easyshopping.infra.controller.entity.form.Administrato
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.AdministratorMapper;
-
 import lombok.RequiredArgsConstructor;
 
-import java.util.Collections;
-import java.util.List;
-
 @RequiredArgsConstructor
-public class AdministratorUseCaseImpl implements AdministratorUseCase{
+public class AdministratorUseCaseImpl implements AdministratorUseCase {
 
     private final AdministratorGateway administratorGateway;
 
@@ -26,10 +22,8 @@ public class AdministratorUseCaseImpl implements AdministratorUseCase{
     }
 
     @Override
-    public PageResponse<AdministratorDTO> findAllAdministrators(final Integer pageNumber,
-                                                                final Integer pageSize,
-                                                                final String sortBy) {
-        return buildPageResponse(administratorGateway.findAllAdministrators(pageNumber, pageSize, sortBy));
+    public PageResponse<AdministratorDTO> findAllAdministrators(final ParametersRequest parametersRequest) {
+        return buildPageResponse(administratorGateway.findAllAdministrators(parametersRequest));
     }
 
     @Override

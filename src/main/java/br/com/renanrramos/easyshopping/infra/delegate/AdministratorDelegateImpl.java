@@ -5,12 +5,11 @@ import br.com.renanrramos.easyshopping.infra.controller.entity.dto.Administrator
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.AdministratorForm;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.util.StringUtils;
 
 @RequiredArgsConstructor
-public class AdministratorDelegateImpl implements AdministratorDelegate{
+public class AdministratorDelegateImpl implements AdministratorDelegate {
 
     private final AdministratorUseCase administratorUseCase;
 
@@ -43,8 +42,7 @@ public class AdministratorDelegateImpl implements AdministratorDelegate{
     }
 
     private PageResponse<AdministratorDTO> findAllAdministrators(final ParametersRequest parametersRequest) {
-        return administratorUseCase.findAllAdministrators(parametersRequest.getPageNumber(),
-                parametersRequest.getPageSize(), parametersRequest.getSortBy());
+        return administratorUseCase.findAllAdministrators(parametersRequest);
     }
 
     private PageResponse<AdministratorDTO> searchAdministratorByName(final ParametersRequest parametersRequest,

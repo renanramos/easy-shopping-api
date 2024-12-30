@@ -5,10 +5,10 @@ import br.com.renanrramos.easyshopping.core.domain.Administrator;
 import br.com.renanrramos.easyshopping.core.domain.enums.Profile;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.AdministratorEntity;
 import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.AdministratorMapper;
 import br.com.renanrramos.easyshopping.interfaceadapter.repository.AdministratorRepository;
-import br.com.renanrramos.easyshopping.interfaceadapter.entity.AdministratorEntity;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -60,12 +60,14 @@ class AdministratorGatewayImplTest {
         final Integer pageSize = 1;
         final Integer pageNumber = 1;
         final String sortBy = "asc";
-        final Pageable page = getBuildPageable(pageNumber, pageSize, sortBy);
+        final ParametersRequest parametersRequest = new ParametersRequest();
+        final Pageable page = getBuildPageable(parametersRequest.getPageNumber(),
+                parametersRequest.getPageSize(), parametersRequest.getSortBy());
         final PageImpl<AdministratorEntity> pageResponse = buildAdministratorEntitiesPageResponse();
         when(administratorRepository.findAll(page)).thenReturn(pageResponse);
         // Act
         final PageResponse<Administrator> administratorPageResponse = administratorGateway
-                .findAllAdministrators(pageNumber, pageSize, sortBy);
+                .findAllAdministrators(parametersRequest);
         // Assert
         assertThat(administratorPageResponse).isNotNull();
         assertThat(administratorPageResponse.getTotalPages()).isEqualTo(pageResponse.getTotalPages());
@@ -186,9 +188,9 @@ class AdministratorGatewayImplTest {
         final String administratorName = "admin";
         final List<AdministratorEntity> administratorEntities = Collections.nCopies(3,
                 Instancio.of(AdministratorEntity.class)
-                .withMaxDepth(1)
-                .set(field(AdministratorEntity::getName), administratorName)
-                .create());
+                        .withMaxDepth(1)
+                        .set(field(AdministratorEntity::getName), administratorName)
+                        .create());
         final ParametersRequest parametersRequest = new ParametersRequest(1, 1, "asc");
         final Pageable pageable = getBuildPageable(parametersRequest.getPageNumber(),
                 parametersRequest.getPageSize(), parametersRequest.getSortBy());
@@ -205,8 +207,8 @@ class AdministratorGatewayImplTest {
                 .usingDefaultElementComparator()
                 .allSatisfy(administrator ->
                         assertThat(administrator.getName())
-                        .isNotNull()
-                        .isEqualTo(administratorName));
+                                .isNotNull()
+                                .isEqualTo(administratorName));
 
     }
 

@@ -1,16 +1,14 @@
 package br.com.renanrramos.easyshopping.core.gateway;
 
 import br.com.renanrramos.easyshopping.core.domain.Administrator;
-import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
+import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 
 public interface AdministratorGateway {
 
     Administrator save(final Administrator administrator);
 
-    PageResponse<Administrator> findAllAdministrators(final Integer pageNumber,
-                                               final Integer pageSize,
-                                               final  String sortBy);
+    PageResponse<Administrator> findAllAdministrators(final ParametersRequest parametersRequest);
 
     Administrator findAdministratorById(final Long administratorId);
 
