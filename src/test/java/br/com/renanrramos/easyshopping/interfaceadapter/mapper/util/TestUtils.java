@@ -18,42 +18,42 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class TestUtils {
 
 
-    public static void assertAddressEntityList(final Page<AddressEntity> addressEntityPage,
-                                               final Page<AddressEntity> addressPage) {
-        assertThat(addressEntityPage).isNotNull();
+    public static void assertAddressList(final Page<Address> addresses,
+                                         final Page<AddressEntity> addressPage) {
+        assertThat(addresses).isNotNull();
         assertThat(addressPage).isNotNull();
-        assertThat(addressEntityPage.getTotalElements()).isEqualTo(addressPage.getTotalElements());
-        assertThat(addressEntityPage.getTotalPages()).isEqualTo(addressPage.getTotalPages());
+        assertThat(addresses.getTotalElements()).isEqualTo(addressPage.getTotalElements());
+        assertThat(addresses.getTotalPages()).isEqualTo(addressPage.getTotalPages());
 
-        assertAddressList(addressEntityPage.getContent(), addressPage.getContent());
+        assertAddressList(addresses.getContent(), addressPage.getContent());
     }
 
-    public static void assertAddressList(final List<AddressEntity> addressPageResponse,
+    public static void assertAddressList(final List<Address> addressPageResponse,
                                          final List<AddressEntity> addresses) {
         assertThat(addressPageResponse).hasSize(addresses.size());
         int index = 0;
-        for (final AddressEntity address : addressPageResponse) {
+        for (final Address addressPageResponseItem : addressPageResponse) {
             final AddressEntity addressEntity = addresses.get(index);
 
-            assertThat(address).isNotNull();
-            assertThat(address.getCep()).isEqualTo(addressEntity.getCep());
-            assertThat(address.getCity()).isEqualTo(addressEntity.getCity());
-            assertThat(address.getDistrict()).isEqualTo(addressEntity.getDistrict());
-            assertThat(address.getNumber()).isEqualTo(addressEntity.getNumber());
-            assertThat(address.getState()).isEqualTo(addressEntity.getState());
-            assertThat(address.getStreetName()).isEqualTo(addressEntity.getStreetName());
+            assertThat(addressPageResponseItem).isNotNull();
+            assertThat(addressPageResponseItem.getCep()).isEqualTo(addressEntity.getCep());
+            assertThat(addressPageResponseItem.getCity()).isEqualTo(addressEntity.getCity());
+            assertThat(addressPageResponseItem.getDistrict()).isEqualTo(addressEntity.getDistrict());
+            assertThat(addressPageResponseItem.getNumber()).isEqualTo(addressEntity.getNumber());
+            assertThat(addressPageResponseItem.getState()).isEqualTo(addressEntity.getState());
+            assertThat(addressPageResponseItem.getStreetName()).isEqualTo(addressEntity.getStreetName());
             index++;
         }
     }
 
-    public static void assertAddressEntity(final AddressEntity addressEntity, final AddressEntity addressForm) {
-        assertThat(addressEntity).isNotNull();
-        assertThat(addressEntity.getCep()).isEqualTo(addressForm.getCep());
-        assertThat(addressEntity.getCity()).isEqualTo(addressForm.getCity());
-        assertThat(addressEntity.getDistrict()).isEqualTo(addressForm.getDistrict());
-        assertThat(addressEntity.getNumber()).isEqualTo(addressForm.getNumber());
-        assertThat(addressEntity.getState()).isEqualTo(addressForm.getState());
-        assertThat(addressEntity.getStreetName()).isEqualTo(addressForm.getStreetName());
+    public static void assertAddress(final Address address, final AddressEntity addressForm) {
+        assertThat(address).isNotNull();
+        assertThat(address.getCep()).isEqualTo(addressForm.getCep());
+        assertThat(address.getCity()).isEqualTo(addressForm.getCity());
+        assertThat(address.getDistrict()).isEqualTo(addressForm.getDistrict());
+        assertThat(address.getNumber()).isEqualTo(addressForm.getNumber());
+        assertThat(address.getState()).isEqualTo(addressForm.getState());
+        assertThat(address.getStreetName()).isEqualTo(addressForm.getStreetName());
     }
 
     public static void assertAddress(final AddressEntity address, final AddressEntity addressEntity) {

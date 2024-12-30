@@ -39,9 +39,25 @@ public interface AddressMapper {
     @Named("mapAddressEntityToAddressDTO")
     AddressDTO mapAddressEntityToAddressDTO(final AddressEntity newAddressEntity);
 
-    @Named("mapAddressEntityListToAddressDTOList")
-    List<AddressDTO> mapAddressEntityListToAddressDTOList(final List<AddressEntity> addressEntityList);
+    @Named("mapAddressEntityListToAddressList")
+    default List<Address> mapAddressEntityListToAddressList(final List<AddressEntity> addressEntityList) {
+        return addressEntityList
+                .stream()
+                .map(this::mapAddressEntityToAddress)
+                .collect(Collectors.toList());
+    }
 
     @Named("mapAddressFormToAddressEntity")
     AddressEntity mapAddressFormToAddressEntity(final AddressForm addressForm);
+
+    @Named("mapAddressEntityToAddress")
+    Address mapAddressEntityToAddress(final AddressEntity addressEntity);
+
+    @Named("mapAddressListToAddressDTOList")
+    default List<AddressDTO> mapAddressListToAddressDTOList(final List<Address> addresses) {
+        return addresses
+                .stream()
+                .map(this::mapAddressToAddressDTO)
+                .collect(Collectors.toList());
+    }
 }

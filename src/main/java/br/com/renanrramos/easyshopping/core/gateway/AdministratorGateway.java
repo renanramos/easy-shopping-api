@@ -1,20 +1,22 @@
 package br.com.renanrramos.easyshopping.core.gateway;
 
 import br.com.renanrramos.easyshopping.core.domain.Administrator;
-import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
+import br.com.renanrramos.easyshopping.infra.controller.entity.form.AdministratorForm;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.AdministratorEntity;
+import org.springframework.data.domain.Page;
 
 public interface AdministratorGateway {
 
-    Administrator save(final Administrator administrator);
+    AdministratorEntity save(final Administrator administrator);
 
-    PageResponse<Administrator> findAllAdministrators(final ParametersRequest parametersRequest);
+    Page<AdministratorEntity> findAllAdministrators(final ParametersRequest parametersRequest);
 
-    Administrator findAdministratorById(final Long administratorId);
+    AdministratorEntity findAdministratorById(final Long administratorId);
 
-    Administrator updateAdministrator(final Administrator administrator, final Long administratorId);
+    AdministratorEntity updateAdministrator(final AdministratorForm administratorForm, final Long administratorId);
 
     void removeAdministrator(final Long administratorId);
 
-    PageResponse<Administrator> searchAdministratorByName(final ParametersRequest parametersRequest, final String name);
+    Page<AdministratorEntity> searchAdministratorByName(final ParametersRequest parametersRequest, final String name);
 }

@@ -1,9 +1,9 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
 import br.com.renanrramos.easyshopping.core.domain.Administrator;
-import br.com.renanrramos.easyshopping.interfaceadapter.entity.AdministratorEntity;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.AdministratorDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.AdministratorForm;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.AdministratorEntity;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -48,7 +48,18 @@ public interface AdministratorMapper {
                 .collect(Collectors.toList());
     }
 
-    @Named("mapAdministratorEntityToUpdateAdministrator")
-    void mapAdministratorEntityToUpdateAdministrator(@MappingTarget final AdministratorEntity administratorEntity,
-                                                     final Administrator administrator);
+    @Named("mapAdministratorEntityToUpdateAdministratorForm")
+    void mapAdministratorEntityToUpdateAdministratorForm(@MappingTarget final AdministratorEntity administratorEntity,
+                                                         final AdministratorForm administratorForm);
+
+    @Named("mapAdministratorEntityToAdministratorDTO")
+    AdministratorDTO mapAdministratorEntityToAdministratorDTO(final AdministratorEntity administratorEntity);
+
+    @Named("mapAdministratorEntityListToAdministratorDTOList")
+    default List<AdministratorDTO> mapAdministratorEntityListToAdministratorDTOList(final List<AdministratorEntity> content) {
+        return content
+                .stream()
+                .map(this::mapAdministratorEntityToAdministratorDTO)
+                .collect(Collectors.toList());
+    }
 }

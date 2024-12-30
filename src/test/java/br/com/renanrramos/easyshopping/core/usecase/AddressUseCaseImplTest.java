@@ -5,7 +5,7 @@ import br.com.renanrramos.easyshopping.core.gateway.AddressGateway;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.AddressDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.AddressForm;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
-import br.com.renanrramos.easyshopping.interfaceadapter.entity.AddressEntity;
+import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.AddressMapper;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
@@ -34,7 +34,7 @@ class AddressUseCaseImplTest {
     void save_withAddressForm_shouldReturnAddressDTO() {
         // Arrange
         final AddressForm addressForm = Instancio.of(AddressForm.class).create();
-        final AddressEntity address = AddressMapper.INSTANCE.mapAddressFormToAddressEntity(addressForm);
+        final Address address = AddressMapper.INSTANCE.mapAddressFormToAddress(addressForm);
         when(addressGateway.save(any(Address.class))).thenReturn(address);
 
         // Act
@@ -48,15 +48,15 @@ class AddressUseCaseImplTest {
     @Test
     void findAllAddress_withParameters_shouldReturnAddressDTOPageResponse() {
         // Arrange
-        final PageResponse<AddressEntity> addressPageResponse = new PageResponse<>(3L, 1,
-                Collections.nCopies(3, Instancio.of(AddressEntity.class).create()));
-
-        when(addressGateway.findAllAddress(1, 10, "asc"))
+        final PageResponse<Address> addressPageResponse = new PageResponse<>(3L, 1,
+                Collections.nCopies(3, Instancio.of(Address.class).create()));
+        final ParametersRequest parametersRequest = new ParametersRequest(1, 1, "");
+        when(addressGateway.findAllAddress(parametersRequest))
                 .thenReturn(new PageImpl<>(addressPageResponse.getResponseItems()));
 
         // Act
         final PageResponse<AddressDTO> addressDTOPageResponse =
-                addressUseCase.findAllAddress(1, 10, "asc");
+                addressUseCase.findAllAddress(parametersRequest);
         // Assert
         assertThat(addressDTOPageResponse).isNotNull();
         assertThat(addressDTOPageResponse.getTotalPages()).isEqualTo(1L);

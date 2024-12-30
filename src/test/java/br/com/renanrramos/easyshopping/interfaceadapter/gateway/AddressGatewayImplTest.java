@@ -2,6 +2,7 @@ package br.com.renanrramos.easyshopping.interfaceadapter.gateway;
 
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.core.domain.Address;
+import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 import br.com.renanrramos.easyshopping.interfaceadapter.entity.AddressEntity;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.AddressMapper;
 import br.com.renanrramos.easyshopping.interfaceadapter.repository.AddressRepository;
@@ -19,7 +20,8 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
-import static br.com.renanrramos.easyshopping.interfaceadapter.mapper.util.TestUtils.*;
+import static br.com.renanrramos.easyshopping.interfaceadapter.mapper.util.TestUtils.assertAddress;
+import static br.com.renanrramos.easyshopping.interfaceadapter.mapper.util.TestUtils.assertAddressList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.instancio.Select.field;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -28,10 +30,6 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AddressGatewayImplTest {
-
-    public static final int PAGE_NUMBER = 1;
-    public static final int PAGE_SIZE = 10;
-    public static final String ASC = "asc";
 
     @Mock
     private AddressRepository addressRepository;
@@ -47,22 +45,28 @@ class AddressGatewayImplTest {
         when(addressRepository.save(any(AddressEntity.class))).thenReturn(addressEntity);
 
         // Act
-        final AddressEntity response = addressGateway.save(address);
+        final Address response = addressGateway.save(address);
 
         // Assert
-        assertAddressEntity(response, addressEntity);
+        assertAddress(response, addressEntity);
     }
 
     @Test
     void findAllAddress_withParameters_shouldReturnAddressList() {
         // Arrange
-        final Page<AddressEntity> addressList = getAddressList();
+        final List<AddressEntity> addresses = Instancio
+                .ofList(AddressEntity.class)
+                .size(10)
+                .create();
+        final Page<AddressEntity> addressList = new PageImpl<>(addresses);
         when(addressRepository.findAll(any(Pageable.class)))
                 .thenReturn(addressList);
+        final ParametersRequest parametersRequest = new ParametersRequest();
+
         // Act
-        final Page<AddressEntity> addressPageResponse = addressGateway.findAllAddress(PAGE_NUMBER, PAGE_SIZE, ASC);
+        final Page<Address> addressPageResponse = addressGateway.findAllAddress(parametersRequest);
         // Assert
-        assertAddressEntityList(addressPageResponse, addressList);
+        assertAddressList(addressPageResponse, addressList);
     }
 
     @Test
@@ -80,7 +84,7 @@ class AddressGatewayImplTest {
         when(addressRepository.findById(addressId)).thenReturn(Optional.of(currentAddress));
         when(addressRepository.save(any(AddressEntity.class))).thenReturn(addressEntity);
         // Act
-        final AddressEntity updatedAddress = addressGateway.updateAddress(address, addressId);
+        final Address updatedAddress = addressGateway.updateAddress(address, addressId);
         // Assert
         assertAddress(updatedAddress, addressEntity);
     }
@@ -126,13 +130,5 @@ class AddressGatewayImplTest {
         verify(addressRepository, never()).removeById(addressId);
         assertThat(entityNotFoundException).isNotNull();
         assertThat(entityNotFoundException.getMessage()).isEqualTo(ExceptionMessagesConstants.ADDRESS_NOT_FOUND);
-    }
-
-    private Page<AddressEntity> getAddressList() {
-        final List<AddressEntity> addresses = Instancio
-                .ofList(AddressEntity.class)
-                .size(PAGE_SIZE)
-                .create();
-        return new PageImpl<>(addresses);
     }
 }

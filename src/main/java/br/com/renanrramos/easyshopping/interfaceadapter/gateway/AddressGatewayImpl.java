@@ -3,15 +3,18 @@ package br.com.renanrramos.easyshopping.interfaceadapter.gateway;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.core.domain.Address;
 import br.com.renanrramos.easyshopping.core.gateway.AddressGateway;
+import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 import br.com.renanrramos.easyshopping.interfaceadapter.entity.AddressEntity;
 import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.AddressMapper;
 import br.com.renanrramos.easyshopping.interfaceadapter.repository.AddressRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -20,46 +23,29 @@ public class AddressGatewayImpl implements AddressGateway {
     private final AddressRepository addressRepository;
 
     @Override
-    public AddressEntity save(final Address address) {
+    public Address save(final Address address) {
         final AddressEntity addressEntity = AddressMapper.INSTANCE.mapAddressToAddressEntity(address);
-        return addressRepository.save(addressEntity);
+        return AddressMapper.INSTANCE.mapAddressEntityToAddress(addressRepository.save(addressEntity));
     }
 
     @Override
-    public Page<AddressEntity> findAllAddress(final Integer pageNumber,
-                                              final Integer pageSize, final String sortBy) {
-        final Pageable page = new PageableFactory()
-                .withPageNumber(pageNumber)
-                .withPageSize(pageSize)
-                .withSortBy(sortBy)
-                .buildPageable();
-
-        return addressRepository.findAll(page);
+    public Page<Address> findAllAddress(final ParametersRequest parametersRequest) {
+        final Pageable page = new PageableFactory().buildPageable(parametersRequest);
+        final Page<AddressEntity> addressEntities = addressRepository.findAll(page);
+        final List<Address> addresses =
+                AddressMapper.INSTANCE.mapAddressEntityListToAddressList(addressEntities.getContent());
+        return new PageImpl<>(addresses, addressEntities.getPageable(), addressEntities.getTotalPages());
     }
 
     @Override
-    public Page<AddressEntity> findAllAddress(final Integer pageNumber,
-                                              final Integer pageSize,
-                                              final String sortBy,
-                                              final String streetName) {
-        final Pageable page = new PageableFactory()
-                .withPageNumber(pageNumber)
-                .withPageSize(pageSize)
-                .withSortBy(sortBy)
-                .buildPageable();
-
-        return addressRepository.findAddressByStreetNameContaining(page, streetName);
+    public Address findAddressById(final Long addressId) {
+        return AddressMapper.INSTANCE.mapAddressEntityToAddress(getAddressEntityOrThrow(addressId));
     }
 
     @Override
-    public AddressEntity findAddressById(final Long addressId) {
-        return getAddressEntityOrThrow(addressId);
-    }
-
-    @Override
-    public AddressEntity updateAddress(final Address address, final Long addressId) {
-        final AddressEntity addressEntity = getAddressEntityOrThrow(addressId);
-        return addressRepository.save(addressEntity);
+    public Address updateAddress(final Address address, final Long addressId) {
+        final AddressEntity updatedAddressEntity = addressRepository.save(getAddressEntityOrThrow(addressId));
+        return AddressMapper.INSTANCE.mapAddressEntityToAddress(updatedAddressEntity);
     }
 
     @Override
