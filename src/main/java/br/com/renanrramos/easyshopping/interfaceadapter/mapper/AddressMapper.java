@@ -36,16 +36,12 @@ public interface AddressMapper {
     @Named("mapAddressToAddressEntity")
     AddressEntity mapAddressToAddressEntity(final Address address);
 
-    @Named("mapAddressEntityToAddress")
-    Address mapAddressEntityToAddress(final AddressEntity addressEntity);
+    @Named("mapAddressEntityToAddressDTO")
+    AddressDTO mapAddressEntityToAddressDTO(final AddressEntity newAddressEntity);
 
-    @Named("mapAddressEntityListToAddress")
-    default List<Address> mapAddressEntityListToAddress(List<AddressEntity> entities) {
-        return entities
-                .stream().map(AddressMapper.INSTANCE::mapAddressEntityToAddress)
-                .collect(Collectors.toList());
-    }
+    @Named("mapAddressEntityListToAddressDTOList")
+    List<AddressDTO> mapAddressEntityListToAddressDTOList(final List<AddressEntity> addressEntityList);
 
-    @Named("mapAddressToUpdateAddressEntity")
-    void mapAddressToUpdateAddressEntity(@MappingTarget AddressEntity addressEntity, Address address);
+    @Named("mapAddressFormToAddressEntity")
+    AddressEntity mapAddressFormToAddressEntity(final AddressForm addressForm);
 }

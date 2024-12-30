@@ -3,7 +3,6 @@ package br.com.renanrramos.easyshopping.interfaceadapter.gateway;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.core.domain.Address;
 import br.com.renanrramos.easyshopping.core.gateway.AddressGateway;
-import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
 import br.com.renanrramos.easyshopping.interfaceadapter.entity.AddressEntity;
 import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.AddressMapper;
@@ -21,55 +20,46 @@ public class AddressGatewayImpl implements AddressGateway {
     private final AddressRepository addressRepository;
 
     @Override
-    public Address save(final Address address) {
+    public AddressEntity save(final Address address) {
         final AddressEntity addressEntity = AddressMapper.INSTANCE.mapAddressToAddressEntity(address);
-        return AddressMapper.INSTANCE.mapAddressEntityToAddress(addressRepository.save(addressEntity));
+        return addressRepository.save(addressEntity);
     }
 
     @Override
-    public PageResponse<Address> findAllAddress(final Integer pageNumber,
-                                                final Integer pageSize, final String sortBy) {
+    public Page<AddressEntity> findAllAddress(final Integer pageNumber,
+                                              final Integer pageSize, final String sortBy) {
         final Pageable page = new PageableFactory()
                 .withPageNumber(pageNumber)
                 .withPageSize(pageSize)
                 .withSortBy(sortBy)
                 .buildPageable();
 
-        final Page<AddressEntity> paginatedAddresses = addressRepository.findAll(page);
-
-        return PageResponse.buildPageResponse(paginatedAddresses,
-                AddressMapper.INSTANCE.mapAddressEntityListToAddress(paginatedAddresses.getContent()));
+        return addressRepository.findAll(page);
     }
 
     @Override
-    public PageResponse<Address> findAllAddress(final Integer pageNumber,
-                                                final Integer pageSize,
-                                                final String sortBy,
-                                                final String streetName) {
+    public Page<AddressEntity> findAllAddress(final Integer pageNumber,
+                                              final Integer pageSize,
+                                              final String sortBy,
+                                              final String streetName) {
         final Pageable page = new PageableFactory()
                 .withPageNumber(pageNumber)
                 .withPageSize(pageSize)
                 .withSortBy(sortBy)
                 .buildPageable();
 
-        final Page<AddressEntity> addressByStreetName =
-                addressRepository.findAddressByStreetNameContaining(page, streetName);
-
-        return PageResponse.buildPageResponse(addressByStreetName,
-                AddressMapper.INSTANCE.mapAddressEntityListToAddress(addressByStreetName.getContent()));
+        return addressRepository.findAddressByStreetNameContaining(page, streetName);
     }
 
     @Override
-    public Address findAddressById(final Long addressId) {
-        final AddressEntity addressEntity = getAddressEntityOrThrow(addressId);
-        return AddressMapper.INSTANCE.mapAddressEntityToAddress(addressEntity);
+    public AddressEntity findAddressById(final Long addressId) {
+        return getAddressEntityOrThrow(addressId);
     }
 
     @Override
-    public Address updateAddress(final Address address, final Long addressId) {
+    public AddressEntity updateAddress(final Address address, final Long addressId) {
         final AddressEntity addressEntity = getAddressEntityOrThrow(addressId);
-        AddressMapper.INSTANCE.mapAddressToUpdateAddressEntity(addressEntity, address);
-        return AddressMapper.INSTANCE.mapAddressEntityToAddress(addressRepository.save(addressEntity));
+        return addressRepository.save(addressEntity);
     }
 
     @Override

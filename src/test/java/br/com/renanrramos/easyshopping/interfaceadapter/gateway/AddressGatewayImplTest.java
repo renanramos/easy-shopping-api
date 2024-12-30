@@ -2,10 +2,9 @@ package br.com.renanrramos.easyshopping.interfaceadapter.gateway;
 
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.core.domain.Address;
-import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.AddressEntity;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.AddressMapper;
 import br.com.renanrramos.easyshopping.interfaceadapter.repository.AddressRepository;
-import br.com.renanrramos.easyshopping.interfaceadapter.entity.AddressEntity;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,8 +19,7 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
-import static br.com.renanrramos.easyshopping.interfaceadapter.mapper.util.TestUtils.assertAddress;
-import static br.com.renanrramos.easyshopping.interfaceadapter.mapper.util.TestUtils.assertAddressDTOList;
+import static br.com.renanrramos.easyshopping.interfaceadapter.mapper.util.TestUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.instancio.Select.field;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -42,15 +40,17 @@ class AddressGatewayImplTest {
     private AddressGatewayImpl addressGateway;
 
     @Test
-    void save_withAddressFrom_shouldReturnSuccessfully() {
+    void save_withAddress_shouldReturnSuccessfully() {
         // Arrange
-        final AddressEntity addressEntity = Instancio.create(AddressEntity.class);
+        final Address address = Instancio.create(Address.class);
+        final AddressEntity addressEntity = AddressMapper.INSTANCE.mapAddressToAddressEntity(address);
         when(addressRepository.save(any(AddressEntity.class))).thenReturn(addressEntity);
-        final Address address = AddressMapper.INSTANCE.mapAddressEntityToAddress(addressEntity);
+
         // Act
-        final Address response = addressGateway.save(address);
+        final AddressEntity response = addressGateway.save(address);
+
         // Assert
-        assertAddress(response, addressEntity);
+        assertAddressEntity(response, addressEntity);
     }
 
     @Test
@@ -60,9 +60,9 @@ class AddressGatewayImplTest {
         when(addressRepository.findAll(any(Pageable.class)))
                 .thenReturn(addressList);
         // Act
-        final PageResponse<Address> addressPageResponse = addressGateway.findAllAddress(PAGE_NUMBER, PAGE_SIZE, ASC);
+        final Page<AddressEntity> addressPageResponse = addressGateway.findAllAddress(PAGE_NUMBER, PAGE_SIZE, ASC);
         // Assert
-        assertAddressDTOList(addressPageResponse, addressList);
+        assertAddressEntityList(addressPageResponse, addressList);
     }
 
     @Test
@@ -80,7 +80,7 @@ class AddressGatewayImplTest {
         when(addressRepository.findById(addressId)).thenReturn(Optional.of(currentAddress));
         when(addressRepository.save(any(AddressEntity.class))).thenReturn(addressEntity);
         // Act
-        final Address updatedAddress = addressGateway.updateAddress(address, addressId);
+        final AddressEntity updatedAddress = addressGateway.updateAddress(address, addressId);
         // Assert
         assertAddress(updatedAddress, addressEntity);
     }

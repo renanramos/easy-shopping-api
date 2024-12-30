@@ -7,7 +7,6 @@ import br.com.renanrramos.easyshopping.infra.controller.entity.dto.AddressDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.CompanyDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.AddressForm;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.CompanyForm;
-import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
 import br.com.renanrramos.easyshopping.interfaceadapter.entity.AddressEntity;
 import br.com.renanrramos.easyshopping.interfaceadapter.entity.CompanyEntity;
 import org.springframework.data.domain.Page;
@@ -19,22 +18,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class TestUtils {
 
 
-
-    public static void assertAddressDTOList(final PageResponse<Address> addressDTOPageResponse,
-                                      final Page<AddressEntity> addressPage) {
-        assertThat(addressDTOPageResponse).isNotNull();
+    public static void assertAddressEntityList(final Page<AddressEntity> addressEntityPage,
+                                               final Page<AddressEntity> addressPage) {
+        assertThat(addressEntityPage).isNotNull();
         assertThat(addressPage).isNotNull();
-        assertThat(addressDTOPageResponse.getTotalElements()).isEqualTo(addressPage.getTotalElements());
-        assertThat(addressDTOPageResponse.getTotalPages()).isEqualTo(addressPage.getTotalPages());
+        assertThat(addressEntityPage.getTotalElements()).isEqualTo(addressPage.getTotalElements());
+        assertThat(addressEntityPage.getTotalPages()).isEqualTo(addressPage.getTotalPages());
 
-        assertAddressList(addressDTOPageResponse.getResponseItems(), addressPage.getContent());
+        assertAddressList(addressEntityPage.getContent(), addressPage.getContent());
     }
 
-    public static void assertAddressList(final List<Address> addressPageResponse,
-                                          final List<AddressEntity> addresses) {
+    public static void assertAddressList(final List<AddressEntity> addressPageResponse,
+                                         final List<AddressEntity> addresses) {
         assertThat(addressPageResponse).hasSize(addresses.size());
         int index = 0;
-        for(final Address address : addressPageResponse) {
+        for (final AddressEntity address : addressPageResponse) {
             final AddressEntity addressEntity = addresses.get(index);
 
             assertThat(address).isNotNull();
@@ -48,16 +46,17 @@ public class TestUtils {
         }
     }
 
-    public static void assertAddress(final AddressDTO addressDTO, final AddressForm addressForm) {
-        assertThat(addressDTO).isNotNull();
-        assertThat(addressDTO.getCep()).isEqualTo(addressForm.getCep());
-        assertThat(addressDTO.getCity()).isEqualTo(addressForm.getCity());
-        assertThat(addressDTO.getDistrict()).isEqualTo(addressForm.getDistrict());
-        assertThat(addressDTO.getNumber()).isEqualTo(addressForm.getNumber());
-        assertThat(addressDTO.getState()).isEqualTo(addressForm.getState());
-        assertThat(addressDTO.getStreetName()).isEqualTo(addressForm.getStreetName());
+    public static void assertAddressEntity(final AddressEntity addressEntity, final AddressEntity addressForm) {
+        assertThat(addressEntity).isNotNull();
+        assertThat(addressEntity.getCep()).isEqualTo(addressForm.getCep());
+        assertThat(addressEntity.getCity()).isEqualTo(addressForm.getCity());
+        assertThat(addressEntity.getDistrict()).isEqualTo(addressForm.getDistrict());
+        assertThat(addressEntity.getNumber()).isEqualTo(addressForm.getNumber());
+        assertThat(addressEntity.getState()).isEqualTo(addressForm.getState());
+        assertThat(addressEntity.getStreetName()).isEqualTo(addressForm.getStreetName());
     }
-    public static void assertAddress(final Address address, final AddressEntity addressEntity) {
+
+    public static void assertAddress(final AddressEntity address, final AddressEntity addressEntity) {
         assertThat(address).isNotNull();
         assertThat(address.getCity()).isEqualTo(addressEntity.getCity());
         assertThat(address.getState()).isEqualTo(addressEntity.getState());
@@ -83,7 +82,7 @@ public class TestUtils {
 
         assertThat(addressDTOS).hasSize(addressList.size());
         int index = 0;
-        for (final AddressDTO addressDTO: addressDTOS) {
+        for (final AddressDTO addressDTO : addressDTOS) {
             assertAddressDTO(addressDTO, addressList.get(index));
             index++;
         }
@@ -102,7 +101,7 @@ public class TestUtils {
     }
 
     public static void assertCompanyListAndCompanyEntityList(final List<Company> companies,
-                                                       final List<CompanyEntity> companyEntities) {
+                                                             final List<CompanyEntity> companyEntities) {
         assertThat(companies)
                 .isNotNull()
                 .hasSize(companyEntities.size());
@@ -136,7 +135,7 @@ public class TestUtils {
         assertThat(companyDTOS).hasSize(companyList.size());
         int index = 0;
 
-        for(final CompanyDTO companyDTO : companyDTOS) {
+        for (final CompanyDTO companyDTO : companyDTOS) {
             assertCompanyDTO(companyDTO, companyList.get(index));
             index++;
         }

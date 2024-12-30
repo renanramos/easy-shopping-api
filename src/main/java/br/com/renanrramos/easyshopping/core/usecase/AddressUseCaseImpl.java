@@ -5,43 +5,50 @@ import br.com.renanrramos.easyshopping.core.gateway.AddressGateway;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.AddressDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.AddressForm;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.AddressEntity;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.AddressMapper;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 
 @RequiredArgsConstructor
-public class AddressUseCaseImpl implements AddressUseCase{
+public class AddressUseCaseImpl implements AddressUseCase {
 
     private final AddressGateway addressGateway;
 
     @Override
     public AddressDTO save(final AddressForm addressForm) {
         final Address address = AddressMapper.INSTANCE.mapAddressFormToAddress(addressForm);
-        return AddressMapper.INSTANCE.mapAddressToAddressDTO(addressGateway.save(address));
+        final AddressEntity newAddressEntity = addressGateway.save(address);
+        return AddressMapper.INSTANCE.mapAddressEntityToAddressDTO(newAddressEntity);
     }
 
     @Override
     public PageResponse<AddressDTO> findAllAddress(Integer pageNumber, Integer pageSize, String sortBy) {
-        return buildPageResponse(addressGateway.findAllAddress(pageNumber, pageSize, sortBy));
+        final Page<AddressEntity> addressEntityPage = addressGateway.findAllAddress(pageNumber, pageSize, sortBy);
+        return PageResponse.buildPageResponse(addressEntityPage,
+                AddressMapper.INSTANCE.mapAddressEntityListToAddressDTOList(addressEntityPage.getContent()));
     }
 
     @Override
     public PageResponse<AddressDTO> findAllAddress(final Integer pageNumber, final Integer pageSize,
                                                    final String sortBy, final String streetName) {
-        return buildPageResponse(addressGateway.findAllAddress(pageNumber, pageSize, sortBy, streetName));
+        final Page<AddressEntity> addressEntityPage =
+                addressGateway.findAllAddress(pageNumber, pageSize, sortBy, streetName);
+        return PageResponse.buildPageResponse(addressEntityPage,
+                AddressMapper.INSTANCE.mapAddressEntityListToAddressDTOList(addressEntityPage.getContent()));
     }
 
     @Override
     public AddressDTO findByAddressId(final Long addressId) {
-        return AddressMapper.INSTANCE.mapAddressToAddressDTO(
+        return AddressMapper.INSTANCE.mapAddressEntityToAddressDTO(
                 addressGateway.findAddressById(addressId));
     }
 
     @Override
     public AddressDTO update(final AddressForm addressForm, final Long addressId) {
-        final Address address = addressGateway.updateAddress(
+        final AddressEntity addressEntity = addressGateway.updateAddress(
                 AddressMapper.INSTANCE.mapAddressFormToAddress(addressForm), addressId);
-        return AddressMapper.INSTANCE.mapAddressToAddressDTO(address);
+        return AddressMapper.INSTANCE.mapAddressEntityToAddressDTO(addressEntity);
     }
 
     @Override
@@ -49,9 +56,4 @@ public class AddressUseCaseImpl implements AddressUseCase{
         addressGateway.removeAddress(addressId);
     }
 
-    private PageResponse<AddressDTO> buildPageResponse(PageResponse<Address> pageResponse) {
-        return new PageResponse<>(pageResponse.getTotalElements(),
-                pageResponse.getTotalPages(),
-                AddressMapper.INSTANCE.mapAddressListTOAddressDTOList(pageResponse.getResponseItems()));
-    }
 }

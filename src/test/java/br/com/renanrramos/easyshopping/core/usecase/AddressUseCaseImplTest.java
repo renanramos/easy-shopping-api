@@ -5,14 +5,15 @@ import br.com.renanrramos.easyshopping.core.gateway.AddressGateway;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.AddressDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.AddressForm;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.AddressEntity;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.AddressMapper;
-
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageImpl;
 
 import java.util.Collections;
 
@@ -33,10 +34,12 @@ class AddressUseCaseImplTest {
     void save_withAddressForm_shouldReturnAddressDTO() {
         // Arrange
         final AddressForm addressForm = Instancio.of(AddressForm.class).create();
-        final Address address = AddressMapper.INSTANCE.mapAddressFormToAddress(addressForm);
+        final AddressEntity address = AddressMapper.INSTANCE.mapAddressFormToAddressEntity(addressForm);
         when(addressGateway.save(any(Address.class))).thenReturn(address);
+
         // Act
         final AddressDTO addressDTOResponse = addressUseCase.save(addressForm);
+
         // Assert
         assertThat(addressDTOResponse).isNotNull();
         assertAddressDTO(addressDTOResponse, convertAddressFormToAddressDTO(addressForm));
@@ -45,9 +48,12 @@ class AddressUseCaseImplTest {
     @Test
     void findAllAddress_withParameters_shouldReturnAddressDTOPageResponse() {
         // Arrange
-        final PageResponse<Address> addressPageResponse = new PageResponse<>(3L, 1,
-                Collections.nCopies(3, Instancio.of(Address.class).create()));
-        when(addressGateway.findAllAddress(any(), any(), any())).thenReturn(addressPageResponse);
+        final PageResponse<AddressEntity> addressPageResponse = new PageResponse<>(3L, 1,
+                Collections.nCopies(3, Instancio.of(AddressEntity.class).create()));
+
+        when(addressGateway.findAllAddress(1, 10, "asc"))
+                .thenReturn(new PageImpl<>(addressPageResponse.getResponseItems()));
+
         // Act
         final PageResponse<AddressDTO> addressDTOPageResponse =
                 addressUseCase.findAllAddress(1, 10, "asc");
