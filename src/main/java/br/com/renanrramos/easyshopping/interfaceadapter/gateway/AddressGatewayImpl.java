@@ -15,7 +15,6 @@ import org.springframework.data.domain.Pageable;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 public class AddressGatewayImpl implements AddressGateway {
@@ -34,7 +33,7 @@ public class AddressGatewayImpl implements AddressGateway {
         final Page<AddressEntity> addressEntities = addressRepository.findAll(page);
         final List<Address> addresses =
                 AddressMapper.INSTANCE.mapAddressEntityListToAddressList(addressEntities.getContent());
-        return new PageImpl<>(addresses, addressEntities.getPageable(), addressEntities.getTotalPages());
+        return new PageImpl<>(addresses);
     }
 
     @Override
@@ -55,10 +54,7 @@ public class AddressGatewayImpl implements AddressGateway {
     }
 
     private AddressEntity getAddressEntityOrThrow(final Long addressId) {
-        final Optional<AddressEntity> addressById = addressRepository.findById(addressId);
-        if (addressById.isEmpty()) {
-            throw new EntityNotFoundException(ExceptionMessagesConstants.ADDRESS_NOT_FOUND);
-        }
-        return addressById.get();
+        return addressRepository.findById(addressId)
+                .orElseThrow(() -> new EntityNotFoundException(ExceptionMessagesConstants.ADDRESS_NOT_FOUND));
     }
 }

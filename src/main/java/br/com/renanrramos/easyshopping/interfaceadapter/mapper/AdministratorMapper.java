@@ -48,10 +48,6 @@ public interface AdministratorMapper {
                 .collect(Collectors.toList());
     }
 
-    @Named("mapAdministratorEntityToUpdateAdministratorForm")
-    void mapAdministratorEntityToUpdateAdministratorForm(@MappingTarget final AdministratorEntity administratorEntity,
-                                                         final AdministratorForm administratorForm);
-
     @Named("mapAdministratorEntityToAdministratorDTO")
     AdministratorDTO mapAdministratorEntityToAdministratorDTO(final AdministratorEntity administratorEntity);
 
@@ -62,4 +58,8 @@ public interface AdministratorMapper {
                 .map(this::mapAdministratorEntityToAdministratorDTO)
                 .collect(Collectors.toList());
     }
+
+    @Named("mapAdministratorToUpdateAdministratorEntity")
+    void mapAdministratorToUpdateAdministratorEntity(@MappingTarget final AdministratorEntity administratorEntity,
+                                                     final Administrator administrator);
 }

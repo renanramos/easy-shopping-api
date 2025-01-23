@@ -6,7 +6,6 @@ import br.com.renanrramos.easyshopping.infra.controller.entity.dto.Administrator
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.AdministratorForm;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
-import br.com.renanrramos.easyshopping.interfaceadapter.entity.AdministratorEntity;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.AdministratorMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,20 +19,20 @@ public class AdministratorUseCaseImpl implements AdministratorUseCase {
     public AdministratorDTO save(final AdministratorForm administratorForm) {
         final Administrator administrator =
                 AdministratorMapper.INSTANCE.mapAdministratorFormToAdministrator(administratorForm);
-        return AdministratorMapper.INSTANCE.mapAdministratorEntityToAdministratorDTO(administratorGateway.save(administrator));
+        return AdministratorMapper.INSTANCE.mapAdministratorToAdministratorDTO(administratorGateway.save(administrator));
     }
 
     @Override
     public PageResponse<AdministratorDTO> findAllAdministrators(final ParametersRequest parametersRequest) {
-        Page<AdministratorEntity> pageAdministrators = administratorGateway.findAllAdministrators(parametersRequest);
+        Page<Administrator> pageAdministrators = administratorGateway.findAllAdministrators(parametersRequest);
         return PageResponse.buildPageResponse(pageAdministrators,
-                AdministratorMapper.INSTANCE.mapAdministratorEntityListToAdministratorDTOList(pageAdministrators.getContent()));
+                AdministratorMapper.INSTANCE.mapAdministratorListToAdministratorDTOList(pageAdministrators.getContent()));
     }
 
     @Override
     public AdministratorDTO findAdministratorById(final Long administratorId) {
         return AdministratorMapper.INSTANCE
-                .mapAdministratorEntityToAdministratorDTO(administratorGateway.findAdministratorById(administratorId));
+                .mapAdministratorToAdministratorDTO(administratorGateway.findAdministratorById(administratorId));
     }
 
     @Override
@@ -53,12 +52,8 @@ public class AdministratorUseCaseImpl implements AdministratorUseCase {
     @Override
     public PageResponse<AdministratorDTO> searchAdministratorByName(final ParametersRequest parametersRequest,
                                                                     final String name) {
-        return buildPageResponse(administratorGateway.searchAdministratorByName(parametersRequest, name));
-    }
-
-    private PageResponse<AdministratorDTO> buildPageResponse(final PageResponse<Administrator> allAdministrators) {
-        return new PageResponse<>(allAdministrators.getTotalElements(),
-                allAdministrators.getTotalPages(),
-                AdministratorMapper.INSTANCE.mapAdministratorListToAdministratorDTOList(allAdministrators.getResponseItems()));
+        final Page<Administrator> administratorPage = administratorGateway.searchAdministratorByName(parametersRequest, name);
+        return PageResponse.buildPageResponse(administratorPage,
+                AdministratorMapper.INSTANCE.mapAdministratorListToAdministratorDTOList(administratorPage.getContent()));
     }
 }

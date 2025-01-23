@@ -6,6 +6,7 @@ import br.com.renanrramos.easyshopping.infra.controller.entity.dto.Administrator
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.AdministratorForm;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
+import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.AdministratorMapper;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 import java.util.Collections;
 import java.util.List;
@@ -55,10 +58,13 @@ class AdministratorUseCaseImplTest {
     void findAllAdministrators_withParameters_shouldReturnPageResponse() {
         // Arrange
         final ParametersRequest parametersRequest = new ParametersRequest();
-        final PageResponse<Administrator> expectedPageResponse = new PageResponse<>(3L, 1,
-                Collections.nCopies(3, Instancio.of(Administrator.class).create()));
+        final List<Administrator> administrators = Collections.nCopies(3, Instancio.of(Administrator.class).create());
+        final PageableFactory pageableFactory = new PageableFactory().withPageNumber(3);
+        final Page<Administrator> expectedPageResponse =
+                new PageImpl<>(administrators, pageableFactory.buildPageable(), 10);
         final List<AdministratorDTO> expectedAdministratorDTOList =
-                AdministratorMapper.INSTANCE.mapAdministratorListToAdministratorDTOList(expectedPageResponse.getResponseItems());
+                AdministratorMapper.INSTANCE
+                        .mapAdministratorListToAdministratorDTOList(expectedPageResponse.getContent());
         when(administratorGateway.findAllAdministrators(parametersRequest))
                 .thenReturn(expectedPageResponse);
         // Act
@@ -133,8 +139,9 @@ class AdministratorUseCaseImplTest {
         final List<Administrator> administrators = Instancio.ofList(Administrator.class)
                 .size(3)
                 .create();
-        final PageResponse<Administrator> expectedPageResponse = new PageResponse<>(3L, 1,
-                administrators);
+        final PageableFactory pageableFactory = new PageableFactory().withPageNumber(3);
+        final Page<Administrator> expectedPageResponse =
+                new PageImpl<>(administrators, pageableFactory.buildPageable(), 1);
         final List<AdministratorDTO> expectedResponse =
                 AdministratorMapper.INSTANCE.mapAdministratorListToAdministratorDTOList(administrators);
         final ParametersRequest parametersRequest = new ParametersRequest(pageNumber, pageSize, sortBy);

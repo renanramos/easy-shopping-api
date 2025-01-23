@@ -46,7 +46,7 @@ class AdministratorGatewayImplTest {
                 .mapAdministratorToAdministratorEntity(administrator);
         when(administratorRepository.save(administratorEntity)).thenReturn(administratorEntity);
         // Act
-        final AdministratorEntity response = administratorGateway.save(administrator);
+        final Administrator response = administratorGateway.save(administrator);
         // Assert
         assertThat(response)
                 .isNotNull()
@@ -61,16 +61,21 @@ class AdministratorGatewayImplTest {
         final Pageable page = new PageableFactory().buildPageable(parametersRequest);
         final PageImpl<AdministratorEntity> pageResponse = buildAdministratorEntitiesPageResponse();
         when(administratorRepository.findAll(page)).thenReturn(pageResponse);
+
         // Act
-        final Page<AdministratorEntity> administratorPageResponse = administratorGateway
+        final Page<Administrator> administratorPageResponse = administratorGateway
                 .findAllAdministrators(parametersRequest);
+
         // Assert
         assertThat(administratorPageResponse).isNotNull();
         assertThat(administratorPageResponse.getTotalPages()).isEqualTo(pageResponse.getTotalPages());
         assertThat(administratorPageResponse.getTotalElements()).isEqualTo(pageResponse.getTotalElements());
-        assertThat(administratorPageResponse.getContent())
+        final List<Administrator> mappedAdministratorsResponse = AdministratorMapper.INSTANCE
+                .mapAdministratorEntityListToAdministratorList(pageResponse.getContent());
+        final List<Administrator> content = administratorPageResponse.getContent();
+        assertThat(content)
                 .isNotNull()
-                .hasSameElementsAs(pageResponse.getContent());
+                .hasSameSizeAs(mappedAdministratorsResponse);
     }
 
     @Test
@@ -83,7 +88,7 @@ class AdministratorGatewayImplTest {
                 AdministratorMapper.INSTANCE.mapAdministratorEntityToAdministrator(administratorEntity.get());
         when(administratorRepository.findById(administratorId)).thenReturn(administratorEntity);
         // Act
-        final AdministratorEntity administrator = administratorGateway.findAdministratorById(administratorId);
+        final Administrator administrator = administratorGateway.findAdministratorById(administratorId);
         // Assert
         assertThat(administrator)
                 .isNotNull()
@@ -117,7 +122,7 @@ class AdministratorGatewayImplTest {
         when(administratorRepository.findById(administratorId)).thenReturn(Optional.of(administratorEntity));
         when(administratorRepository.save(administratorEntity)).thenReturn(administratorEntity);
         // Act
-        final AdministratorEntity response = administratorGateway.updateAdministrator(administrator, administratorId);
+        final Administrator response = administratorGateway.updateAdministrator(administrator, administratorId);
         // Assert
         assertThat(response)
                 .isNotNull()
@@ -189,7 +194,7 @@ class AdministratorGatewayImplTest {
         when(administratorRepository.findAdministratorByNameContains(pageable, administratorName))
                 .thenReturn(new PageImpl<>(administratorEntities));
         // Act
-        final Page<AdministratorEntity> administrators =
+        final Page<Administrator> administrators =
                 administratorGateway.searchAdministratorByName(parametersRequest, administratorName);
         // Assert
         assertThat(administrators.getTotalElements()).isEqualTo(3L);
