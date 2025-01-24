@@ -3,12 +3,12 @@ package br.com.renanrramos.easyshopping.interfaceadapter.gateway;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.core.domain.Company;
 import br.com.renanrramos.easyshopping.core.domain.enums.Profile;
-import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.CompanyEntity;
 import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.CompanyMapper;
 import br.com.renanrramos.easyshopping.interfaceadapter.repository.CompanyRepository;
-import br.com.renanrramos.easyshopping.interfaceadapter.entity.CompanyEntity;
+import lombok.SneakyThrows;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,6 +40,7 @@ class CompanyGatewayImplTest {
     private CompanyGatewayImpl companyGateway;
 
     @Test
+    @SneakyThrows
     void saveCompany_withCompany_shouldRunSuccessfully() {
         // Arrange
         final Company company = Instancio.of(Company.class)
@@ -65,12 +66,12 @@ class CompanyGatewayImplTest {
         final Page<CompanyEntity> companyEntitiesResponse = new PageImpl<>(companyEntities);
         when(companyRepository.findAll(page)).thenReturn(companyEntitiesResponse);
         // Act
-        final PageResponse<Company> pageResponse = companyGateway.findCompanies(parameterRequest);
+        final Page<Company> pageResponse = companyGateway.findCompanies(parameterRequest);
         // Assert
         assertThat(pageResponse).isNotNull();
         assertThat(pageResponse.getTotalPages()).isEqualTo(companyEntitiesResponse.getTotalPages());
         assertThat(pageResponse.getTotalElements()).isEqualTo(companyEntitiesResponse.getTotalElements());
-        final List<Company> responseItems = pageResponse.getResponseItems();
+        final List<Company> responseItems = pageResponse.getContent();
         assertThat(responseItems)
                 .usingRecursiveFieldByFieldElementComparator()
                 .isEqualTo(companyEntities);
@@ -91,13 +92,13 @@ class CompanyGatewayImplTest {
         when(companyRepository.getCompanyByNameRegisteredNumberOrEmail(page, companyName))
                 .thenReturn(companyEntitiesResponse);
         // Act
-        final PageResponse<Company> pageResponse = companyGateway
+        final Page<Company> pageResponse = companyGateway
                 .getCompanyByNameRegisteredNumberOrEmail(parameterRequest, companyName);
         // Assert
         assertThat(pageResponse).isNotNull();
         assertThat(pageResponse.getTotalPages()).isEqualTo(companyEntitiesResponse.getTotalPages());
         assertThat(pageResponse.getTotalElements()).isEqualTo(companyEntitiesResponse.getTotalElements());
-        final List<Company> responseItems = pageResponse.getResponseItems();
+        final List<Company> responseItems = pageResponse.getContent();
         assertThat(responseItems)
                 .usingRecursiveFieldByFieldElementComparator()
                 .isEqualTo(companyEntities);

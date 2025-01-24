@@ -1,17 +1,18 @@
 package br.com.renanrramos.easyshopping.core.gateway;
 
 import br.com.renanrramos.easyshopping.core.domain.Company;
-import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
+import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
+import org.springframework.data.domain.Page;
 
 public interface CompanyGateway {
 
-    Company saveCompany(final Company company);
+    Company saveCompany(final Company company) throws EasyShoppingException;
 
-    PageResponse<Company> findCompanies(final ParametersRequest parametersRequest);
+    Page<Company> findCompanies(final ParametersRequest parametersRequest);
 
-    PageResponse<Company> getCompanyByNameRegisteredNumberOrEmail(final ParametersRequest parametersRequest,
-                                                                  final String name);
+    Page<Company> getCompanyByNameRegisteredNumberOrEmail(final ParametersRequest parametersRequest,
+                                                          final String name);
 
     Company findCompanyByTokenId(final String tokenId);
 

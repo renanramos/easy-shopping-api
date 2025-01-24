@@ -8,7 +8,6 @@ import br.com.renanrramos.easyshopping.infra.controller.entity.dto.CompanyDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.CompanyForm;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
-import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.CompanyMapper;
 import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
 import lombok.SneakyThrows;
@@ -20,7 +19,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -71,7 +69,8 @@ class CompanyUseCaseImplTest {
                 .create();
         final ParametersRequest parameterRequest = new ParametersRequest(1, 3, "asc");
         final Page<Company> companyEntitiesResponse = new PageImpl<>(companies);
-        final PageResponse<Company> expectedPageResponse = new PageResponse<>(3L, 1, companies);
+        final Page<Company> expectedPageResponse = new PageImpl<>(companies, companyEntitiesResponse.getPageable(),
+                companies.size());
         when(companyGateway.findCompanies(parameterRequest)).thenReturn(expectedPageResponse);
         // Act
         final PageResponse<CompanyDTO> pageResponse = companyUseCase.findCompanies(parameterRequest);
@@ -95,9 +94,9 @@ class CompanyUseCaseImplTest {
                 .set(field(Company::getName), companyName)
                 .create();
         final ParametersRequest parameterRequest = new ParametersRequest(1, 1, "asc");
-        final Pageable page = new PageableFactory().buildPageable(parameterRequest);
         final Page<Company> companyEntitiesResponse = new PageImpl<>(companyEntities);
-        final PageResponse<Company> expectedPageResponse = new PageResponse<>(3L, 1, companyEntities);
+        final Page<Company> expectedPageResponse = new PageImpl<>(companyEntities, companyEntitiesResponse.getPageable(),
+                companyEntities.size());
         when(companyGateway.getCompanyByNameRegisteredNumberOrEmail(parameterRequest, companyName))
                 .thenReturn(expectedPageResponse);
         // Act

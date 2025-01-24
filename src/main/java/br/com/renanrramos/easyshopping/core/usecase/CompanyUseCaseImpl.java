@@ -11,11 +11,12 @@ import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.excepti
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.CompanyMapper;
 import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 
 import javax.persistence.EntityNotFoundException;
 
 @RequiredArgsConstructor
-public class CompanyUseCaseImpl implements CompanyUseCase{
+public class CompanyUseCaseImpl implements CompanyUseCase {
 
     private final CompanyGateway companyGateway;
 
@@ -23,10 +24,6 @@ public class CompanyUseCaseImpl implements CompanyUseCase{
 
     @Override
     public CompanyDTO saveCompany(final CompanyForm companyForm) throws EasyShoppingException {
-
-        if (companyGateway.findTopCompanyByRegisteredNumber(companyForm.getRegisteredNumber())) {
-            throw new EasyShoppingException(ExceptionMessagesConstants.CNPJ_ALREADY_EXIST);
-        }
         final Company company = companyGateway.saveCompany(
                 CompanyMapper.INSTANCE.mapCompanyFormToCompany(companyForm));
         return CompanyMapper.INSTANCE.mapCompanyToCompanyDTO(company);
@@ -34,18 +31,18 @@ public class CompanyUseCaseImpl implements CompanyUseCase{
 
     @Override
     public PageResponse<CompanyDTO> findCompanies(final ParametersRequest parametersRequest) {
-        final PageResponse<Company> companies = companyGateway.findCompanies(parametersRequest);
+        final Page<Company> companies = companyGateway.findCompanies(parametersRequest);
         return new PageResponse<>(companies.getTotalElements(), companies.getTotalPages(),
-                CompanyMapper.INSTANCE.mapCompanyListToCompanyDTOList(companies.getResponseItems()));
+                CompanyMapper.INSTANCE.mapCompanyListToCompanyDTOList(companies.getContent()));
     }
 
     @Override
     public PageResponse<CompanyDTO> getCompanyByNameRegisteredNumberOrEmail(final ParametersRequest parametersRequest,
-                                                                         final String name) {
-        final PageResponse<Company> companies =
+                                                                            final String name) {
+        final Page<Company> companies =
                 companyGateway.getCompanyByNameRegisteredNumberOrEmail(parametersRequest, name);
         return new PageResponse<>(companies.getTotalElements(), companies.getTotalPages(),
-                CompanyMapper.INSTANCE.mapCompanyListToCompanyDTOList(companies.getResponseItems()));
+                CompanyMapper.INSTANCE.mapCompanyListToCompanyDTOList(companies.getContent()));
     }
 
     @Override
