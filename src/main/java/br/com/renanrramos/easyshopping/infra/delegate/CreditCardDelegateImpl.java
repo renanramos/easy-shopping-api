@@ -5,19 +5,19 @@ import br.com.renanrramos.easyshopping.core.usecase.CreditCardUseCase;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.CreditCardDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.CreditCardForm;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
-
+import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.CreditCardMapper;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class CreditCardDelegateImpl implements CreditCardDelegate{
+public class CreditCardDelegateImpl implements CreditCardDelegate {
 
     private final CreditCardUseCase creditCardUseCase;
 
     @Override
-    public PageResponse<CreditCardDTO> findCreditCardByCustomerId(final Integer pageNumber, final Integer pageSize,
-                                                                  final String sortBy, final String customerId) {
-        return creditCardUseCase.findCreditCardByCustomerId(pageNumber, pageSize, sortBy, customerId);
+    public PageResponse<CreditCardDTO> findCreditCardByCustomerId(final ParametersRequest parametersRequest,
+                                                                  final String customerId) {
+        return creditCardUseCase.findCreditCardByCustomerId(parametersRequest, customerId);
     }
 
     @Override

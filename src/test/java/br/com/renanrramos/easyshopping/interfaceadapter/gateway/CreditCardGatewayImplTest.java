@@ -2,17 +2,18 @@ package br.com.renanrramos.easyshopping.interfaceadapter.gateway;
 
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.core.domain.CreditCard;
-import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
+import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.CreditCardEntity;
 import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.CreditCardMapper;
-import br.com.renanrramos.easyshopping.interfaceadapter.repository.CreditCardRepositoy;
-import br.com.renanrramos.easyshopping.interfaceadapter.entity.CreditCardEntity;
+import br.com.renanrramos.easyshopping.interfaceadapter.repository.CreditCardRepository;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
@@ -29,36 +30,30 @@ import static org.mockito.Mockito.*;
 class CreditCardGatewayImplTest {
 
     @Mock
-    private CreditCardRepositoy creditCardRepository;
+    private CreditCardRepository creditCardRepository;
 
     @InjectMocks
     private CreditCardGatewayImpl creditCardGateway;
 
     @Test
-    void findCreditCardByCustomerId_withCustomerId_shouldReturnCreditCardPageResponse() {
+    void findCreditCardByCustomerId_withCustomerId_shouldReturnCreditCardPage() {
         // Arrange
-        final Integer pageNumber = 1;
-        final Integer pageSize = 1;
-        final String sortBy = "asc";
+        final ParametersRequest parametersRequest = new ParametersRequest();
         final String customerId = "customerId";
         final List<CreditCardEntity> creditCardEntities = Instancio.createList(CreditCardEntity.class);
-        final Pageable page = new PageableFactory()
-                .withPageNumber(pageNumber)
-                .withPageSize(pageSize)
-                .withSortBy(sortBy)
-                .buildPageable();
+        final Pageable page = new PageableFactory().buildPageable(parametersRequest);
         final PageImpl<CreditCardEntity> expectedResponse = new PageImpl<>(
                 creditCardEntities, page, creditCardEntities.size());
         when(creditCardRepository.findCreditCardByCustomerId(page, customerId)).thenReturn(expectedResponse);
 
         // Act
-        final PageResponse<CreditCard> pageResponse =
-                creditCardGateway.findCreditCardByCustomerId(pageNumber, pageSize, sortBy, customerId);
+        final Page<CreditCard> response =
+                creditCardGateway.findCreditCardByCustomerId(parametersRequest, customerId);
 
         // Assert
-        assertThat(pageResponse).isNotNull();
-        assertThat(pageResponse.getTotalElements()).isEqualTo(expectedResponse.getTotalElements());
-        assertThat(pageResponse.getTotalPages()).isEqualTo(expectedResponse.getTotalPages());
+        assertThat(response).isNotNull();
+        assertThat(response.getTotalElements()).isEqualTo(expectedResponse.getTotalElements());
+        assertThat(response.getTotalPages()).isEqualTo(expectedResponse.getTotalPages());
     }
 
     @Test

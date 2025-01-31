@@ -1,14 +1,13 @@
 package br.com.renanrramos.easyshopping.core.gateway;
 
 import br.com.renanrramos.easyshopping.core.domain.CreditCard;
-import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
+import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
+import org.springframework.data.domain.Page;
 
 public interface CreditCardGateway {
 
-    PageResponse<CreditCard> findCreditCardByCustomerId(final Integer pageNumber,
-                                                        final Integer pageSize,
-                                                        final String sortBy,
-                                                        final String customerId);
+    Page<CreditCard> findCreditCardByCustomerId(final ParametersRequest parametersRequest,
+                                                final String customerId);
 
     CreditCard saveCreditCard(final CreditCard creditCard);
 

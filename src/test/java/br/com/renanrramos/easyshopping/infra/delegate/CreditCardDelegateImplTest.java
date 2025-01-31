@@ -3,8 +3,8 @@ package br.com.renanrramos.easyshopping.infra.delegate;
 import br.com.renanrramos.easyshopping.core.domain.CreditCard;
 import br.com.renanrramos.easyshopping.core.usecase.CreditCardUseCase;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.CreditCardDTO;
-import br.com.renanrramos.easyshopping.infra.controller.entity.form.CreditCardForm;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
+import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.CreditCardMapper;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
@@ -31,9 +31,7 @@ class CreditCardDelegateImplTest {
     void findCreditCardByCustomerId_whenCustomerIdIsValid_shouldRunSuccessfully() {
         // Arrange
         final String customerId = "customerId";
-        final String sortBy = "asc";
-        final Integer pageSize = 1;
-        final Integer pageNumber = 1;
+        final ParametersRequest parametersRequest = new ParametersRequest();
         final List<CreditCard> creditCards = Instancio.ofList(CreditCard.class)
                 .size(3)
                 .withMaxDepth(2)
@@ -42,11 +40,11 @@ class CreditCardDelegateImplTest {
                 CreditCardMapper.INSTANCE.mapCreditCardListToCreditCardDTOList(creditCards);
         final PageResponse<CreditCardDTO> pageResponse =
                 new PageResponse<>(3L, 1, expectedCreditCardDTOList);
-        when(creditCardUseCase.findCreditCardByCustomerId(pageNumber, pageSize, sortBy, customerId))
+        when(creditCardUseCase.findCreditCardByCustomerId(parametersRequest, customerId))
                 .thenReturn(pageResponse);
         // Act
         final PageResponse<CreditCardDTO> creditCardPagedResponse =
-                creditCardDelegate.findCreditCardByCustomerId(pageNumber, pageSize, sortBy, customerId);
+                creditCardDelegate.findCreditCardByCustomerId(parametersRequest, customerId);
         // Assert
         assertThat(creditCardPagedResponse).isNotNull();
         assertThat(creditCardPagedResponse.getResponseItems())

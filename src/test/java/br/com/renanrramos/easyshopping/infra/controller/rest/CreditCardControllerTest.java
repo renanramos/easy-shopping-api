@@ -4,10 +4,10 @@ import br.com.renanrramos.easyshopping.core.domain.CreditCard;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.CreditCardDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.CreditCardForm;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
+import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 import br.com.renanrramos.easyshopping.infra.delegate.CreditCardDelegate;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.CreditCardMapper;
 import br.com.renanrramos.easyshopping.service.AuthenticationService;
-
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -68,9 +68,6 @@ class CreditCardControllerTest {
     @Test
     void getCreditCards() {
         // Arrange
-        final Integer pageNumber = 1;
-        final Integer pageSize = 1;
-        final String sortBy = "asc";
         final String customerId = "customerId";
         final List<CreditCard> creditCards = Instancio.ofList(CreditCard.class)
                 .size(3)
@@ -81,11 +78,13 @@ class CreditCardControllerTest {
                 new PageResponse<>(3L, 1, creditCardDTOS);
         when(authenticationService.getAuthentication()).thenReturn(authentication);
         when(authentication.getName()).thenReturn(customerId);
-        when(creditCardDelegate.findCreditCardByCustomerId(pageNumber, pageSize, sortBy, customerId))
+        when(creditCardDelegate.findCreditCardByCustomerId(new ParametersRequest(), customerId))
                 .thenReturn(expectedPageResponse);
         // Act
         final ResponseEntity<PageResponse<CreditCardDTO>> creditCardsResponse =
-                creditCardController.getCreditCards(pageNumber, pageSize, sortBy);
+                creditCardController.getCreditCards(ParametersRequest.DEFAULT_PAGE_NUMBER,
+                        ParametersRequest.DEFAULT_PAGE_SIZE,
+                        ParametersRequest.DEFAULT_SORT_BY);
         // Assert
         assertThat(creditCardsResponse).isNotNull();
         assertThat(creditCardsResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -95,7 +94,7 @@ class CreditCardControllerTest {
         assertThat(pageResponse.getTotalPages()).isEqualTo(expectedPageResponse.getTotalPages());
         assertThat(pageResponse.getTotalElements()).isEqualTo(expectedPageResponse.getTotalElements());
         assertThat(pageResponse.getResponseItems()).hasSameElementsAs(expectedPageResponse.getResponseItems());
-        verify(creditCardDelegate).findCreditCardByCustomerId(pageNumber, pageSize, sortBy, customerId);
+        verify(creditCardDelegate).findCreditCardByCustomerId(new ParametersRequest(), customerId);
     }
 
     @Test
