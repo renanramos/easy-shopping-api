@@ -3,31 +3,33 @@ package br.com.renanrramos.easyshopping.core.usecase;
 import br.com.renanrramos.easyshopping.core.domain.Customer;
 import br.com.renanrramos.easyshopping.core.gateway.CustomerGateway;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.CustomerDTO;
+import br.com.renanrramos.easyshopping.infra.controller.entity.form.CustomerForm;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
+import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.CustomerMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 
 @RequiredArgsConstructor
-public class CustomerUseCaseImpl implements CustomerUseCase{
+public class CustomerUseCaseImpl implements CustomerUseCase {
 
     private final CustomerGateway customerGateway;
 
     @Override
-    public CustomerDTO save(final Customer customer) {
+    public CustomerDTO save(final CustomerForm customerForm) {
+        final Customer customer = CustomerMapper.INSTANCE.mapCustomerFormToCustomer(customerForm);
         return CustomerMapper.INSTANCE.mapCustomerToCustomerDTO(customerGateway.save(customer));
     }
 
     @Override
-    public PageResponse<CustomerDTO> findAllPageable(final Integer pageNumber,
-                                                     final Integer pageSize,
-                                                     final String sortBy,
+    public PageResponse<CustomerDTO> findAllPageable(final ParametersRequest parametersRequest,
                                                      final String searchKey) {
 
-        final PageResponse<Customer> allCustomerPageable =
-                customerGateway.findAllPageable(pageNumber, pageSize, sortBy, searchKey);
+        final Page<Customer> allCustomerPageable =
+                customerGateway.findAllPageable(parametersRequest, searchKey);
 
-        return new PageResponse<>(allCustomerPageable.getTotalElements(), allCustomerPageable.getTotalPages(),
-                CustomerMapper.INSTANCE.mapCustomerListToCustomerDTOList(allCustomerPageable.getResponseItems()));
+        return PageResponse.buildPageResponse(allCustomerPageable,
+                CustomerMapper.INSTANCE.mapCustomerListToCustomerDTOList(allCustomerPageable.getContent()));
     }
 
     @Override
@@ -37,13 +39,19 @@ public class CustomerUseCaseImpl implements CustomerUseCase{
     }
 
     @Override
-    public CustomerDTO update(final Customer customer, final String customerId) {
-        final Customer customerUpdated = customerGateway.update(customer, customerId);
+    public CustomerDTO update(final CustomerForm customerForm, final String customerId) {
+        final Customer customerUpdated =
+                customerGateway.update(CustomerMapper.INSTANCE.mapCustomerFormToCustomer(customerForm), customerId);
         return CustomerMapper.INSTANCE.mapCustomerToCustomerDTO(customerUpdated);
     }
 
     @Override
     public void removeCustomer(final Long customerId) {
         customerGateway.removeCustomer(customerId);
+    }
+
+    @Override
+    public CustomerDTO findByTokenId(final String token) {
+        return CustomerMapper.INSTANCE.mapCustomerToCustomerDTO(customerGateway.findByToken(token));
     }
 }

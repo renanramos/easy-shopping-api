@@ -10,6 +10,7 @@ import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.CustomerDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.CustomerForm;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
+import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 import br.com.renanrramos.easyshopping.infra.delegate.CustomerDelegate;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -58,7 +59,8 @@ public class CustomerController {
             @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) final Integer pageNumber,
             @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) final Integer pageSize,
             @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) final String sortBy) {
-        return ResponseEntity.ok().body(customerDelegate.findAllPageable(pageNumber, pageSize, sortBy, searchKey));
+        return ResponseEntity.ok().body(customerDelegate.findAllPageable(
+                new ParametersRequest(pageNumber, pageSize, sortBy), searchKey));
     }
 
     @ResponseBody
@@ -66,12 +68,7 @@ public class CustomerController {
     @ApiOperation(value = "Get a customer by id")
     @RolesAllowed({"easy-shopping-admin", "easy-shopping-user"})
     public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable("id") String tokenId) {
-        // TODO: Implementar findByTokenId
-        final CustomerDTO customerDTO = customerDelegate.findById(null); //tokenId
-        if (customerDTO == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(customerDelegate.findByTokenId(tokenId));
     }
 
     @ResponseBody

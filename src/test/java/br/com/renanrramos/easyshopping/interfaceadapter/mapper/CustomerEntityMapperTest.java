@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.instancio.Select.field;
 
 class CustomerEntityMapperTest {
 
@@ -49,6 +50,19 @@ class CustomerEntityMapperTest {
         assertThat(customer.getEmail()).isEqualTo(customerForm.getEmail());
         assertThat(customer.getCpf()).isEqualTo(customerForm.getCpf());
         assertThat(customer.getName()).isNotNull().isEqualTo(originalName);
+    }
+
+    @Test
+    void mapCustomerToUpdateCustomerEntity_withValidCustomer_shouldMapFieldsToUpdateCustomerEntity() {
+        // Arrange
+        final CustomerEntity customerEntity = Instancio.of(CustomerEntity.class)
+                .set(field(CustomerEntity::isSync), false).create();
+        final Customer customer = Instancio.of(Customer.class).set(field(Customer::isSync), true).create();
+        //Act
+        CustomerMapper.INSTANCE.mapCustomerToUpdateCustomerEntity(customerEntity, customer);
+        //Assert
+        assertThat(customerEntity).isNotNull();
+        assertThat(customerEntity.isSync()).isEqualTo(customer.isSync());
     }
 
     private void assertCustomer(final Customer customer, final CustomerForm customerForm) {

@@ -3,13 +3,14 @@ package br.com.renanrramos.easyshopping.interfaceadapter.gateway;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.core.domain.Customer;
 import br.com.renanrramos.easyshopping.core.gateway.CustomerGateway;
-import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
+import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 import br.com.renanrramos.easyshopping.interfaceadapter.entity.CustomerEntity;
 import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.CustomerMapper;
 import br.com.renanrramos.easyshopping.interfaceadapter.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -29,20 +30,16 @@ public class CustomerGatewayImpl implements CustomerGateway {
     }
 
     @Override
-    public PageResponse<Customer> findAllPageable(final Integer pageNumber, final Integer pageSize,
-                                                  final String sortBy, final String searchKey) {
-        final Pageable page = new PageableFactory()
-                .withPageNumber(pageNumber)
-                .withPageSize(pageSize)
-                .withSortBy(sortBy)
-                .buildPageable();
+    public Page<Customer> findAllPageable(final ParametersRequest parametersRequest, final String searchKey) {
+        final Pageable page = new PageableFactory().buildPageable(parametersRequest);
 
         final Page<CustomerEntity> customerEntityPage = StringUtils.isEmpty(searchKey) ?
                 customerRepository.findAll(page) :
                 customerRepository.getCustomerByNameCPFOrEmail(page, searchKey);
 
-        return PageResponse.buildPageResponse(customerEntityPage,
-                CustomerMapper.INSTANCE.mapCustomerEntityListToCustomerList(customerEntityPage.getContent()));
+        return new PageImpl<>(CustomerMapper.INSTANCE.mapCustomerEntityListToCustomerList(customerEntityPage.getContent()),
+                customerEntityPage.getPageable(),
+                customerEntityPage.getTotalElements());
     }
 
     @Override
@@ -51,6 +48,12 @@ public class CustomerGatewayImpl implements CustomerGateway {
                 .orElse(null);
         final CustomerEntity customer = validateCustomer(customerById);
         return CustomerMapper.INSTANCE.mapCustomerEntityToCustomer(customer);
+    }
+
+    @Override
+    public Customer findByToken(final String token) {
+        return CustomerMapper.INSTANCE
+                .mapCustomerEntityToCustomer(customerRepository.findCustomerByTokenId(token));
     }
 
     @Override

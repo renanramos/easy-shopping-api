@@ -45,6 +45,7 @@ public interface CustomerMapper {
     void mapCustomerFormToUpdateCustomer(@MappingTarget Customer customer, final CustomerForm customerForm);
 
     @Named("mapCustomerToUpdateCustomerEntity")
+    @Mapping(target = "sync", defaultValue = "true")
     void mapCustomerToUpdateCustomerEntity(@MappingTarget CustomerEntity customerEntity, final Customer customer);
 
     @Named("mapCustomerToCustomerEntity")
