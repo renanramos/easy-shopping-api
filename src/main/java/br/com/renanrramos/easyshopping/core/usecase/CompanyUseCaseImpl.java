@@ -9,7 +9,7 @@ import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.CompanyMapper;
-import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
+import br.com.renanrramos.easyshopping.service.impl.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 
@@ -20,7 +20,7 @@ public class CompanyUseCaseImpl implements CompanyUseCase {
 
     private final CompanyGateway companyGateway;
 
-    private final AuthenticationServiceImpl authenticationService;
+    private final AuthenticationService authenticationService;
 
     @Override
     public CompanyDTO saveCompany(final CompanyForm companyForm) throws EasyShoppingException {

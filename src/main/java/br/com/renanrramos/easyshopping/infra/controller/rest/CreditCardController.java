@@ -13,7 +13,7 @@ import br.com.renanrramos.easyshopping.infra.controller.entity.form.CreditCardFo
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 import br.com.renanrramos.easyshopping.infra.delegate.CreditCardDelegate;
-import br.com.renanrramos.easyshopping.service.AuthenticationService;
+import br.com.renanrramos.easyshopping.service.BaseAuthenticationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +36,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class CreditCardController {
 
-    private final AuthenticationService authenticationService;
+    private final BaseAuthenticationService baseAuthenticationService;
 
     private final CreditCardDelegate creditCardDelegate;
 
@@ -61,7 +61,7 @@ public class CreditCardController {
             @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
         final PageResponse<CreditCardDTO> creditCardResponse =
                 creditCardDelegate.findCreditCardByCustomerId(new ParametersRequest(pageNumber, pageSize, sortBy),
-                        authenticationService.getAuthentication().getName());
+                        baseAuthenticationService.getAuthentication().getName());
         return ResponseEntity.status(HttpStatus.OK).body(creditCardResponse);
     }
 

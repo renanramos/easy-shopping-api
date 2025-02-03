@@ -9,7 +9,7 @@ import br.com.renanrramos.easyshopping.infra.controller.entity.form.CompanyForm;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.CompanyMapper;
-import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
+import br.com.renanrramos.easyshopping.service.impl.AuthenticationService;
 import lombok.SneakyThrows;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
@@ -38,7 +38,7 @@ class CompanyUseCaseImplTest {
     private CompanyGateway companyGateway;
 
     @Mock
-    private AuthenticationServiceImpl authenticationService;
+    private AuthenticationService authenticationService;
 
     @InjectMocks
     private CompanyUseCaseImpl companyUseCase;

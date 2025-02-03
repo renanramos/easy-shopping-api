@@ -33,7 +33,6 @@ import java.util.Optional;
 
 /**
  * @author renan.ramos
- *
  */
 @RestController
 @RequestMapping(path = "api/purchases", produces = "application/json")
@@ -60,7 +59,7 @@ public class PurchaseController {
 //	private CreditCardService creditCardService;
 
     @Autowired
-    private AuthenticationServiceImpl authenticationServiceImpl;
+    private AuthenticationService authenticationServiceImpl;
 
     private URI uri;
 

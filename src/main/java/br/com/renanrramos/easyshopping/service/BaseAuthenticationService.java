@@ -1,4 +1,5 @@
-/**------------------------------------------------------------
+/**
+ * ------------------------------------------------------------
  * Project: easy-shopping
  * Creator: renan.ramos - 23/11/2020
  * ------------------------------------------------------------
@@ -11,9 +12,9 @@ import org.springframework.security.core.Authentication;
  * @author renan.ramos
  *
  */
-public interface AuthenticationService {
+public interface BaseAuthenticationService {
 
-	Authentication getAuthentication();
+    Authentication getAuthentication();
 
-	String getName();
+    String getName();
 }

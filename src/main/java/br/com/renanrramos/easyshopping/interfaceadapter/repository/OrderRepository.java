@@ -19,4 +19,6 @@ public interface OrderRepository extends PagingAndSortingRepository<OrderEntity,
 
     @Query(EasyShoppingSqlConstants.GET_CUSTOMER_ORDERS)
     Page<OrderEntity> getCustomerOrders(String customerId);
+
+    Page<OrderEntity> findOrderByOrderNumber(final String orderNumber);
 }

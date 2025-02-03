@@ -7,43 +7,34 @@
  */
 package br.com.renanrramos.easyshopping.infra.controller.rest;
 
-import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.OrderDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.OrderForm;
-import br.com.renanrramos.easyshopping.interfaceadapter.entity.OrderEntity;
-import br.com.renanrramos.easyshopping.interfaceadapter.mapper.OrderMapper;
-import br.com.renanrramos.easyshopping.service.impl.AuthenticationServiceImpl;
-import br.com.renanrramos.easyshopping.service.impl.OrderService;
+import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
+import br.com.renanrramos.easyshopping.infra.delegate.OrderDelegate;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.annotation.security.RolesAllowed;
-import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * @author renan.ramos
- *
  */
 @RestController
 @RequestMapping(path = "api/orders", produces = "application/json")
 @Api(tags = "Order")
 @CrossOrigin(origins = "*")
+@RequiredArgsConstructor
 public class OrderController {
 
-    @Autowired
-    private OrderService orderService;
-
-    @Autowired
-    private AuthenticationServiceImpl authenticationServiceImpl;
+    private final OrderDelegate orderDelegate;
 
     private URI uri;
 
@@ -52,13 +43,11 @@ public class OrderController {
     @Transactional
     @ApiOperation(value = "Save a new order")
     @RolesAllowed("easy-shopping-user")
-    public ResponseEntity<OrderDTO> saveOrder(@Valid @RequestBody OrderForm orderForm,
-                                              UriComponentsBuilder uriBuilder) {
-        OrderEntity order = OrderMapper.INSTANCE.mapOrderFormToOrder(orderForm);
-        order.setCustomerId(authenticationServiceImpl.getName());
-        order = orderService.save(order);
-        uri = uriBuilder.path("/orders/{id}").buildAndExpand(order.getId()).encode().toUri();
-        return ResponseEntity.created(uri).body(OrderMapper.INSTANCE.mapOrderToOrderDTO(order));
+    public ResponseEntity<OrderDTO> saveOrder(@Valid @RequestBody final OrderForm orderForm,
+                                              final UriComponentsBuilder uriBuilder) {
+        final OrderDTO orderDTO = orderDelegate.save(orderForm);
+        uri = uriBuilder.path("/orders/{id}").buildAndExpand(orderDTO.getId()).encode().toUri();
+        return ResponseEntity.created(uri).body(orderDTO);
     }
 
     @ResponseBody
@@ -68,28 +57,18 @@ public class OrderController {
     @RolesAllowed({"CUSTOMER", "easy-shopping-user", "app-customer"})
     public ResponseEntity<OrderDTO> updateOrder(@Valid @RequestBody OrderForm orderForm,
                                                 @PathVariable("id") Long orderId, UriComponentsBuilder uriBuilder) {
-
-        Optional<OrderEntity> orderOptional = orderService.findById(orderId);
-
-        if (!orderOptional.isPresent()) {
-            throw new EntityNotFoundException(ExceptionMessagesConstants.ORDER_NOT_FOUND);
-        }
-
-        OrderEntity order = orderOptional.get();
-        order.setFinished(true);
-        order.setId(orderId);
-        order = orderService.update(order);
-        return ResponseEntity.accepted().body(OrderMapper.INSTANCE.mapOrderToOrderDTO(order));
+        final OrderDTO orderDTO = orderDelegate.update(orderForm, orderId);
+        uri = uriBuilder.path("/orders/{id}").buildAndExpand(orderDTO.getId()).encode().toUri();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .location(uri).body(orderDTO);
     }
 
     @ResponseBody
     @GetMapping
     @ApiOperation(value = "Get orders")
     @RolesAllowed({"easy-shopping-user"})
-    public ResponseEntity<List<OrderDTO>> getOrders() {
-
-        List<OrderEntity> orders = orderService.findCustomerOrders(authenticationServiceImpl.getName());
-
-        return ResponseEntity.ok(OrderMapper.INSTANCE.mapOrderListToOrderDTOList(orders));
+    public ResponseEntity<PageResponse<OrderDTO>> getOrders() {
+        return ResponseEntity.ok(orderDelegate.findCustomerOrders());
     }
 }

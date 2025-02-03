@@ -7,7 +7,7 @@ import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 import br.com.renanrramos.easyshopping.infra.delegate.CreditCardDelegate;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.CreditCardMapper;
-import br.com.renanrramos.easyshopping.service.AuthenticationService;
+import br.com.renanrramos.easyshopping.service.BaseAuthenticationService;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,7 +38,7 @@ class CreditCardControllerTest {
     @Mock
     private Authentication authentication;
     @Mock
-    private AuthenticationService authenticationService;
+    private BaseAuthenticationService baseAuthenticationService;
     @Mock
     private UriComponentsBuilder uriComponentsBuilder;
     @Mock
@@ -76,7 +76,7 @@ class CreditCardControllerTest {
                 CreditCardMapper.INSTANCE.mapCreditCardListToCreditCardDTOList(creditCards);
         final PageResponse<CreditCardDTO> expectedPageResponse =
                 new PageResponse<>(3L, 1, creditCardDTOS);
-        when(authenticationService.getAuthentication()).thenReturn(authentication);
+        when(baseAuthenticationService.getAuthentication()).thenReturn(authentication);
         when(authentication.getName()).thenReturn(customerId);
         when(creditCardDelegate.findCreditCardByCustomerId(new ParametersRequest(), customerId))
                 .thenReturn(expectedPageResponse);

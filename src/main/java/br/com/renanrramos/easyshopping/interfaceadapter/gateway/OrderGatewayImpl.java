@@ -3,14 +3,16 @@ package br.com.renanrramos.easyshopping.interfaceadapter.gateway;
 import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.core.domain.Order;
 import br.com.renanrramos.easyshopping.core.gateway.OrderGateway;
-import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
+import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 import br.com.renanrramos.easyshopping.interfaceadapter.entity.OrderEntity;
 import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.OrderMapper;
 import br.com.renanrramos.easyshopping.interfaceadapter.repository.OrderRepository;
+import br.com.renanrramos.easyshopping.service.BaseAuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
@@ -20,25 +22,22 @@ public class OrderGatewayImpl implements OrderGateway {
 
     private final OrderRepository orderRepository;
 
+    private final BaseAuthenticationService baseAuthenticationService;
+
     @Override
     public Order save(final Order order) {
         final OrderEntity orderEntity = OrderMapper.INSTANCE.mapOrderToOrderEntity(order);
+        orderEntity.setCustomerId(baseAuthenticationService.getName());
         return OrderMapper.INSTANCE.mapOrderEntityToOrder(orderRepository.save(orderEntity));
     }
 
     @Override
-    public PageResponse<Order> findAllPageable(final Integer pageNumber,
-                                               final Integer pageSize,
-                                               final String sortBy,
-                                               final String searchKey) {
-        final Pageable pageable = new PageableFactory()
-                .withPageNumber(pageNumber)
-                .withPageSize(pageSize)
-                .withSortBy(sortBy)
-                .buildPageable();
-        final Page<OrderEntity> orderEntities = orderRepository.findAll(pageable);
-        return PageResponse.buildPageResponse(orderEntities,
-                OrderMapper.INSTANCE.mapOrderEntityListToOrderList(orderEntities.getContent()));
+    public Page<Order> findAllPageable(final ParametersRequest parametersRequest,
+                                       final String searchKey) {
+        final Page<OrderEntity> orderEntities = StringUtils.isEmpty(searchKey) ?
+                orderRepository.findAll(new PageableFactory().buildPageable(parametersRequest)) :
+                orderRepository.findOrderByOrderNumber(searchKey);
+        return new PageImpl<>(OrderMapper.INSTANCE.mapOrderEntityListToOrderList(orderEntities.getContent()));
     }
 
     @Override
@@ -51,6 +50,7 @@ public class OrderGatewayImpl implements OrderGateway {
     public Order update(final Order order, final Long orderId) {
         OrderEntity orderEntity = getOrderEntityByIdOrThrow(orderId);
         OrderMapper.INSTANCE.mapOrderToUpdateOrder(orderEntity, order);
+        orderEntity.setFinished(true);
         return OrderMapper.INSTANCE.mapOrderEntityToOrder(orderRepository.save(orderEntity));
     }
 
@@ -61,11 +61,9 @@ public class OrderGatewayImpl implements OrderGateway {
     }
 
     @Override
-    public PageResponse<Order> findCustomerOrders(final String orderCustomerId) {
+    public Page<Order> findCustomerOrders(final String orderCustomerId) {
         final Page<OrderEntity> pageOrders = orderRepository.getCustomerOrders(orderCustomerId);
-
-        return PageResponse.buildPageResponse(pageOrders,
-                OrderMapper.INSTANCE.mapOrderEntityListToOrderList(pageOrders.getContent()));
+        return new PageImpl<>(OrderMapper.INSTANCE.mapOrderEntityListToOrderList(pageOrders.getContent()));
     }
 
     private OrderEntity getOrderEntityByIdOrThrow(final Long orderId) {

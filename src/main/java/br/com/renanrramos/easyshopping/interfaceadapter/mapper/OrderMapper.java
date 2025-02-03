@@ -17,17 +17,17 @@ public interface OrderMapper {
     OrderMapper INSTANCE = Mappers.getMapper(OrderMapper.class);
 
     @Named("mapOrderToOrderDTO")
-    OrderDTO mapOrderToOrderDTO(final OrderEntity order);
+    OrderDTO mapOrderToOrderDTO(final Order order);
 
     @Named("mapOrderListToOrderDTOList")
-    default List<OrderDTO> mapOrderListToOrderDTOList(final List<OrderEntity> orders) {
+    default List<OrderDTO> mapOrderListToOrderDTOList(final List<Order> orders) {
         return orders.stream()
                 .map(OrderMapper.INSTANCE::mapOrderToOrderDTO)
                 .collect(Collectors.toList());
     }
 
     @Named("mapOrderFormToOrder")
-    OrderEntity mapOrderFormToOrder(final OrderForm orderForm);
+    Order mapOrderFormToOrder(final OrderForm orderForm);
 
     @Named("mapOrderFormToUpdateOrder")
     void mapOrderFormToUpdateOrder(@MappingTarget OrderEntity order, final OrderForm orderForm);
