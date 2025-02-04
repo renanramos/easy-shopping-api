@@ -1,7 +1,7 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
-import br.com.renanrramos.easyshopping.interfaceadapter.entity.OrderItem;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.PurchaseStatisticDTO;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.OrderItemEntity;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 
@@ -14,45 +14,45 @@ class PurchaseStatisticMapperTest {
 
     @Test
     void mapOrderItemToPurchaseStatisticDTO_withOrderItem_shouldMapToPurchaseStatisticDTO() {
-        final OrderItem orderItem = Instancio.of(OrderItem.class).create();
+        final OrderItemEntity orderItemEntity = Instancio.of(OrderItemEntity.class).create();
 
         final PurchaseStatisticDTO purchaseStatisticDTO = PurchaseStatisticMapper.INSTANCE
-                .mapOrderItemToPurchaseStatisticDTO(orderItem);
+                .mapOrderItemToPurchaseStatisticDTO(orderItemEntity);
 
-        assertPurchaseStatisticDTO(purchaseStatisticDTO, orderItem);
+        assertPurchaseStatisticDTO(purchaseStatisticDTO, orderItemEntity);
 
     }
 
     @Test
     void mapOrderItemListToPurchaseStatisticDTOList_withOrderItemList_shouldMapToPurchaseStatisticDTOList() {
-        final List<OrderItem> orderItemList = Instancio.ofList(OrderItem.class).create();
+        final List<OrderItemEntity> orderItemEntityList = Instancio.ofList(OrderItemEntity.class).create();
 
         final List<PurchaseStatisticDTO> purchaseStatisticDTOList = PurchaseStatisticMapper.INSTANCE
-                .mapOrderItemListToPurchaseStatisticDTOList(orderItemList);
+                .mapOrderItemListToPurchaseStatisticDTOList(orderItemEntityList);
 
-        assertPurchaseStatisticDTOList(purchaseStatisticDTOList, orderItemList);
+        assertPurchaseStatisticDTOList(purchaseStatisticDTOList, orderItemEntityList);
 
     }
 
     private void assertPurchaseStatisticDTOList(final List<PurchaseStatisticDTO> purchaseStatisticDTOList,
-                                                final List<OrderItem> orderItemList) {
-        assertThat(purchaseStatisticDTOList).hasSize(orderItemList.size());
+                                                final List<OrderItemEntity> orderItemEntityList) {
+        assertThat(purchaseStatisticDTOList).hasSize(orderItemEntityList.size());
         int index = 0;
         for (final PurchaseStatisticDTO purchaseStatisticDTO : purchaseStatisticDTOList) {
-            assertPurchaseStatisticDTO(purchaseStatisticDTO, orderItemList.get(index));
+            assertPurchaseStatisticDTO(purchaseStatisticDTO, orderItemEntityList.get(index));
             index++;
         }
     }
 
     private void assertPurchaseStatisticDTO(final PurchaseStatisticDTO purchaseStatisticDTO,
-                                            final OrderItem orderItem) {
+                                            final OrderItemEntity orderItemEntity) {
 
         assertThat(purchaseStatisticDTO).isNotNull();
         assertThat(purchaseStatisticDTO.getPurchase()).isNotNull();
         assertThat(purchaseStatisticDTO.getOrder()).isNotNull();
-        assertThat(purchaseStatisticDTO.getOrder().getId()).isEqualTo(orderItem.getOrder().getId());
+        assertThat(purchaseStatisticDTO.getOrder().getId()).isEqualTo(orderItemEntity.getOrder().getId());
         assertThat(purchaseStatisticDTO.getOrder().getOrderNumber())
-                .isEqualTo(orderItem.getOrder().getOrderNumber());
+                .isEqualTo(orderItemEntity.getOrder().getOrderNumber());
     }
 
 }

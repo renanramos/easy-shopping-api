@@ -7,8 +7,8 @@
  */
 package br.com.renanrramos.easyshopping.infra.controller.rest;
 
-import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
-import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
+import br.com.renanrramos.easyshopping.core.domain.constants.ExceptionConstantMessages;
+import br.com.renanrramos.easyshopping.core.domain.constants.PaginationConstantValues;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.StoreDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.StoreForm;
 import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
@@ -35,7 +35,6 @@ import java.util.Optional;
 
 /**
  * @author renan.ramos
- *
  */
 @RestController
 @RequestMapping(path = "api/stores", produces = "application/json")
@@ -60,7 +59,7 @@ public class StoreController {
             throws EasyShoppingException {
 
         if (storeService.isRegisteredNumberInvalid(storeForm.getRegisteredNumber())) {
-            throw new EasyShoppingException(ExceptionMessagesConstants.CNPJ_ALREADY_EXIST);
+            throw new EasyShoppingException(ExceptionConstantMessages.CNPJ_ALREADY_EXIST);
         }
 
         Store store = StoreMapper.INSTANCE.mapStoreFormToStore(storeForm);
@@ -75,9 +74,9 @@ public class StoreController {
     @ApiOperation(value = "Get all stores of the logged in company")
     public ResponseEntity<List<StoreDTO>> getCompanyOwnStores(
             @RequestParam(required = false) String name,
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber,
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
+            @RequestParam(defaultValue = PaginationConstantValues.DEFAULT_PAGE_NUMBER) Integer pageNumber,
+            @RequestParam(defaultValue = PaginationConstantValues.DEFAULT_PAGE_SIZE) Integer pageSize,
+            @RequestParam(defaultValue = PaginationConstantValues.DEFAULT_SORT_VALUE) String sortBy) {
 
         Pageable page = new PageableFactory()
                 .withPageNumber(pageNumber)
@@ -94,9 +93,9 @@ public class StoreController {
     @ApiOperation(value = "Get all stores")
     public ResponseEntity<List<StoreDTO>> getStores(
             @RequestParam(required = false) String name,
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber,
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
+            @RequestParam(defaultValue = PaginationConstantValues.DEFAULT_PAGE_NUMBER) Integer pageNumber,
+            @RequestParam(defaultValue = PaginationConstantValues.DEFAULT_PAGE_SIZE) Integer pageSize,
+            @RequestParam(defaultValue = PaginationConstantValues.DEFAULT_SORT_VALUE) String sortBy) {
         Pageable page = new PageableFactory()
                 .withPageNumber(pageNumber)
                 .withPageSize(pageSize)
@@ -132,7 +131,7 @@ public class StoreController {
         Optional<Store> currentStore = storeService.findById(storeId);
 
         if (!currentStore.isPresent()) {
-            throw new EntityNotFoundException(ExceptionMessagesConstants.STORE_NOT_FOUND);
+            throw new EntityNotFoundException(ExceptionConstantMessages.STORE_NOT_FOUND);
         }
 
         Store store = currentStore.get();
@@ -153,7 +152,7 @@ public class StoreController {
     public ResponseEntity<StoreDTO> removeStore(@PathVariable("id") Long storeId) {
         Optional<Store> storeOptional = storeService.findById(storeId);
         if (!storeOptional.isPresent()) {
-            throw new EntityNotFoundException(ExceptionMessagesConstants.STORE_NOT_FOUND);
+            throw new EntityNotFoundException(ExceptionConstantMessages.STORE_NOT_FOUND);
         }
         storeService.remove(storeId);
         return ResponseEntity.ok().build();

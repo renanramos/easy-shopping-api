@@ -1,7 +1,7 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.gateway;
 
-import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.core.domain.CreditCard;
+import br.com.renanrramos.easyshopping.core.domain.constants.ExceptionConstantMessages;
 import br.com.renanrramos.easyshopping.core.gateway.CreditCardGateway;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 import br.com.renanrramos.easyshopping.interfaceadapter.entity.CreditCardEntity;
@@ -64,7 +64,7 @@ public class CreditCardGatewayImpl implements CreditCardGateway {
     private CreditCardEntity getCreditCardByIdOrThrow(Long creditCardId) {
         final Optional<CreditCardEntity> creditCardEntity = creditCardRepository.findById(creditCardId);
         if (creditCardEntity.isEmpty())
-            throw new EntityNotFoundException(ExceptionMessagesConstants.CREDIT_CARD_NOT_FOUND);
+            throw new EntityNotFoundException(ExceptionConstantMessages.CREDIT_CARD_NOT_FOUND);
         return creditCardEntity.get();
     }
 }

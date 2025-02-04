@@ -1,6 +1,6 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
-import br.com.renanrramos.easyshopping.interfaceadapter.entity.OrderItem;
+import br.com.renanrramos.easyshopping.core.domain.OrderItem;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.OrderItemDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.OrderItemForm;
 import org.instancio.Instancio;
@@ -10,20 +10,22 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class OrderItemMapperTest {
+class OrderItemEntityMapperTest {
 
     @Test
     void mapOrderItemToOrderItemDTO_withOrderItem_shouldMapOrderItemDTO() {
         final OrderItem orderItem = Instancio.create(OrderItem.class);
 
-        final OrderItemDTO orderItemDTO= OrderItemMapper.INSTANCE.mapOrderItemToOrderItemDTO(orderItem);
+        final OrderItemDTO orderItemDTO = OrderItemMapper.INSTANCE.mapOrderItemToOrderItemDTO(orderItem);
 
         assertOrderItemDTO(orderItemDTO, orderItem);
     }
 
     @Test
     void mapOrderItemListToOrderItemDTOList_withOrderItemList_shouldMapOrderItemDTOList() {
-        final List<OrderItem> orderItemList = Instancio.ofList(OrderItem.class).size(10).create();
+        final List<OrderItem> orderItemList = Instancio.ofList(OrderItem.class)
+                .size(10)
+                .create();
 
         final List<OrderItemDTO> orderItemDTOList = OrderItemMapper.INSTANCE
                 .mapOrderItemListToOrderItemDTOList(orderItemList);
@@ -55,7 +57,7 @@ class OrderItemMapperTest {
         assertThat(orderItemDTOList).hasSize(orderItemList.size());
         int index = 0;
 
-        for(final OrderItemDTO orderItemDTO : orderItemDTOList) {
+        for (final OrderItemDTO orderItemDTO : orderItemDTOList) {
             assertOrderItemDTO(orderItemDTO, orderItemList.get(index));
             index++;
         }

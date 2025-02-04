@@ -7,17 +7,25 @@
  */
 package br.com.renanrramos.easyshopping.infra.controller.rest;
 
-import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.core.domain.Address;
+import br.com.renanrramos.easyshopping.core.domain.constants.ExceptionConstantMessages;
+import br.com.renanrramos.easyshopping.core.usecase.OrderItemUseCase;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.PurchaseDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.PurchaseForm;
 import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
-import br.com.renanrramos.easyshopping.interfaceadapter.entity.*;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.CreditCardEntity;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.OrderEntity;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.Purchase;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.StockItem;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.PurchaseMapper;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.PurchaseStatisticMapper;
-import br.com.renanrramos.easyshopping.service.impl.*;
+import br.com.renanrramos.easyshopping.service.impl.AuthenticationService;
+import br.com.renanrramos.easyshopping.service.impl.OrderService;
+import br.com.renanrramos.easyshopping.service.impl.PurchaseService;
+import br.com.renanrramos.easyshopping.service.impl.StockItemService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +36,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Collections;
 import java.util.Optional;
 
 /**
@@ -38,6 +46,7 @@ import java.util.Optional;
 @RequestMapping(path = "api/purchases", produces = "application/json")
 @Api(tags = "Purchases")
 @CrossOrigin(origins = "*")
+@RequiredArgsConstructor
 public class PurchaseController {
 
     @Autowired
@@ -46,8 +55,7 @@ public class PurchaseController {
     @Autowired
     private OrderService orderService;
 
-    @Autowired
-    private OrderItemService orderItemService;
+    private final OrderItemUseCase orderItemUseCase;
 
     @Autowired
     private StockItemService stockItemService;
@@ -72,17 +80,17 @@ public class PurchaseController {
                                                     UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 
         if (purchaseForm.getOrderId() == null) {
-            throw new EasyShoppingException(ExceptionMessagesConstants.ORDER_ID_NOT_FOUND_ON_REQUEST);
+            throw new EasyShoppingException(ExceptionConstantMessages.ORDER_ID_NOT_FOUND_ON_REQUEST);
         }
 
         Optional<OrderEntity> orderOptional = orderService.findById(purchaseForm.getOrderId());
 
         if (!orderOptional.isPresent()) {
-            throw new EasyShoppingException(ExceptionMessagesConstants.ORDER_NOT_FOUND);
+            throw new EasyShoppingException(ExceptionConstantMessages.ORDER_NOT_FOUND);
         }
 
         if (purchaseForm.getAddressId() == null) {
-            throw new EasyShoppingException(ExceptionMessagesConstants.ADDRESS_ID_NOT_FOUND_ON_REQUEST);
+            throw new EasyShoppingException(ExceptionConstantMessages.ADDRESS_ID_NOT_FOUND_ON_REQUEST);
         }
 
         Optional<Address> addressOptional = Optional.empty();//addressService.findById(purchaseForm.getAddressId());
@@ -92,7 +100,7 @@ public class PurchaseController {
 //		}
 
         if (purchaseForm.getCreditCardId() == null) {
-            throw new EasyShoppingException(ExceptionMessagesConstants.CREDIT_CARD_ID_NOT_FOUND_ON_REQUEST);
+            throw new EasyShoppingException(ExceptionConstantMessages.CREDIT_CARD_ID_NOT_FOUND_ON_REQUEST);
         }
 
         Optional<CreditCardEntity> creditCardOptional = Optional.empty();//creditCardService.findById(purchaseForm.getCreditCardId());
@@ -135,7 +143,8 @@ public class PurchaseController {
     @ApiOperation(value = "Get purchase statistics")
     @RolesAllowed({"easy-shopping-admin", "easy-shopping-user"})
     public ResponseEntity<?> orderItemStatistic() {
-        List<OrderItem> list = orderItemService.orderItemStatistic();
-        return ResponseEntity.ok(PurchaseStatisticMapper.INSTANCE.mapOrderItemListToPurchaseStatisticDTOList(list));
+        // TODO: verify
+        return ResponseEntity.ok(PurchaseStatisticMapper.INSTANCE
+                .mapOrderItemListToPurchaseStatisticDTOList(Collections.emptyList()));
     }
 }

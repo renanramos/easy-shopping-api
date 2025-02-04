@@ -18,4 +18,6 @@ public interface OrderGateway {
     void remove(final Long orderId);
 
     Page<Order> findCustomerOrders(final String orderCustomerId);
+
+    void validateOrderId(final Long orderId);
 }

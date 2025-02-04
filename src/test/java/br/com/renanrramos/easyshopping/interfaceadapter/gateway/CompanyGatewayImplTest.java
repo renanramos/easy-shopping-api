@@ -1,7 +1,7 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.gateway;
 
-import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.core.domain.Company;
+import br.com.renanrramos.easyshopping.core.domain.constants.ExceptionConstantMessages;
 import br.com.renanrramos.easyshopping.core.domain.enums.Profile;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 import br.com.renanrramos.easyshopping.interfaceadapter.entity.CompanyEntity;
@@ -124,13 +124,13 @@ class CompanyGatewayImplTest {
         // Arrange
         final String invalidTokenId = "invalidTokenId";
         when(companyRepository.findCompanyByTokenId(invalidTokenId))
-                .thenThrow(new EntityNotFoundException(ExceptionMessagesConstants.COMPANY_NOT_FOUND));
+                .thenThrow(new EntityNotFoundException(ExceptionConstantMessages.COMPANY_NOT_FOUND));
         // Act
         final EntityNotFoundException exception =
                 assertThrows(EntityNotFoundException.class, () -> companyGateway.findCompanyByTokenId(invalidTokenId));
         // Assert
         assertThat(exception).isNotNull();
-        assertThat(exception.getMessage()).isNotNull().isEqualTo(ExceptionMessagesConstants.COMPANY_NOT_FOUND);
+        assertThat(exception.getMessage()).isNotNull().isEqualTo(ExceptionConstantMessages.COMPANY_NOT_FOUND);
     }
 
     @Test
@@ -162,13 +162,13 @@ class CompanyGatewayImplTest {
                 .set(field(Company::getProfile), Profile.COMPANY)
                 .create();
         when(companyRepository.findById(companyId))
-                .thenThrow(new EntityNotFoundException(ExceptionMessagesConstants.COMPANY_NOT_FOUND));
+                .thenThrow(new EntityNotFoundException(ExceptionConstantMessages.COMPANY_NOT_FOUND));
         // Act
         final EntityNotFoundException exception =
                 assertThrows(EntityNotFoundException.class, () -> companyGateway.updateCompany(company, companyId));
         // Assert
         assertThat(exception).isNotNull();
-        assertThat(exception.getMessage()).isNotNull().isEqualTo(ExceptionMessagesConstants.COMPANY_NOT_FOUND);
+        assertThat(exception.getMessage()).isNotNull().isEqualTo(ExceptionConstantMessages.COMPANY_NOT_FOUND);
         verify(companyRepository, never()).save(any());
     }
 
@@ -197,13 +197,13 @@ class CompanyGatewayImplTest {
                 .set(field(Company::getProfile), Profile.COMPANY)
                 .create();
         when(companyRepository.findById(companyId))
-                .thenThrow(new EntityNotFoundException(ExceptionMessagesConstants.COMPANY_NOT_FOUND));
+                .thenThrow(new EntityNotFoundException(ExceptionConstantMessages.COMPANY_NOT_FOUND));
         // Act
         final EntityNotFoundException exception =
                 assertThrows(EntityNotFoundException.class, () -> companyGateway.removeCompany(companyId));
         // Assert
         assertThat(exception).isNotNull();
-        assertThat(exception.getMessage()).isNotNull().isEqualTo(ExceptionMessagesConstants.COMPANY_NOT_FOUND);
+        assertThat(exception.getMessage()).isNotNull().isEqualTo(ExceptionConstantMessages.COMPANY_NOT_FOUND);
         verify(companyRepository, never()).deleteById(companyId);
     }
 }

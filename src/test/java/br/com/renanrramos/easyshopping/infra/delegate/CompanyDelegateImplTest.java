@@ -1,7 +1,7 @@
 package br.com.renanrramos.easyshopping.infra.delegate;
 
-import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.core.domain.Company;
+import br.com.renanrramos.easyshopping.core.domain.constants.ExceptionConstantMessages;
 import br.com.renanrramos.easyshopping.core.domain.enums.Profile;
 import br.com.renanrramos.easyshopping.core.usecase.CompanyUseCase;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.CompanyDTO;
@@ -131,13 +131,13 @@ class CompanyDelegateImplTest {
         // Arrange
         final String invalidTokenId = "invalidTokenId";
         when(companyUseCase.findCompanyByTokenId(invalidTokenId))
-                .thenThrow(new EntityNotFoundException(ExceptionMessagesConstants.COMPANY_NOT_FOUND));
+                .thenThrow(new EntityNotFoundException(ExceptionConstantMessages.COMPANY_NOT_FOUND));
         // Act
         final EntityNotFoundException exception =
                 assertThrows(EntityNotFoundException.class, () -> companyDelegate.findCompanyByTokenId(invalidTokenId));
         // Assert
         assertThat(exception).isNotNull();
-        assertThat(exception.getMessage()).isNotNull().isEqualTo(ExceptionMessagesConstants.COMPANY_NOT_FOUND);
+        assertThat(exception.getMessage()).isNotNull().isEqualTo(ExceptionConstantMessages.COMPANY_NOT_FOUND);
     }
 
     @Test
@@ -168,13 +168,13 @@ class CompanyDelegateImplTest {
         final Company company = CompanyMapper.INSTANCE.mapCompanyFormToCompany(companyForm);
         company.setId(companyId);
         when(companyUseCase.updateCompany(companyForm, companyId))
-                .thenThrow(new EntityNotFoundException(ExceptionMessagesConstants.COMPANY_NOT_FOUND));
+                .thenThrow(new EntityNotFoundException(ExceptionConstantMessages.COMPANY_NOT_FOUND));
         // Act
         final EntityNotFoundException exception =
                 assertThrows(EntityNotFoundException.class, () -> companyDelegate.updateCompany(companyForm, companyId));
         // Assert
         assertThat(exception).isNotNull();
-        assertThat(exception.getMessage()).isNotNull().isEqualTo(ExceptionMessagesConstants.COMPANY_NOT_FOUND);
+        assertThat(exception.getMessage()).isNotNull().isEqualTo(ExceptionConstantMessages.COMPANY_NOT_FOUND);
     }
 
     @Test

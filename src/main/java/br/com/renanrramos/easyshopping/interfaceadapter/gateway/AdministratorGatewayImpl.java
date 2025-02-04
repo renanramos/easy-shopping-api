@@ -1,7 +1,7 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.gateway;
 
-import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.core.domain.Administrator;
+import br.com.renanrramos.easyshopping.core.domain.constants.ExceptionConstantMessages;
 import br.com.renanrramos.easyshopping.core.gateway.AdministratorGateway;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 import br.com.renanrramos.easyshopping.interfaceadapter.entity.AdministratorEntity;
@@ -73,6 +73,6 @@ public class AdministratorGatewayImpl implements AdministratorGateway {
 
     private AdministratorEntity getAdministratorOrThrow(final Long administratorId) {
         return administratorRepository.findById(administratorId)
-                .orElseThrow(() -> new EntityNotFoundException(ExceptionMessagesConstants.ADMINISTRATOR_NOT_FOUND));
+                .orElseThrow(() -> new EntityNotFoundException(ExceptionConstantMessages.ADMINISTRATOR_NOT_FOUND));
     }
 }

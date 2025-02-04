@@ -6,7 +6,7 @@
  */
 package br.com.renanrramos.easyshopping.infra.controller.rest;
 
-import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
+import br.com.renanrramos.easyshopping.core.domain.constants.PaginationConstantValues;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.CustomerDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.CustomerForm;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
@@ -56,9 +56,9 @@ public class CustomerController {
     @RolesAllowed({"easy-shopping-admin", "easy-shopping-user"})
     public ResponseEntity<PageResponse<CustomerDTO>> getCustomers(
             @RequestParam(required = false) final String searchKey,
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) final Integer pageNumber,
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) final Integer pageSize,
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) final String sortBy) {
+            @RequestParam(defaultValue = PaginationConstantValues.DEFAULT_PAGE_NUMBER) final Integer pageNumber,
+            @RequestParam(defaultValue = PaginationConstantValues.DEFAULT_PAGE_SIZE) final Integer pageSize,
+            @RequestParam(defaultValue = PaginationConstantValues.DEFAULT_SORT_VALUE) final String sortBy) {
         return ResponseEntity.ok().body(customerDelegate.findAllPageable(
                 new ParametersRequest(pageNumber, pageSize, sortBy), searchKey));
     }

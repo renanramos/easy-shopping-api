@@ -19,14 +19,13 @@ import java.io.Serializable;
 
 /**
  * @author renan.ramos
- *
  */
 @Data
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
 @RequiredArgsConstructor
-public class OrderItem implements Serializable {
+public class OrderItemEntity implements Serializable {
 
     private static final long serialVersionUID = 6973936402754269388L;
 

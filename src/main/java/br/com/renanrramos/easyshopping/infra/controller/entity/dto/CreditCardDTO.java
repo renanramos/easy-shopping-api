@@ -1,20 +1,17 @@
-/**------------------------------------------------------------
+/**
+ * ------------------------------------------------------------
  * Project: easy-shopping
  * Creator: renan.ramos - 01/08/2020
  * ------------------------------------------------------------
  */
 package br.com.renanrramos.easyshopping.infra.controller.entity.dto;
 
-import java.time.LocalDate;
-
-import br.com.renanrramos.easyshopping.constants.messages.ValidationMessagesConstants;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import lombok.EqualsAndHashCode;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 
 /**
  * @author renan.ramos
@@ -26,16 +23,16 @@ import javax.validation.constraints.NotNull;
 @RequiredArgsConstructor
 public class CreditCardDTO {
 
-	private Long id;
+    private Long id;
 
-	private String creditCardNumber;
+    private String creditCardNumber;
 
-	private String ownerName;
+    private String ownerName;
 
-	private LocalDate validDate;
+    private LocalDate validDate;
 
-	private Integer code;
+    private Integer code;
 
-	private String customerId;
+    private String customerId;
 
 }

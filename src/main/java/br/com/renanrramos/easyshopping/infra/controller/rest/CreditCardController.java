@@ -7,7 +7,7 @@
  */
 package br.com.renanrramos.easyshopping.infra.controller.rest;
 
-import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
+import br.com.renanrramos.easyshopping.core.domain.constants.PaginationConstantValues;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.CreditCardDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.CreditCardForm;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
@@ -56,9 +56,9 @@ public class CreditCardController {
     @ApiOperation(value = "Get all credit cards")
     @RolesAllowed({"easy-shopping-admin", "easy-shopping-user"})
     public ResponseEntity<PageResponse<CreditCardDTO>> getCreditCards(
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber,
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
+            @RequestParam(defaultValue = PaginationConstantValues.DEFAULT_PAGE_NUMBER) Integer pageNumber,
+            @RequestParam(defaultValue = PaginationConstantValues.DEFAULT_PAGE_SIZE) Integer pageSize,
+            @RequestParam(defaultValue = PaginationConstantValues.DEFAULT_SORT_VALUE) String sortBy) {
         final PageResponse<CreditCardDTO> creditCardResponse =
                 creditCardDelegate.findCreditCardByCustomerId(new ParametersRequest(pageNumber, pageSize, sortBy),
                         baseAuthenticationService.getAuthentication().getName());

@@ -18,7 +18,6 @@ import java.util.List;
 
 /**
  * @author renan.ramos
- *
  */
 @Data
 @Entity
@@ -40,8 +39,8 @@ public class OrderEntity implements Serializable {
 
     private boolean finished;
 
-    @OneToMany(targetEntity = OrderItem.class, cascade = CascadeType.ALL, mappedBy = "order", fetch = FetchType.EAGER)
-    private List<OrderItem> items = new ArrayList<>();
+    @OneToMany(targetEntity = OrderItemEntity.class, cascade = CascadeType.ALL, mappedBy = "order", fetch = FetchType.EAGER)
+    private List<OrderItemEntity> items = new ArrayList<>();
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "purchase_id")

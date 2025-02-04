@@ -1,7 +1,7 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.gateway;
 
-import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.core.domain.Company;
+import br.com.renanrramos.easyshopping.core.domain.constants.ExceptionConstantMessages;
 import br.com.renanrramos.easyshopping.core.gateway.CompanyGateway;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
@@ -27,7 +27,7 @@ public class CompanyGatewayImpl implements CompanyGateway {
 
         if (companyRepository.findTopCompanyByRegisteredNumber(company.getRegisteredNumber())
                 .isPresent()) {
-            throw new EasyShoppingException(ExceptionMessagesConstants.CNPJ_ALREADY_EXIST);
+            throw new EasyShoppingException(ExceptionConstantMessages.CNPJ_ALREADY_EXIST);
         }
 
         final CompanyEntity companyEntity = CompanyMapper.INSTANCE.mapCompanyToCompanyEntity(company);
@@ -81,7 +81,7 @@ public class CompanyGatewayImpl implements CompanyGateway {
 
     private CompanyEntity getCompanyByCriteria(final CompanyEntity companyEntity) {
         if (companyEntity == null) {
-            throw new EntityNotFoundException(ExceptionMessagesConstants.COMPANY_NOT_FOUND);
+            throw new EntityNotFoundException(ExceptionConstantMessages.COMPANY_NOT_FOUND);
         }
         return companyEntity;
     }

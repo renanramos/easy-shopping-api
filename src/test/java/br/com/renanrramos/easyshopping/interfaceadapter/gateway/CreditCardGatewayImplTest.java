@@ -1,7 +1,7 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.gateway;
 
-import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.core.domain.CreditCard;
+import br.com.renanrramos.easyshopping.core.domain.constants.ExceptionConstantMessages;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 import br.com.renanrramos.easyshopping.interfaceadapter.entity.CreditCardEntity;
 import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
@@ -92,13 +92,13 @@ class CreditCardGatewayImplTest {
         // Arrange
         final Long creditCardId = 1L;
         when(creditCardRepository.findById(creditCardId))
-                .thenThrow(new EntityNotFoundException(ExceptionMessagesConstants.CREDIT_CARD_NOT_FOUND));
+                .thenThrow(new EntityNotFoundException(ExceptionConstantMessages.CREDIT_CARD_NOT_FOUND));
         // Act
         final EntityNotFoundException exception =
                 assertThrows(EntityNotFoundException.class, () -> creditCardGateway.findCreditCardById(creditCardId));
         // Assert
         assertThat(exception).isNotNull();
-        assertThat(exception.getMessage()).isEqualTo(ExceptionMessagesConstants.CREDIT_CARD_NOT_FOUND);
+        assertThat(exception.getMessage()).isEqualTo(ExceptionConstantMessages.CREDIT_CARD_NOT_FOUND);
         verify(creditCardRepository).findById(creditCardId);
     }
 
@@ -131,13 +131,13 @@ class CreditCardGatewayImplTest {
                 .create();
         final CreditCard creditCardRequest = CreditCardMapper.INSTANCE.mapCreditCardEntityToCreditCard(creditCardEntity);
         when(creditCardRepository.findById(creditCardId))
-                .thenThrow(new EntityNotFoundException(ExceptionMessagesConstants.CREDIT_CARD_NOT_FOUND));
+                .thenThrow(new EntityNotFoundException(ExceptionConstantMessages.CREDIT_CARD_NOT_FOUND));
         // Act
         final EntityNotFoundException exception =
                 assertThrows(EntityNotFoundException.class, () -> creditCardGateway.updateCreditCard(creditCardRequest));
         // Assert
         assertThat(exception).isNotNull();
-        assertThat(exception.getMessage()).isEqualTo(ExceptionMessagesConstants.CREDIT_CARD_NOT_FOUND);
+        assertThat(exception.getMessage()).isEqualTo(ExceptionConstantMessages.CREDIT_CARD_NOT_FOUND);
         verify(creditCardRepository).findById(creditCardId);
         verify(creditCardRepository, never()).save(creditCardEntity);
     }
@@ -162,14 +162,14 @@ class CreditCardGatewayImplTest {
         // Arrange
         final Long creditCardId = 1L;
         when(creditCardRepository.findById(creditCardId))
-                .thenThrow(new EntityNotFoundException(ExceptionMessagesConstants.CREDIT_CARD_NOT_FOUND));
+                .thenThrow(new EntityNotFoundException(ExceptionConstantMessages.CREDIT_CARD_NOT_FOUND));
         // Act
         final EntityNotFoundException exception =
                 assertThrows(EntityNotFoundException.class, () -> creditCardGateway.remove(creditCardId));
         // Assert
         // Assert
         assertThat(exception).isNotNull();
-        assertThat(exception.getMessage()).isEqualTo(ExceptionMessagesConstants.CREDIT_CARD_NOT_FOUND);
+        assertThat(exception.getMessage()).isEqualTo(ExceptionConstantMessages.CREDIT_CARD_NOT_FOUND);
         verify(creditCardRepository).findById(creditCardId);
         verify(creditCardRepository, never()).removeById(creditCardId);
     }

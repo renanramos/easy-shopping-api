@@ -1,15 +1,16 @@
-/**------------------------------------------------------------
+/**
+ * ------------------------------------------------------------
  * Project: easy-shopping
  * Creator: renan.ramos - 02/07/2020
  * ------------------------------------------------------------
  */
 package br.com.renanrramos.easyshopping.infra.controller.entity.form;
 
-import br.com.renanrramos.easyshopping.constants.messages.ValidationMessagesConstants;
+import br.com.renanrramos.easyshopping.core.domain.constants.ValidationConstantMessages;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotBlank;
 
@@ -23,15 +24,15 @@ import javax.validation.constraints.NotBlank;
 @RequiredArgsConstructor
 public class StoreForm {
 
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
-	private String name;
+    @NotBlank(message = ValidationConstantMessages.EMPTY_FIELD)
+    private String name;
 
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
-	private String registeredNumber;
+    @NotBlank(message = ValidationConstantMessages.EMPTY_FIELD)
+    private String registeredNumber;
 
-	@NotBlank(message = ValidationMessagesConstants.EMPTY_FIELD)
-	private String corporateName;
-	
-	private String companyId;
+    @NotBlank(message = ValidationConstantMessages.EMPTY_FIELD)
+    private String corporateName;
+
+    private String companyId;
 
 }

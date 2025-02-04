@@ -1,7 +1,7 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.gateway;
 
-import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.core.domain.Customer;
+import br.com.renanrramos.easyshopping.core.domain.constants.ExceptionConstantMessages;
 import br.com.renanrramos.easyshopping.core.gateway.CustomerGateway;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 import br.com.renanrramos.easyshopping.interfaceadapter.entity.CustomerEntity;
@@ -59,7 +59,7 @@ public class CustomerGatewayImpl implements CustomerGateway {
     @Override
     public Customer update(final Customer customer, final String customerId) {
         if (CollectionUtils.isEmpty(customerRepository.findCustomerByCpf(customer.getCpf()))) {
-            throw new EntityNotFoundException(ExceptionMessagesConstants.CPF_ALREADY_EXIST);
+            throw new EntityNotFoundException(ExceptionConstantMessages.CPF_ALREADY_EXIST);
         }
 
         final CustomerEntity customerEntity = validateCustomer(customerRepository.findCustomerByTokenId(customerId));
@@ -84,7 +84,7 @@ public class CustomerGatewayImpl implements CustomerGateway {
 
     private CustomerEntity validateCustomer(final CustomerEntity customerEntity) {
         if (customerEntity == null) {
-            throw new EntityNotFoundException(ExceptionMessagesConstants.CUSTOMER_NOT_FOUND);
+            throw new EntityNotFoundException(ExceptionConstantMessages.CUSTOMER_NOT_FOUND);
         }
         return customerEntity;
     }

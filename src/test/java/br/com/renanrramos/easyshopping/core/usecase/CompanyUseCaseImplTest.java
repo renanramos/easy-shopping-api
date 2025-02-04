@@ -1,7 +1,7 @@
 package br.com.renanrramos.easyshopping.core.usecase;
 
-import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.core.domain.Company;
+import br.com.renanrramos.easyshopping.core.domain.constants.ExceptionConstantMessages;
 import br.com.renanrramos.easyshopping.core.domain.enums.Profile;
 import br.com.renanrramos.easyshopping.core.gateway.CompanyGateway;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.CompanyDTO;
@@ -135,13 +135,13 @@ class CompanyUseCaseImplTest {
         // Arrange
         final String invalidTokenId = "invalidTokenId";
         when(companyGateway.findCompanyByTokenId(invalidTokenId))
-                .thenThrow(new EntityNotFoundException(ExceptionMessagesConstants.COMPANY_NOT_FOUND));
+                .thenThrow(new EntityNotFoundException(ExceptionConstantMessages.COMPANY_NOT_FOUND));
         // Act
         final EntityNotFoundException exception =
                 assertThrows(EntityNotFoundException.class, () -> companyUseCase.findCompanyByTokenId(invalidTokenId));
         // Assert
         assertThat(exception).isNotNull();
-        assertThat(exception.getMessage()).isNotNull().isEqualTo(ExceptionMessagesConstants.COMPANY_NOT_FOUND);
+        assertThat(exception.getMessage()).isNotNull().isEqualTo(ExceptionConstantMessages.COMPANY_NOT_FOUND);
     }
 
     @Test
@@ -175,14 +175,14 @@ class CompanyUseCaseImplTest {
         company.setId(companyId);
         when(authenticationService.getName()).thenReturn("tokenId");
         when(companyGateway.updateCompany(any(Company.class), anyLong()))
-                .thenThrow(new EntityNotFoundException(ExceptionMessagesConstants.COMPANY_NOT_FOUND));
+                .thenThrow(new EntityNotFoundException(ExceptionConstantMessages.COMPANY_NOT_FOUND));
         // Act
         final EntityNotFoundException exception =
                 assertThrows(EntityNotFoundException.class,
                         () -> companyUseCase.updateCompany(companyForm, companyId));
         // Assert
         assertThat(exception).isNotNull();
-        assertThat(exception.getMessage()).isNotNull().isEqualTo(ExceptionMessagesConstants.COMPANY_NOT_FOUND);
+        assertThat(exception.getMessage()).isNotNull().isEqualTo(ExceptionConstantMessages.COMPANY_NOT_FOUND);
     }
 
     @Test

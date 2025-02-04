@@ -1,7 +1,7 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.gateway;
 
-import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.core.domain.Address;
+import br.com.renanrramos.easyshopping.core.domain.constants.ExceptionConstantMessages;
 import br.com.renanrramos.easyshopping.core.gateway.AddressGateway;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 import br.com.renanrramos.easyshopping.interfaceadapter.entity.AddressEntity;
@@ -55,6 +55,6 @@ public class AddressGatewayImpl implements AddressGateway {
 
     private AddressEntity getAddressEntityOrThrow(final Long addressId) {
         return addressRepository.findById(addressId)
-                .orElseThrow(() -> new EntityNotFoundException(ExceptionMessagesConstants.ADDRESS_NOT_FOUND));
+                .orElseThrow(() -> new EntityNotFoundException(ExceptionConstantMessages.ADDRESS_NOT_FOUND));
     }
 }

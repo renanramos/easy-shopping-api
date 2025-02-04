@@ -1,7 +1,7 @@
 package br.com.renanrramos.easyshopping.core.usecase;
 
-import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.core.domain.Company;
+import br.com.renanrramos.easyshopping.core.domain.constants.ExceptionConstantMessages;
 import br.com.renanrramos.easyshopping.core.gateway.CompanyGateway;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.CompanyDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.CompanyForm;
@@ -56,7 +56,7 @@ public class CompanyUseCaseImpl implements CompanyUseCase {
 
         final String tokenId = authenticationService.getName();
         if (companyGateway.findCompanyByTokenId(tokenId) != null) {
-            throw new EntityNotFoundException(ExceptionMessagesConstants.ACCOUNT_NOT_FOUND);
+            throw new EntityNotFoundException(ExceptionConstantMessages.ACCOUNT_NOT_FOUND);
         }
 
         final Company company = CompanyMapper.INSTANCE.mapCompanyFormToCompany(companyForm);

@@ -7,8 +7,8 @@
  */
 package br.com.renanrramos.easyshopping.infra.controller.rest;
 
-import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
-import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
+import br.com.renanrramos.easyshopping.core.domain.constants.ExceptionConstantMessages;
+import br.com.renanrramos.easyshopping.core.domain.constants.PaginationConstantValues;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.ProductDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.ProductImageDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.ProductForm;
@@ -42,7 +42,6 @@ import java.util.Optional;
 
 /**
  * @author renan.ramos
- *
  */
 @RestController
 @RequestMapping(path = "/api/products", produces = "application/json")
@@ -81,23 +80,23 @@ public class ProductController {
                                                   UriComponentsBuilder uriComponentsBuilder) {
 
         if (productForm.getProductSubCategoryId() == null) {
-            throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_ID_NOT_FOUND_ON_REQUEST);
+            throw new EntityNotFoundException(ExceptionConstantMessages.PRODUCT_CATEGORY_ID_NOT_FOUND_ON_REQUEST);
         }
 
         if (productForm.getStoreId() == null) {
-            throw new EntityNotFoundException(ExceptionMessagesConstants.STORE_ID_NOT_FOUND_ON_REQUEST);
+            throw new EntityNotFoundException(ExceptionConstantMessages.STORE_ID_NOT_FOUND_ON_REQUEST);
         }
 
         Optional<SubCategory> productCategoryOptional = productCategoryService.findById(productForm.getProductSubCategoryId());
 
         if (!productCategoryOptional.isPresent()) {
-            throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_NOT_FOUND);
+            throw new EntityNotFoundException(ExceptionConstantMessages.PRODUCT_CATEGORY_NOT_FOUND);
         }
 
         Optional<Store> storeOptional = storeService.findById(productForm.getStoreId());
 
         if (!storeOptional.isPresent()) {
-            throw new EntityNotFoundException(ExceptionMessagesConstants.STORE_NOT_FOUND);
+            throw new EntityNotFoundException(ExceptionConstantMessages.STORE_NOT_FOUND);
         }
 
         Store store = storeOptional.get();
@@ -123,9 +122,9 @@ public class ProductController {
     public ResponseEntity<List<ProductDTO>> getAllProducts(
             @RequestParam(name = "published", required = false) boolean onlyPublishedProducts,
             @RequestParam(required = false) Long storeId,
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber,
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
+            @RequestParam(defaultValue = PaginationConstantValues.DEFAULT_PAGE_NUMBER) Integer pageNumber,
+            @RequestParam(defaultValue = PaginationConstantValues.DEFAULT_PAGE_SIZE) Integer pageSize,
+            @RequestParam(defaultValue = PaginationConstantValues.DEFAULT_SORT_VALUE) String sortBy) {
         page = new PageableFactory()
                 .withPageNumber(pageNumber)
                 .withPageSize(pageSize)
@@ -143,9 +142,9 @@ public class ProductController {
     public ResponseEntity<List<ProductDTO>> searchProductsByProductCategory(
             @RequestParam(name = "published", required = false) boolean onlyPublishedProducts,
             @RequestParam(required = false) String name,
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber,
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
+            @RequestParam(defaultValue = PaginationConstantValues.DEFAULT_PAGE_NUMBER) Integer pageNumber,
+            @RequestParam(defaultValue = PaginationConstantValues.DEFAULT_PAGE_SIZE) Integer pageSize,
+            @RequestParam(defaultValue = PaginationConstantValues.DEFAULT_SORT_VALUE) String sortBy) {
         page = new PageableFactory()
                 .withPageNumber(pageNumber)
                 .withPageSize(pageSize)
@@ -165,9 +164,9 @@ public class ProductController {
     public ResponseEntity<List<ProductDTO>> getAllProductsBySubCategory(
             @RequestParam(name = "published", required = false) boolean onlyPublishedProducts,
             @RequestParam(required = false) Long subcategoryId,
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber,
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
+            @RequestParam(defaultValue = PaginationConstantValues.DEFAULT_PAGE_NUMBER) Integer pageNumber,
+            @RequestParam(defaultValue = PaginationConstantValues.DEFAULT_PAGE_SIZE) Integer pageSize,
+            @RequestParam(defaultValue = PaginationConstantValues.DEFAULT_SORT_VALUE) String sortBy) {
         page = new PageableFactory()
                 .withPageNumber(pageNumber)
                 .withPageSize(pageSize)
@@ -198,27 +197,27 @@ public class ProductController {
                                                     UriComponentsBuilder uriBuilder) {
 
         if (productId == null) {
-            throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_ID_NOT_FOUND_ON_REQUEST);
+            throw new EntityNotFoundException(ExceptionConstantMessages.PRODUCT_ID_NOT_FOUND_ON_REQUEST);
         }
 
         if (productForm.getProductSubCategoryId() == null) {
-            throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_ID_NOT_FOUND_ON_REQUEST);
+            throw new EntityNotFoundException(ExceptionConstantMessages.PRODUCT_CATEGORY_ID_NOT_FOUND_ON_REQUEST);
         }
 
         if (productForm.getStoreId() == null) {
-            throw new EntityNotFoundException(ExceptionMessagesConstants.STORE_ID_NOT_FOUND_ON_REQUEST);
+            throw new EntityNotFoundException(ExceptionConstantMessages.STORE_ID_NOT_FOUND_ON_REQUEST);
         }
 
         Optional<Product> currentProduct = productService.findById(productId);
 
         if (!currentProduct.isPresent()) {
-            throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_NOT_FOUND);
+            throw new EntityNotFoundException(ExceptionConstantMessages.PRODUCT_NOT_FOUND);
         }
 
         Optional<SubCategory> productCategoryOptional = productCategoryService.findById(productForm.getProductSubCategoryId());
 
         if (!productCategoryOptional.isPresent()) {
-            throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_CATEGORY_NOT_FOUND);
+            throw new EntityNotFoundException(ExceptionConstantMessages.PRODUCT_CATEGORY_NOT_FOUND);
         }
 
         SubCategory productCategory = productCategoryOptional.get();
@@ -226,7 +225,7 @@ public class ProductController {
         Optional<Store> storeOptional = storeService.findById(productForm.getStoreId());
 
         if (!storeOptional.isPresent()) {
-            throw new EntityNotFoundException(ExceptionMessagesConstants.STORE_NOT_FOUND);
+            throw new EntityNotFoundException(ExceptionConstantMessages.STORE_NOT_FOUND);
         }
 
         Store store = storeOptional.get();
@@ -255,7 +254,7 @@ public class ProductController {
                                                      UriComponentsBuilder uriBuilder) throws EasyShoppingException {
 
         if (!stockItemService.hasStockItemByProductId(productId)) {
-            throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_IS_NOT_IN_STOCK);
+            throw new EntityNotFoundException(ExceptionConstantMessages.PRODUCT_IS_NOT_IN_STOCK);
         }
 
         Optional<Product> productOptional = productService.findById(productId);
@@ -276,7 +275,7 @@ public class ProductController {
         Optional<Product> productOptional = productService.findById(productId);
 
         if (!productOptional.isPresent()) {
-            throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_NOT_FOUND);
+            throw new EntityNotFoundException(ExceptionConstantMessages.PRODUCT_NOT_FOUND);
         }
         productService.remove(productId);
         return ResponseEntity.accepted().build();
@@ -290,19 +289,19 @@ public class ProductController {
         Long productFormId = productImageForm.getProductId();
 
         if (!productFormId.equals(productId)) {
-            throw new EasyShoppingException(ExceptionMessagesConstants.WRONG_PRODUCT_ID);
+            throw new EasyShoppingException(ExceptionConstantMessages.WRONG_PRODUCT_ID);
         }
 
         Optional<Product> productOptional = productService.findById(productId);
 
         if (!productOptional.isPresent()) {
-            throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_NOT_FOUND);
+            throw new EntityNotFoundException(ExceptionConstantMessages.PRODUCT_NOT_FOUND);
         }
 
         byte[] picture = productImageForm.getPicture();
 
         if (picture == null || picture.length == 0) {
-            throw new EntityNotFoundException(ExceptionMessagesConstants.INVALID_FILE);
+            throw new EntityNotFoundException(ExceptionConstantMessages.INVALID_FILE);
         }
 
         Product product = productOptional.get();
@@ -331,7 +330,7 @@ public class ProductController {
         Optional<Product> productOptional = productService.findById(productId);
 
         if (!productOptional.isPresent()) {
-            throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_NOT_FOUND);
+            throw new EntityNotFoundException(ExceptionConstantMessages.PRODUCT_NOT_FOUND);
         }
 
         List<ProductImage> productImages = productImageService.findProductImageByProductId(page, productId);
@@ -348,14 +347,14 @@ public class ProductController {
         Optional<Product> productOptional = productService.findById(productId);
 
         if (!productOptional.isPresent()) {
-            throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_NOT_FOUND);
+            throw new EntityNotFoundException(ExceptionConstantMessages.PRODUCT_NOT_FOUND);
         }
 
         Product product = productOptional.get();
 
         Optional<ProductImage> productImage = productImageService.getImageByProductId(productId);
         if (!productImage.isPresent()) {
-            throw new EntityNotFoundException(ExceptionMessagesConstants.PRODUCT_IMAGE_NOT_FOUND);
+            throw new EntityNotFoundException(ExceptionConstantMessages.PRODUCT_IMAGE_NOT_FOUND);
         }
         productImageService.remove(productImage.get().getId());
 

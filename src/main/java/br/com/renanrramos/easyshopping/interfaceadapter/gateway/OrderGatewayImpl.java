@@ -1,7 +1,7 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.gateway;
 
-import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.core.domain.Order;
+import br.com.renanrramos.easyshopping.core.domain.constants.ExceptionConstantMessages;
 import br.com.renanrramos.easyshopping.core.gateway.OrderGateway;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 import br.com.renanrramos.easyshopping.interfaceadapter.entity.OrderEntity;
@@ -66,10 +66,14 @@ public class OrderGatewayImpl implements OrderGateway {
         return new PageImpl<>(OrderMapper.INSTANCE.mapOrderEntityListToOrderList(pageOrders.getContent()));
     }
 
+    public void validateOrderId(final Long orderId) {
+        getOrderEntityByIdOrThrow(orderId);
+    }
+
     private OrderEntity getOrderEntityByIdOrThrow(final Long orderId) {
         final Optional<OrderEntity> orderById = orderRepository.findById(orderId);
         if (orderById.isEmpty())
-            throw new EntityNotFoundException(ExceptionMessagesConstants.ORDER_NOT_FOUND);
+            throw new EntityNotFoundException(ExceptionConstantMessages.ORDER_NOT_FOUND);
         return orderById.get();
     }
 }

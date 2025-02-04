@@ -1,7 +1,7 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.gateway;
 
-import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.core.domain.Administrator;
+import br.com.renanrramos.easyshopping.core.domain.constants.ExceptionConstantMessages;
 import br.com.renanrramos.easyshopping.core.domain.enums.Profile;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 import br.com.renanrramos.easyshopping.interfaceadapter.entity.AdministratorEntity;
@@ -101,14 +101,14 @@ class AdministratorGatewayImplTest {
         // Arrange
         final Long administratorId = 1L;
         when(administratorRepository.findById(administratorId))
-                .thenThrow(new EntityNotFoundException(ExceptionMessagesConstants.ADMINISTRATOR_NOT_FOUND));
+                .thenThrow(new EntityNotFoundException(ExceptionConstantMessages.ADMINISTRATOR_NOT_FOUND));
         // Act
         final EntityNotFoundException exception =
                 assertThrows(EntityNotFoundException.class,
                         () -> administratorGateway.findAdministratorById(administratorId));
         // Assert
         assertThat(exception).isNotNull();
-        assertThat(exception.getMessage()).isEqualTo(ExceptionMessagesConstants.ADMINISTRATOR_NOT_FOUND);
+        assertThat(exception.getMessage()).isEqualTo(ExceptionConstantMessages.ADMINISTRATOR_NOT_FOUND);
     }
 
     @Test
@@ -136,13 +136,13 @@ class AdministratorGatewayImplTest {
         final Long administratorId = 1L;
         final Administrator administrator = Instancio.of(Administrator.class).create();
         when(administratorRepository.findById(administratorId))
-                .thenThrow(new EntityNotFoundException(ExceptionMessagesConstants.ADMINISTRATOR_NOT_FOUND));
+                .thenThrow(new EntityNotFoundException(ExceptionConstantMessages.ADMINISTRATOR_NOT_FOUND));
         // Act
         final EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
                 () -> administratorGateway.updateAdministrator(administrator, administratorId));
         // Assert
         assertThat(exception).isNotNull();
-        assertThat(exception.getMessage()).isEqualTo(ExceptionMessagesConstants.ADMINISTRATOR_NOT_FOUND);
+        assertThat(exception.getMessage()).isEqualTo(ExceptionConstantMessages.ADMINISTRATOR_NOT_FOUND);
         verify(administratorRepository, never()).save(any());
     }
 
@@ -166,7 +166,7 @@ class AdministratorGatewayImplTest {
         // Arrange
         final Long administratorId = 1L;
         when(administratorRepository.findById(administratorId))
-                .thenThrow(new EntityNotFoundException(ExceptionMessagesConstants.ADMINISTRATOR_NOT_FOUND));
+                .thenThrow(new EntityNotFoundException(ExceptionConstantMessages.ADMINISTRATOR_NOT_FOUND));
         // Act
         final EntityNotFoundException exception =
                 assertThrows(EntityNotFoundException.class,
@@ -175,7 +175,7 @@ class AdministratorGatewayImplTest {
         assertThat(exception).isNotNull();
         assertThat(exception.getMessage())
                 .isNotNull()
-                .isEqualTo(ExceptionMessagesConstants.ADMINISTRATOR_NOT_FOUND);
+                .isEqualTo(ExceptionConstantMessages.ADMINISTRATOR_NOT_FOUND);
         verify(administratorRepository, never()).removeById(administratorId);
     }
 

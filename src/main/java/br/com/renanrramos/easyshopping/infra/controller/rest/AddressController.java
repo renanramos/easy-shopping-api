@@ -6,7 +6,7 @@
  */
 package br.com.renanrramos.easyshopping.infra.controller.rest;
 
-import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
+import br.com.renanrramos.easyshopping.core.domain.constants.PaginationConstantValues;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.AddressDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.AddressForm;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
@@ -51,9 +51,9 @@ public class AddressController {
     @ApiOperation(value = "Get all addresses")
     @RolesAllowed({"easy-shopping-admin", "easy-shopping-user"})
     public ResponseEntity<PageResponse<AddressDTO>> getAddresses(
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber,
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
+            @RequestParam(defaultValue = PaginationConstantValues.DEFAULT_PAGE_NUMBER) Integer pageNumber,
+            @RequestParam(defaultValue = PaginationConstantValues.DEFAULT_PAGE_SIZE) Integer pageSize,
+            @RequestParam(defaultValue = PaginationConstantValues.DEFAULT_SORT_VALUE) String sortBy) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(addressDelegate.findAddresses(new ParametersRequest(pageNumber, pageSize, sortBy)));

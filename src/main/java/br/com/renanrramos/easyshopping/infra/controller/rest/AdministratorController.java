@@ -1,12 +1,13 @@
-/**------------------------------------------------------------
+/**
+ * ------------------------------------------------------------
  * Project: easy-shopping
- * 
+ * <p>
  * Creator: renan.ramos - 02/07/2020
  * ------------------------------------------------------------
  */
 package br.com.renanrramos.easyshopping.infra.controller.rest;
 
-import br.com.renanrramos.easyshopping.constants.messages.ConstantsValues;
+import br.com.renanrramos.easyshopping.core.domain.constants.PaginationConstantValues;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.AdministratorDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.AdministratorForm;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
@@ -23,7 +24,6 @@ import javax.annotation.security.RolesAllowed;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.net.URI;
 
 /**
  * @author renan.ramos
@@ -36,56 +36,56 @@ import java.net.URI;
 @RequiredArgsConstructor
 public class AdministratorController {
 
-	private final AdministratorDelegate administratorDelegate;
+    private final AdministratorDelegate administratorDelegate;
 
-	@ResponseBody
-	@PostMapping(path = "/register")
-	@Transactional
-	@ApiOperation(value = "Save a new administrator")
-	public ResponseEntity<AdministratorDTO> saveAdministrator(@Valid @RequestBody AdministratorForm administratorForm) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(administratorDelegate.save(administratorForm));
-	}
+    @ResponseBody
+    @PostMapping(path = "/register")
+    @Transactional
+    @ApiOperation(value = "Save a new administrator")
+    public ResponseEntity<AdministratorDTO> saveAdministrator(@Valid @RequestBody AdministratorForm administratorForm) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(administratorDelegate.save(administratorForm));
+    }
 
-	@ResponseBody
-	@GetMapping
-	@ApiOperation(value = "Get all administrators")
-	@RolesAllowed({"ADMINISTRATOR", "easy-shopping-admin"})
-	public ResponseEntity<PageResponse<AdministratorDTO>> getAdministrators(
-			@RequestParam(required = false) String name,
-			@RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_NUMBER) Integer pageNumber, 
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_PAGE_SIZE) Integer pageSize,
-            @RequestParam(defaultValue = ConstantsValues.DEFAULT_SORT_VALUE) String sortBy) {
-		return ResponseEntity.status(HttpStatus.OK)
-				.body(administratorDelegate
-						.findAdministrators(new ParametersRequest(pageNumber, pageSize, sortBy), name));
-	}
-	
-	@ResponseBody
-	@GetMapping(path = "/{id}")
-	@ApiOperation(value = "Get an administrator by id")
-	@RolesAllowed("easy-shopping-admin")
-	public ResponseEntity<AdministratorDTO> getAdministratorById(@NotNull @PathVariable("id") Long administratorId) {
-		return ResponseEntity.status(HttpStatus.OK).body(administratorDelegate.findAdministratorById(administratorId));
-	}
-	
-	@ResponseBody
-	@PatchMapping(path = "/{id}")
-	@Transactional
-	@ApiOperation(value = "Update an administrator")
-	@RolesAllowed("easy-shopping-admin")
-	public ResponseEntity<AdministratorDTO> updateAdministrator(@NotNull @PathVariable("id") Long administratorId,
-																@RequestBody AdministratorForm administratorForm) {
-		return ResponseEntity.status(HttpStatus.OK).body(administratorDelegate
-				.updateAdministrator(administratorForm, administratorId));
-	}
-	
-	@ResponseBody
-	@DeleteMapping(path = "/{id}")
-	@Transactional
-	@ApiOperation(value = "Remove an administrator")
-	@RolesAllowed("easy-shopping-admin")
-	public ResponseEntity<AdministratorDTO> removeAdministrator(@NotNull @PathVariable("id") Long administratorId) {
-		administratorDelegate.removeAdministrator(administratorId);
-		return ResponseEntity.ok().build();
-	}
+    @ResponseBody
+    @GetMapping
+    @ApiOperation(value = "Get all administrators")
+    @RolesAllowed({"ADMINISTRATOR", "easy-shopping-admin"})
+    public ResponseEntity<PageResponse<AdministratorDTO>> getAdministrators(
+            @RequestParam(required = false) String name,
+            @RequestParam(defaultValue = PaginationConstantValues.DEFAULT_PAGE_NUMBER) Integer pageNumber,
+            @RequestParam(defaultValue = PaginationConstantValues.DEFAULT_PAGE_SIZE) Integer pageSize,
+            @RequestParam(defaultValue = PaginationConstantValues.DEFAULT_SORT_VALUE) String sortBy) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(administratorDelegate
+                        .findAdministrators(new ParametersRequest(pageNumber, pageSize, sortBy), name));
+    }
+
+    @ResponseBody
+    @GetMapping(path = "/{id}")
+    @ApiOperation(value = "Get an administrator by id")
+    @RolesAllowed("easy-shopping-admin")
+    public ResponseEntity<AdministratorDTO> getAdministratorById(@NotNull @PathVariable("id") Long administratorId) {
+        return ResponseEntity.status(HttpStatus.OK).body(administratorDelegate.findAdministratorById(administratorId));
+    }
+
+    @ResponseBody
+    @PatchMapping(path = "/{id}")
+    @Transactional
+    @ApiOperation(value = "Update an administrator")
+    @RolesAllowed("easy-shopping-admin")
+    public ResponseEntity<AdministratorDTO> updateAdministrator(@NotNull @PathVariable("id") Long administratorId,
+                                                                @RequestBody AdministratorForm administratorForm) {
+        return ResponseEntity.status(HttpStatus.OK).body(administratorDelegate
+                .updateAdministrator(administratorForm, administratorId));
+    }
+
+    @ResponseBody
+    @DeleteMapping(path = "/{id}")
+    @Transactional
+    @ApiOperation(value = "Remove an administrator")
+    @RolesAllowed("easy-shopping-admin")
+    public ResponseEntity<AdministratorDTO> removeAdministrator(@NotNull @PathVariable("id") Long administratorId) {
+        administratorDelegate.removeAdministrator(administratorId);
+        return ResponseEntity.ok().build();
+    }
 }

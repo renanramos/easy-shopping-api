@@ -1,7 +1,7 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.gateway;
 
-import br.com.renanrramos.easyshopping.constants.messages.ExceptionMessagesConstants;
 import br.com.renanrramos.easyshopping.core.domain.Address;
+import br.com.renanrramos.easyshopping.core.domain.constants.ExceptionConstantMessages;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
 import br.com.renanrramos.easyshopping.interfaceadapter.entity.AddressEntity;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.AddressMapper;
@@ -94,12 +94,12 @@ class AddressGatewayImplTest {
         // Arrange
         final Address address = Instancio.of(Address.class).create();
         when(addressRepository.findById(any()))
-                .thenThrow(new EntityNotFoundException(ExceptionMessagesConstants.ADDRESS_NOT_FOUND));
+                .thenThrow(new EntityNotFoundException(ExceptionConstantMessages.ADDRESS_NOT_FOUND));
         // Act/Assert
         final EntityNotFoundException entityNotFoundException = assertThrows(EntityNotFoundException.class,
                 () -> addressGateway.updateAddress(address, 1L));
         assertThat(entityNotFoundException).isNotNull();
-        assertThat(entityNotFoundException.getMessage()).isEqualTo(ExceptionMessagesConstants.ADDRESS_NOT_FOUND);
+        assertThat(entityNotFoundException.getMessage()).isEqualTo(ExceptionConstantMessages.ADDRESS_NOT_FOUND);
         verify(addressRepository, times(1)).findById(any());
         verify(addressRepository, never()).save(any());
     }
@@ -129,6 +129,6 @@ class AddressGatewayImplTest {
         verify(addressRepository).findById(addressId);
         verify(addressRepository, never()).removeById(addressId);
         assertThat(entityNotFoundException).isNotNull();
-        assertThat(entityNotFoundException.getMessage()).isEqualTo(ExceptionMessagesConstants.ADDRESS_NOT_FOUND);
+        assertThat(entityNotFoundException.getMessage()).isEqualTo(ExceptionConstantMessages.ADDRESS_NOT_FOUND);
     }
 }

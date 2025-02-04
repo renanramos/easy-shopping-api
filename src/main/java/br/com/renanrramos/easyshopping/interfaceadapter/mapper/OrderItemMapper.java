@@ -1,12 +1,10 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
-import br.com.renanrramos.easyshopping.interfaceadapter.entity.OrderItem;
+import br.com.renanrramos.easyshopping.core.domain.OrderItem;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.OrderItemDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.OrderItemForm;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
-import org.mapstruct.ReportingPolicy;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.OrderItemEntity;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -32,5 +30,22 @@ public interface OrderItemMapper {
     @Named("mapOrderItemFormToOrderItem")
     @Mapping(target = "order.id", source = "orderId")
     OrderItem mapOrderItemFormToOrderItem(final OrderItemForm orderItemForm);
+
+    @Named("mapOrderItemToOrderItemEntity")
+    OrderItemEntity mapOrderItemToOrderItemEntity(final OrderItem orderItem);
+
+    @Named("mapOrderItemEntityToOrderItem")
+    OrderItem mapOrderItemEntityToOrderItem(final OrderItemEntity orderItemEntity);
+
+    @Named("mapOrderItemEntityListToOrderItemList")
+    default List<OrderItem> mapOrderItemEntityListToOrderItemList(final List<OrderItemEntity> orderItemEntities) {
+        return orderItemEntities
+                .stream()
+                .map(OrderItemMapper.INSTANCE::mapOrderItemEntityToOrderItem)
+                .collect(Collectors.toList());
+    }
+
+    @Named("mapOrderItemToUpdateOrderItemEntity")
+    void mapOrderItemToUpdateOrderItemEntity(@MappingTarget OrderItemEntity orderItemEntity, final OrderItem orderItem);
 }
 

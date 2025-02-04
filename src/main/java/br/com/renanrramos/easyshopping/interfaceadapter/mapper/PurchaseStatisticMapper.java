@@ -1,7 +1,7 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
-import br.com.renanrramos.easyshopping.interfaceadapter.entity.OrderItem;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.PurchaseStatisticDTO;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.OrderItemEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -19,11 +19,11 @@ public interface PurchaseStatisticMapper {
 
     @Named("mapOrderItemToPurchaseStatisticDTO")
     @Mapping(target = "purchase", source = "order.purchase")
-    PurchaseStatisticDTO mapOrderItemToPurchaseStatisticDTO(final OrderItem orderItem);
+    PurchaseStatisticDTO mapOrderItemToPurchaseStatisticDTO(final OrderItemEntity orderItemEntity);
 
     @Named("mapOrderItemListToPurchaseStatisticDTOList")
-    default List<PurchaseStatisticDTO> mapOrderItemListToPurchaseStatisticDTOList(final List<OrderItem> orderItemList) {
-        return orderItemList
+    default List<PurchaseStatisticDTO> mapOrderItemListToPurchaseStatisticDTOList(final List<OrderItemEntity> orderItemEntityList) {
+        return orderItemEntityList
                 .stream()
                 .map(PurchaseStatisticMapper.INSTANCE::mapOrderItemToPurchaseStatisticDTO)
                 .collect(Collectors.toList());
