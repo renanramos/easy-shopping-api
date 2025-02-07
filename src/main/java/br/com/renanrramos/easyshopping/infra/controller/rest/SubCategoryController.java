@@ -12,7 +12,7 @@ import br.com.renanrramos.easyshopping.core.domain.constants.PaginationConstantV
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.SubCategoryDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.SubCategoryForm;
 import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
-import br.com.renanrramos.easyshopping.interfaceadapter.entity.ProductCategory;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.ProductCategoryEntity;
 import br.com.renanrramos.easyshopping.interfaceadapter.entity.SubCategory;
 import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.SubCategoryMapper;
@@ -36,7 +36,6 @@ import java.util.Optional;
 
 /**
  * @author renan.ramos
- *
  */
 @RestController
 @RequestMapping(path = "api/subcategories", produces = "application/json")
@@ -66,13 +65,13 @@ public class SubCategoryController {
             throw new EasyShoppingException(ExceptionConstantMessages.PRODUCT_ID_NOT_FOUND_ON_REQUEST);
         }
 
-        Optional<ProductCategory> productCategoryOptional = productCategoryService.findById(subCategoryForm.getProductCategoryId());
+        Optional<ProductCategoryEntity> productCategoryOptional = productCategoryService.findById(subCategoryForm.getProductCategoryId());
 
         if (!productCategoryOptional.isPresent()) {
             throw new EasyShoppingException(ExceptionConstantMessages.PRODUCT_CATEGORY_NOT_FOUND);
         }
 
-        ProductCategory productCategory = productCategoryOptional.get();
+        ProductCategoryEntity productCategory = productCategoryOptional.get();
         SubCategory subCategory = SubCategoryMapper.INSTANCE.mapSubCategoryFormToSubCategory(subCategoryForm);
         subCategory.setProductCategory(productCategory);
         subCategory = subCategoryService.save(subCategory);
@@ -126,13 +125,13 @@ public class SubCategoryController {
             throw new EasyShoppingException(ExceptionConstantMessages.PRODUCT_CATEGORY_ID_NOT_FOUND_ON_REQUEST);
         }
 
-        Optional<ProductCategory> productCatgoryOptional = productCategoryService.findById(subCategoryForm.getProductCategoryId());
+        Optional<ProductCategoryEntity> productCatgoryOptional = productCategoryService.findById(subCategoryForm.getProductCategoryId());
 
         if (!productCatgoryOptional.isPresent()) {
             throw new EasyShoppingException(ExceptionConstantMessages.PRODUCT_CATEGORY_NOT_FOUND);
         }
 
-        ProductCategory productCategory = productCatgoryOptional.get();
+        ProductCategoryEntity productCategory = productCatgoryOptional.get();
 
         Optional<SubCategory> currentSubCategory = subCategoryService.findById(subCategoryId);
 

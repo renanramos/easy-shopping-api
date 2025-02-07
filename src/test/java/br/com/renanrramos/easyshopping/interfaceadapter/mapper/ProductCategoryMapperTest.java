@@ -1,7 +1,6 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
-import br.com.renanrramos.easyshopping.interfaceadapter.entity.Product;
-import br.com.renanrramos.easyshopping.interfaceadapter.entity.ProductCategory;
+import br.com.renanrramos.easyshopping.core.domain.ProductCategory;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.ProductCategoryDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.ProductCategoryForm;
 import org.instancio.Instancio;
@@ -10,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.instancio.Select.field;
 
 class ProductCategoryMapperTest {
 
@@ -18,7 +16,6 @@ class ProductCategoryMapperTest {
     void mapProductCategoryToProductCategoryDTO_withProductCategory_shouldMapToProductCategoryDTO() {
 
         final ProductCategory productCategory = Instancio.of(ProductCategory.class)
-                .ignore(field(Product::getImages))
                 .withMaxDepth(10)
                 .create();
 
@@ -33,7 +30,6 @@ class ProductCategoryMapperTest {
         final List<ProductCategory> productCategories = Instancio.ofList(ProductCategory.class)
                 .size(2)
                 .withMaxDepth(10)
-                .ignore(field(Product::getImages))
                 .create();
 
         final List<ProductCategoryDTO> productCategoryDTOS = ProductCategoryMapper.INSTANCE
@@ -86,7 +82,7 @@ class ProductCategoryMapperTest {
 
         assertThat(productCategoryDTOS).hasSize(productCategories.size());
         int index = 0;
-        for(final ProductCategoryDTO productCategoryDTO : productCategoryDTOS) {
+        for (final ProductCategoryDTO productCategoryDTO : productCategoryDTOS) {
             assertProductCategoryDTO(productCategoryDTO, productCategories.get(index));
             index++;
         }

@@ -7,47 +7,35 @@
  */
 package br.com.renanrramos.easyshopping.infra.controller.rest;
 
-import br.com.renanrramos.easyshopping.core.domain.constants.ExceptionConstantMessages;
 import br.com.renanrramos.easyshopping.core.domain.constants.PaginationConstantValues;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.ProductCategoryDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.ProductCategoryForm;
-import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
-import br.com.renanrramos.easyshopping.interfaceadapter.entity.ProductCategory;
-import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
-import br.com.renanrramos.easyshopping.interfaceadapter.mapper.ProductCategoryMapper;
-import br.com.renanrramos.easyshopping.service.impl.ProductCategoryService;
-import br.com.renanrramos.easyshopping.service.impl.ProductService;
+import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
+import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRequest;
+import br.com.renanrramos.easyshopping.infra.delegate.ProductCategoryDelegate;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.annotation.security.RolesAllowed;
-import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * @author renan.ramos
- *
  */
 @RestController
 @RequestMapping(path = "api/product-categories", produces = "application/json")
 @Api(tags = "Product categories")
 @CrossOrigin(origins = "*")
+@RequiredArgsConstructor
 public class ProductCategoryController {
 
-    @Autowired
-    private ProductCategoryService productCategoryService;
-
-    @Autowired
-    private ProductService productService;
+    private final ProductCategoryDelegate productCategoryDelegate;
 
     private URI uri;
 
@@ -57,52 +45,29 @@ public class ProductCategoryController {
     @ApiOperation(value = "Save a new product category")
     @RolesAllowed("easy-shopping-admin")
     public ResponseEntity<ProductCategoryDTO> saveProductCategory(@Valid @RequestBody ProductCategoryForm productCategoryForm,
-                                                                  UriComponentsBuilder uriBuilder) {
-        ProductCategory productCategory = ProductCategoryMapper.INSTANCE.mapProductCategoryFormToProductCategory(productCategoryForm);
-        productCategory = productCategoryService.save(productCategory);
-
-        if (productCategory.getId() == null) {
-            throw new InternalError(ExceptionConstantMessages.INTERNAL_ERROR);
-        }
-
-        uri = uriBuilder.path("/product-categories/{id}").buildAndExpand(productCategory.getId()).encode().toUri();
-        return ResponseEntity.created(uri)
-                .body(ProductCategoryMapper.INSTANCE.mapProductCategoryToProductCategoryDTO(productCategory));
+                                                                  final UriComponentsBuilder uriBuilder) {
+        final ProductCategoryDTO productCategoryDTO = productCategoryDelegate.save(productCategoryForm);
+        return ResponseEntity.created(buildUri(uriBuilder, productCategoryDTO)).body(productCategoryDTO);
     }
 
     @ResponseBody
     @GetMapping
     @ApiOperation(value = "Get all product categories")
-    public ResponseEntity<List<ProductCategoryDTO>> getProductCategories(
+    public ResponseEntity<PageResponse<ProductCategoryDTO>> getProductCategories(
             @RequestParam(required = false) String name,
             @RequestParam(defaultValue = PaginationConstantValues.DEFAULT_PAGE_NUMBER) Integer pageNumber,
             @RequestParam(defaultValue = PaginationConstantValues.DEFAULT_PAGE_SIZE) Integer pageSize,
             @RequestParam(defaultValue = PaginationConstantValues.DEFAULT_SORT_VALUE) String sortBy) {
-        Pageable page = new PageableFactory()
-                .withPageNumber(pageNumber)
-                .withPageSize(pageSize)
-                .withSortBy(sortBy)
-                .buildPageable();
-        List<ProductCategory> productCategories =
-                (name == null || name.isEmpty()) ?
-                        productCategoryService.findAllPageable(page, null) :
-                        productCategoryService.findAllProductCategoriesByName(page, name);
-        return ResponseEntity
-                .ok(ProductCategoryMapper.INSTANCE
-                        .mapProductCategoryListToProductCategoryDTOList(productCategories));
+        return ResponseEntity.ok(
+                productCategoryDelegate.findProductCategories(
+                        new ParametersRequest(pageNumber, pageSize, sortBy), name));
     }
 
     @ResponseBody
     @GetMapping(path = "/{id}")
     @ApiOperation(value = "Get a product category by id")
     public ResponseEntity<ProductCategoryDTO> getProductCategoryById(@PathVariable("id") Long productCategoryId) {
-        Optional<ProductCategory> productCategoryOptional = productCategoryService.findById(productCategoryId);
-        if (productCategoryOptional.isPresent()) {
-            ProductCategory productCategory = productCategoryOptional.get();
-            return ResponseEntity.ok(ProductCategoryMapper.INSTANCE
-                    .mapProductCategoryToProductCategoryDTO(productCategory));
-        }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(productCategoryDelegate.findById(productCategoryId));
     }
 
     @ResponseBody
@@ -111,23 +76,14 @@ public class ProductCategoryController {
     @ApiOperation(value = "Update a product category")
     @RolesAllowed("easy-shopping-admin")
     public ResponseEntity<ProductCategoryDTO> updateProductCategory(@PathVariable("id") Long productCategoryId,
-                                                                    @RequestBody ProductCategoryForm productCategoryForm, UriComponentsBuilder uriBuilder) {
-        Optional<ProductCategory> currentProductCategory = productCategoryService.findById(productCategoryId);
-
-        if (!currentProductCategory.isPresent()) {
-            throw new EntityNotFoundException(ExceptionConstantMessages.PRODUCT_CATEGORY_NOT_FOUND);
-        }
-
-
-        ProductCategory productCategory = currentProductCategory.get();
-        ProductCategoryMapper.INSTANCE
-                .mapProductCategoryFormToUpdateProductCategory(productCategory, productCategoryForm);
-        productCategory.setId(productCategoryId);
-        ProductCategoryDTO productCategoryDTO = ProductCategoryMapper.INSTANCE
-                .mapProductCategoryToProductCategoryDTO(productCategoryService.update(productCategory));
-        uri = uriBuilder.path("/product-categories/{id}").buildAndExpand(productCategoryDTO).encode().toUri();
-
-        return ResponseEntity.accepted().location(uri).body(productCategoryDTO);
+                                                                    @RequestBody ProductCategoryForm productCategoryForm,
+                                                                    final UriComponentsBuilder uriBuilder) {
+        final ProductCategoryDTO productCategoryDTO =
+                productCategoryDelegate.update(productCategoryForm, productCategoryId);
+        return ResponseEntity
+                .accepted()
+                .location(buildUri(uriBuilder, productCategoryDTO))
+                .body(productCategoryDTO);
     }
 
     @ResponseBody
@@ -135,20 +91,17 @@ public class ProductCategoryController {
     @Transactional
     @ApiOperation(value = "Remove a product category")
     @RolesAllowed("easy-shopping-admin")
-    public ResponseEntity<ProductCategoryDTO> removeProductCategory(@PathVariable("id") Long productCategoryId)
-            throws EasyShoppingException {
-        Optional<ProductCategory> productCategoryOptional = productCategoryService.findById(productCategoryId);
+    public ResponseEntity<ProductCategoryDTO> removeProductCategory(@PathVariable("id") final Long productCategoryId) {
 
-        if (!productCategoryOptional.isPresent()) {
-            throw new EntityNotFoundException(ExceptionConstantMessages.PRODUCT_CATEGORY_NOT_FOUND);
-        }
-
-        if (productService.isThereAnyProductWithSubCategoryId(productCategoryId)) {
-            throw new EasyShoppingException(ExceptionConstantMessages.CANNOT_REMOVE_PRODUCT_CATEGORY_IN_USE);
-        }
-
-        productCategoryService.remove(productCategoryId);
-
+        // TODO: apply validation in usecase layer
+//        if (productService.isThereAnyProductWithSubCategoryId(productCategoryId)) {
+//            throw new EasyShoppingException(ExceptionConstantMessages.CANNOT_REMOVE_PRODUCT_CATEGORY_IN_USE);
+//        }
+        productCategoryDelegate.remove(productCategoryId);
         return ResponseEntity.ok().build();
+    }
+
+    private static URI buildUri(final UriComponentsBuilder uriBuilder, final ProductCategoryDTO productCategoryDTO) {
+        return uriBuilder.path("/product-categories/{id}").buildAndExpand(productCategoryDTO).encode().toUri();
     }
 }

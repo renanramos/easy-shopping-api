@@ -17,14 +17,13 @@ import java.util.List;
 
 /**
  * @author renan.ramos
- *
  */
 @Data
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @RequiredArgsConstructor
 @ToString
-public class ProductCategory implements Serializable {
+public class ProductCategoryEntity implements Serializable {
 
     private static final long serialVersionUID = -4711255794768433234L;
 

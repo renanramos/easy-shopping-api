@@ -1,10 +1,3 @@
-/**
- * ------------------------------------------------------------
- * Project: easy-shopping
- * <p>
- * Creator: renan.ramos - 24/11/2020
- * ------------------------------------------------------------
- */
 package br.com.renanrramos.easyshopping.service.impl;
 
 import br.com.renanrramos.easyshopping.interfaceadapter.entity.OrderEntity;

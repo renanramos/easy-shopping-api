@@ -21,7 +21,6 @@ import java.util.List;
 
 /**
  * @author renan.ramos
- *
  */
 @Data
 @Entity
@@ -43,7 +42,7 @@ public class SubCategory implements Serializable {
     @JoinColumn(name = "productCategory_id")
     @Fetch(FetchMode.JOIN)
     @JsonIgnore
-    private ProductCategory productCategory;
+    private ProductCategoryEntity productCategory;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Product> products = new ArrayList<>();

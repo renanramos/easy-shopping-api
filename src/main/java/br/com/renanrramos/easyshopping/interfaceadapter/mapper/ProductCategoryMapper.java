@@ -1,8 +1,9 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
-import br.com.renanrramos.easyshopping.interfaceadapter.entity.ProductCategory;
+import br.com.renanrramos.easyshopping.core.domain.ProductCategory;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.ProductCategoryDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.ProductCategoryForm;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.ProductCategoryEntity;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -33,4 +34,22 @@ public interface ProductCategoryMapper {
     @Named("mapProductCategoryFormToUpdateProductCategory")
     void mapProductCategoryFormToUpdateProductCategory(@MappingTarget ProductCategory productCategory,
                                                        final ProductCategoryForm productCategoryForm);
+
+    @Named("mapProductCategoryToProductCategoryEntity")
+    ProductCategoryEntity mapProductCategoryToProductCategoryEntity(final ProductCategory productCategory);
+
+    @Named("mapProductCategoryEntityToProductCategory")
+    ProductCategory mapProductCategoryEntityToProductCategory(final ProductCategoryEntity productCategoryEntityCreated);
+
+    @Named("mapProductCategoryEntityListToProductCategoryList")
+    default List<ProductCategory> mapProductCategoryEntityListToProductCategoryList(final List<ProductCategoryEntity> content) {
+        return content
+                .stream()
+                .map(ProductCategoryMapper.INSTANCE::mapProductCategoryEntityToProductCategory)
+                .collect(Collectors.toList());
+    }
+
+    @Named("mapProductCategoryToUpdateProductCategoryEntity")
+    void mapProductCategoryToUpdateProductCategoryEntity(@MappingTarget ProductCategoryEntity productCategoryEntity,
+                                                         final ProductCategory productCategory);
 }
