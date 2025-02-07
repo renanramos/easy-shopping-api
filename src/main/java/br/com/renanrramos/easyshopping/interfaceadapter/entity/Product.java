@@ -18,7 +18,6 @@ import java.util.Set;
 
 /**
  * @author renan.ramos
- *
  */
 @Data
 @Entity
@@ -52,8 +51,8 @@ public class Product implements Serializable {
 
     private String companyId;
 
-    @OneToMany(targetEntity = ProductImage.class, cascade = CascadeType.ALL, mappedBy = "product", fetch = FetchType.EAGER)
-    private Set<ProductImage> images;
+    @OneToMany(targetEntity = ProductImageEntity.class, cascade = CascadeType.ALL, mappedBy = "product", fetch = FetchType.EAGER)
+    private Set<ProductImageEntity> images;
 
     private boolean isPublished;
 

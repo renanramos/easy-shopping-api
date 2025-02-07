@@ -1,7 +1,7 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
 
-import br.com.renanrramos.easyshopping.interfaceadapter.entity.ProductImage;
+import br.com.renanrramos.easyshopping.core.domain.ProductImage;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.ProductImageDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.ProductImageForm;
 import org.instancio.Instancio;
@@ -11,7 +11,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ProductImageMapperTest {
+class ProductImageEntityMapperTest {
 
     @Test
     void mapProductImageToProductImageDTO_withProductImage_shouldMapToProductImageDTO() {

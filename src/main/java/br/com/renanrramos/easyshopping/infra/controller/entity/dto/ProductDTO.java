@@ -6,7 +6,7 @@
  */
 package br.com.renanrramos.easyshopping.infra.controller.entity.dto;
 
-import br.com.renanrramos.easyshopping.interfaceadapter.entity.ProductImage;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.ProductImageEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,6 @@ import java.util.Set;
 
 /**
  * @author renan.ramos
- *
  */
 @Data
 @ToString
@@ -38,7 +37,7 @@ public class ProductDTO {
 
     private Long storeId;
 
-    private Set<ProductImage> productImages;
+    private Set<ProductImageEntity> productImages;
 
     private boolean isProductPublished;
 

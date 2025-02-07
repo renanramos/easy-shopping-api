@@ -15,11 +15,10 @@ import br.com.renanrramos.easyshopping.infra.controller.entity.form.ProductForm;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.ProductImageForm;
 import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
 import br.com.renanrramos.easyshopping.interfaceadapter.entity.Product;
-import br.com.renanrramos.easyshopping.interfaceadapter.entity.ProductImage;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.ProductImageEntity;
 import br.com.renanrramos.easyshopping.interfaceadapter.entity.Store;
 import br.com.renanrramos.easyshopping.interfaceadapter.entity.SubCategory;
 import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
-import br.com.renanrramos.easyshopping.interfaceadapter.mapper.ProductImageMapper;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.ProductMapper;
 import br.com.renanrramos.easyshopping.service.impl.*;
 import io.swagger.annotations.Api;
@@ -286,38 +285,38 @@ public class ProductController {
     @ApiOperation(value = "Add image to a product")
     @RolesAllowed("easy-shopping-user")
     public ResponseEntity<?> uploadProductImage(@PathVariable("id") Long productId, @RequestBody ProductImageForm productImageForm, UriComponentsBuilder uriComponentsBuilder) throws EasyShoppingException, IOException {
-        Long productFormId = productImageForm.getProductId();
-
-        if (!productFormId.equals(productId)) {
-            throw new EasyShoppingException(ExceptionConstantMessages.WRONG_PRODUCT_ID);
-        }
-
-        Optional<Product> productOptional = productService.findById(productId);
-
-        if (!productOptional.isPresent()) {
-            throw new EntityNotFoundException(ExceptionConstantMessages.PRODUCT_NOT_FOUND);
-        }
-
-        byte[] picture = productImageForm.getPicture();
-
-        if (picture == null || picture.length == 0) {
-            throw new EntityNotFoundException(ExceptionConstantMessages.INVALID_FILE);
-        }
-
-        Product product = productOptional.get();
-        product.setPublished(false);
-
-        ProductImage productImage = ProductImageMapper.INSTANCE.mapProductImageFormToProductImage(productImageForm);
-        productImage.setProduct(product);
-
-        productImage = productImageService.save(productImage);
-        if (productImage.getId() != null) {
-
-            productService.update(product);
-
-            uri = uriComponentsBuilder.path("/products/images/{id}").buildAndExpand(productImage.getProduct().getId()).encode().toUri();
-            return ResponseEntity.created(uri).build();
-        }
+//        Long productFormId = productImageForm.getProductId();
+//
+//        if (!productFormId.equals(productId)) {
+//            throw new EasyShoppingException(ExceptionConstantMessages.WRONG_PRODUCT_ID);
+//        }
+//
+//        Optional<Product> productOptional = productService.findById(productId);
+//
+//        if (!productOptional.isPresent()) {
+//            throw new EntityNotFoundException(ExceptionConstantMessages.PRODUCT_NOT_FOUND);
+//        }
+//
+//        byte[] picture = productImageForm.getPicture();
+//
+//        if (picture == null || picture.length == 0) {
+//            throw new EntityNotFoundException(ExceptionConstantMessages.INVALID_FILE);
+//        }
+//
+//        Product product = productOptional.get();
+//        product.setPublished(false);
+//
+//        ProductImageEntity productImage = ProductImageMapper.INSTANCE.mapProductImageFormToProductImage(productImageForm);
+//        productImage.setProduct(product);
+//
+//        productImage = productImageService.save(productImage);
+//        if (productImage.getId() != null) {
+//
+//            productService.update(product);
+//
+//            uri = uriComponentsBuilder.path("/products/images/{id}").buildAndExpand(productImage.getProduct().getId()).encode().toUri();
+//            return ResponseEntity.created(uri).build();
+//        }
         return ResponseEntity.badRequest().build();
     }
 
@@ -327,14 +326,15 @@ public class ProductController {
     @RolesAllowed("easy-shopping-user")
     public ResponseEntity<List<ProductImageDTO>> getProductImage(@PathVariable("id") Long productId) {
 
-        Optional<Product> productOptional = productService.findById(productId);
-
-        if (!productOptional.isPresent()) {
-            throw new EntityNotFoundException(ExceptionConstantMessages.PRODUCT_NOT_FOUND);
-        }
-
-        List<ProductImage> productImages = productImageService.findProductImageByProductId(page, productId);
-        return ResponseEntity.ok(ProductImageMapper.INSTANCE.mapProductImageListToProductImageDTOList(productImages));
+//        Optional<Product> productOptional = productService.findById(productId);
+//
+//        if (!productOptional.isPresent()) {
+//            throw new EntityNotFoundException(ExceptionConstantMessages.PRODUCT_NOT_FOUND);
+//        }
+//
+//        List<ProductImageEntity> productImages = productImageService.findProductImageByProductId(page, productId);
+//        return ResponseEntity.ok(ProductImageMapper.INSTANCE.mapProductImageListToProductImageDTOList(productImages));
+        return ResponseEntity.ok().build();
     }
 
     @ResponseBody
@@ -352,7 +352,7 @@ public class ProductController {
 
         Product product = productOptional.get();
 
-        Optional<ProductImage> productImage = productImageService.getImageByProductId(productId);
+        Optional<ProductImageEntity> productImage = productImageService.getImageByProductId(productId);
         if (!productImage.isPresent()) {
             throw new EntityNotFoundException(ExceptionConstantMessages.PRODUCT_IMAGE_NOT_FOUND);
         }
