@@ -12,7 +12,7 @@ import br.com.renanrramos.easyshopping.core.domain.constants.PaginationConstantV
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.StockItemDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.StockItemForm;
 import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
-import br.com.renanrramos.easyshopping.interfaceadapter.entity.Product;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.ProductEntity;
 import br.com.renanrramos.easyshopping.interfaceadapter.entity.Stock;
 import br.com.renanrramos.easyshopping.interfaceadapter.entity.StockItem;
 import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
@@ -37,7 +37,6 @@ import java.util.Optional;
 
 /**
  * @author renan.ramos
- *
  */
 @RestController
 @RequestMapping(path = "api/stock-items", produces = "application/json")
@@ -73,7 +72,7 @@ public class StockItemController {
             throw new EasyShoppingException(ExceptionConstantMessages.PRODUCT_ALREADY_IN_STOCK);
         }
 
-        Optional<Product> productOptional = productService.findById(productId);
+        Optional<ProductEntity> productOptional = productService.findById(productId);
 
         if (!productOptional.isPresent()) {
             throw new EasyShoppingException(ExceptionConstantMessages.PRODUCT_NOT_FOUND);
@@ -119,7 +118,7 @@ public class StockItemController {
             throw new EasyShoppingException(ExceptionConstantMessages.PRODUCT_ID_NOT_FOUND_ON_REQUEST);
         }
 
-        Optional<Product> productOptional = productService.findById(productId);
+        Optional<ProductEntity> productOptional = productService.findById(productId);
 
         if (!productOptional.isPresent()) {
             throw new EasyShoppingException(ExceptionConstantMessages.PRODUCT_NOT_FOUND);

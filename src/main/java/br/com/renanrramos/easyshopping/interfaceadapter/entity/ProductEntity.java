@@ -24,7 +24,7 @@ import java.util.Set;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @RequiredArgsConstructor
 @ToString
-public class Product implements Serializable {
+public class ProductEntity implements Serializable {
 
     private static final long serialVersionUID = -8837444544799506973L;
 

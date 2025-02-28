@@ -11,7 +11,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ProductImageEntityMapperTest {
+class ProductEntityImageEntityMapperTest {
 
     @Test
     void mapProductImageToProductImageDTO_withProductImage_shouldMapToProductImageDTO() {

@@ -14,7 +14,7 @@ import br.com.renanrramos.easyshopping.infra.controller.entity.dto.ProductImageD
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.ProductForm;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.ProductImageForm;
 import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
-import br.com.renanrramos.easyshopping.interfaceadapter.entity.Product;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.ProductEntity;
 import br.com.renanrramos.easyshopping.interfaceadapter.entity.ProductImageEntity;
 import br.com.renanrramos.easyshopping.interfaceadapter.entity.Store;
 import br.com.renanrramos.easyshopping.interfaceadapter.entity.SubCategory;
@@ -102,7 +102,7 @@ public class ProductController {
 
         SubCategory productCategory = productCategoryOptional.get();
 
-        Product product = ProductMapper.INSTANCE.mapProductFormToProduct(productForm);
+        ProductEntity product = ProductMapper.INSTANCE.mapProductFormToProduct(productForm);
         product.setSubCategory(productCategory);
         product.setStore(store);
         product.setPublished(false);
@@ -129,7 +129,7 @@ public class ProductController {
                 .withPageSize(pageSize)
                 .withSortBy(sortBy)
                 .buildPageable();
-        List<Product> products = productService.findAllPageable(page, storeId);
+        List<ProductEntity> products = productService.findAllPageable(page, storeId);
         return onlyPublishedProducts
                 ? ResponseEntity.ok(ProductMapper.INSTANCE.mapPublishedProductListToProductDTOList(products))
                 : ResponseEntity.ok(ProductMapper.INSTANCE.mapProductListToProductDTOList(products));
@@ -149,7 +149,7 @@ public class ProductController {
                 .withPageSize(pageSize)
                 .withSortBy(sortBy)
                 .buildPageable();
-        List<Product> products = productService.searchProductByName(page, name,
+        List<ProductEntity> products = productService.searchProductByName(page, name,
                 authenticationServiceImpl.getAuthentication());
 
         return onlyPublishedProducts
@@ -171,7 +171,7 @@ public class ProductController {
                 .withPageSize(pageSize)
                 .withSortBy(sortBy)
                 .buildPageable();
-        List<Product> products = productService.getProductsBySubCategoryId(page, subcategoryId);
+        List<ProductEntity> products = productService.getProductsBySubCategoryId(page, subcategoryId);
         return onlyPublishedProducts
                 ? ResponseEntity.ok(ProductMapper.INSTANCE.mapPublishedProductListToProductDTOList(products))
                 : ResponseEntity.ok(ProductMapper.INSTANCE.mapProductListToProductDTOList(products));
@@ -181,7 +181,7 @@ public class ProductController {
     @GetMapping(path = "/{id}")
     @ApiOperation(value = "Get a product by id")
     public ResponseEntity<ProductDTO> getProductById(@PathVariable("id") Long productId) {
-        Optional<Product> productOptional = productService.findById(productId);
+        Optional<ProductEntity> productOptional = productService.findById(productId);
         return productOptional.map(product ->
                         ResponseEntity.ok(ProductMapper.INSTANCE.mapProductToProductDTO(product)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -207,7 +207,7 @@ public class ProductController {
             throw new EntityNotFoundException(ExceptionConstantMessages.STORE_ID_NOT_FOUND_ON_REQUEST);
         }
 
-        Optional<Product> currentProduct = productService.findById(productId);
+        Optional<ProductEntity> currentProduct = productService.findById(productId);
 
         if (!currentProduct.isPresent()) {
             throw new EntityNotFoundException(ExceptionConstantMessages.PRODUCT_NOT_FOUND);
@@ -229,7 +229,7 @@ public class ProductController {
 
         Store store = storeOptional.get();
 
-        Product product = currentProduct.get();
+        ProductEntity product = currentProduct.get();
         ProductMapper.INSTANCE.mapProductFormToUpdateProduct(product, productForm);
         product.setSubCategory(productCategory);
         product.setStore(store);
@@ -256,9 +256,9 @@ public class ProductController {
             throw new EntityNotFoundException(ExceptionConstantMessages.PRODUCT_IS_NOT_IN_STOCK);
         }
 
-        Optional<Product> productOptional = productService.findById(productId);
+        Optional<ProductEntity> productOptional = productService.findById(productId);
 
-        Product product = productOptional.get();
+        ProductEntity product = productOptional.get();
 
         product.setPublished(true);
         product = productService.save(product);
@@ -271,7 +271,7 @@ public class ProductController {
     @ApiOperation(value = "Remove a product")
     @RolesAllowed("easy-shopping-user")
     public ResponseEntity<ProductDTO> deleteProduct(@PathVariable("id") Long productId) {
-        Optional<Product> productOptional = productService.findById(productId);
+        Optional<ProductEntity> productOptional = productService.findById(productId);
 
         if (!productOptional.isPresent()) {
             throw new EntityNotFoundException(ExceptionConstantMessages.PRODUCT_NOT_FOUND);
@@ -344,13 +344,13 @@ public class ProductController {
     @RolesAllowed("easy-shopping-user")
     public ResponseEntity<ProductImageDTO> removeProductImage(@PathVariable("id") Long productId) {
 
-        Optional<Product> productOptional = productService.findById(productId);
+        Optional<ProductEntity> productOptional = productService.findById(productId);
 
         if (!productOptional.isPresent()) {
             throw new EntityNotFoundException(ExceptionConstantMessages.PRODUCT_NOT_FOUND);
         }
 
-        Product product = productOptional.get();
+        ProductEntity product = productOptional.get();
 
         Optional<ProductImageEntity> productImage = productImageService.getImageByProductId(productId);
         if (!productImage.isPresent()) {

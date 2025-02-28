@@ -10,7 +10,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ProductCategoryMapperTest {
+class ProductEntityCategoryMapperTest {
 
     @Test
     void mapProductCategoryToProductCategoryDTO_withProductCategory_shouldMapToProductCategoryDTO() {

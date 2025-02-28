@@ -13,7 +13,7 @@ import br.com.renanrramos.easyshopping.infra.controller.entity.form.OrderItemFor
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
 import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
 import br.com.renanrramos.easyshopping.infra.delegate.OrderItemDelegate;
-import br.com.renanrramos.easyshopping.interfaceadapter.entity.Product;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.ProductEntity;
 import br.com.renanrramos.easyshopping.service.impl.ProductService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -51,7 +51,7 @@ public class OrderItemController {
         Long productId = orderItemForm.getProductId();
 
         // TODO: apply productId validation on ProductGateway implementation
-        Optional<Product> productOptional = productService.findById(productId);
+        Optional<ProductEntity> productOptional = productService.findById(productId);
 
         if (productOptional.isEmpty()) {
             throw new EasyShoppingException(ExceptionConstantMessages.PRODUCT_NOT_FOUND);

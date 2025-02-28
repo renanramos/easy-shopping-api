@@ -45,6 +45,6 @@ public class SubCategory implements Serializable {
     private ProductCategoryEntity productCategory;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Product> products = new ArrayList<>();
+    private List<ProductEntity> products = new ArrayList<>();
 
 }

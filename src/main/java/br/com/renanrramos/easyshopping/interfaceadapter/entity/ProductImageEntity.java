@@ -19,7 +19,6 @@ import java.io.Serializable;
 
 /**
  * @author renan.ramos
- *
  */
 @Data
 @Entity
@@ -45,7 +44,7 @@ public class ProductImageEntity implements Serializable {
     @JoinColumn(name = "product_id")
     @Fetch(FetchMode.JOIN)
     @JsonIgnore
-    private Product product;
+    private ProductEntity product;
 
     private boolean isCoverImage;
 

@@ -4,5 +4,6 @@
 .project
 
 .idea/**
+.idea/*.xml
 
 easy-shopping.iml

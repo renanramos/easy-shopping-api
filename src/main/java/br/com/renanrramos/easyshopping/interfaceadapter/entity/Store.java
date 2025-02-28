@@ -19,7 +19,6 @@ import java.util.List;
 
 /**
  * @author renan.ramos
- *
  */
 @Data
 @Entity
@@ -44,7 +43,7 @@ public class Store implements Serializable {
     private String corporateName;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "store")
-    private List<Product> products = new ArrayList<>();
+    private List<ProductEntity> products = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "store")
     private List<Stock> stocks = new ArrayList<>();

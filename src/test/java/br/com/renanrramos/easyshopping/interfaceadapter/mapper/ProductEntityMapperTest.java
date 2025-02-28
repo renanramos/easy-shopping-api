@@ -1,8 +1,8 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.mapper;
 
-import br.com.renanrramos.easyshopping.interfaceadapter.entity.Product;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.ProductDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.ProductForm;
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.ProductEntity;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 
@@ -12,13 +12,13 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.instancio.Select.field;
 
-class ProductMapperTest {
+class ProductEntityMapperTest {
 
     @Test
     void mapProductToProductDTO_withProduct_shouldMapToProductDTO() {
-        final Product product = Instancio.of(Product.class)
+        final ProductEntity product = Instancio.of(ProductEntity.class)
                 .withMaxDepth(2)
-                .ignore(field(Product::getImages))
+                .ignore(field(ProductEntity::getImages))
                 .create();
 
         final ProductDTO productDTO = ProductMapper.INSTANCE.mapProductToProductDTO(product);
@@ -28,9 +28,9 @@ class ProductMapperTest {
 
     @Test
     void mapProductListToProductDTOList_withProductList_shouldMapToProductDTOList() {
-        final List<Product> products = Instancio.ofList(Product.class)
+        final List<ProductEntity> products = Instancio.ofList(ProductEntity.class)
                 .withMaxDepth(2)
-                .ignore(field(Product::getImages))
+                .ignore(field(ProductEntity::getImages))
                 .create();
 
         final List<ProductDTO> productDTOList = ProductMapper.INSTANCE.mapProductListToProductDTOList(products);
@@ -40,13 +40,13 @@ class ProductMapperTest {
 
     @Test
     void mapPublishedProductListToProductDTOList_withProductList_shouldMapOnlyPublishedProductDTOList() {
-        final List<Product> products = Instancio.ofList(Product.class)
+        final List<ProductEntity> products = Instancio.ofList(ProductEntity.class)
                 .withMaxDepth(2)
-                .ignore(field(Product::getImages))
+                .ignore(field(ProductEntity::getImages))
                 .create();
 
-        final List<Product> publishedProduct = products.stream()
-                .filter(Product::isPublished)
+        final List<ProductEntity> publishedProduct = products.stream()
+                .filter(ProductEntity::isPublished)
                 .collect(Collectors.toList());
 
         final List<ProductDTO> productDTOList = ProductMapper.INSTANCE
@@ -59,7 +59,7 @@ class ProductMapperTest {
     void mapProductFormToProduct_withProductForm_shouldMapToProduct() {
         final ProductForm productForm = Instancio.of(ProductForm.class).create();
 
-        final Product product = ProductMapper.INSTANCE.mapProductFormToProduct(productForm);
+        final ProductEntity product = ProductMapper.INSTANCE.mapProductFormToProduct(productForm);
 
         assertProduct(product, productForm);
     }
@@ -68,7 +68,7 @@ class ProductMapperTest {
     void mapProductFormToUpdateProduct_whenProductFormUpdateOperation_shouldMapToProductOnlyDifferentFields() {
         // Arrange
         final ProductForm productForm = Instancio.of(ProductForm.class).create();
-        final Product product = ProductMapper.INSTANCE.mapProductFormToProduct(productForm);
+        final ProductEntity product = ProductMapper.INSTANCE.mapProductFormToProduct(productForm);
         final String productName = "productName";
         productForm.setName(null);
         product.setName(productName);
@@ -82,7 +82,7 @@ class ProductMapperTest {
         assertThat(product.getSubCategory().getId()).isEqualTo(productForm.getProductSubCategoryId());
     }
 
-    private void assertProduct(final Product product, final ProductForm productForm) {
+    private void assertProduct(final ProductEntity product, final ProductForm productForm) {
         assertThat(product).isNotNull();
         assertThat(product.getName()).isEqualTo(productForm.getName());
         assertThat(product.getPrice()).isEqualTo(productForm.getPrice());
@@ -93,16 +93,16 @@ class ProductMapperTest {
 
     }
 
-    private void assertProductDTOList(final List<ProductDTO> productDTOList, final List<Product> products) {
+    private void assertProductDTOList(final List<ProductDTO> productDTOList, final List<ProductEntity> products) {
         assertThat(productDTOList).hasSize(products.size());
         int index = 0;
-        for(final ProductDTO productDTO : productDTOList) {
+        for (final ProductDTO productDTO : productDTOList) {
             assertProductDTO(productDTO, products.get(index));
             index++;
         }
     }
 
-    private void assertProductDTO(final ProductDTO productDTO, final Product product) {
+    private void assertProductDTO(final ProductDTO productDTO, final ProductEntity product) {
         assertThat(productDTO).isNotNull();
         assertThat(productDTO.getId()).isEqualTo(product.getId());
         assertThat(productDTO.getDescription()).isEqualTo(product.getDescription());
