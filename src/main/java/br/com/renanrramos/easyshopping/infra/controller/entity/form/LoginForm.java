@@ -5,8 +5,7 @@
  */
 package br.com.renanrramos.easyshopping.infra.controller.entity.form;
 
-import javax.validation.constraints.NotBlank;
-
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;

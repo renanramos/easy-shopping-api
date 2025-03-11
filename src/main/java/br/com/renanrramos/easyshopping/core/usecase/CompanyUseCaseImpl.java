@@ -10,10 +10,9 @@ import br.com.renanrramos.easyshopping.infra.controller.entity.page.ParametersRe
 import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.CompanyMapper;
 import br.com.renanrramos.easyshopping.service.impl.AuthenticationService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-
-import javax.persistence.EntityNotFoundException;
 
 @RequiredArgsConstructor
 public class CompanyUseCaseImpl implements CompanyUseCase {

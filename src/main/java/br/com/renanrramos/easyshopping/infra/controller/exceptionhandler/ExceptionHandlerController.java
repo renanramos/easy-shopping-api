@@ -11,6 +11,9 @@ import br.com.renanrramos.easyshopping.core.domain.constants.ExceptionConstantMe
 import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
 import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.error.ApiError;
 import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.error.builder.ApiErrorBuilder;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
@@ -25,9 +28,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import javax.persistence.EntityNotFoundException;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +39,7 @@ import java.util.List;
 @RestControllerAdvice(basePackages = "br.com.renanrramos.easyshopping")
 public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
 
-    @Override
+    @ExceptionHandler({HttpMessageNotReadableException.class})
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
                                                                   HttpHeaders headers, HttpStatus status, WebRequest request) {
         String error = "Malformed JSON request";
@@ -51,7 +51,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
                 .build());
     }
 
-    @Override
+    @ExceptionHandler({MethodArgumentNotValidException.class})
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers, HttpStatus status, WebRequest request) {
         return buildResponseEntity(new ApiErrorBuilder()
@@ -66,8 +66,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleMethodArgumentNotValid(final Exception ex, final WebRequest request) {
         Throwable cause = ((TransactionSystemException) ex).getRootCause();
         final List<String> errors = new ArrayList<>();
-        if (cause instanceof ConstraintViolationException) {
-            ConstraintViolationException consEx = (ConstraintViolationException) cause;
+        if (cause instanceof ConstraintViolationException consEx) {
             for (final ConstraintViolation<?> violation : consEx.getConstraintViolations()) {
                 errors.add(violation.getMessage());
             }
@@ -87,7 +86,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    protected ResponseEntity<Object> handleEntityNotFound(EntityNotFoundException ex) {
+    protected ResponseEntity<Object> handleEntityNotFound(final EntityNotFoundException ex) {
         return buildResponseEntity(new ApiErrorBuilder()
                 .withStatus(HttpStatus.NOT_FOUND)
                 .withMessage(ex.getMessage())
@@ -97,7 +96,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(EasyShoppingException.class)
-    protected ResponseEntity<Object> handleEmailUnavailable(EasyShoppingException ex) {
+    protected ResponseEntity<Object> handleEmailUnavailable(final EasyShoppingException ex) {
         return buildResponseEntity(new ApiErrorBuilder()
                 .withStatus(HttpStatus.CONFLICT)
                 .withErrorTitle(ExceptionConstantMessages.INVALID_FIELDS_TITLE)

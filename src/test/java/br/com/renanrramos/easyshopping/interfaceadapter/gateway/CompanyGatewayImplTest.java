@@ -8,6 +8,7 @@ import br.com.renanrramos.easyshopping.interfaceadapter.entity.CompanyEntity;
 import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.CompanyMapper;
 import br.com.renanrramos.easyshopping.interfaceadapter.repository.CompanyRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.SneakyThrows;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 

@@ -9,28 +9,28 @@ package br.com.renanrramos.easyshopping.infra.controller.rest;
 
 import br.com.renanrramos.easyshopping.core.domain.constants.ExceptionConstantMessages;
 import br.com.renanrramos.easyshopping.core.domain.constants.PaginationConstantValues;
+import br.com.renanrramos.easyshopping.infra.controller.entity.dto.ProductDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.StockItemDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.StockItemForm;
 import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
-import br.com.renanrramos.easyshopping.interfaceadapter.entity.ProductEntity;
+import br.com.renanrramos.easyshopping.infra.delegate.ProductDelegate;
 import br.com.renanrramos.easyshopping.interfaceadapter.entity.Stock;
 import br.com.renanrramos.easyshopping.interfaceadapter.entity.StockItem;
 import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.StockItemMapper;
-import br.com.renanrramos.easyshopping.service.impl.ProductService;
 import br.com.renanrramos.easyshopping.service.impl.StockItemService;
 import br.com.renanrramos.easyshopping.service.impl.StockService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.annotation.security.RolesAllowed;
-import javax.transaction.Transactional;
-import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -48,7 +48,7 @@ public class StockItemController {
     private StockItemService itemService;
 
     @Autowired
-    private ProductService productService;
+    private ProductDelegate productDelegate;
 
     @Autowired
     private StockService stockService;
@@ -72,11 +72,12 @@ public class StockItemController {
             throw new EasyShoppingException(ExceptionConstantMessages.PRODUCT_ALREADY_IN_STOCK);
         }
 
-        Optional<ProductEntity> productOptional = productService.findById(productId);
+        final ProductDTO productOptional = productDelegate.findById(productId);
 
-        if (!productOptional.isPresent()) {
-            throw new EasyShoppingException(ExceptionConstantMessages.PRODUCT_NOT_FOUND);
-        }
+        // TODO: review this validation
+//        if (!productOptional.isPresent()) {
+//            throw new EasyShoppingException(ExceptionConstantMessages.PRODUCT_NOT_FOUND);
+//        }
 
         Long stockId = itemForm.getStockId();
 
@@ -97,8 +98,8 @@ public class StockItemController {
         StockItem item = StockItemMapper.INSTANCE.mapStockItemFormToStockItem(itemForm);
         item.setStock(stockOptional.get());
         item = itemService.save(item);
-        item.setProductId(productOptional.get().getId());
-        item.setProductName(productOptional.get().getName());
+        item.setProductId(productOptional.getId());
+        item.setProductName(productOptional.getName());
         item.setStock(stockOptional.get());
         uri = uriBuilder.path("/stock-items/{id}").buildAndExpand(item.getId()).encode().toUri();
         return ResponseEntity.created(uri).body(StockItemMapper.INSTANCE.mapStockItemToStockItemDTO(item));
@@ -118,11 +119,12 @@ public class StockItemController {
             throw new EasyShoppingException(ExceptionConstantMessages.PRODUCT_ID_NOT_FOUND_ON_REQUEST);
         }
 
-        Optional<ProductEntity> productOptional = productService.findById(productId);
+        final ProductDTO productOptional = productDelegate.findById(productId);
 
-        if (!productOptional.isPresent()) {
-            throw new EasyShoppingException(ExceptionConstantMessages.PRODUCT_NOT_FOUND);
-        }
+        // TODO: review this validation
+//        if (!productOptional.isPresent()) {
+//            throw new EasyShoppingException(ExceptionConstantMessages.PRODUCT_NOT_FOUND);
+//        }
 
         Long stockId = itemForm.getStockId();
 
@@ -150,8 +152,8 @@ public class StockItemController {
         item.setStock(stockOptional.get());
         item.setId(itemId);
         item = itemService.save(item);
-        item.setProductId(productOptional.get().getId());
-        item.setProductName(productOptional.get().getName());
+        item.setProductId(productOptional.getId());
+        item.setProductName(productOptional.getName());
         item.setStock(stockOptional.get());
         uri = uriBuilder.path("/stock-items/{id}").buildAndExpand(item.getId()).encode().toUri();
         return ResponseEntity.accepted().location(uri).body(StockItemMapper.INSTANCE.mapStockItemToStockItemDTO(item));

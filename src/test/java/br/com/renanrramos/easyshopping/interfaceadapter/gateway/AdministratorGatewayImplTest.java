@@ -8,6 +8,7 @@ import br.com.renanrramos.easyshopping.interfaceadapter.entity.AdministratorEnti
 import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.AdministratorMapper;
 import br.com.renanrramos.easyshopping.interfaceadapter.repository.AdministratorRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,7 +19,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -37,6 +37,22 @@ class AdministratorGatewayImplTest {
 
     @InjectMocks
     private AdministratorGatewayImpl administratorGateway;
+
+    private static Pageable getBuildPageable(final Integer pageNumber, final Integer pageSize, final String sortBy) {
+        return new PageableFactory()
+                .withPageNumber(pageNumber)
+                .withPageSize(pageSize)
+                .withSortBy(sortBy)
+                .buildPageable();
+    }
+
+    private static PageImpl<AdministratorEntity> buildAdministratorEntitiesPageResponse() {
+        final List<AdministratorEntity> administratorEntities = Instancio.ofList(AdministratorEntity.class)
+                .size(3)
+                .set(field(AdministratorEntity::getProfile), Profile.ADMINISTRATOR)
+                .create();
+        return new PageImpl<>(administratorEntities);
+    }
 
     @Test
     void save_withAdministrator_shouldRunSuccessfully() {
@@ -207,21 +223,5 @@ class AdministratorGatewayImplTest {
                                 .isNotNull()
                                 .isEqualTo(administratorName));
 
-    }
-
-    private static Pageable getBuildPageable(final Integer pageNumber, final Integer pageSize, final String sortBy) {
-        return new PageableFactory()
-                .withPageNumber(pageNumber)
-                .withPageSize(pageSize)
-                .withSortBy(sortBy)
-                .buildPageable();
-    }
-
-    private static PageImpl<AdministratorEntity> buildAdministratorEntitiesPageResponse() {
-        final List<AdministratorEntity> administratorEntities = Instancio.ofList(AdministratorEntity.class)
-                .size(3)
-                .set(field(AdministratorEntity::getProfile), Profile.ADMINISTRATOR)
-                .create();
-        return new PageImpl<>(administratorEntities);
     }
 }

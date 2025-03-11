@@ -6,19 +6,19 @@
  */
 package br.com.renanrramos.easyshopping.interfaceadapter.repository;
 
-import java.util.List;
-import java.util.Optional;
-
 import br.com.renanrramos.easyshopping.interfaceadapter.entity.CustomerEntity;
+import br.com.renanrramos.easyshopping.interfaceadapter.repository.constants.EasyShoppingSqlConstants;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
-import br.com.renanrramos.easyshopping.interfaceadapter.repository.constants.EasyShoppingSqlConstants;
+import java.util.List;
 
-public interface CustomerRepository extends PagingAndSortingRepository<CustomerEntity, Long>{
+public interface CustomerRepository extends PagingAndSortingRepository<CustomerEntity, Long>,
+		CrudRepository<CustomerEntity, Long> {
 
 	List<CustomerEntity> findCustomerByCpf(final String cpf);
 

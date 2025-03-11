@@ -21,19 +21,18 @@ import br.com.renanrramos.easyshopping.interfaceadapter.mapper.PurchaseMapper;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.PurchaseStatisticMapper;
 import br.com.renanrramos.easyshopping.service.impl.AuthenticationService;
 import br.com.renanrramos.easyshopping.service.impl.OrderService;
-import br.com.renanrramos.easyshopping.service.impl.PurchaseService;
 import br.com.renanrramos.easyshopping.service.impl.StockItemService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.annotation.security.RolesAllowed;
-import javax.transaction.Transactional;
-import javax.validation.Valid;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -49,14 +48,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PurchaseController {
 
-    @Autowired
-    private PurchaseService purchaseService;
-
+    private final OrderItemUseCase orderItemUseCase;
+//    @Autowired
+//    private PurchaseService purchaseService;
     @Autowired
     private OrderService orderService;
-
-    private final OrderItemUseCase orderItemUseCase;
-
     @Autowired
     private StockItemService stockItemService;
 
@@ -115,7 +111,7 @@ public class PurchaseController {
 //		purchase.setCreditCard(creditCardOptional.get());
         purchase.setCustomerId(authenticationServiceImpl.getName());
         purchase.setPurchaseDate(LocalDateTime.now());
-        purchase = purchaseService.save(purchase);
+//        purchase = purchaseService.save(purchase);
 
         OrderEntity order = orderOptional.get();
         order.setFinished(true);

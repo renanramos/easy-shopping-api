@@ -8,12 +8,11 @@ import br.com.renanrramos.easyshopping.interfaceadapter.entity.ProductCategoryEn
 import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.ProductCategoryMapper;
 import br.com.renanrramos.easyshopping.interfaceadapter.repository.ProductCategoryRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-
-import javax.persistence.EntityNotFoundException;
 
 @RequiredArgsConstructor
 public class ProductCategoryGatewayImpl implements ProductCategoryGateway {

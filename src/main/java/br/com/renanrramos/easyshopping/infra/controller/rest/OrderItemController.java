@@ -7,25 +7,24 @@
  */
 package br.com.renanrramos.easyshopping.infra.controller.rest;
 
-import br.com.renanrramos.easyshopping.core.domain.constants.ExceptionConstantMessages;
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.OrderItemDTO;
+import br.com.renanrramos.easyshopping.infra.controller.entity.dto.ProductDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.OrderItemForm;
 import br.com.renanrramos.easyshopping.infra.controller.entity.page.PageResponse;
 import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
 import br.com.renanrramos.easyshopping.infra.delegate.OrderItemDelegate;
-import br.com.renanrramos.easyshopping.interfaceadapter.entity.ProductEntity;
-import br.com.renanrramos.easyshopping.service.impl.ProductService;
+import br.com.renanrramos.easyshopping.infra.delegate.ProductDelegate;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.annotation.security.RolesAllowed;
-import javax.transaction.Transactional;
-import javax.validation.Valid;
-import java.util.Optional;
+;
 
 /**
  * @author renan.ramos
@@ -39,7 +38,7 @@ public class OrderItemController {
 
     private final OrderItemDelegate orderItemDelegate;
 
-    private final ProductService productService;
+    private final ProductDelegate productDelegate;
 
     @ResponseBody
     @PostMapping
@@ -51,11 +50,12 @@ public class OrderItemController {
         Long productId = orderItemForm.getProductId();
 
         // TODO: apply productId validation on ProductGateway implementation
-        Optional<ProductEntity> productOptional = productService.findById(productId);
+        final ProductDTO productOptional = productDelegate.findById(productId);
 
-        if (productOptional.isEmpty()) {
-            throw new EasyShoppingException(ExceptionConstantMessages.PRODUCT_NOT_FOUND);
-        }
+        // TODO: review this validation
+//        if (productOptional.isEmpty()) {
+//            throw new EasyShoppingException(ExceptionConstantMessages.PRODUCT_NOT_FOUND);
+//        }
         final OrderItemDTO newOrderItem = orderItemDelegate.save(orderItemForm);
         return ResponseEntity
                 .created(uriBuilder

@@ -46,7 +46,7 @@ public interface ProductMapper {
     @Named("mapProductFormToUpdateProduct")
     @Mapping(target = "store.id", source = "storeId")
     @Mapping(target = "subCategory.id", source = "productSubCategoryId")
-    void mapProductFormToUpdateProduct(@MappingTarget ProductEntity product, final ProductForm productForm);
+    void mapProductFormToUpdateProduct(@MappingTarget Product product, final ProductForm productForm);
 
     @Named("mapProductToProductEntity")
     ProductEntity mapProductToProductEntity(final Product product);
@@ -63,10 +63,8 @@ public interface ProductMapper {
     }
 
     @Named("mapProductToUpdateProductEntity")
-    @Mapping(target = "store.id", source = "storeId")
-    @Mapping(target = "subCategory.id", source = "productSubCategoryId")
+//    @Mapping(target = "store.id", source = "storeId")
+//    @Mapping(target = "subCategory.id", source = "productSubCategoryId")
     void mapProductToUpdateProductEntity(@MappingTarget ProductEntity productEntity, Product product);
-
-    ;
 }
 

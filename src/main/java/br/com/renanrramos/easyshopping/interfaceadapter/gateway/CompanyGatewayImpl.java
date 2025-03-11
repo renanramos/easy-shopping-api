@@ -9,18 +9,24 @@ import br.com.renanrramos.easyshopping.interfaceadapter.entity.CompanyEntity;
 import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.CompanyMapper;
 import br.com.renanrramos.easyshopping.interfaceadapter.repository.CompanyRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @RequiredArgsConstructor
 public class CompanyGatewayImpl implements CompanyGateway {
 
     private final CompanyRepository companyRepository;
+
+    private static PageImpl<Company> buildCompanyListPage(final Page<CompanyEntity> companyEntityPage) {
+        final List<Company> companies =
+                CompanyMapper.INSTANCE.mapCompanyEntityListToCompanyList(companyEntityPage.getContent());
+        return new PageImpl<>(companies, companyEntityPage.getPageable(), companyEntityPage.getTotalElements());
+    }
 
     @Override
     public Company saveCompany(final Company company) throws EasyShoppingException {
@@ -84,11 +90,5 @@ public class CompanyGatewayImpl implements CompanyGateway {
             throw new EntityNotFoundException(ExceptionConstantMessages.COMPANY_NOT_FOUND);
         }
         return companyEntity;
-    }
-
-    private static PageImpl<Company> buildCompanyListPage(final Page<CompanyEntity> companyEntityPage) {
-        final List<Company> companies =
-                CompanyMapper.INSTANCE.mapCompanyEntityListToCompanyList(companyEntityPage.getContent());
-        return new PageImpl<>(companies, companyEntityPage.getPageable(), companyEntityPage.getTotalElements());
     }
 }

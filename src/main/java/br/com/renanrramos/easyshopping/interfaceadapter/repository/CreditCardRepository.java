@@ -8,18 +8,19 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.repository;
 
 import br.com.renanrramos.easyshopping.interfaceadapter.entity.CreditCardEntity;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
-
-import javax.transaction.Transactional;
 
 /**
  * @author renan.ramos
  */
-public interface CreditCardRepository extends PagingAndSortingRepository<CreditCardEntity, Long> {
+public interface CreditCardRepository extends PagingAndSortingRepository<CreditCardEntity, Long>,
+        CrudRepository<CreditCardEntity, Long> {
 
     Page<CreditCardEntity> findCreditCardByCustomerId(final Pageable page, final String customerId);
 

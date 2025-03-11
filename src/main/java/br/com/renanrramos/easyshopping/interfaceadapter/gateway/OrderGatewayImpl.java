@@ -9,12 +9,12 @@ import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.Pageable
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.OrderMapper;
 import br.com.renanrramos.easyshopping.interfaceadapter.repository.OrderRepository;
 import br.com.renanrramos.easyshopping.service.BaseAuthenticationService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.util.StringUtils;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @RequiredArgsConstructor

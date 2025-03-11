@@ -8,12 +8,12 @@ package br.com.renanrramos.easyshopping.interfaceadapter.entity;
 
 import br.com.renanrramos.easyshopping.core.domain.enums.Profile;
 import io.swagger.annotations.ApiModelProperty;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.*;
 import java.io.Serializable;
 
 @Data

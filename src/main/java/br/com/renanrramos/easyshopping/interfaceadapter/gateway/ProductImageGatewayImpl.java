@@ -8,11 +8,10 @@ import br.com.renanrramos.easyshopping.interfaceadapter.entity.ProductImageEntit
 import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.ProductImageMapper;
 import br.com.renanrramos.easyshopping.interfaceadapter.repository.ProductImageRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-
-import javax.persistence.EntityNotFoundException;
 
 @RequiredArgsConstructor
 public class ProductImageGatewayImpl implements ProductImageGateway {

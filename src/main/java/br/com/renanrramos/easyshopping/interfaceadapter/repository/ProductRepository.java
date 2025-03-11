@@ -12,6 +12,7 @@ import br.com.renanrramos.easyshopping.interfaceadapter.repository.constants.Eas
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
@@ -19,7 +20,8 @@ import org.springframework.data.repository.query.Param;
  * @author renan.ramos
  *
  */
-public interface ProductRepository extends PagingAndSortingRepository<ProductEntity, Long> {
+public interface ProductRepository extends PagingAndSortingRepository<ProductEntity, Long>,
+        CrudRepository<ProductEntity, Long> {
 
     Page<ProductEntity> findProductByStoreId(Pageable page, Long storeId);
 

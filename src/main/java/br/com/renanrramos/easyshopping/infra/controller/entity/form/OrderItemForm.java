@@ -8,12 +8,11 @@
 package br.com.renanrramos.easyshopping.infra.controller.entity.form;
 
 import br.com.renanrramos.easyshopping.core.domain.constants.ExceptionConstantMessages;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * @author renan.ramos

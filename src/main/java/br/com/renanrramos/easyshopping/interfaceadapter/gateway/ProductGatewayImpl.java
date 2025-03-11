@@ -8,16 +8,20 @@ import br.com.renanrramos.easyshopping.interfaceadapter.entity.ProductEntity;
 import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.ProductMapper;
 import br.com.renanrramos.easyshopping.interfaceadapter.repository.ProductRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-
-import javax.persistence.EntityNotFoundException;
 
 @RequiredArgsConstructor
 public class ProductGatewayImpl implements ProductGateway {
 
     private final ProductRepository productRepository;
+
+    private static PageImpl<Product> getProductPage(final Page<ProductEntity> productEntityPage) {
+        return new PageImpl<>(ProductMapper.INSTANCE.mapProductEntityListToProductList(productEntityPage.getContent()),
+                productEntityPage.getPageable(), productEntityPage.getTotalElements());
+    }
 
     @Override
     public Product save(final Product product) {
@@ -95,10 +99,5 @@ public class ProductGatewayImpl implements ProductGateway {
     private ProductEntity getProductEntityOrElseThrow(Long productId) {
         return productRepository.findById(productId)
                 .orElseThrow(() -> new EntityNotFoundException(ExceptionConstantMessages.PRODUCT_NOT_FOUND));
-    }
-
-    private static PageImpl<Product> getProductPage(final Page<ProductEntity> productEntityPage) {
-        return new PageImpl<>(ProductMapper.INSTANCE.mapProductEntityListToProductList(productEntityPage.getContent()),
-                productEntityPage.getPageable(), productEntityPage.getTotalElements());
     }
 }

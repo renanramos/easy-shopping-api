@@ -6,11 +6,12 @@
  */
 package br.com.renanrramos.easyshopping.interfaceadapter.repository;
 
-import br.com.renanrramos.easyshopping.interfaceadapter.repository.constants.EasyShoppingSqlConstants;
 import br.com.renanrramos.easyshopping.interfaceadapter.entity.CompanyEntity;
+import br.com.renanrramos.easyshopping.interfaceadapter.repository.constants.EasyShoppingSqlConstants;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.Optional;
@@ -19,7 +20,7 @@ import java.util.Optional;
  * @author renan.ramos
  *
  */
-public interface CompanyRepository extends PagingAndSortingRepository<CompanyEntity, Long>{
+public interface CompanyRepository extends PagingAndSortingRepository<CompanyEntity, Long>, CrudRepository<CompanyEntity, Long> {
 
 	Optional<CompanyEntity> findTopCompanyByRegisteredNumber(final String registeredNumber);
 

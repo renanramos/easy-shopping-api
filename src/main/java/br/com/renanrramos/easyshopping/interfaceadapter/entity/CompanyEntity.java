@@ -6,13 +6,13 @@
  */
 package br.com.renanrramos.easyshopping.interfaceadapter.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.PrimaryKeyJoinColumn;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.PrimaryKeyJoinColumn;
 import java.io.Serializable;
 
 /**

@@ -7,12 +7,11 @@
 package br.com.renanrramos.easyshopping.infra.controller.entity.dto;
 
 import br.com.renanrramos.easyshopping.core.domain.constants.ValidationConstantMessages;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-
-import javax.validation.constraints.NotBlank;
 
 /**
  * @author renan.ramos

@@ -6,23 +6,22 @@
  */
 package br.com.renanrramos.easyshopping.interfaceadapter.repository;
 
-import javax.transaction.Transactional;
-
+import br.com.renanrramos.easyshopping.interfaceadapter.entity.SubCategory;
+import br.com.renanrramos.easyshopping.interfaceadapter.repository.constants.EasyShoppingSqlConstants;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
-
-import br.com.renanrramos.easyshopping.interfaceadapter.repository.constants.EasyShoppingSqlConstants;
-import br.com.renanrramos.easyshopping.interfaceadapter.entity.SubCategory;
 
 /**
  * @author renan.ramos
  *
  */
-public interface SubCategoryRepository extends PagingAndSortingRepository<SubCategory, Long> {
+public interface SubCategoryRepository extends PagingAndSortingRepository<SubCategory, Long>, CrudRepository<SubCategory, Long> {
 	Page<SubCategory> findSubCategoryByProductCategoryId(Pageable page, Long productCategoryId);
 
 	@Query(EasyShoppingSqlConstants.GET_SUBCATEGORIES_BY_NAME)

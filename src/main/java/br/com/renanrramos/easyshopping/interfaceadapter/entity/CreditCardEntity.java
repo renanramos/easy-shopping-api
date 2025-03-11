@@ -8,12 +8,12 @@
 package br.com.renanrramos.easyshopping.interfaceadapter.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 

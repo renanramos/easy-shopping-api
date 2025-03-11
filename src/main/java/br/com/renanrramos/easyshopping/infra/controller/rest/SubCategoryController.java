@@ -12,24 +12,24 @@ import br.com.renanrramos.easyshopping.core.domain.constants.PaginationConstantV
 import br.com.renanrramos.easyshopping.infra.controller.entity.dto.SubCategoryDTO;
 import br.com.renanrramos.easyshopping.infra.controller.entity.form.SubCategoryForm;
 import br.com.renanrramos.easyshopping.infra.controller.exceptionhandler.exception.EasyShoppingException;
+import br.com.renanrramos.easyshopping.infra.delegate.ProductDelegate;
 import br.com.renanrramos.easyshopping.interfaceadapter.entity.ProductCategoryEntity;
 import br.com.renanrramos.easyshopping.interfaceadapter.entity.SubCategory;
 import br.com.renanrramos.easyshopping.interfaceadapter.gateway.factory.PageableFactory;
 import br.com.renanrramos.easyshopping.interfaceadapter.mapper.SubCategoryMapper;
 import br.com.renanrramos.easyshopping.service.impl.ProductCategoryService;
-import br.com.renanrramos.easyshopping.service.impl.ProductService;
 import br.com.renanrramos.easyshopping.service.impl.SubCategoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.annotation.security.RolesAllowed;
-import javax.transaction.Transactional;
-import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -50,7 +50,7 @@ public class SubCategoryController {
     private ProductCategoryService productCategoryService;
 
     @Autowired
-    private ProductService productService;
+    private ProductDelegate productDelegate;
 
     private URI uri;
 
@@ -162,9 +162,10 @@ public class SubCategoryController {
             throw new EasyShoppingException(ExceptionConstantMessages.SUBCATEGORY_NOT_FOUND);
         }
 
-        if (productService.isThereAnyProductWithSubCategoryId(subCategoryId)) {
-            throw new EasyShoppingException(ExceptionConstantMessages.CANNOT_REMOVE_PRODUCT_CATEGORY_IN_USE);
-        }
+        // TODO: Fix method bellow
+//        if (productDelegate.isThereAnyProductWithSubCategoryId(subCategoryId)) {
+//            throw new EasyShoppingException(ExceptionConstantMessages.CANNOT_REMOVE_PRODUCT_CATEGORY_IN_USE);
+//        }
 
         subCategoryService.remove(subCategoryId);
         return ResponseEntity.ok().build();

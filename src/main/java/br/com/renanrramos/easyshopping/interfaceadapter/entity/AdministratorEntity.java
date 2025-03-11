@@ -5,14 +5,15 @@
  */
 package br.com.renanrramos.easyshopping.interfaceadapter.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.PrimaryKeyJoinColumn;
-
 import br.com.renanrramos.easyshopping.core.domain.enums.Profile;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.PrimaryKeyJoinColumn;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 /**
  * @author renan.ramos
