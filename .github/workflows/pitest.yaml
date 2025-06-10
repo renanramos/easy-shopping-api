@@ -1,0 +1,30 @@
+name: pitest
+on:
+  workflow_dispatch:
+#  push:
+#    branches:
+#      - '**'
+#    paths-ignore:
+#      - '**.md'
+#      - '**.yml'
+#      - '**.yaml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [ '11' ]
+        architecture: [ 'x64' ]
+    name: Mutation Testing with JDK ${{ matrix.java }} on ${{ matrix.architecture }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ matrix.java }}
+          architecture: ${{ matrix.architecture }}
+          distribution: 'temurin'
+
+      - name: Run Mutation Testing
+        run: mvn test -Pmutation-tests org.pitest:pitest-maven:mutationCoverage

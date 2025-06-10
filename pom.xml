@@ -1,5 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://maven.apache.org/POM/4.0.0"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.com.renanrramos.easyshopping</groupId>
@@ -38,7 +38,53 @@
 		<jakartaee-api.version>10.0.0</jakartaee-api.version>
 		<log4j-core.version>2.24.3</log4j-core.version>
 		<springfox-swagger2.version>2.9.2</springfox-swagger2.version>
+		<pitest.version>1.9.1</pitest.version>
 	</properties>
+	<profiles>
+		<profile>
+			<id>mutation-tests</id>
+			<properties>
+				<spring.profiles.active>LOCAL</spring.profiles.active>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.pitest</groupId>
+						<artifactId>pitest-maven</artifactId>
+						<version>${pitest.version}</version>
+						<executions>
+							<execution>
+								<id>pit-report</id>
+								<goals>
+									<goal>mutationCoverage</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<excludedClasses>
+								<param>br.com.renanrramos.easyshopping.infra.*</param>
+							</excludedClasses>
+							<avoidCallsTo>
+								<avoidCallsTo>lombok.*</avoidCallsTo>
+								<avoidCallsTo>java.util.logging</avoidCallsTo>
+								<avoidCallsTo>org.apache.log4j</avoidCallsTo>
+								<avoidCallsTo>org.slf4j</avoidCallsTo>
+								<avoidCallsTo>org.apache.commons.logging</avoidCallsTo>
+							</avoidCallsTo>
+							<outputFormats>xml</outputFormats>
+						</configuration>
+						<dependencies>
+							<dependency>
+								<groupId>org.pitest</groupId>
+								<artifactId>pitest-junit5-plugin</artifactId>
+								<version>1.1.0</version>
+							</dependency>
+						</dependencies>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 	<dependencies>
 		<dependency>
