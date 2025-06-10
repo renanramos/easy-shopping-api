@@ -71,7 +71,6 @@
 								<avoidCallsTo>org.slf4j</avoidCallsTo>
 								<avoidCallsTo>org.apache.commons.logging</avoidCallsTo>
 							</avoidCallsTo>
-							<outputFormats>xml</outputFormats>
 						</configuration>
 						<dependencies>
 							<dependency>

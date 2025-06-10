@@ -27,4 +27,4 @@ jobs:
           distribution: 'temurin'
 
       - name: Run Mutation Testing
-        run: mvn test -Pmutation-tests org.pitest:pitest-maven:mutationCoverage
+        run: mvn test -Pmutation-tests org.pitest:pitest-maven:mutationCoverage --outputFormats=HTML
