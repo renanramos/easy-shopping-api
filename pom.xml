@@ -71,6 +71,10 @@
 								<avoidCallsTo>org.slf4j</avoidCallsTo>
 								<avoidCallsTo>org.apache.commons.logging</avoidCallsTo>
 							</avoidCallsTo>
+							<timestampedReports>false</timestampedReports>
+							<withHistory>true</withHistory>
+							<analyseLastCommit>true</analyseLastCommit>
+							<outputDirectory>pit-reports</outputDirectory>
 						</configuration>
 						<dependencies>
 							<dependency>
