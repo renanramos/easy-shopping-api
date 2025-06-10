@@ -71,6 +71,7 @@
 								<avoidCallsTo>org.slf4j</avoidCallsTo>
 								<avoidCallsTo>org.apache.commons.logging</avoidCallsTo>
 							</avoidCallsTo>
+							<outputDirectory>quality</outputDirectory>
 							<timestampedReports>false</timestampedReports>
 							<withHistory>true</withHistory>
 							<analyseLastCommit>true</analyseLastCommit>
