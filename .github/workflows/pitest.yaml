@@ -35,11 +35,11 @@ jobs:
           cp -r target/pit-reports/* docs/pitest-reports/
 
       - name: Commit Pitest Reports
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: renanrramossi/git-auto-commit-action@v5
         with:
           commit_message: "Update Pitest mutation test reports"
           file_pattern: "docs/pitest-reports/**"
           commit_user_name: "GitHub Actions"
-          commit_user_email: "actions@github.com"
-          commit_author: "GitHub Actions <actions@github.com>"
+          commit_user_email: "renanrramossi@gmail.com"
+          commit_author: "GitHub Actions <renanrramossi@gmail.com>"
           push_options: '--force'
