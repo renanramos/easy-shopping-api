@@ -28,3 +28,18 @@ jobs:
 
       - name: Run Mutation Testing
         run: mvn test -Pmutation-tests org.pitest:pitest-maven:mutationCoverage --outputFormats=HTML
+
+      - name: Copy Pitest Reports to docs folder
+        run: |
+          mkdir -p docs/pitest-reports
+          cp -r target/pit-reports/* docs/pitest-reports/
+
+      - name: Commit Pitest Reports
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Update Pitest mutation test reports"
+          file_pattern: "docs/pitest-reports/**"
+          commit_user_name: "GitHub Actions"
+          commit_user_email: "actions@github.com"
+          commit_author: "GitHub Actions <actions@github.com>"
+          push_options: '--force'
