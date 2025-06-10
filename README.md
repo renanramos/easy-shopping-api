@@ -8,6 +8,7 @@ Página inicial: [easy-shopping-api](https://renanramos.github.io/easy-shopping-
 
 ---
 
+
 # **Arquitetura da aplicação - Clean Architecture**
 
 ## 📌 **Fluxo de Dados entre as Camadas**
