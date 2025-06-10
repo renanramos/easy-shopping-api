@@ -71,11 +71,12 @@
 								<avoidCallsTo>org.slf4j</avoidCallsTo>
 								<avoidCallsTo>org.apache.commons.logging</avoidCallsTo>
 							</avoidCallsTo>
-							<outputDirectory>quality</outputDirectory>
+							<siteReportName>easy-shopping</siteReportName>
 							<timestampedReports>false</timestampedReports>
 							<withHistory>true</withHistory>
 							<analyseLastCommit>true</analyseLastCommit>
-							<outputDirectory>pit-reports</outputDirectory>
+							<reportsDirectory>docs</reportsDirectory>
+							<outputFormats>html</outputFormats>
 						</configuration>
 						<dependencies>
 							<dependency>
