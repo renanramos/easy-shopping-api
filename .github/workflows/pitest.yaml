@@ -27,7 +27,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Run Mutation Testing
-        run: mvn test -Pmutation-tests -DoutputFormats=html org.pitest:pitest-maven:mutationCoverage
+        run: mvn clean test -Pmutation-tests -DoutputFormats=html org.pitest:pitest-maven:mutationCoverage
 
       - name: Copy Pitest Reports to docs folder
         run: |
