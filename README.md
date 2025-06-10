@@ -4,7 +4,7 @@ Aplicação backend desenvolvida como trabalho de conclusão de curso da PUC Min
 
 **Desenvolvimento Web Full Stack**.
 
-Página inicial: [easy-shopping-api](https://easy-shopping-puc-minas.herokuapp.com/swagger-ui.html#/)
+Página inicial: [easy-shopping-api](https://renanramos.github.io/easy-shopping-api/quality/index.html)
 
 ---
 
